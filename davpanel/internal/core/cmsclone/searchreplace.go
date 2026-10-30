@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
 )
 
 // SearchReplaceDatabase swaps oldStr for newStr across every text/blob column of dbName - the generic wp-cli search-replace equivalent since none of the other CMS CLIs have one built in; dbName is already validated by ValidDB so it's safe to interpolate directly, best-effort per column, and can't safely fix PHP-serialized strings since replacing changes their byte length

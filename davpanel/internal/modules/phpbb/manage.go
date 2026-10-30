@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"regexp"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 // phpbbDBNameRE extracts $dbname from config.php - same shape as drupal/websites.go's settings.php scrapes, needed here so remove can drop the right database

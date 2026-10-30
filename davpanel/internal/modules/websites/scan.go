@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/mysql"
-	"gist.github.com/kangpcode/davpanel/internal/modules/waf"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/mysql"
+	"github.com/kangpcode/davpanel/internal/modules/waf"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // this file adds a universal "scan for existing installations" + "detach" feature covering every CMS type this panel can install, living in the websites package (which already owns /sites) rather than as per-CMS routes since scan/detach just need filesystem detection + a DB row

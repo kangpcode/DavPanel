@@ -21,5 +21,5 @@ For more information about using phpMyAdmin, refer to [the official phpMyAdmin d
 ----
 
 :::info
-phpMyAdmin runs on PHP version that user defines as [default php version](/docs/panel/advanced/server_settings#set-default-php-version) in OpenPanel. But due to phpmyadmin minimum requirements, if PHP version is less than 8.0 then the [default php version defined by the administrator](/docs/admin/settings/openpanel) will be used instead. To increase limits for the phpmyadmin interface, [edit the php.ini file](/docs/panel/advanced/server_settings#phpini-editor) of the version it is running on.
+phpMyAdmin runs on PHP version that user defines as [default php version](/docs/panel/advanced/server_settings#set-default-php-version) in DavPanel. But due to phpmyadmin minimum requirements, if PHP version is less than 8.0 then the [default php version defined by the administrator](/docs/admin/settings/davpanel) will be used instead. To increase limits for the phpmyadmin interface, [edit the php.ini file](/docs/panel/advanced/server_settings#phpini-editor) of the version it is running on.
 :::

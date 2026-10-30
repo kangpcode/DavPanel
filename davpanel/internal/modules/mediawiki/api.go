@@ -6,11 +6,11 @@ import (
 	"net/url"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // handleMediaWikiVersions backs mediawiki_install.html's version dropdown and mediawiki_app.html's Update tab - there's no GitHub releases API to hit client-side (releases.wikimedia.org sends no CORS headers either), so this exposes the server-side HTML-scrape result (version.go) as JSON instead

@@ -12,7 +12,7 @@ import (
 
 	"github.com/go-webauthn/webauthn/webauthn"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 const createPasskeysTableSQL = `

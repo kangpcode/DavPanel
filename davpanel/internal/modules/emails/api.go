@@ -11,14 +11,14 @@ import (
 
 	"github.com/google/uuid"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/sieveparser"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/core/validators"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/sieveparser"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/validators"
 )
 
 // RegisterEmailsAPI wires the emails API routes onto mux - literal sub-paths (aliases, configuration, default, deliverability, filters) are registered as their own patterns alongside the generic "{email...}"/"{...}" catch-alls, since Go's ServeMux picks the pattern with more literal segments over the wildcard

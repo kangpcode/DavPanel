@@ -1,11 +1,11 @@
 ---
-sidebar_label: "OpenPanel Installation on Raspberry Pi"
-description: "How to install the OpenPanel hosting control panel on a Raspberry Pi 4 or 5 with 64-bit Ubuntu Server: supported models, SSD boot, installation and exposing your websites to the internet."
+sidebar_label: "DavPanel Installation on Raspberry Pi"
+description: "How to install the DavPanel hosting control panel on a Raspberry Pi 4 or 5 with 64-bit Ubuntu Server: supported models, SSD boot, installation and exposing your websites to the internet."
 ---
 
 # How to Install a Web Hosting Control Panel on a Raspberry Pi
 
-OpenPanel supports **ARM64 (AArch64)** processors, so you can run it on a **Raspberry Pi 4** or **Raspberry Pi 5** and host websites from a tiny, low-power server at home.
+DavPanel supports **ARM64 (AArch64)** processors, so you can run it on a **Raspberry Pi 4** or **Raspberry Pi 5** and host websites from a tiny, low-power server at home.
 
 ---
 
@@ -34,7 +34,7 @@ Use the [resource calculator](/calculator) to see how many websites your Pi can 
 
 ## Step 1: Flash Ubuntu Server 64-bit
 
-Use **Ubuntu Server 24.04 LTS (64-bit)** - it's the recommended OS for OpenPanel on the Pi.
+Use **Ubuntu Server 24.04 LTS (64-bit)** - it's the recommended OS for DavPanel on the Pi.
 
 1. Open **Raspberry Pi Imager**.
 2. **Device**: choose your Raspberry Pi model.
@@ -46,7 +46,7 @@ Use **Ubuntu Server 24.04 LTS (64-bit)** - it's the recommended OS for OpenPanel
 6. Write the image, connect the drive to the Pi and power it on.
 
 :::info Raspberry Pi OS
-Use Ubuntu Server rather than Raspberry Pi OS. OpenPanel is tested on the standard Ubuntu and Debian server images, and Ubuntu Server for the Pi is the closest match.
+Use Ubuntu Server rather than Raspberry Pi OS. DavPanel is tested on the standard Ubuntu and Debian server images, and Ubuntu Server for the Pi is the closest match.
 :::
 
 ---
@@ -68,20 +68,20 @@ reboot
 
 ---
 
-## Step 4: Install OpenPanel
+## Step 4: Install DavPanel
 
 Reconnect, switch to root, and run the installer:
 
 ```bash
 sudo -i
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
-The installer detects the ARM64 CPU automatically and downloads the ARM builds of OpenPanel. On a Pi the installation takes longer than on a VPS - usually 10-20 minutes, depending on the storage speed.
+The installer detects the ARM64 CPU automatically and downloads the ARM builds of DavPanel. On a Pi the installation takes longer than on a VPS - usually 10-20 minutes, depending on the storage speed.
 
-When it finishes, it prints the **OpenAdmin URL**, **username** and **password**. Open `https://192.168.1.60:2087` from your local network to log in.
+When it finishes, it prints the **DavAdmin URL**, **username** and **password**. Open `https://192.168.1.60:2087` from your local network to log in.
 
-![OpenPanel installer output on an ARM64 (AArch64) server: the OpenPanel banner with version, OS, architecture, IP and Podman engine, each installation step marked OK, and the OpenAdmin URL with the generated username and password at the end](/img/openpanel-screenshots/install/installer-output-arm.png#screenshot)
+![DavPanel installer output on an ARM64 (AArch64) server: the DavPanel banner with version, OS, architecture, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-arm.png#screenshot)
 
 :::tip Swap
 The installer creates a swap file automatically on servers with 32 GB of RAM or less. On a Pi with an SSD you can choose the size with `--swap=4` (in GB). Avoid large swap files on microSD cards.
@@ -91,13 +91,13 @@ The installer creates a swap file automatically on servers with 32 GB of RAM or 
 
 ## Step 5: Put Your Sites Online
 
-The Pi is now a normal OpenPanel server on your home network. To make websites reachable from the internet you need either **port forwarding** on your router or a **Cloudflare Tunnel** - both are explained in [Self-Host Websites on a Home Server](/docs/articles/install-update/install-on-home-server/), together with dynamic IPs, CGNAT and accessing sites from inside your network.
+The Pi is now a normal DavPanel server on your home network. To make websites reachable from the internet you need either **port forwarding** on your router or a **Cloudflare Tunnel** - both are explained in [Self-Host Websites on a Home Server](/docs/articles/install-update/install-on-home-server/), together with dynamic IPs, CGNAT and accessing sites from inside your network.
 
 ---
 
 ## Performance Tips
 
 - **Use an SSD.** It is the single biggest speed-up for databases and WordPress.
-- **Use Nginx or OpenResty** as the web server for lower memory usage - see [switching the web server per user](/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/).
+- **Use Nginx or OpenResty** as the web server for lower memory usage - see [switching the web server per user](/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/).
 - **Enable caching** (Redis or Varnish) for WordPress sites - see [Redis object cache for WordPress](/docs/articles/websites/wordpress-redis-object-cache/).
 - **Cooling**: use the official active cooler or a case with a fan. Throttling makes the Pi much slower under load.

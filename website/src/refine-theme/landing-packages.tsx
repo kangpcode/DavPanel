@@ -166,7 +166,7 @@ export const LandingPackages: FC<Props> = ({ className }) => {
                                 "dark:text-gray-400 text-gray-600",
                             )}
                         >
-                            OpenCLI serves as the command line interface, enabling you to execute all actions through the terminal.
+                            DavCLI serves as the command line interface, enabling you to execute all actions through the terminal.
                         </p>
                         <LandingSectionCtaButton to="https://dev.davpanel.com/cli/">
                             All Commands
@@ -320,125 +320,125 @@ const PackageItem = (props: {
 const listOne = [
     {
         label: "Generate system report.",
-        tooltip: "opencli report",
+        tooltip: "davcli report",
     },
     {
         label: "List all domains",
-        tooltip: "opencli domains-all",
+        tooltip: "davcli domains-all",
     },
     {
         label: "Reset user password",
-        tooltip: "opencli user-password <USERNAME> <NEW_PASSWORD>",
+        tooltip: "davcli user-password <USERNAME> <NEW_PASSWORD>",
     },
     {
         label: "Suspend a domain",
-        tooltip: "opencli domains-suspend <DOMAIN-NAME>",
+        tooltip: "davcli domains-suspend <DOMAIN-NAME>",
     },
     {
         label: "Manage DavAdmin service",
-        tooltip: "opencli admin <setting_name>",
+        tooltip: "davcli admin <setting_name>",
     },
     {
         label: "List plans",
-        tooltip: "opencli plan-list",
+        tooltip: "davcli plan-list",
     },
     {
         label: "Disable 2FA",
-        tooltip: "opencli user-2fa <USERNAME> disable",
+        tooltip: "davcli user-2fa <USERNAME> disable",
     },
     {
         label: "Enable DEV_MODE",
-        tooltip: "opencli config update dev_mode on",
+        tooltip: "davcli config update dev_mode on",
     },
     {
         label: "List all Websites",
-        tooltip: "opencli websites-all",
+        tooltip: "davcli websites-all",
     },
     {
         label: "Add a new user",
-        tooltip: "opencli user-add <USERNAME> <PASSWORD> <EMAIL> <PLAN_ID>",
+        tooltip: "davcli user-add <USERNAME> <PASSWORD> <EMAIL> <PLAN_ID>",
     },
     {
         label: "Check updates",
-        tooltip: "opencli update --check",
+        tooltip: "davcli update --check",
     },
     {
         label: "Rename user",
-        tooltip: "opencli user-rename <old_username> <new_username>",
+        tooltip: "davcli user-rename <old_username> <new_username>",
     },
     {
         label: "Check default PHP version",
-        tooltip: "opencli php-default <username>",
+        tooltip: "davcli php-default <username>",
     },
     {
         label: "Manage CorazaWAF",
-        tooltip: "opencli waf <setting>",
+        tooltip: "davcli waf <setting>",
     },
     {
         label: "Collect container stats",
-        tooltip: "opencli docker-collect_stats",
+        tooltip: "davcli docker-collect_stats",
     },
     {
         label: "Enable Memcached",
-        tooltip: "opencli user-memcached enable <USERNAME>",
+        tooltip: "davcli user-memcached enable <USERNAME>",
     },
 ];
 
 const listTwo = [
     {
         label: "List all API endpoints",
-        tooltip: "opencli api-list",
+        tooltip: "davcli api-list",
     },
     {
         label: "Install a locale",
-        tooltip: "opencli locale sr-sr",
+        tooltip: "davcli locale sr-sr",
     },
     {
         label: "Display error information",
-        tooltip: "opencli error ID_HERE",
+        tooltip: "davcli error ID_HERE",
     },
     {
         label: "View Login Log",
-        tooltip: "opencli user-loginlog <USERNAME>",
+        tooltip: "davcli user-loginlog <USERNAME>",
     },
     {
         label: "Check server configuration",
-        tooltip: "opencli sentinel",
+        tooltip: "davcli sentinel",
     },
     {
         label: "List user domains",
-        tooltip: "opencli domains-user <USERNAME>",
+        tooltip: "davcli domains-user <USERNAME>",
     },
     {
         label: "Change 2083 to custom port",
-        tooltip: "opencli port set <PORT>",
+        tooltip: "davcli port set <PORT>",
     },
     {
         label: "Check DNS for a domain",
-        tooltip: "opencli domains-dns check",
+        tooltip: "davcli domains-dns check",
     },
     {
         label: "Collect Google PageSpeed for website",
-        tooltip: "opencli websites-pagespeed <WEBSITE>",
+        tooltip: "davcli websites-pagespeed <WEBSITE>",
     },
     {
         label: "Flush mail queue",
-        tooltip: "opencli email-server flush",
+        tooltip: "davcli email-server flush",
     },
     {
         label: "Check PHP version for domain",
-        tooltip: "opencli php-domain <DOMAIN-NAME>",
+        tooltip: "davcli php-domain <DOMAIN-NAME>",
     },
     {
         label: "Disable admin panel",
-        tooltip: "opencli admin off",
+        tooltip: "davcli admin off",
     },
     {
         label: "Delete mail from queue",
-        tooltip: "opencli email-server delete <queue id> [<queue id>]",
+        tooltip: "davcli email-server delete <queue id> [<queue id>]",
     },
     {
         label: "Fix permissions for directory",
-        tooltip: "opencli files-fix_permissions <USERNAME> <PATH>",
+        tooltip: "davcli files-fix_permissions <USERNAME> <PATH>",
     },
 ];

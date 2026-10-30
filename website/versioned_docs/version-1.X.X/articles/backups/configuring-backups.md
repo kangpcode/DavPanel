@@ -1,6 +1,6 @@
-# Configuring OpenPanel Backups
+# Configuring DavPanel Backups
 
-OpenPanel has a unique feature where end-users can configure their remote backups. This provides users with more freedom and control over the schedule, what to backup and finally more privacy as Admin does not have access to their destination.
+DavPanel has a unique feature where end-users can configure their remote backups. This provides users with more freedom and control over the schedule, what to backup and finally more privacy as Admin does not have access to their destination.
 
 Backups can be configured either by the system administrator (admin-configured) or by end users (user-configured). Each mode has distinct setup and restore procedures.
 
@@ -29,7 +29,7 @@ In this mode, the **admin has full control** over backup scheduling, retention, 
 To prevent users from changing backup settings, disable the **Backups** module from the admin interface.
 
 **Path:**
-`OpenAdmin > Settings > Modules`
+`DavAdmin > Settings > Modules`
 **Action:** Deactivate the **Backups** module.
 
 ---
@@ -39,7 +39,7 @@ To prevent users from changing backup settings, disable the **Backups** module f
 Modify the backup configuration template that applies to new accounts. This file defines default backup settings, such as remote storage destinations.
 
 **File path:**
-`/etc/openpanel/backups/backups.env`
+`/etc/davpanel/backups/backups.env`
 
 To enable and configure a remote SSH destination, uncomment and update the following variables:
 
@@ -76,12 +76,12 @@ SSH_PASSWORD="NotSoStrongP@ssword"
 To set the backup frequency, go to:
 
 **Path:**
-`OpenAdmin > Advanced > System Cron Jobs`
+`DavAdmin > Advanced > System Cron Jobs`
 
 Locate the cron job for the command:
 
 ```bash
-opencli docker-backup
+davcli docker-backup
 ```
 
 Adjust the schedule as needed. This command will trigger backups according to your defined schedule for **all active users** on the server.
@@ -94,7 +94,7 @@ In this mode, the **Backups module is enabled** to allow users to configure thei
 
 **Setup:**
 
-* The admin must **enable the Backups module** in OpenPanel.
+* The admin must **enable the Backups module** in DavPanel.
 * Backups feature must be enabled on all relevant feature sets tied to hosting plans to allow user access.
 * End users can set:
 
@@ -117,7 +117,7 @@ In this mode, the **Backups module is enabled** to allow users to configure thei
 
 ### Restore in Admin-Configured Backup Mode
 
-* The admin performs restores manually, either via terminal commands or through the OpenPanel UI terminal.
+* The admin performs restores manually, either via terminal commands or through the DavPanel UI terminal.
 * Common restore steps include:
 
   * For databases: dropping the relevant tables and importing the database dump from backup files.

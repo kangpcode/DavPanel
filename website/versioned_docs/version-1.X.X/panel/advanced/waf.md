@@ -4,7 +4,7 @@ sidebar_position: 9
 
 # WAF
 
-The Web Application Firewall (WAF) interface allows OpenPanel users to toggle Coraza WAF on or off for each domain individually.
+The Web Application Firewall (WAF) interface allows DavPanel users to toggle Coraza WAF on or off for each domain individually.
 
 ![waf.png](/img/panel/v2/waf.png)
 

@@ -4,19 +4,19 @@ sidebar_position: 3
 
 # Feature Manager
 
-The Feature Manager allows administrators to enable or disable specific features (pages) within the OpenPanel UI. This is useful for customizing the control panel experience based on user roles, security policies, or hosting plans.
+The Feature Manager allows administrators to enable or disable specific features (pages) within the DavPanel UI. This is useful for customizing the control panel experience based on user roles, security policies, or hosting plans.
 
 Enabled/disabled features are grouped into **Feature Sets** - named collections of toggles that are then assigned to a [hosting plan](/docs/admin/plans/hosting_plans). Each feature set is its own list, so different plans can expose a different set of pages to their users.
 
 ## Navigating the Feature Manager
 
-Go to **OpenAdmin > Hosting Plans > Feature Manager**. The index page has two sections:
+Go to **DavAdmin > Hosting Plans > Feature Manager**. The index page has two sections:
 
 * **Create** - type a name and click **Create** to create a new, empty feature set.
 * **Manage** - pick an existing feature set from the **Manage feature set** dropdown to open and edit it.
 
-![Feature Manager page with the Create and Manage sections](/img/openadmin-screenshots/plans/feature-manager-index.png#gh-light-mode-only)
-![Feature Manager page with the Create and Manage sections](/img/openadmin-screenshots/plans/feature-manager-index_dark.png#gh-dark-mode-only)
+![Feature Manager page with the Create and Manage sections](/img/davadmin-screenshots/plans/feature-manager-index.png#gh-light-mode-only)
+![Feature Manager page with the Create and Manage sections](/img/davadmin-screenshots/plans/feature-manager-index_dark.png#gh-dark-mode-only)
 
 Selecting or creating a feature set opens its edit page, where every available feature is listed in a table:
 
@@ -25,13 +25,13 @@ Selecting or creating a feature set opens its edit page, where every available f
 | **Status** | Toggle switch to enable/disable the feature for this feature set.             |
 | **Name**   | Feature title and a short description.                                        |
 | **Type**   | `Community`, `Enterprise`, or `Beta`. Enterprise features can only be toggled on when an Enterprise license is active - otherwise the toggle is disabled. |
-| **Page**   | The OpenPanel page/route the feature controls.                                |
+| **Page**   | The DavPanel page/route the feature controls.                                |
 | **Module** | Whether the underlying [module](/docs/admin/settings/modules/) is enabled. If it shows **Disabled**, the feature has no effect for users even when toggled on here - click it to go enable the module. |
 
 Use the search box to filter features by name or description, and **Enable All** / **Disable All** to toggle every feature at once. Click **Save** to apply your changes - they take effect for users on plans assigned to this feature set right away. The **default** feature set cannot be deleted, and a feature set that is currently assigned to a hosting plan cannot be deleted either.
 
-![Feature set edit page listing features with a toggle, name, description and type, and the Enable All, Disable All and Save buttons](/img/openadmin-screenshots/plans/feature-manager-edit.png#gh-light-mode-only)
-![Feature set edit page listing features with a toggle, name, description and type, and the Enable All, Disable All and Save buttons](/img/openadmin-screenshots/plans/feature-manager-edit_dark.png#gh-dark-mode-only)
+![Feature set edit page listing features with a toggle, name, description and type, and the Enable All, Disable All and Save buttons](/img/davadmin-screenshots/plans/feature-manager-edit.png#gh-light-mode-only)
+![Feature set edit page listing features with a toggle, name, description and type, and the Enable All, Disable All and Save buttons](/img/davadmin-screenshots/plans/feature-manager-edit_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -114,7 +114,7 @@ Use the search box to filter features by name or description, and **Enable All**
 | ClamAV (Malware Scanner) | `/malware-scanner` | Enterprise | The ClamAV service is started and users can run scans against their files. |
 | Fix Permissions | `/fix-permissions` | Community | Users have access to the Fix Permissions tool to change owner and permissions for website files. |
 | Git | `/git` | Enterprise | Users can deploy websites from Git repositories: clone from GitHub, GitLab or Bitbucket, or push to repositories hosted on the server over HTTPS. |
-| AI Assistant | `` | Enterprise | Users get an AI chat assistant in the top bar that answers questions using the OpenPanel documentation and, if allowed on Settings > OpenPanel, looks things up or makes changes in their account after they approve them. |
+| AI Assistant | `` | Enterprise | Users get an AI chat assistant in the top bar that answers questions using the DavPanel documentation and, if allowed on Settings > DavPanel, looks things up or makes changes in their account after they approve them. |
 | DNS | `/domains/edit-dns-zone` | Community | BIND9 runs locally and a DNS zone is created for new domains. Users manage records via the Zone Editor. |
 | Dynamic DNS | `/domains/dynamic-dns` | Enterprise | Users can create subdomains that are updated via webhooks. |
 | Domain Redirects | `/domains/redirect` | Enterprise | Users can create and manage redirects for their domains. |
@@ -135,7 +135,7 @@ Use the search box to filter features by name or description, and **Enable All**
 | Services | `/services` | Community | Users can start/stop and view logs for any service. |
 | Elasticsearch | `/cache/elasticsearch` | Community | Users can configure Elasticsearch from their user panel. |
 | Opensearch | `/cache/opensearch` | Community | Users can configure Opensearch from their user panel. |
-| Temporary Links | `/sites` | Enterprise | Users can test websites using temporary OpenPanel subdomains. Links expire after 15 minutes. |
+| Temporary Links | `/sites` | Enterprise | Users can test websites using temporary DavPanel subdomains. Links expire after 15 minutes. |
 | Login History | `/account/login-history` | Community | Users can view recent logins to their account, the number kept is set by the admin. |
 | 2FA | `/account/2fa` | Community | Users can enable Two-Factor Authentication (2FA) for their account. |
 | Passkeys | `/account/passkeys` | Enterprise | Users can configure Passkeys for their account. |
@@ -175,8 +175,8 @@ Create two separate feature sets:
 
 ## Feature not showing?
 
-Features are accessible to users [only if the corresponding **Module** is active](/docs/admin/settings/modules/). Modules control which OpenPanel features are available, while **Feature Sets** determine access based on the user's hosting package.
+Features are accessible to users [only if the corresponding **Module** is active](/docs/admin/settings/modules/). Modules control which DavPanel features are available, while **Feature Sets** determine access based on the user's hosting package.
 
-For example, adding the "Docker" feature to a feature set does **not** grant access to the Docker (Containers) page in the UI unless the **Docker module** is also activated under **OpenAdmin > Settings > Modules**. The **Module** column on the feature set's edit page shows the current status of each feature's module, and links straight to the Modules page when it's disabled.
+For example, adding the "Docker" feature to a feature set does **not** grant access to the Docker (Containers) page in the UI unless the **Docker module** is also activated under **DavAdmin > Settings > Modules**. The **Module** column on the feature set's edit page shows the current status of each feature's module, and links straight to the Modules page when it's disabled.
 
 Also double check that the feature's **Type** isn't `Enterprise` while running on a Community license - Enterprise features cannot be toggled on without an active Enterprise license.

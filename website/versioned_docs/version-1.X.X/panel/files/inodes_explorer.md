@@ -28,7 +28,7 @@ Suppose you need to check the inode usage of a specific directory. Here's a simp
 
 ## Lowering Inode Usage
 
-Optimizing inode usage is crucial for maintaining your hosting environment's efficiency. Here are strategies to reduce inode usage within OpenPanel:
+Optimizing inode usage is crucial for maintaining your hosting environment's efficiency. Here are strategies to reduce inode usage within DavPanel:
 
 ### Regularly Clean Up Unnecessary Files
 - Delete Unused Files: Periodically remove files that are no longer needed, such as outdated backups, temporary files, and old logs.

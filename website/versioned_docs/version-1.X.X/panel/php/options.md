@@ -14,7 +14,7 @@ For more advanced users, the [**PHP.INI Editor**](/docs/panel/php/php_ini_editor
 
 ## How to Change PHP Options
 
-1. Open **OpenPanel** and navigate to **PHP > PHP Options**.
+1. Open **DavPanel** and navigate to **PHP > PHP Options**.
 2. Select the desired **PHP version** from the dropdown.
 3. Modify the options you want to change.
 4. Click **Save** to apply changes.
@@ -49,7 +49,7 @@ The list of configurable PHP options is determined by the system administrator. 
 
 Administrators can customize the available options:
 
-- **For all new users**: Edit `/etc/openpanel/php/options.txt`
+- **For all new users**: Edit `/etc/davpanel/php/options.txt`
 - **For a specific user**: Edit `/home/USERNAME/php.ini/options.txt`
 
 ---

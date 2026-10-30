@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"path/filepath"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // RegisterLocaleAPI wires the /api/account/language routes onto mux, gated behind the "locale" feature flag

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 // licenseExemptPaths stay reachable even when the license check fails: login and the forgot-password flow (route is /reset_password, not /forgot_password)

@@ -1,11 +1,11 @@
 ---
 sidebar_label: "Redirects: HTTPS, www, Domain"
-description: "How to redirect HTTP to HTTPS, www to non-www (or the reverse), and one domain to another in OpenPanel, including keeping the URL path and choosing 301 vs 302 redirects."
+description: "How to redirect HTTP to HTTPS, www to non-www (or the reverse), and one domain to another in DavPanel, including keeping the URL path and choosing 301 vs 302 redirects."
 ---
 
 # How to Redirect HTTP to HTTPS, www to non-www, or One Domain to Another
 
-This guide covers the three most common redirects and how each one works in OpenPanel:
+This guide covers the three most common redirects and how each one works in DavPanel:
 
 | Redirect | How |
 |---|---|
@@ -17,16 +17,16 @@ This guide covers the three most common redirects and how each one works in Open
 
 ## HTTP to HTTPS
 
-When you add a domain, OpenPanel requests a free **Let's Encrypt** SSL certificate for it automatically. Once the certificate is issued, visitors are sent to the `https://` version of your site - you don't need to add any rules.
+When you add a domain, DavPanel requests a free **Let's Encrypt** SSL certificate for it automatically. Once the certificate is issued, visitors are sent to the `https://` version of your site - you don't need to add any rules.
 
 For this to work:
 
 - The domain (and `www`) must point to the server's IP, so the certificate can be issued.
 - Ports `80` and `443` must be open.
 
-If the site still loads over `http://`, check the SSL status in **OpenPanel → Domains → SSL** and see [SSL troubleshooting](/docs/articles/domains/ssl-troubleshooting-guide/).
+If the site still loads over `http://`, check the SSL status in **DavPanel → Domains → SSL** and see [SSL troubleshooting](/docs/articles/domains/ssl-troubleshooting-guide/).
 
-To tell browsers to *always* use HTTPS, even before the first redirect, enable [HSTS](/docs/articles/domains/how-to-enable-hsts-on-a-domain-in-openpanel/).
+To tell browsers to *always* use HTTPS, even before the first redirect, enable [HSTS](/docs/articles/domains/how-to-enable-hsts-on-a-domain-in-davpanel/).
 
 :::tip Fallback rule
 If you want an explicit HTTP→HTTPS rule in the site itself (for example for an app that checks the scheme), add this to `.htaccess` on Apache / OpenLiteSpeed:
@@ -44,7 +44,7 @@ Check `X-Forwarded-Proto`, not `%{HTTPS}` - SSL is handled by the proxy in front
 
 ## www to non-www (or non-www to www)
 
-Every domain you add in OpenPanel automatically:
+Every domain you add in DavPanel automatically:
 
 - gets a `www` DNS record (a `CNAME` to the main domain) in its DNS zone,
 - answers on both `example.com` and `www.example.com`,
@@ -90,7 +90,7 @@ if ($host = www.example.com) {
 }
 ```
 
-Not sure which web server you use? See [switching the web server](/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/).
+Not sure which web server you use? See [switching the web server](/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/).
 
 ---
 
@@ -98,14 +98,14 @@ Not sure which web server you use? See [switching the web server](/docs/articles
 
 Use the **Redirects** feature to send all traffic for a domain somewhere else - for example after a rebrand, or to point extra domains (`example.net`, `example.org`) to your main site.
 
-1. Go to **OpenPanel → Domains**.
+1. Go to **DavPanel → Domains**.
 2. Click **Redirect** next to the domain.
 3. Enter the destination URL, starting with `http://` or `https://`, and save.
 
 The redirect is applied by the proxy **before** the request reaches your web server, so it works even if the domain has no website files. It applies to both `example.net` and `www.example.net`.
 
 :::info
-The **Domain Redirects** feature is part of **OpenPanel Enterprise** and must be enabled for your plan. See [Redirects](/docs/panel/domains/redirects/).
+The **Domain Redirects** feature is part of **DavPanel Enterprise** and must be enabled for your plan. See [Redirects](/docs/panel/domains/redirects/).
 :::
 
 ### Keep the page path
@@ -145,7 +145,7 @@ On the Domains page, click **Redirect** next to the domain and choose **Delete**
 
 | Problem | Fix |
 |---|---|
-| `ERR_TOO_MANY_REDIRECTS` | Two rules redirect back and forth - often an `.htaccess` HTTPS rule using `%{HTTPS}`, or Cloudflare set to *Flexible*. See [Cloudflare with OpenPanel](/docs/articles/domains/cloudflare-with-openpanel/). |
+| `ERR_TOO_MANY_REDIRECTS` | Two rules redirect back and forth - often an `.htaccess` HTTPS rule using `%{HTTPS}`, or Cloudflare set to *Flexible*. See [Cloudflare with DavPanel](/docs/articles/domains/cloudflare-with-davpanel/). |
 | `www` shows "site can't be reached" | The `www` DNS record is missing or points elsewhere. |
 | Certificate error on `www` | `www` didn't resolve to the server when the certificate was requested. Fix DNS, then wait a few minutes - the certificate is requested again on the next visit. |
 | Redirect not working after changing it | Browsers cache 301 redirects. Test in a private window or with `curl -I https://example.com`. |

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/sitedial"
+	"github.com/kangpcode/davpanel/internal/core/sitedial"
 )
 
 // matomoWizardParams is everything runMatomoInstallWizard needs to drive Matomo's browser installation wizard end to end

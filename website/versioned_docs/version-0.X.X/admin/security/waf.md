@@ -20,13 +20,13 @@ The installation process may require up to 10 minutes and involves rebuilding th
 
 To install ModSecurity click on the 'Install' button.
 
-![openadmin modsec install](/img/admin/adminpanel_modsec_install.png)
+![davadmin modsec install](/img/admin/adminpanel_modsec_install.png)
 
-Or from terminal run: [opencli nginx-install_modsec](/docs/admin/scripts/webserver#install-modsecurity)
+Or from terminal run: [davcli nginx-install_modsec](/docs/admin/scripts/webserver#install-modsecurity)
 
 ## Activate ModSecurity
 
-Upon ModSecurity installation, all new domains will have ModSecurity enabled by default. However, individual users can choose to disable ModSecurity for their domains at any time through their OpenPanel interface. [More information](/docs/panel/advanced/server_settings#modsecurity-settings)
+Upon ModSecurity installation, all new domains will have ModSecurity enabled by default. However, individual users can choose to disable ModSecurity for their domains at any time through their DavPanel interface. [More information](/docs/panel/advanced/server_settings#modsecurity-settings)
 
 
 ## Customize ModSecurity rules
@@ -44,8 +44,8 @@ You can follow user-friendly guides to easily customize ModSecurity rules, adapt
 
 After installing ModSecurity only new domains that users add will by default have ModSecurity activate, and for existing users this process can be performed by the administrator from this page or from each user panel individually. To enable ModSecurity on all domains owned by a user, select the user anc click on 'Enable' button.
 
-![openadmin modsec settings](/img/admin/adminpanel_modsec_use.png)
+![davadmin modsec settings](/img/admin/adminpanel_modsec_use.png)
 
-Or from terminal run: [opencli domains-enable_modsec](/docs/admin/scripts/domains#enable-modsecurity)
+Or from terminal run: [davcli domains-enable_modsec](/docs/admin/scripts/domains#enable-modsecurity)
 
 

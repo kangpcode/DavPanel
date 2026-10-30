@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/cache"
 )
 
 func testApp(t *testing.T) *appctx.App {

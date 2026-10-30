@@ -84,7 +84,7 @@ type IList = {
 }[];
 
 const list: IList = [
-    { icon: <AltusHostIcon />, id: 1, href: "https://hostkey.com/apps/hosting-control-panels/openpanel/?utm_source=davpanel.com" },
+    { icon: <AltusHostIcon />, id: 1, href: "https://hostkey.com/apps/hosting-control-panels/davpanel/?utm_source=davpanel.com" },
     { icon: <HostkeyIcon />, id: 2, href: "https://altushost.com/?utm_source=davpanel.com" },
     { icon: <UpworkIcon />, id: 3, href: "https://logicweb.com/?utm_source=davpanel.com" },
     { icon: <UnlimitedIcon />, id: 4, href: "https://clouding.io/?utm_source=davpanel.com" },

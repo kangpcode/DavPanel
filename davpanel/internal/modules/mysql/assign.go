@@ -8,13 +8,13 @@ import (
 
 	mysqldriver "github.com/go-sql-driver/mysql"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/validators"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/validators"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // handleDatabasesAssign grants a user privileges on a database - on success or a mid-transaction failure it falls through to re-rendering the same page (pre-filled with the just-submitted user/database) rather than redirecting, only the early field-validation failures redirect elsewhere

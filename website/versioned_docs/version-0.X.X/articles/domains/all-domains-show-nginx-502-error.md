@@ -5,7 +5,7 @@ This happens when a third party user/service restarted docker and the floating i
 To resolve this issue, run:
 
 ```bash
-opencli server-recreate_hosts
+davcli server-recreate_hosts
 ```
 
 Then restart Nginx service:

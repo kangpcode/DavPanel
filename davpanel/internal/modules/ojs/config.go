@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // config.inc.php is INI format ("key = value" under "[section]"), not a PHP $CFG-> assignment file like Moodle/WordPress/Joomla, so these match a bare "key = ..." line - safe without anchoring on the section since key names don't collide across the sections this module touches

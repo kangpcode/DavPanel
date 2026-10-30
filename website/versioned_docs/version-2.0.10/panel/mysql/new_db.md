@@ -6,7 +6,7 @@ sidebar_position: 5
 
 Easily create a new MySQL database in just a few clicks. Databases are essential for storing, organizing, and retrieving data for your applications and websites.
 
-Navigate to **OpenPanel > MySQL > Create Database**:
+Navigate to **DavPanel > MySQL > Create Database**:
 
 1. **Enter a Database Name**  
    Type your desired name into the input field. Only letters, numbers, and underscores are allowed, and the name must be between 1 and 63 characters long.
@@ -17,8 +17,8 @@ Navigate to **OpenPanel > MySQL > Create Database**:
 3. **Click 'Create Database'**  
    Once the name is entered or generated, click the **Create Database** button to initialize your new MySQL database.
 
-![Create Database form with the database name field and the Create Database button](/img/openpanel-screenshots/mysql/new_db-form.png#gh-light-mode-only)
-![Create Database form with the database name field and the Create Database button](/img/openpanel-screenshots/mysql/new_db-form_dark.png#gh-dark-mode-only)
+![Create Database form with the database name field and the Create Database button](/img/davpanel-screenshots/mysql/new_db-form.png#gh-light-mode-only)
+![Create Database form with the database name field and the Create Database button](/img/davpanel-screenshots/mysql/new_db-form_dark.png#gh-dark-mode-only)
 
 ---
 

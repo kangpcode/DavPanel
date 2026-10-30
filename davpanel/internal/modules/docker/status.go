@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // ContainerStatus holds a container's (state, health) pair. State is one of: created, restarting, running, removing, paused, exited, dead, or "not_found" if inspect failed (container doesn't exist, socket unreachable, etc.)

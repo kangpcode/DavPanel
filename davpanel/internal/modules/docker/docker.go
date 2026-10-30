@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/flash"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/flash"
+	"github.com/kangpcode/davpanel/internal/core/session"
 )
 
 // Register wires the docker module's routes onto mux, with every route gated behind the "docker" feature flag via auth.RequireLogin

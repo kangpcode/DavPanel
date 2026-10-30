@@ -1,14 +1,14 @@
 ---
 sidebar_label: "Deploy a Ruby / Rails App"
-description: "How to deploy a Ruby application (Sinatra or Ruby on Rails) on OpenPanel: bundle install, Puma startup command, port, database, environment variables, assets and troubleshooting."
+description: "How to deploy a Ruby application (Sinatra or Ruby on Rails) on DavPanel: bundle install, Puma startup command, port, database, environment variables, assets and troubleshooting."
 ---
 
 # How to Deploy a Ruby App (Sinatra or Ruby on Rails)
 
-This guide shows how to host a **Ruby** web application on OpenPanel - a small **Sinatra** app or a full **Ruby on Rails** project. The app runs in its own Ruby container, and OpenPanel's web server forwards your domain to it with free SSL.
+This guide shows how to host a **Ruby** web application on DavPanel - a small **Sinatra** app or a full **Ruby on Rails** project. The app runs in its own Ruby container, and DavPanel's web server forwards your domain to it with free SSL.
 
 :::info
-Ruby applications are available in **OpenPanel Enterprise**, and the feature must be enabled for your hosting plan.
+Ruby applications are available in **DavPanel Enterprise**, and the feature must be enabled for your hosting plan.
 :::
 
 ---
@@ -16,7 +16,7 @@ Ruby applications are available in **OpenPanel Enterprise**, and the feature mus
 ## How It Works
 
 - Your code lives in the domain folder, e.g. `/var/www/html/example.com/`.
-- OpenPanel runs an official `ruby` container with that folder as the working directory.
+- DavPanel runs an official `ruby` container with that folder as the working directory.
 - On every start it can run `bundle install`, then your **startup command**.
 - The web server proxies your domain to the **port** your app listens on - the app must bind to `0.0.0.0`.
 
@@ -32,7 +32,7 @@ set :bind, '0.0.0.0'
 set :port, 3000
 
 get '/' do
-  'Hello from Sinatra on OpenPanel!'
+  'Hello from Sinatra on DavPanel!'
 end
 ```
 
@@ -45,7 +45,7 @@ gem 'puma'
 gem 'rackup'
 ```
 
-Create the app in **OpenPanel → Websites → Install App → Setup Ruby Application**:
+Create the app in **DavPanel → Websites → Install App → Setup Ruby Application**:
 
 | Field | Value |
 |---|---|
@@ -55,8 +55,8 @@ Create the app in **OpenPanel → Websites → Install App → Setup Ruby Applic
 | **Version** | a current Ruby version |
 | **Run Install** | ✅ runs `bundle install` |
 
-![Install Ruby Application form with the application details, domain, startup command and the Small, Medium and Large resource presets](/img/openpanel-screenshots/applications/ruby_install-form.png#gh-light-mode-only)
-![Install Ruby Application form with the application details, domain, startup command and the Small, Medium and Large resource presets](/img/openpanel-screenshots/applications/ruby_install-form_dark.png#gh-dark-mode-only)
+![Install Ruby Application form with the application details, domain, startup command and the Small, Medium and Large resource presets](/img/davpanel-screenshots/applications/ruby_install-form.png#gh-light-mode-only)
+![Install Ruby Application form with the application details, domain, startup command and the Small, Medium and Large resource presets](/img/davpanel-screenshots/applications/ruby_install-form_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -67,7 +67,7 @@ Create the app in **OpenPanel → Websites → Install App → Setup Ruby Applic
 In `config/environments/production.rb`, make sure Rails trusts the proxy and serves static files:
 
 ```ruby
-config.assume_ssl = true          # OpenPanel terminates SSL in front of the app
+config.assume_ssl = true          # DavPanel terminates SSL in front of the app
 config.force_ssl = true
 config.public_file_server.enabled = true
 config.hosts << "example.com"
@@ -84,7 +84,7 @@ production:
   password: <%= ENV["DATABASE_PASSWORD"] %>
 ```
 
-Create the database and user first in **OpenPanel → MySQL → Database Wizard**.
+Create the database and user first in **DavPanel → MySQL → Database Wizard**.
 
 ### Environment variables
 
@@ -123,7 +123,7 @@ Enter an `https://` **Git repository** URL when creating the app. On every start
 
 ## Managing the App
 
-In **OpenPanel → Websites → Sites**, click **Manage** to start, stop or restart the app, view **Logs**, edit the `Gemfile` and run Bundler under **Install Packages**, and change the Ruby version, startup command and resource limits under **Overview**.
+In **DavPanel → Websites → Sites**, click **Manage** to start, stop or restart the app, view **Logs**, edit the `Gemfile` and run Bundler under **Install Packages**, and change the Ruby version, startup command and resource limits under **Overview**.
 
 More: [Ruby applications](/docs/panel/applications/ruby/).
 

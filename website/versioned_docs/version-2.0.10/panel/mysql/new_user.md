@@ -6,7 +6,7 @@ sidebar_position: 6
 
 Easily create a new MySQL user in just a few clicks. Users are used for interacting with databases or the MySQL server.
 
-Navigate to **OpenPanel > MySQL > Create User**:
+Navigate to **DavPanel > MySQL > Create User**:
 
 1. **Enter a Username**  
    Type your desired username into the input field. Only letters, numbers, and underscores are allowed, and the name must be between 1 and 31 characters long.
@@ -17,8 +17,8 @@ Navigate to **OpenPanel > MySQL > Create User**:
 3. **Click 'Create User'**  
    Once you enter or generate username and password, click the **Create User** button to create your new MySQL user.
 
-![Create MySQL User form with username and password fields and a password strength bar](/img/openpanel-screenshots/mysql/new_user-form.png#gh-light-mode-only)
-![Create MySQL User form with username and password fields and a password strength bar](/img/openpanel-screenshots/mysql/new_user-form_dark.png#gh-dark-mode-only)
+![Create MySQL User form with username and password fields and a password strength bar](/img/davpanel-screenshots/mysql/new_user-form.png#gh-light-mode-only)
+![Create MySQL User form with username and password fields and a password strength bar](/img/davpanel-screenshots/mysql/new_user-form_dark.png#gh-dark-mode-only)
 
 ---
 

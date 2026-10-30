@@ -4,11 +4,11 @@ sidebar_position: 2
 
 # Notifications
 
-Notifications are accessible via the 'Notifications' menu item in OpenAdmin.
+Notifications are accessible via the 'Notifications' menu item in DavAdmin.
 
 ![notifications center](/img/admin/notifications_center.png)
 
-OpenPanel tracks and notifies you of these events:
+DavPanel tracks and notifies you of these events:
 
 * Server reboot
 * Service inactivity

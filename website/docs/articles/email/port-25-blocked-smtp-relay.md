@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Port 25 Blocked: Use an SMTP Relay"
-description: "Which hosting providers block outgoing port 25 (AWS, Google Cloud, Azure, DigitalOcean, Hetzner, Linode, Vultr, Oracle), how to request unblocking, and how to send email through an SMTP relay in OpenPanel."
+description: "Which hosting providers block outgoing port 25 (AWS, Google Cloud, Azure, DigitalOcean, Hetzner, Linode, Vultr, Oracle), how to request unblocking, and how to send email through an SMTP relay in DavPanel."
 ---
 
 # Port 25 Blocked? How to Send Email Through an SMTP Relay
@@ -46,12 +46,12 @@ Our install guides cover the provider-specific steps: [AWS](/docs/articles/insta
 
 ## Option 1: Configure an SMTP Relay for the Whole Server (Administrators)
 
-With a relay (also called *smarthost*), the OpenPanel mail server hands all outgoing email to a relay service on an open port (usually **587**), and the relay delivers it. Incoming email is not affected.
+With a relay (also called *smarthost*), the DavPanel mail server hands all outgoing email to a relay service on an open port (usually **587**), and the relay delivers it. Incoming email is not affected.
 
 Popular relay services: Amazon SES, Brevo (Sendinblue), Mailgun, SendGrid, Postmark, SMTP2GO, or your own mail server elsewhere.
 
 1. Create an account with the relay service and **verify your sending domains** there (they give you SPF and DKIM records to add).
-2. In OpenAdmin, go to **Emails → Settings → Relay Hosts**.
+2. In DavAdmin, go to **Emails → Settings → Relay Hosts**.
 3. Fill in:
    - **DEFAULT_RELAY_HOST** and **RELAY_HOST**: the relay's SMTP server, e.g. `smtp-relay.brevo.com`
    - **RELAY_PORT**: `587`
@@ -74,7 +74,7 @@ Otherwise receivers see mail "from" your domain arriving from the relay's server
 
 ## Option 2: Send from Websites Through SMTP (No Server Mail Needed)
 
-Even without the OpenPanel mail server, websites can send email (contact forms, WooCommerce orders, password resets) by connecting to an external SMTP service on port **587** or **465**:
+Even without the DavPanel mail server, websites can send email (contact forms, WooCommerce orders, password resets) by connecting to an external SMTP service on port **587** or **465**:
 
 - **WordPress**: install an SMTP plugin (*WP Mail SMTP*, *FluentSMTP*, *Post SMTP*) and enter the relay's credentials.
 - **Laravel**: set `MAIL_MAILER=smtp`, `MAIL_HOST`, `MAIL_PORT=587`, `MAIL_USERNAME`, `MAIL_PASSWORD` in `.env`.
@@ -86,7 +86,7 @@ Even without the OpenPanel mail server, websites can send email (contact forms, 
 ## After Switching
 
 - Send a test to [mail-tester.com](https://www.mail-tester.com/) - see [Test your mail setup](/docs/articles/email/test-email-with-mail-tester/).
-- Check the queue in OpenAdmin (**Emails → Queue**) - stuck messages are retried automatically once the relay works.
+- Check the queue in DavAdmin (**Emails → Queue**) - stuck messages are retried automatically once the relay works.
 
 ---
 

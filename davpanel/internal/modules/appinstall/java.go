@@ -3,7 +3,7 @@ package appinstall
 import (
 	"html/template"
 
-	"gist.github.com/kangpcode/davpanel/internal/modules/websites"
+	"github.com/kangpcode/davpanel/internal/modules/websites"
 )
 
 // Java-specific install/run tokens and template-display config, kept apart from nodejs.go/python.go/ruby.go so each type is easy to find and change independently. Unlike the other three, Java is normally compiled, but since Java 11 (JEP 330) `java SomeFile.java` runs a single source file directly with no javac step, so that's the default here, matching the others' "just run one file" model - the optional Maven install step is for pom.xml projects, and running the resulting build still needs a custom run command like `java -jar target/app.jar`.

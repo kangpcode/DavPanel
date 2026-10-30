@@ -6,15 +6,15 @@ import (
 	"strconv"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/flash"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/mcptokens"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/flash"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/mcptokens"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/session"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // handleMCPSettings renders the MCP token management page - the actual /mcp JSON-RPC endpoint lives in mcp_rpc.go

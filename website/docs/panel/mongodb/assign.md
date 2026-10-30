@@ -10,8 +10,8 @@ This is a critical step after creating a database and user - without it, the use
 
 To assign an existing user to a database, navigate to **MongoDB > Users > Assign User**:
 
-![Assign User to Database form with the user, database and role dropdowns](/img/openpanel-screenshots/mongodb/assign-form.png#gh-light-mode-only)
-![Assign User to Database form with the user, database and role dropdowns](/img/openpanel-screenshots/mongodb/assign-form_dark.png#gh-dark-mode-only)
+![Assign User to Database form with the user, database and role dropdowns](/img/davpanel-screenshots/mongodb/assign-form.png#gh-light-mode-only)
+![Assign User to Database form with the user, database and role dropdowns](/img/davpanel-screenshots/mongodb/assign-form_dark.png#gh-dark-mode-only)
 
 1. **Select a User**
    Choose the MongoDB user you want to grant access to.

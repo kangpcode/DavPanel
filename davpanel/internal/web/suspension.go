@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 // CaddyDomainsDir is a var so tests can point it at a temp dir

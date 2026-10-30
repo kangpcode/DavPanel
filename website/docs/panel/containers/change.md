@@ -12,20 +12,20 @@ The **Containers > Software Versions** page allows you to update the Docker imag
 
 ## Usage
 
-1. In the OpenPanel menu, go to **Containers > Software Versions**.
+1. In the DavPanel menu, go to **Containers > Software Versions**.
 2. Under **Select Service**, choose the service for which you want to change the image tag.
 3. Click the tag field. It opens a list of the image's tags from Docker Hub, most recently updated first, with the tag you use now marked **(current)**.
 4. Start typing to search the list, for example `alpine` or `8.8`, and click the tag you want. To use a tag that isn't listed, type it in full and pick **Use &lt;tag&gt;**, or press Enter.
 5. Click **Change tag** to apply the change.
 
-![Change image tag for redis with the tag dropdown open, searching the redis tags from Docker Hub for 8.8](/img/openpanel-screenshots/containers/change-form.png#gh-light-mode-only)
-![Change image tag for redis with the tag dropdown open, searching the redis tags from Docker Hub for 8.8](/img/openpanel-screenshots/containers/change-form_dark.png#gh-dark-mode-only)
+![Change image tag for redis with the tag dropdown open, searching the redis tags from Docker Hub for 8.8](/img/davpanel-screenshots/containers/change-form.png#gh-light-mode-only)
+![Change image tag for redis with the tag dropdown open, searching the redis tags from Docker Hub for 8.8](/img/davpanel-screenshots/containers/change-form_dark.png#gh-dark-mode-only)
 
 The **Docker Hub** link at the top of the page opens the tags page of that image on Docker Hub, so you can read the release notes before switching.
 
 The tag list is loaded from Docker Hub once and then reused for 12 hours. Services whose image isn't on Docker Hub, or doesn't have a changeable tag, don't show a list, you can still type a tag.
 
-The internal **cron**, **backup** and **docker-proxy** services and the PHP services are not listed, their images are managed by OpenPanel.
+The internal **cron**, **backup** and **docker-proxy** services and the PHP services are not listed, their images are managed by DavPanel.
 
 After confirmation:
 

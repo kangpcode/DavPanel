@@ -1,6 +1,6 @@
 # How to Set Up Email on Android (Gmail App)
 
-This guide explains how to set up your **OpenPanel-created email account** in the Gmail app on Android.
+This guide explains how to set up your **DavPanel-created email account** in the Gmail app on Android.
 
 > **Note:** If you are setting up email on a different device or service, see the main guide:
 > [How to setup your email client](/docs/articles/email/how-to-setup-your-email-client)
@@ -70,4 +70,4 @@ After entering your outgoing mail settings, tap **Next**.
 
 ---
 
-Your OpenPanel email account is now set up and ready to use in the Gmail app.  
+Your DavPanel email account is now set up and ready to use in the Gmail app.  

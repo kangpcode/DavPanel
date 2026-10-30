@@ -1,11 +1,11 @@
 ---
 sidebar_label: "Install a Custom / Paid SSL Certificate"
-description: "How to install a custom or paid SSL certificate (Sectigo, DigiCert, GoDaddy, wildcard, OV or EV) on a domain in OpenPanel, how to build the full chain, and how to switch back to free Let's Encrypt SSL."
+description: "How to install a custom or paid SSL certificate (Sectigo, DigiCert, GoDaddy, wildcard, OV or EV) on a domain in DavPanel, how to build the full chain, and how to switch back to free Let's Encrypt SSL."
 ---
 
 # How to Install a Custom or Paid SSL Certificate
 
-Every domain in OpenPanel gets a free **Let's Encrypt** certificate automatically. If you need a certificate from a commercial authority instead - for example an **OV/EV** certificate, a **wildcard** certificate you already own, or one required by a client or payment provider - you can install it on any domain from the panel.
+Every domain in DavPanel gets a free **Let's Encrypt** certificate automatically. If you need a certificate from a commercial authority instead - for example an **OV/EV** certificate, a **wildcard** certificate you already own, or one required by a client or payment provider - you can install it on any domain from the panel.
 
 ---
 
@@ -50,16 +50,16 @@ Or paste them one after another in a text editor:
 
 ---
 
-## Step 2: Install It in OpenPanel
+## Step 2: Install It in DavPanel
 
-1. Go to **OpenPanel → Domains** and click **SSL** next to the domain.
+1. Go to **DavPanel → Domains** and click **SSL** next to the domain.
 2. Under **Configure custom SSL**:
    - paste the full chain into **Certificate**,
    - paste the private key (`-----BEGIN PRIVATE KEY-----` ... ) into **Private Key**.
 3. Click **Configure Custom Certificate**.
 
-![Configure custom SSL form with fields for the certificate and the private key](/img/openpanel-screenshots/domains/ssl-custom.png#gh-light-mode-only)
-![Configure custom SSL form with fields for the certificate and the private key](/img/openpanel-screenshots/domains/ssl-custom_dark.png#gh-dark-mode-only)
+![Configure custom SSL form with fields for the certificate and the private key](/img/davpanel-screenshots/domains/ssl-custom.png#gh-light-mode-only)
+![Configure custom SSL form with fields for the certificate and the private key](/img/davpanel-screenshots/domains/ssl-custom_dark.png#gh-dark-mode-only)
 
 The SSL status changes to **Custom SSL** and the certificate details (issuer, expiry date) are shown on the same page. See [SSL](/docs/panel/domains/ssl/).
 
@@ -70,7 +70,7 @@ Repeat for every domain the certificate covers - for example `example.com` and `
 Upload `fullchain.pem` and `key.pem` to the user's files, then:
 
 ```bash
-opencli domains-ssl example.com custom /var/www/html/fullchain.pem /var/www/html/key.pem
+davcli domains-ssl example.com custom /var/www/html/fullchain.pem /var/www/html/key.pem
 ```
 
 Delete the key file from the website files afterwards.
@@ -93,7 +93,7 @@ Custom certificates are **not renewed automatically**. Before the certificate ex
 
 ## Switch Back to Free Let's Encrypt SSL
 
-On the domain's **SSL** page, click **Switch to Let's Encrypt and generate**. OpenPanel switches the domain back to automatic SSL and requests a new certificate right away.
+On the domain's **SSL** page, click **Switch to Let's Encrypt and generate**. DavPanel switches the domain back to automatic SSL and requests a new certificate right away.
 
 ---
 
@@ -111,5 +111,5 @@ On the domain's **SSL** page, click **Switch to Let's Encrypt and generate**. Op
 ## Related
 
 - [Wildcard SSL certificates](/docs/articles/domains/wildcard-ssl-certificate/)
-- [Custom SSL for the panel and webmail](/docs/articles/server/how-to-set-custom-ssl-openpanel-webmail/)
+- [Custom SSL for the panel and webmail](/docs/articles/server/how-to-set-custom-ssl-davpanel-webmail/)
 - [SSL troubleshooting](/docs/articles/domains/ssl-troubleshooting-guide/)

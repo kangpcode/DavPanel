@@ -6,7 +6,7 @@ import (
 	"errors"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/githubapi"
+	"github.com/kangpcode/davpanel/internal/core/githubapi"
 )
 
 // latestOpenCartVersion asks GitHub's releases API for the latest stable tag, used server-side only when the install form's version field is left blank

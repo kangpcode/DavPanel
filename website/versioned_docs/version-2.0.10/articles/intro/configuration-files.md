@@ -1,37 +1,37 @@
 # Configuration Files Reference
 
-This page lists the configuration files used across the OpenPanel stack: the **OpenPanel** user panel, **OpenAdmin** admin panel, **opencli** command-line tool, and the default files shipped by [openpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration), deployed to `/etc/openpanel/` on install.
+This page lists the configuration files used across the DavPanel stack: the **DavPanel** user panel, **DavAdmin** admin panel, **davcli** command-line tool, and the default files shipped by [davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration), deployed to `/etc/davpanel/` on install.
 
-Unless noted otherwise, all paths are on the **host filesystem**, not inside containers. Files under `/etc/openpanel/` are considered defaults/templates — most are copied into a user's home directory (`/home/<username>/...`) on account creation, where the user's own copy takes over.
+Unless noted otherwise, all paths are on the **host filesystem**, not inside containers. Files under `/etc/davpanel/` are considered defaults/templates — most are copied into a user's home directory (`/home/<username>/...`) on account creation, where the user's own copy takes over.
 
 :::danger
-Manually editing these files can break the panel or be overwritten during updates. Prefer changing settings from **OpenAdmin > Settings** (or the relevant panel UI) whenever an option is exposed there.
+Manually editing these files can break the panel or be overwritten during updates. Prefer changing settings from **DavAdmin > Settings** (or the relevant panel UI) whenever an option is exposed there.
 :::
 
 ## Panel core settings
 
 | Path | Used by | Format | Purpose |
 |---|---|---|---|
-| `/etc/openpanel/openpanel/conf/openpanel.config` | OpenPanel, OpenAdmin, opencli | `key=value` | Main panel settings: license key, enabled modules, session/2FA settings, nameservers, update settings |
-| `/etc/openpanel/openpanel/secret.key` | OpenPanel, OpenAdmin | raw text (hex) | Signing key for session cookies/CSRF, also reused as the Dovecot master-password source |
-| `/etc/openpanel/openpanel/default_locale` | OpenPanel | text | Default UI locale |
-| `/etc/openpanel/openpanel/translations/` | OpenPanel, OpenAdmin | dir | Translation catalogs |
-| `/etc/openpanel/openpanel/static/` | OpenPanel | dir | Override dir for `css/custom.css`, `js/custom.js`, `robots.txt`, `security.txt` |
-| `/etc/openpanel/openpanel/features/default.txt`, `<plan>.txt` | OpenPanel, OpenAdmin | text list | Feature flags available per plan |
-| `/etc/openpanel/openpanel/quota_report.json` | OpenPanel, OpenAdmin | JSON | Cached disk/quota usage report |
-| `/etc/openpanel/openpanel/conf/custom_dashboard_section.json` | OpenPanel, OpenAdmin | JSON | Admin-injected custom dashboard content |
-| `/etc/openpanel/openpanel/conf/knowledge_base_articles.json` | OpenPanel, OpenAdmin, opencli | JSON | Cached "how-to" / knowledge base links |
-| `/etc/openpanel/openpanel/conf/domain_restriction.txt` | OpenAdmin, opencli | text list | Domains forbidden from being added by users |
-| `/etc/openpanel/openpanel/conf/blacklist_useragents.txt` | OpenAdmin, opencli | text list | Blocked user-agents (bot/scraper blocking) |
-| `/etc/openpanel/openpanel/conf/public_suffix_list.dat` | opencli | text | Public suffix (TLD) list, used for DNS zone-apex handling |
-| `/etc/openpanel/openpanel/custom_code/custom.css`, `custom.js`, `in_header.html`, `in_footer.html` | OpenPanel, OpenAdmin | CSS/JS/HTML | User-editable custom code injected into the panel UI |
-| `/etc/openpanel/openpanel/service/pagespeed.api` | OpenPanel, OpenAdmin | text | PageSpeed Insights API key |
-| `/etc/openpanel/openpanel/service/service.config.py` | (system) | Python config | systemd/service config, fetched during updates |
-| `/etc/openpanel/skeleton/` | opencli | dir | Template files copied into every new user's account directory |
-| `/etc/openpanel/no_port` | opencli | flag file | Marker file |
-| `/etc/openpanel/upgrade/skip_versions` | opencli | text list | Versions to skip during `opencli update` |
+| `/etc/davpanel/davpanel/conf/davpanel.config` | DavPanel, DavAdmin, davcli | `key=value` | Main panel settings: license key, enabled modules, session/2FA settings, nameservers, update settings |
+| `/etc/davpanel/davpanel/secret.key` | DavPanel, DavAdmin | raw text (hex) | Signing key for session cookies/CSRF, also reused as the Dovecot master-password source |
+| `/etc/davpanel/davpanel/default_locale` | DavPanel | text | Default UI locale |
+| `/etc/davpanel/davpanel/translations/` | DavPanel, DavAdmin | dir | Translation catalogs |
+| `/etc/davpanel/davpanel/static/` | DavPanel | dir | Override dir for `css/custom.css`, `js/custom.js`, `robots.txt`, `security.txt` |
+| `/etc/davpanel/davpanel/features/default.txt`, `<plan>.txt` | DavPanel, DavAdmin | text list | Feature flags available per plan |
+| `/etc/davpanel/davpanel/quota_report.json` | DavPanel, DavAdmin | JSON | Cached disk/quota usage report |
+| `/etc/davpanel/davpanel/conf/custom_dashboard_section.json` | DavPanel, DavAdmin | JSON | Admin-injected custom dashboard content |
+| `/etc/davpanel/davpanel/conf/knowledge_base_articles.json` | DavPanel, DavAdmin, davcli | JSON | Cached "how-to" / knowledge base links |
+| `/etc/davpanel/davpanel/conf/domain_restriction.txt` | DavAdmin, davcli | text list | Domains forbidden from being added by users |
+| `/etc/davpanel/davpanel/conf/blacklist_useragents.txt` | DavAdmin, davcli | text list | Blocked user-agents (bot/scraper blocking) |
+| `/etc/davpanel/davpanel/conf/public_suffix_list.dat` | davcli | text | Public suffix (TLD) list, used for DNS zone-apex handling |
+| `/etc/davpanel/davpanel/custom_code/custom.css`, `custom.js`, `in_header.html`, `in_footer.html` | DavPanel, DavAdmin | CSS/JS/HTML | User-editable custom code injected into the panel UI |
+| `/etc/davpanel/davpanel/service/pagespeed.api` | DavPanel, DavAdmin | text | PageSpeed Insights API key |
+| `/etc/davpanel/davpanel/service/service.config.py` | (system) | Python config | systemd/service config, fetched during updates |
+| `/etc/davpanel/skeleton/` | davcli | dir | Template files copied into every new user's account directory |
+| `/etc/davpanel/no_port` | davcli | flag file | Marker file |
+| `/etc/davpanel/upgrade/skip_versions` | davcli | text list | Versions to skip during `davcli update` |
 
-### Per-user account data — `/etc/openpanel/openpanel/core/users/<username>/`
+### Per-user account data — `/etc/davpanel/davpanel/core/users/<username>/`
 
 | Path | Format | Purpose |
 |---|---|---|
@@ -40,36 +40,36 @@ Manually editing these files can break the panel or be overwritten during update
 | `aliases.yml` | YAML | Cached email alias list |
 | `emails.yml` | YAML | Cached email account list |
 | `notifications.yaml` | YAML | Per-user notification preferences |
-| `ip.json`, `activity.log`, `custom_message.html` | JSON/text/HTML | Allowed IPs, activity log, suspension message (OpenAdmin) |
+| `ip.json`, `activity.log`, `custom_message.html` | JSON/text/HTML | Allowed IPs, activity log, suspension message (DavAdmin) |
 
 ### Per-website data
 
 | Path | Purpose |
 |---|---|
-| `/etc/openpanel/openpanel/websites/` | Per-website metadata directory |
+| `/etc/davpanel/davpanel/websites/` | Per-website metadata directory |
 | `/var/www/html/<domain>` | Document root (base dir for File Manager) |
 
-## OpenAdmin settings
+## DavAdmin settings
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/openpanel/openadmin/config/admin.ini` | INI | Main OpenAdmin settings (incl. `email_storage_location`) |
-| `/etc/openpanel/openadmin/secret.key` | text | Session/auth secret key |
-| `/etc/openpanel/openadmin/users.db` | SQLite | OpenAdmin user accounts database |
-| `/etc/openpanel/openadmin/config/notifications.ini` | INI | Sentinel/notification thresholds |
-| `/etc/openpanel/openadmin/config/services.json` | JSON | Service enable/status list |
-| `/etc/openpanel/openadmin/config/features.json` | JSON | Feature toggle config |
-| `/etc/openpanel/openadmin/config/log_paths.json` | JSON | Custom log file paths shown in the log viewer |
-| `/etc/openpanel/openadmin/config/forbidden_usernames.txt` | text list | Blacklisted usernames for new accounts |
-| `/etc/openpanel/openadmin/config/reseller_template.json` | JSON | Default template applied to new resellers |
-| `/etc/openpanel/openadmin/config/shortcuts.json` | JSON | UI shortcut/menu definitions |
-| `/etc/openpanel/openadmin/config/terms.md` | Markdown | Terms of Service text shown at signup |
-| `/etc/openpanel/openadmin/config/quick_start.dismissed`, `tour.skip` | flag file | Onboarding/tour dismissal flags |
-| `/etc/openpanel/openadmin/ssh_whitelist.conf` | text | SSH login IP whitelist |
-| `/etc/openpanel/openadmin/resellers/<name>.json` | JSON | Per-reseller configuration (allowed plans, etc.) |
-| `/etc/openpanel/openadmin/usage_stats.json` | JSON | Usage/telemetry state |
-| `/etc/openpanel/openadmin/service/openadmin.service` | systemd unit | Installed as the `admin` systemd service |
-| `/usr/local/admin/custom.css` | CSS | Custom OpenAdmin UI override |
+| `/etc/davpanel/davadmin/config/admin.ini` | INI | Main DavAdmin settings (incl. `email_storage_location`) |
+| `/etc/davpanel/davadmin/secret.key` | text | Session/auth secret key |
+| `/etc/davpanel/davadmin/users.db` | SQLite | DavAdmin user accounts database |
+| `/etc/davpanel/davadmin/config/notifications.ini` | INI | Sentinel/notification thresholds |
+| `/etc/davpanel/davadmin/config/services.json` | JSON | Service enable/status list |
+| `/etc/davpanel/davadmin/config/features.json` | JSON | Feature toggle config |
+| `/etc/davpanel/davadmin/config/log_paths.json` | JSON | Custom log file paths shown in the log viewer |
+| `/etc/davpanel/davadmin/config/forbidden_usernames.txt` | text list | Blacklisted usernames for new accounts |
+| `/etc/davpanel/davadmin/config/reseller_template.json` | JSON | Default template applied to new resellers |
+| `/etc/davpanel/davadmin/config/shortcuts.json` | JSON | UI shortcut/menu definitions |
+| `/etc/davpanel/davadmin/config/terms.md` | Markdown | Terms of Service text shown at signup |
+| `/etc/davpanel/davadmin/config/quick_start.dismissed`, `tour.skip` | flag file | Onboarding/tour dismissal flags |
+| `/etc/davpanel/davadmin/ssh_whitelist.conf` | text | SSH login IP whitelist |
+| `/etc/davpanel/davadmin/resellers/<name>.json` | JSON | Per-reseller configuration (allowed plans, etc.) |
+| `/etc/davpanel/davadmin/usage_stats.json` | JSON | Usage/telemetry state |
+| `/etc/davpanel/davadmin/service/davadmin.service` | systemd unit | Installed as the `admin` systemd service |
+| `/usr/local/admin/custom.css` | CSS | Custom DavAdmin UI override |
 | `/usr/local/admin/modules/api/available_endpoints.txt` | text | Enabled API endpoints |
 | `/usr/local/admin/modules/security/csf.pl` | script | ConfigServer Firewall control script |
 | `/usr/local/admin/core/search/filtered.json`, `filter.json` | JSON | Command-palette / search index |
@@ -79,14 +79,14 @@ Manually editing these files can break the panel or be overwritten during update
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/openpanel/docker/compose/docker-compose.yml`, `.env` | YAML/env | Main podman/docker-compose stack (mysql, redis, openpanel, caddy, bind9, ftp, phpMyAdmin, clamav) |
-| `/etc/openpanel/docker/compose/nodejs.yml`, `python.yml` | YAML | Compose overlays for Node.js/Python app hosting |
-| `/etc/openpanel/docker/compose/1.0/docker-compose.yml`, `.env`, `autostart.services` | YAML/env/text | Per-account container stack template (legacy "1.0" webserver stack) |
-| `/etc/openpanel/docker/templates/docker_*.conf` | conf | Per-website nginx-vhost snippets matching the container backend |
-| `/etc/openpanel/docker/daemon/rootless.json` | JSON | Rootless Docker daemon config template |
-| `/etc/openpanel/docker/overlay2/*.json` | JSON | `/etc/docker/daemon.json` templates per filesystem/distro |
-| `/etc/openpanel/docker/modprobe.txt` | text | Kernel modules loaded at boot (symlinked to `/etc/modules-load.d/podman.conf`) |
-| `/etc/openpanel/docker/selinux/pasta_local.pp` | SELinux policy | Rootless podman networking policy |
+| `/etc/davpanel/docker/compose/docker-compose.yml`, `.env` | YAML/env | Main podman/docker-compose stack (mysql, redis, davpanel, caddy, bind9, ftp, phpMyAdmin, clamav) |
+| `/etc/davpanel/docker/compose/nodejs.yml`, `python.yml` | YAML | Compose overlays for Node.js/Python app hosting |
+| `/etc/davpanel/docker/compose/1.0/docker-compose.yml`, `.env`, `autostart.services` | YAML/env/text | Per-account container stack template (legacy "1.0" webserver stack) |
+| `/etc/davpanel/docker/templates/docker_*.conf` | conf | Per-website nginx-vhost snippets matching the container backend |
+| `/etc/davpanel/docker/daemon/rootless.json` | JSON | Rootless Docker daemon config template |
+| `/etc/davpanel/docker/overlay2/*.json` | JSON | `/etc/docker/daemon.json` templates per filesystem/distro |
+| `/etc/davpanel/docker/modprobe.txt` | text | Kernel modules loaded at boot (symlinked to `/etc/modules-load.d/podman.conf`) |
+| `/etc/davpanel/docker/selinux/pasta_local.pp` | SELinux policy | Rootless podman networking policy |
 | `/root/.env` | env | Root-level docker-compose environment (e.g. `CADDY_IMAGE`) |
 | `/root/docker-compose.yml` | YAML | Host-level compose stack for core services |
 | `/home/<user>/.env` | env | Per-user container stack env vars (`WEB_SERVER`, `MYSQL_TYPE`, etc.) |
@@ -97,35 +97,35 @@ Manually editing these files can break the panel or be overwritten during update
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/openpanel/caddy/Caddyfile` (mounted as `/etc/caddy/Caddyfile` in container) | Caddyfile | Main reverse-proxy config for all websites |
-| `/etc/openpanel/caddy/domains/<domain>.conf` | Caddyfile snippet | Per-domain vhost config, incl. WAF toggles |
-| `/etc/openpanel/caddy/suspended_domains/<domain>.conf` | Caddyfile snippet | Vhost for suspended domains |
-| `/etc/openpanel/caddy/templates/*.conf`, `*.html`, `wp.rules` | templates | Domain, suspended-user/domain, WordPress vhost templates |
-| `/etc/openpanel/caddy/redirects.conf` | Caddyfile snippet | Global HTTP redirects (webmail, OpenAdmin port) |
-| `/etc/openpanel/caddy/coraza_rules.conf`, `check.conf` | Coraza rules | WAF rule set |
-| `/etc/openpanel/caddy/coreruleset/rules/*.conf[.disabled]` | OWASP CRS | WAF (Coraza) core rule set |
-| `/etc/openpanel/caddy/ssl/custom/`, `ssl/certs/`, `ssl/acme-v02.api.letsencrypt.org-directory/` | dir | Custom and Let's Encrypt SSL certificate storage |
-| `/etc/openpanel/nginx/nginx.conf` | conf | Default Nginx template |
-| `/etc/openpanel/nginx/user-nginx.conf` | conf | Per-user Nginx include, copied to `/home/<user>/nginx.conf` |
-| `/etc/openpanel/nginx/vhosts/openpanel_proxy.conf` | conf | Reverse-proxy vhost for the panel itself |
-| `/etc/openpanel/nginx/vhosts/1.1/docker_*.conf`, `nginx_proxy_headers.txt` | conf | Per-website nginx-vhost templates (current stack) |
-| `/etc/openpanel/nginx/vhosts/docker_*.conf` | conf | Per-website nginx-vhost templates (legacy "1.0" stack) |
-| `/etc/openpanel/nginx/certs/cert.crt`, `cert.key` | PEM | Default/self-signed TLS cert used before a real cert is issued |
-| `/etc/openpanel/nginx/default_page.html`, `suspended_user.html`, `suspended_website.html` | HTML | Placeholder/suspension pages |
-| `/etc/openpanel/nginx/cloudflare.inc` | conf | Cloudflare real-IP restore config |
-| `/etc/openpanel/nginx/options-ssl-nginx.conf` | conf | Recommended TLS options |
-| `/etc/openpanel/nginx/modsecurity/*.conf` | ModSecurity rules | WAF rules for the nginx engine |
-| `/etc/openpanel/apache/httpd.conf` | conf | Apache template, copied to `/home/<user>/httpd.conf` |
-| `/etc/openpanel/openlitespeed/httpd_config.conf` | conf | OpenLiteSpeed template, copied to `/home/<user>/openlitespeed.conf` |
-| `/etc/openpanel/openlitespeed/start.sh` | script | Container entrypoint |
-| `/etc/openpanel/openresty/nginx.conf` | conf | OpenResty template, copied to `/home/<user>/openresty.conf` |
-| `/etc/openpanel/varnish/default.vcl`, `default` | VCL | Varnish cache config, copied to `/home/<user>/default.vcl` |
+| `/etc/davpanel/caddy/Caddyfile` (mounted as `/etc/caddy/Caddyfile` in container) | Caddyfile | Main reverse-proxy config for all websites |
+| `/etc/davpanel/caddy/domains/<domain>.conf` | Caddyfile snippet | Per-domain vhost config, incl. WAF toggles |
+| `/etc/davpanel/caddy/suspended_domains/<domain>.conf` | Caddyfile snippet | Vhost for suspended domains |
+| `/etc/davpanel/caddy/templates/*.conf`, `*.html`, `wp.rules` | templates | Domain, suspended-user/domain, WordPress vhost templates |
+| `/etc/davpanel/caddy/redirects.conf` | Caddyfile snippet | Global HTTP redirects (webmail, DavAdmin port) |
+| `/etc/davpanel/caddy/coraza_rules.conf`, `check.conf` | Coraza rules | WAF rule set |
+| `/etc/davpanel/caddy/coreruleset/rules/*.conf[.disabled]` | OWASP CRS | WAF (Coraza) core rule set |
+| `/etc/davpanel/caddy/ssl/custom/`, `ssl/certs/`, `ssl/acme-v02.api.letsencrypt.org-directory/` | dir | Custom and Let's Encrypt SSL certificate storage |
+| `/etc/davpanel/nginx/nginx.conf` | conf | Default Nginx template |
+| `/etc/davpanel/nginx/user-nginx.conf` | conf | Per-user Nginx include, copied to `/home/<user>/nginx.conf` |
+| `/etc/davpanel/nginx/vhosts/davpanel_proxy.conf` | conf | Reverse-proxy vhost for the panel itself |
+| `/etc/davpanel/nginx/vhosts/1.1/docker_*.conf`, `nginx_proxy_headers.txt` | conf | Per-website nginx-vhost templates (current stack) |
+| `/etc/davpanel/nginx/vhosts/docker_*.conf` | conf | Per-website nginx-vhost templates (legacy "1.0" stack) |
+| `/etc/davpanel/nginx/certs/cert.crt`, `cert.key` | PEM | Default/self-signed TLS cert used before a real cert is issued |
+| `/etc/davpanel/nginx/default_page.html`, `suspended_user.html`, `suspended_website.html` | HTML | Placeholder/suspension pages |
+| `/etc/davpanel/nginx/cloudflare.inc` | conf | Cloudflare real-IP restore config |
+| `/etc/davpanel/nginx/options-ssl-nginx.conf` | conf | Recommended TLS options |
+| `/etc/davpanel/nginx/modsecurity/*.conf` | ModSecurity rules | WAF rules for the nginx engine |
+| `/etc/davpanel/apache/httpd.conf` | conf | Apache template, copied to `/home/<user>/httpd.conf` |
+| `/etc/davpanel/openlitespeed/httpd_config.conf` | conf | OpenLiteSpeed template, copied to `/home/<user>/openlitespeed.conf` |
+| `/etc/davpanel/openlitespeed/start.sh` | script | Container entrypoint |
+| `/etc/davpanel/openresty/nginx.conf` | conf | OpenResty template, copied to `/home/<user>/openresty.conf` |
+| `/etc/davpanel/varnish/default.vcl`, `default` | VCL | Varnish cache config, copied to `/home/<user>/default.vcl` |
 | `/home/<user>/nginx.conf`, `openresty.conf`, `openlitespeed.conf`, `httpd.conf`, `default.vcl` | — | Per-user generated webserver configs |
 | `/var/log/caddy/domlogs/` | dir | Per-domain access logs |
 | `/var/log/caddy/stats/` | dir | GoAccess stats data |
 | `/var/log/caddy/coraza_waf/<domain>.log` | JSON-lines | Coraza WAF access log |
-| `/etc/openpanel/goaccess/goaccess.conf` | conf | GoAccess web-log analytics config |
-| `/etc/openpanel/goaccess/GeoLite2-*.tar.gz` | MaxMind DB | GeoIP data for GoAccess |
+| `/etc/davpanel/goaccess/goaccess.conf` | conf | GoAccess web-log analytics config |
+| `/etc/davpanel/goaccess/GeoLite2-*.tar.gz` | MaxMind DB | GeoIP data for GoAccess |
 
 ## DNS (BIND9)
 
@@ -135,7 +135,7 @@ Manually editing these files can break the panel or be overwritten during update
 | `/etc/bind/zones/<domain>.zone` | BIND zone | Per-domain DNS zone file |
 | `/etc/bind/zones/backups/` | dir | Zone file backups |
 | `/etc/bind/rndc.key` | key | BIND RNDC key |
-| `/etc/openpanel/bind9/zone_template.txt`, `zone_template_ipv6.txt` | template | Templates used when generating new DNS zones |
+| `/etc/davpanel/bind9/zone_template.txt`, `zone_template_ipv6.txt` | template | Templates used when generating new DNS zones |
 
 ## Mail (OpenMail / Dovecot / Postfix)
 
@@ -150,30 +150,30 @@ Manually editing these files can break the panel or be overwritten during update
 | `/usr/local/mail/openmail/docker-data/dms/mail-logs/mail.log` | log | Mail server log |
 | `/usr/local/mail/openmail/postfwd/postfwd.cf` | conf | Postfwd policy config (per-domain sending limits) |
 | `/etc/dms-settings` | conf | docker-mailserver settings snapshot |
-| `/etc/openpanel/email/snappymail` | dir | SnappyMail webmail config |
+| `/etc/davpanel/email/snappymail` | dir | SnappyMail webmail config |
 
 ## FTP
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/openpanel/ftp/vsftpd.conf` (mounted as `/etc/vsftpd/vsftpd.conf`) | conf | vsftpd server config |
-| `/etc/openpanel/ftp/all.users` | text | Master FTP user list |
-| `/etc/openpanel/ftp/users/` | dir | Per-user FTP account config |
-| `/etc/openpanel/ftp/server.conf` | conf | FTP server settings (e.g. hostname) |
-| `/etc/openpanel/ftp/filezilla.conf`, `cyberduck.conf` | template | FTP client-config templates served to users |
-| `/etc/openpanel/ftp/start_vsftpd.sh` | script | Container entrypoint |
+| `/etc/davpanel/ftp/vsftpd.conf` (mounted as `/etc/vsftpd/vsftpd.conf`) | conf | vsftpd server config |
+| `/etc/davpanel/ftp/all.users` | text | Master FTP user list |
+| `/etc/davpanel/ftp/users/` | dir | Per-user FTP account config |
+| `/etc/davpanel/ftp/server.conf` | conf | FTP server settings (e.g. hostname) |
+| `/etc/davpanel/ftp/filezilla.conf`, `cyberduck.conf` | template | FTP client-config templates served to users |
+| `/etc/davpanel/ftp/start_vsftpd.sh` | script | Container entrypoint |
 
 ## PHP
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/openpanel/php/ini/<version>.ini` | php.ini | Default php.ini per PHP version (5.6–8.5), mounted into containers |
-| `/etc/openpanel/php/options.txt` | text | Default PHP option definitions shown in the panel |
-| `/etc/openpanel/php/ini.txt`, `extensions.txt` | text | Selectable php.ini directives / extensions |
-| `/etc/openpanel/php/extensions_table.json` | JSON | Table of installable PHP extensions |
-| `/etc/openpanel/openpanel/php/api_versions.json` | JSON | Cached list of available PHP versions |
-| `/etc/openpanel/php/composer/*.phar` | binary | Composer versions installed into user containers |
-| `/etc/openpanel/php/ioncube/` | dir | ionCube loaders per PHP version |
+| `/etc/davpanel/php/ini/<version>.ini` | php.ini | Default php.ini per PHP version (5.6–8.5), mounted into containers |
+| `/etc/davpanel/php/options.txt` | text | Default PHP option definitions shown in the panel |
+| `/etc/davpanel/php/ini.txt`, `extensions.txt` | text | Selectable php.ini directives / extensions |
+| `/etc/davpanel/php/extensions_table.json` | JSON | Table of installable PHP extensions |
+| `/etc/davpanel/davpanel/php/api_versions.json` | JSON | Cached list of available PHP versions |
+| `/etc/davpanel/php/composer/*.phar` | binary | Composer versions installed into user containers |
+| `/etc/davpanel/php/ioncube/` | dir | ionCube loaders per PHP version |
 | `/home/<user>/php.ini/<version>.ini` | php.ini | Per-user, per-version PHP config |
 | `/home/<user>/php.ini/options.txt` | text | Per-user PHP option overrides |
 
@@ -182,32 +182,32 @@ Manually editing these files can break the panel or be overwritten during update
 | Path | Format | Purpose |
 |---|---|---|
 | `/etc/my.cnf` | my.cnf (INI) | Panel's own MySQL client credentials (`[client]` section) |
-| `/etc/openpanel/mysql/host_my.cnf`, `container_my.cnf` | my.cnf | Host- and container-level MySQL client auth |
-| `/etc/openpanel/mysql/mysqld.cnf`, `user.cnf` | conf | Server/user database config |
-| `/etc/openpanel/mysql/keys.txt` | text | Allow-list of editable `my.cnf` keys for users |
-| `/etc/openpanel/mysql/initialize/1.1/plans.sql` | SQL | Seeds the panel database with default hosting plans |
-| `/etc/openpanel/mysql/scripts/dump.sh` | script | DB dump/backup helper mounted into containers |
-| `/etc/openpanel/mysql/phpmyadmin/pma.php`, `config.inc.php` | PHP conf | phpMyAdmin container config |
+| `/etc/davpanel/mysql/host_my.cnf`, `container_my.cnf` | my.cnf | Host- and container-level MySQL client auth |
+| `/etc/davpanel/mysql/mysqld.cnf`, `user.cnf` | conf | Server/user database config |
+| `/etc/davpanel/mysql/keys.txt` | text | Allow-list of editable `my.cnf` keys for users |
+| `/etc/davpanel/mysql/initialize/1.1/plans.sql` | SQL | Seeds the panel database with default hosting plans |
+| `/etc/davpanel/mysql/scripts/dump.sh` | script | DB dump/backup helper mounted into containers |
+| `/etc/davpanel/mysql/phpmyadmin/pma.php`, `config.inc.php` | PHP conf | phpMyAdmin container config |
 | `/home/<user>/custom.cnf` | my.cnf | User's MySQL resource-limit config override |
 | `/home/<user>/my.cnf` | my.cnf | User's MySQL root client credentials |
-| `/etc/openpanel/postgres/postgresql.conf` | conf | Default PostgreSQL config template |
-| `/etc/openpanel/postgres/keys.txt` | text | Allow-list of editable PostgreSQL config keys |
+| `/etc/davpanel/postgres/postgresql.conf` | conf | Default PostgreSQL config template |
+| `/etc/davpanel/postgres/keys.txt` | text | Allow-list of editable PostgreSQL config keys |
 | `/home/<user>/postgre_custom.conf` | conf | Per-user PostgreSQL config override |
 
 ## Cron (Ofelia)
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/cron.d/openpanel` | crontab | System-wide cron jobs for OpenPanel (do not edit manually) |
-| `/etc/openpanel/ofelia/users.ini` | INI | Template cron config, copied to `/home/<user>/crons.ini` |
+| `/etc/cron.d/davpanel` | crontab | System-wide cron jobs for DavPanel (do not edit manually) |
+| `/etc/davpanel/ofelia/users.ini` | INI | Template cron config, copied to `/home/<user>/crons.ini` |
 | `/home/<user>/crons.ini` | INI | Per-user scheduled job definitions |
 
 ## Backups
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/openpanel/backups/backup.env` | env | Default backup destination/schedule template |
-| `/etc/openpanel/backups/customized.template` | Go template | Backup success/failure notification message template |
+| `/etc/davpanel/backups/backup.env` | env | Default backup destination/schedule template |
+| `/etc/davpanel/backups/customized.template` | Go template | Backup success/failure notification message template |
 | `/home/<user>/backup.env` | env | Per-user backup destination config (S3/WebDAV/SSH/Azure) |
 
 ## Firewall & security
@@ -216,12 +216,12 @@ Manually editing these files can break the panel or be overwritten during update
 |---|---|---|
 | `/etc/csf/csf.conf` | conf | ConfigServer Firewall main config |
 | `/etc/csf/csf.deny` | text | CSF deny list |
-| `/etc/openpanel/csf/csf.blocklists` | text | CSF blocklist sources |
+| `/etc/davpanel/csf/csf.blocklists` | text | CSF blocklist sources |
 | `/etc/sysconfig/imunify360/integration.conf` | conf | Imunify360 panel integration config |
 | `/etc/sysconfig/imunify360/malware-filters-admin-conf/ignored.txt` | text | Files ignored by malware scanning |
 | `/etc/pam.d/imunify360-deny` | PAM conf | Deny rule for blocked SSH logins |
-| `/etc/openpanel/clamav/domains.list`, `extensions.txt` | text | ClamAV scan target lists |
-| `/etc/openpanel/wordpress/vulnerability/` | dir | Cached WordPress vulnerability database |
+| `/etc/davpanel/clamav/domains.list`, `extensions.txt` | text | ClamAV scan target lists |
+| `/etc/davpanel/wordpress/vulnerability/` | dir | Cached WordPress vulnerability database |
 | `/etc/ssh/sshd_config` | conf | SSH daemon config (port, root login) |
 | `~/.ssh/authorized_keys` | OpenSSH | Per-user SSH keys |
 
@@ -229,27 +229,27 @@ Manually editing these files can break the panel or be overwritten during update
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/openpanel/wordpress/htaccess/apache.htaccess`, `litespeed.htaccess` | .htaccess | Default `.htaccess` per webserver engine |
-| `/etc/openpanel/wordpress/mu-plugin.php` | PHP | Must-use plugin injected into new WordPress installs |
-| `/etc/openpanel/wordpress/sets/plugins.txt`, `themes.txt` | text list | Default plugin/theme bundles offered in the installer |
-| `/etc/openpanel/wordpress/wp-cli.phar` (mounted as `/usr/local/bin/wp`) | binary | WP-CLI |
-| `/etc/openpanel/<app>/archives/` (wordpress, joomla, matomo, mediawiki, moodle, nextcloud, opencart, prestashop) | dir | Cached installer archives per application |
-| `/etc/openpanel/matomo/credentials` | text | Stored Matomo admin credentials |
+| `/etc/davpanel/wordpress/htaccess/apache.htaccess`, `litespeed.htaccess` | .htaccess | Default `.htaccess` per webserver engine |
+| `/etc/davpanel/wordpress/mu-plugin.php` | PHP | Must-use plugin injected into new WordPress installs |
+| `/etc/davpanel/wordpress/sets/plugins.txt`, `themes.txt` | text list | Default plugin/theme bundles offered in the installer |
+| `/etc/davpanel/wordpress/wp-cli.phar` (mounted as `/usr/local/bin/wp`) | binary | WP-CLI |
+| `/etc/davpanel/<app>/archives/` (wordpress, joomla, matomo, mediawiki, moodle, nextcloud, opencart, prestashop) | dir | Cached installer archives per application |
+| `/etc/davpanel/matomo/credentials` | text | Stored Matomo admin credentials |
 
 ## System integration
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/etc/passwd`, `/etc/shadow`, `/etc/group` | system | User/group accounts, read/modified by `opencli` user management |
+| `/etc/passwd`, `/etc/shadow`, `/etc/group` | system | User/group accounts, read/modified by `davcli` user management |
 | `/etc/subuid`, `/etc/subgid` | system | Subordinate UID/GID ranges for rootless podman |
 | `/etc/fstab` | system | Checked/modified for storage/quota mounts |
 | `/etc/hosts` | system | Updated with domain/IP mappings |
-| `/etc/logrotate.d/openpanel`, `caddy-logs`, `syslog` | logrotate | Log rotation rules |
-| `/etc/openpanel/ssh/admin_welcome.sh` | script | SSH login MOTD/welcome script |
-| `/root/openpanel_restart_needed`, `openadmin_restart_needed`, `openadmin_is_disabled`, `disable_openadmin_reboot_ui`, `disable_openadmin_terminal_ui`, `disable_2087_port` | flag files | Restart/feature-disable state flags |
-| `/tmp/.openpanel_license_cache.json` | JSON | Cached license validation result |
+| `/etc/logrotate.d/davpanel`, `caddy-logs`, `syslog` | logrotate | Log rotation rules |
+| `/etc/davpanel/ssh/admin_welcome.sh` | script | SSH login MOTD/welcome script |
+| `/root/davpanel_restart_needed`, `davadmin_restart_needed`, `davadmin_is_disabled`, `disable_davadmin_reboot_ui`, `disable_davadmin_terminal_ui`, `disable_2087_port` | flag files | Restart/feature-disable state flags |
+| `/tmp/.davpanel_license_cache.json` | JSON | Cached license validation result |
 
 ## Related documentation
 
-* [OpenAdmin system crons](../server/openadmin-system-crons.md)
+* [DavAdmin system crons](../server/davadmin-system-crons.md)
 * [How to free up disk space on Linux](../server/how-to-free-up-disk-space-on-linux.md)

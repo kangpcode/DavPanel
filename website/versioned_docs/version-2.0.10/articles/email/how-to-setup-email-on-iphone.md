@@ -1,6 +1,6 @@
 # How to Set Up Email on iPhone
 
-This guide explains how to set up your **OpenPanel-created email account** in the iPhone Mail app.
+This guide explains how to set up your **DavPanel-created email account** in the iPhone Mail app.
 
 > **Note:** If you are setting up email on a different device or service, see the main guide:
 > [How to setup your email client](/docs/articles/email/how-to-setup-your-email-client)

@@ -4,13 +4,13 @@ sidebar_label: "Auto-start Services"
 
 # Which Services Start Automatically (and How to Auto-Start Others)
 
-Services in OpenPanel start only when they are actually needed, to avoid wasting resources.
+Services in DavPanel start only when they are actually needed, to avoid wasting resources.
 
-## Auto-start Services in OpenAdmin
+## Auto-start Services in DavAdmin
 
-Upon installing OpenPanel, only the following services are started:
+Upon installing DavPanel, only the following services are started:
 
-- **OpenAdmin** – For managing the entire server and users.
+- **DavAdmin** – For managing the entire server and users.
 - **Docker** – Needed for all other containerized services and user accounts.
 - **Database** – MySQL database is created and initialized. This database holds Plans, Websites, Domains, and Users.
 - **Firewall** – [Sentinel Firewall](https://sentinelfirewall.org/) is installed and started.
@@ -19,11 +19,11 @@ Other services are installed and started only when required.
 
 | Service                | Installed | Auto-start                |
 |------------------------|-----------|---------------------------|
-| OpenAdmin              | ✔       | On installation            |
+| DavAdmin              | ✔       | On installation            |
 | Docker                 | ✔       | On installation            |
 | Database               | ✔       | On installation            |
 | Sentinel Firewall   | ✔       | On installation            |
-| OpenPanel              | ✘        | After adding first user account |
+| DavPanel              | ✘        | After adding first user account |
 | BIND9                  | ✘        | After adding first domain name  |
 | Caddy                  | ✘        | After adding first domain name  |
 | ImunifyAV       | ✘        | When enabled by Administrator  |
@@ -31,9 +31,9 @@ Other services are installed and started only when required.
 | FTP                    | ✘        | When enabled by Administrator, after first FTP account is created |
 | phpMyAdmin                    | ✘        | When enabled by Administrator, after first MySQL database is created by a user |
 
-## Auto-start Services in OpenPanel
+## Auto-start Services in DavPanel
 
-Similar to OpenAdmin, services in OpenPanel also start only when they are needed. This allows for better resource management.
+Similar to DavAdmin, services in DavPanel also start only when they are needed. This allows for better resource management.
 
 Services that auto-start for each user:
 

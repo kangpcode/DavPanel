@@ -6,8 +6,8 @@ sidebar_position: 2
 
 Create a full account backup that can be downloaded and later used to restore your account on another server.
 
-![Backup Wizard with the list of included items, the Generate Backup button and the existing backups](/img/openpanel-screenshots/files/backup-wizard-page.png#gh-light-mode-only)
-![Backup Wizard with the list of included items, the Generate Backup button and the existing backups](/img/openpanel-screenshots/files/backup-wizard-page_dark.png#gh-dark-mode-only)
+![Backup Wizard with the list of included items, the Generate Backup button and the existing backups](/img/davpanel-screenshots/files/backup-wizard-page.png#gh-light-mode-only)
+![Backup Wizard with the list of included items, the Generate Backup button and the existing backups](/img/davpanel-screenshots/files/backup-wizard-page_dark.png#gh-dark-mode-only)
 
 Unlike the [Backups](/docs/panel/backups/) feature, the Backup Wizard does not use a remote destination or a schedule: it creates a single local archive on demand that you download manually.
 

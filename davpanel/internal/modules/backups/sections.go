@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
 )
 
 // sectionOrder/sectionKeys define the backup target sections in a fixed order, used everywhere the route handlers build matched_sections/targets lists or JSON output - order matters for API responses, so a plain Go map isn't a substitute

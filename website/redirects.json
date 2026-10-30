@@ -5,44 +5,1588 @@
       "to": "/enterprise"
     },
     {
-      "from": "/docs/panel/domains/goaccess",
-      "to": "/docs/panel/statistics/goaccess/"
+      "from": "/blog/authors/stefanpejcic",
+      "to": "/blog/authors/kangpcode/"
     },
     {
-      "from": "/docs/panel/domains/logs",
-      "to": "/docs/panel/statistics/logs/"
+      "from": "/blog/honest-cpanel-alternative-openpanel",
+      "to": "/blog/honest-cpanel-alternative-davpanel/"
     },
     {
-      "from": "/docs/panel/domains/vhosts",
-      "to": "/docs/panel/webserver/vhosts/"
+      "from": "/blog/modern-menu-style-openpanel",
+      "to": "/blog/modern-menu-style-davpanel/"
     },
     {
-      "from": "/docs/panel/files/backups",
-      "to": "/docs/panel/backups/"
+      "from": "/blog/new-app-installers-in-openpanel",
+      "to": "/blog/new-app-installers-in-davpanel/"
     },
     {
-      "from": "/docs/panel/files/backup-wizard",
-      "to": "/docs/panel/backups/backup-wizard/"
+      "from": "/blog/openpanel-accepted-in-digitalocean-hatch-program",
+      "to": "/blog/davpanel-accepted-in-digitalocean-hatch-program/"
     },
     {
-      "from": "/docs/panel/files/disk_usage",
-      "to": "/docs/panel/statistics/disk_usage/"
+      "from": "/blog/openpanel-advanced-installer",
+      "to": "/blog/davpanel-advanced-installer/"
     },
     {
-      "from": "/docs/panel/files/inodes_explorer",
-      "to": "/docs/panel/statistics/inodes_explorer/"
+      "from": "/blog/openpanel-built-in-the-open",
+      "to": "/blog/davpanel-built-in-the-open/"
     },
     {
-      "from": "/docs/panel/files/malware-scanner",
-      "to": "/docs/panel/security/malware-scanner/"
+      "from": "/blog/openpanel-enterprise-free-trial",
+      "to": "/blog/davpanel-enterprise-free-trial/"
     },
     {
-      "from": "/docs/panel/containers/mysql",
-      "to": "/docs/panel/mysql/server_type/"
+      "from": "/blog/openpanel-ezeelogin-integration",
+      "to": "/blog/davpanel-ezeelogin-integration/"
     },
     {
-      "from": "/docs/panel/containers/webserver",
-      "to": "/docs/panel/webserver/webserver_type/"
+      "from": "/blog/openpanel-imunifyav-integration",
+      "to": "/blog/davpanel-imunifyav-integration/"
+    },
+    {
+      "from": "/blog/openpanel-is-available-on-hostkey",
+      "to": "/blog/davpanel-is-available-on-hostkey/"
+    },
+    {
+      "from": "/blog/openpanel-is-available-on-logicweb",
+      "to": "/blog/davpanel-is-available-on-logicweb/"
+    },
+    {
+      "from": "/blog/openpanel-llms-usage-guide",
+      "to": "/blog/davpanel-llms-usage-guide/"
+    },
+    {
+      "from": "/blog/openpanel-public-beta-released",
+      "to": "/blog/davpanel-public-beta-released/"
+    },
+    {
+      "from": "/blog/openpanel-rhel-support",
+      "to": "/blog/davpanel-rhel-support/"
+    },
+    {
+      "from": "/blog/openpanel-selected-to-join-microsoft-for-startups-program",
+      "to": "/blog/davpanel-selected-to-join-microsoft-for-startups-program/"
+    },
+    {
+      "from": "/blog/openpanel-supports-debian12",
+      "to": "/blog/davpanel-supports-debian12/"
+    },
+    {
+      "from": "/blog/php-security-update-openpanel",
+      "to": "/blog/php-security-update-davpanel/"
+    },
+    {
+      "from": "/blog/podman-switch-openpanel-2",
+      "to": "/blog/podman-switch-davpanel-2/"
+    },
+    {
+      "from": "/blog/selfhosting-with-openpanel",
+      "to": "/blog/selfhosting-with-davpanel/"
+    },
+    {
+      "from": "/blog/storage-file-hosting-with-openpanel",
+      "to": "/blog/storage-file-hosting-with-davpanel/"
+    },
+    {
+      "from": "/blog/tags/openadmin",
+      "to": "/blog/tags/davadmin/"
+    },
+    {
+      "from": "/blog/tags/openpanel",
+      "to": "/blog/tags/davpanel/"
+    },
+    {
+      "from": "/blog/wordpress-hosting-with-openpanel",
+      "to": "/blog/wordpress-hosting-with-davpanel/"
+    },
+    {
+      "from": "/docs/0.X.X/admin/settings/openpanel",
+      "to": "/docs/0.X.X/admin/settings/davpanel/"
+    },
+    {
+      "from": "/docs/0.X.X/admin/users/openadmin",
+      "to": "/docs/0.X.X/admin/users/davadmin/"
+    },
+    {
+      "from": "/docs/0.X.X/admin/users/openpanel",
+      "to": "/docs/0.X.X/admin/users/davpanel/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/databases/how-to-increase-php-execution-limit-for-phpmyadmin-in-openpanel",
+      "to": "/docs/0.X.X/articles/databases/how-to-increase-php-execution-limit-for-phpmyadmin-in-davpanel/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/dev-experience/customizing-openpanel-user-interface",
+      "to": "/docs/0.X.X/articles/dev-experience/customizing-davpanel-user-interface/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/docker/high-memory-usage-for-openpanel-user",
+      "to": "/docs/0.X.X/articles/docker/high-memory-usage-for-davpanel-user/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/docker/how-to-set-mysql-mariadb-per-user-in-openpanel",
+      "to": "/docs/0.X.X/articles/docker/how-to-set-mysql-mariadb-per-user-in-davpanel/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/extensions/openpanel-and-blesta",
+      "to": "/docs/0.X.X/articles/extensions/davpanel-and-blesta/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/extensions/openpanel-and-fossbilling",
+      "to": "/docs/0.X.X/articles/extensions/davpanel-and-fossbilling/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/extensions/openpanel-and-whmcs",
+      "to": "/docs/0.X.X/articles/extensions/davpanel-and-whmcs/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/license/upgrade_to_openpanel_enterprise_and-activate_license",
+      "to": "/docs/0.X.X/articles/license/upgrade_to_davpanel_enterprise_and-activate_license/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/transfers/import-cpanel-backup-to-openpanel",
+      "to": "/docs/0.X.X/articles/transfers/import-cpanel-backup-to-davpanel/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/user-experience/how-to-find-openpanel-version",
+      "to": "/docs/0.X.X/articles/user-experience/how-to-find-davpanel-version/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/user-experience/how-to-setup-django-on-openpanel",
+      "to": "/docs/0.X.X/articles/user-experience/how-to-setup-django-on-davpanel/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/user-experience/how-to-setup-springboot-java-applicaiton-on-openpanel",
+      "to": "/docs/0.X.X/articles/user-experience/how-to-setup-springboot-java-applicaiton-on-davpanel/"
+    },
+    {
+      "from": "/docs/0.X.X/articles/user-experience/setup-remote-smtp-server-for-openpanel",
+      "to": "/docs/0.X.X/articles/user-experience/setup-remote-smtp-server-for-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/admin/settings/openpanel",
+      "to": "/docs/1.X.X/admin/settings/davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/accounts/how-to-add-custom-message-in-openpanel",
+      "to": "/docs/1.X.X/articles/accounts/how-to-add-custom-message-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/accounts/how-to-reset-openpanel-account-password",
+      "to": "/docs/1.X.X/articles/accounts/how-to-reset-davpanel-account-password/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/accounts/troubleshooting-openpanel-login-errors",
+      "to": "/docs/1.X.X/articles/accounts/troubleshooting-davpanel-login-errors/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/databases/how-to-connect-to-mysql-from-php-applications-in-openpanel",
+      "to": "/docs/1.X.X/articles/databases/how-to-connect-to-mysql-from-php-applications-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/add-custom-icons-in-openpanel-dashboard",
+      "to": "/docs/1.X.X/articles/dev-experience/add-custom-icons-in-davpanel-dashboard/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/add-custom-services-to-openadmin",
+      "to": "/docs/1.X.X/articles/dev-experience/add-custom-services-to-davadmin/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/create-custom-openpanel-template",
+      "to": "/docs/1.X.X/articles/dev-experience/create-custom-davpanel-template/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/customizing-openpanel-user-interface",
+      "to": "/docs/1.X.X/articles/dev-experience/customizing-davpanel-user-interface/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/disable-openadmin-server-reboot",
+      "to": "/docs/1.X.X/articles/dev-experience/disable-davadmin-server-reboot/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/disable-openadmin-web-terminal",
+      "to": "/docs/1.X.X/articles/dev-experience/disable-davadmin-web-terminal/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/disable-openpanel-web-terminal",
+      "to": "/docs/1.X.X/articles/dev-experience/disable-davpanel-web-terminal/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/how-to-access-openadmin",
+      "to": "/docs/1.X.X/articles/dev-experience/how-to-access-davadmin/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/how-to-access-openpanel",
+      "to": "/docs/1.X.X/articles/dev-experience/how-to-access-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/limit_access_to_openadmin",
+      "to": "/docs/1.X.X/articles/dev-experience/limit_access_to_davadmin/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/openadmin-api",
+      "to": "/docs/1.X.X/articles/dev-experience/davadmin-api/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/openadmin-keyboard-shortcuts",
+      "to": "/docs/1.X.X/articles/dev-experience/davadmin-keyboard-shortcuts/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/openpanel-pre-post-hooks",
+      "to": "/docs/1.X.X/articles/dev-experience/davpanel-pre-post-hooks/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/openpanel-structure",
+      "to": "/docs/1.X.X/articles/dev-experience/davpanel-structure/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/openpanel-system-services",
+      "to": "/docs/1.X.X/articles/dev-experience/davpanel-system-services/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/rate_limiting_for_openpanel",
+      "to": "/docs/1.X.X/articles/dev-experience/rate_limiting_for_davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/remove-custom-port-for-openadmin",
+      "to": "/docs/1.X.X/articles/dev-experience/remove-custom-port-for-davadmin/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/remove-custom-port-for-openpanel",
+      "to": "/docs/1.X.X/articles/dev-experience/remove-custom-port-for-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/separate-domain-for-openpanel-access",
+      "to": "/docs/1.X.X/articles/dev-experience/separate-domain-for-davpanel-access/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/dev-experience/troubleshooting-openpanel-guide",
+      "to": "/docs/1.X.X/articles/dev-experience/troubleshooting-davpanel-guide/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/docker/how-does-openpanel-isolate-users",
+      "to": "/docs/1.X.X/articles/docker/how-does-davpanel-isolate-users/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/docker/how-to-add-custom-docker-image-for-openpanel-user",
+      "to": "/docs/1.X.X/articles/docker/how-to-add-custom-docker-image-for-davpanel-user/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/docker/how-to-set-mysql-mariadb-per-user-in-openpanel",
+      "to": "/docs/1.X.X/articles/docker/how-to-set-mysql-mariadb-per-user-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/docker/how-to-set-nginx-apache-varnish-per-user-in-openpanel",
+      "to": "/docs/1.X.X/articles/docker/how-to-set-nginx-apache-varnish-per-user-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/docker/how-to-troubleshoot-services-with-openpanel",
+      "to": "/docs/1.X.X/articles/docker/how-to-troubleshoot-services-with-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/docker/how-traffic-flows-in-openpanel",
+      "to": "/docs/1.X.X/articles/docker/how-traffic-flows-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/docker/network-isolation-openpanel",
+      "to": "/docs/1.X.X/articles/docker/network-isolation-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/docker/volume-management-openpanel",
+      "to": "/docs/1.X.X/articles/docker/volume-management-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/domains/how-to-configure-nameservers-in-openpanel",
+      "to": "/docs/1.X.X/articles/domains/how-to-configure-nameservers-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/domains/how-to-enable-hsts-on-a-domain-in-openpanel",
+      "to": "/docs/1.X.X/articles/domains/how-to-enable-hsts-on-a-domain-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/domains/how-to-setup-dns-cluster-in-openpanel",
+      "to": "/docs/1.X.X/articles/domains/how-to-setup-dns-cluster-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/email/how-to-setup-fail2ban-mailserver-openpanel",
+      "to": "/docs/1.X.X/articles/email/how-to-setup-fail2ban-mailserver-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/email/how-to-use-remote-server-for-emails-in-openpanel",
+      "to": "/docs/1.X.X/articles/email/how-to-use-remote-server-for-emails-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/extensions/add-openpanel-in-virtualizor",
+      "to": "/docs/1.X.X/articles/extensions/add-davpanel-in-virtualizor/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/extensions/openpanel-and-blesta",
+      "to": "/docs/1.X.X/articles/extensions/davpanel-and-blesta/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/extensions/openpanel-and-fossbilling",
+      "to": "/docs/1.X.X/articles/extensions/davpanel-and-fossbilling/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/extensions/openpanel-and-whmcs",
+      "to": "/docs/1.X.X/articles/extensions/davpanel-and-whmcs/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/install-update/create-openpanel-iso",
+      "to": "/docs/1.X.X/articles/install-update/create-davpanel-iso/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/install-update/how-to-check-openpanel-version",
+      "to": "/docs/1.X.X/articles/install-update/how-to-check-davpanel-version/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/install-update/how-to-disable-auto-update-openpanel",
+      "to": "/docs/1.X.X/articles/install-update/how-to-disable-auto-update-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/install-update/how-to-enable-auto-update-openpanel",
+      "to": "/docs/1.X.X/articles/install-update/how-to-enable-auto-update-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/install-update/how-to-manually-update-openpanel",
+      "to": "/docs/1.X.X/articles/install-update/how-to-manually-update-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/install-update/openpanel-main-ip-address",
+      "to": "/docs/1.X.X/articles/install-update/davpanel-main-ip-address/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/install-update/openpanel-post-install-hook",
+      "to": "/docs/1.X.X/articles/install-update/davpanel-post-install-hook/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/install-update/skip-specific-openpanel-version-update",
+      "to": "/docs/1.X.X/articles/install-update/skip-specific-davpanel-version-update/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/license/how_to_cancel_openpanel_license",
+      "to": "/docs/1.X.X/articles/license/how_to_cancel_davpanel_license/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/license/how_to_downgrade_openpanel_license",
+      "to": "/docs/1.X.X/articles/license/how_to_downgrade_davpanel_license/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/license/openpanel-refund-policy",
+      "to": "/docs/1.X.X/articles/license/davpanel-refund-policy/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/license/openpanel_enterprise_for_nonprofits",
+      "to": "/docs/1.X.X/articles/license/davpanel_enterprise_for_nonprofits/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/license/transfer-openpanel-license-to-new-server",
+      "to": "/docs/1.X.X/articles/license/transfer-davpanel-license-to-new-server/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/license/upgrade_to_openpanel_enterprise_and-activate_license",
+      "to": "/docs/1.X.X/articles/license/upgrade_to_davpanel_enterprise_and-activate_license/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/license/what_happens_when_openpanel_enterprise_license_expires",
+      "to": "/docs/1.X.X/articles/license/what_happens_when_davpanel_enterprise_license_expires/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/admin",
+      "to": "/docs/1.X.X/articles/davcli/admin/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/api",
+      "to": "/docs/1.X.X/articles/davcli/api/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/config",
+      "to": "/docs/1.X.X/articles/davcli/config/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/docker",
+      "to": "/docs/1.X.X/articles/davcli/docker/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/domain",
+      "to": "/docs/1.X.X/articles/davcli/domain/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/domains",
+      "to": "/docs/1.X.X/articles/davcli/domains/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/email",
+      "to": "/docs/1.X.X/articles/davcli/email/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/error",
+      "to": "/docs/1.X.X/articles/davcli/error/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/faq",
+      "to": "/docs/1.X.X/articles/davcli/faq/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/files",
+      "to": "/docs/1.X.X/articles/davcli/files/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/ftp",
+      "to": "/docs/1.X.X/articles/davcli/ftp/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/hooks",
+      "to": "/docs/1.X.X/articles/davcli/hooks/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/imunify",
+      "to": "/docs/1.X.X/articles/davcli/imunify/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/license",
+      "to": "/docs/1.X.X/articles/davcli/license/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/locale",
+      "to": "/docs/1.X.X/articles/davcli/locale/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/opencli",
+      "to": "/docs/1.X.X/articles/davcli/davcli/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/php",
+      "to": "/docs/1.X.X/articles/davcli/php/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/plan",
+      "to": "/docs/1.X.X/articles/davcli/plan/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/port",
+      "to": "/docs/1.X.X/articles/davcli/port/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/proxy",
+      "to": "/docs/1.X.X/articles/davcli/proxy/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/report",
+      "to": "/docs/1.X.X/articles/davcli/report/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/sentinel",
+      "to": "/docs/1.X.X/articles/davcli/sentinel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/server",
+      "to": "/docs/1.X.X/articles/davcli/server/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/update",
+      "to": "/docs/1.X.X/articles/davcli/update/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/user",
+      "to": "/docs/1.X.X/articles/davcli/user/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/version",
+      "to": "/docs/1.X.X/articles/davcli/version/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/waf",
+      "to": "/docs/1.X.X/articles/davcli/waf/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/webserver",
+      "to": "/docs/1.X.X/articles/davcli/webserver/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/opencli/websites",
+      "to": "/docs/1.X.X/articles/davcli/websites/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/security/securing-openpanel",
+      "to": "/docs/1.X.X/articles/security/securing-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/server/cloudflared-tunnel-openpanel",
+      "to": "/docs/1.X.X/articles/server/cloudflared-tunnel-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/server/how-to-set-custom-ssl-openpanel-webmail",
+      "to": "/docs/1.X.X/articles/server/how-to-set-custom-ssl-davpanel-webmail/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/server/openadmin-system-crons",
+      "to": "/docs/1.X.X/articles/server/davadmin-system-crons/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/server/user-data-cache-in-openpanel-ui",
+      "to": "/docs/1.X.X/articles/server/user-data-cache-in-davpanel-ui/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/support/how-to-access-openpanel-demo",
+      "to": "/docs/1.X.X/articles/support/how-to-access-davpanel-demo/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/support/how-to-troubleshoot-openadmin-error",
+      "to": "/docs/1.X.X/articles/support/how-to-troubleshoot-davadmin-error/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/support/how-to-troubleshoot-openpanel-error",
+      "to": "/docs/1.X.X/articles/support/how-to-troubleshoot-davpanel-error/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/support/how-to-unlinstall-openpanel",
+      "to": "/docs/1.X.X/articles/support/how-to-unlinstall-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/support/openpanel-welcome-email-smtp-fix",
+      "to": "/docs/1.X.X/articles/support/davpanel-welcome-email-smtp-fix/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/support/where-openpanel-stores-logs",
+      "to": "/docs/1.X.X/articles/support/where-davpanel-stores-logs/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/transfers/import-cpanel-backup-to-openpanel",
+      "to": "/docs/1.X.X/articles/transfers/import-cpanel-backup-to-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/transfers/migrate-openadmin-to-new-server",
+      "to": "/docs/1.X.X/articles/transfers/migrate-davadmin-to-new-server/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/transfers/transfer-openpanel-account-to-another-server",
+      "to": "/docs/1.X.X/articles/transfers/transfer-davpanel-account-to-another-server/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/user-experience/how-to-setup-email-in-openpanel",
+      "to": "/docs/1.X.X/articles/user-experience/how-to-setup-email-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/user-experience/how-to-setup-ftp-in-openpanel",
+      "to": "/docs/1.X.X/articles/user-experience/how-to-setup-ftp-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/user-experience/how-to-setup-tls-ftp-in-openpanel",
+      "to": "/docs/1.X.X/articles/user-experience/how-to-setup-tls-ftp-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/websites/hosting-a-php-website-with-openpanel",
+      "to": "/docs/1.X.X/articles/websites/hosting-a-php-website-with-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/websites/hosting-a-static-website-with-openpanel",
+      "to": "/docs/1.X.X/articles/websites/hosting-a-static-website-with-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/websites/how-to-install-mautic-with-openpanel",
+      "to": "/docs/1.X.X/articles/websites/how-to-install-mautic-with-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/websites/how-to-install-php-extensions-in-openpanel",
+      "to": "/docs/1.X.X/articles/websites/how-to-install-php-extensions-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/websites/how-to-install-wordpress-with-openpanel",
+      "to": "/docs/1.X.X/articles/websites/how-to-install-wordpress-with-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/websites/how-to-upload-wordpress-website-to-openpanel",
+      "to": "/docs/1.X.X/articles/websites/how-to-upload-wordpress-website-to-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/articles/websites/wordpress-plugins-themes-sets-in-openpanel",
+      "to": "/docs/1.X.X/articles/websites/wordpress-plugins-themes-sets-in-davpanel/"
+    },
+    {
+      "from": "/docs/1.X.X/category/opencli",
+      "to": "/docs/1.X.X/category/davcli/"
+    },
+    {
+      "from": "/docs/2.0.10/admin/settings/openpanel",
+      "to": "/docs/2.0.10/admin/settings/davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/accounts/how-to-add-custom-message-in-openpanel",
+      "to": "/docs/2.0.10/articles/accounts/how-to-add-custom-message-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/accounts/how-to-reset-openpanel-account-password",
+      "to": "/docs/2.0.10/articles/accounts/how-to-reset-davpanel-account-password/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/accounts/troubleshooting-openpanel-login-errors",
+      "to": "/docs/2.0.10/articles/accounts/troubleshooting-davpanel-login-errors/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/containers/how-does-openpanel-isolate-users",
+      "to": "/docs/2.0.10/articles/containers/how-does-davpanel-isolate-users/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/containers/how-to-add-custom-docker-image-for-openpanel-user",
+      "to": "/docs/2.0.10/articles/containers/how-to-add-custom-docker-image-for-davpanel-user/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/containers/how-to-set-mysql-mariadb-per-user-in-openpanel",
+      "to": "/docs/2.0.10/articles/containers/how-to-set-mysql-mariadb-per-user-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel",
+      "to": "/docs/2.0.10/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/containers/how-to-troubleshoot-services-with-openpanel",
+      "to": "/docs/2.0.10/articles/containers/how-to-troubleshoot-services-with-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/containers/how-traffic-flows-in-openpanel",
+      "to": "/docs/2.0.10/articles/containers/how-traffic-flows-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/containers/network-isolation-openpanel",
+      "to": "/docs/2.0.10/articles/containers/network-isolation-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/containers/volume-management-openpanel",
+      "to": "/docs/2.0.10/articles/containers/volume-management-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/databases/how-to-connect-to-mysql-from-php-applications-in-openpanel",
+      "to": "/docs/2.0.10/articles/databases/how-to-connect-to-mysql-from-php-applications-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/add-custom-icons-in-openpanel-dashboard",
+      "to": "/docs/2.0.10/articles/dev-experience/add-custom-icons-in-davpanel-dashboard/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/add-custom-services-to-openadmin",
+      "to": "/docs/2.0.10/articles/dev-experience/add-custom-services-to-davadmin/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/create-custom-openpanel-template",
+      "to": "/docs/2.0.10/articles/dev-experience/create-custom-davpanel-template/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/customizing-openadmin-email-templates",
+      "to": "/docs/2.0.10/articles/dev-experience/customizing-davadmin-email-templates/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/customizing-openpanel-user-interface",
+      "to": "/docs/2.0.10/articles/dev-experience/customizing-davpanel-user-interface/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/disable-openadmin-server-reboot",
+      "to": "/docs/2.0.10/articles/dev-experience/disable-davadmin-server-reboot/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/disable-openadmin-web-terminal",
+      "to": "/docs/2.0.10/articles/dev-experience/disable-davadmin-web-terminal/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/disable-openpanel-web-terminal",
+      "to": "/docs/2.0.10/articles/dev-experience/disable-davpanel-web-terminal/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/how-to-access-openadmin",
+      "to": "/docs/2.0.10/articles/dev-experience/how-to-access-davadmin/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/how-to-access-openpanel",
+      "to": "/docs/2.0.10/articles/dev-experience/how-to-access-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/limit_access_to_openadmin",
+      "to": "/docs/2.0.10/articles/dev-experience/limit_access_to_davadmin/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/openadmin-api",
+      "to": "/docs/2.0.10/articles/dev-experience/davadmin-api/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/openadmin-keyboard-shortcuts",
+      "to": "/docs/2.0.10/articles/dev-experience/davadmin-keyboard-shortcuts/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/openpanel-pre-post-hooks",
+      "to": "/docs/2.0.10/articles/dev-experience/davpanel-pre-post-hooks/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/openpanel-structure",
+      "to": "/docs/2.0.10/articles/dev-experience/davpanel-structure/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/openpanel-system-services",
+      "to": "/docs/2.0.10/articles/dev-experience/davpanel-system-services/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/rate_limiting_for_openpanel",
+      "to": "/docs/2.0.10/articles/dev-experience/rate_limiting_for_davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/remove-custom-port-for-openadmin",
+      "to": "/docs/2.0.10/articles/dev-experience/remove-custom-port-for-davadmin/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/remove-custom-port-for-openpanel",
+      "to": "/docs/2.0.10/articles/dev-experience/remove-custom-port-for-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/separate-domain-for-openpanel-access",
+      "to": "/docs/2.0.10/articles/dev-experience/separate-domain-for-davpanel-access/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/dev-experience/troubleshooting-openpanel-guide",
+      "to": "/docs/2.0.10/articles/dev-experience/troubleshooting-davpanel-guide/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/domains/how-to-configure-nameservers-in-openpanel",
+      "to": "/docs/2.0.10/articles/domains/how-to-configure-nameservers-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/domains/how-to-enable-hsts-on-a-domain-in-openpanel",
+      "to": "/docs/2.0.10/articles/domains/how-to-enable-hsts-on-a-domain-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/domains/how-to-setup-dns-cluster-in-openpanel",
+      "to": "/docs/2.0.10/articles/domains/how-to-setup-dns-cluster-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/email/how-to-setup-fail2ban-mailserver-openpanel",
+      "to": "/docs/2.0.10/articles/email/how-to-setup-fail2ban-mailserver-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/email/how-to-use-remote-server-for-emails-in-openpanel",
+      "to": "/docs/2.0.10/articles/email/how-to-use-remote-server-for-emails-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/extensions/add-openpanel-in-virtualizor",
+      "to": "/docs/2.0.10/articles/extensions/add-davpanel-in-virtualizor/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/extensions/openpanel-and-blesta",
+      "to": "/docs/2.0.10/articles/extensions/davpanel-and-blesta/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/extensions/openpanel-and-clientexec",
+      "to": "/docs/2.0.10/articles/extensions/davpanel-and-clientexec/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/extensions/openpanel-and-fossbilling",
+      "to": "/docs/2.0.10/articles/extensions/davpanel-and-fossbilling/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/extensions/openpanel-and-whmcs",
+      "to": "/docs/2.0.10/articles/extensions/davpanel-and-whmcs/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/extensions/openpanel-and-wisecp",
+      "to": "/docs/2.0.10/articles/extensions/davpanel-and-wisecp/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/install-update/create-openpanel-iso",
+      "to": "/docs/2.0.10/articles/install-update/create-davpanel-iso/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/install-update/how-to-check-openpanel-version",
+      "to": "/docs/2.0.10/articles/install-update/how-to-check-davpanel-version/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/install-update/how-to-disable-auto-update-openpanel",
+      "to": "/docs/2.0.10/articles/install-update/how-to-disable-auto-update-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/install-update/how-to-enable-auto-update-openpanel",
+      "to": "/docs/2.0.10/articles/install-update/how-to-enable-auto-update-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/install-update/how-to-manually-update-openpanel",
+      "to": "/docs/2.0.10/articles/install-update/how-to-manually-update-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/install-update/openpanel-main-ip-address",
+      "to": "/docs/2.0.10/articles/install-update/davpanel-main-ip-address/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/install-update/openpanel-post-install-hook",
+      "to": "/docs/2.0.10/articles/install-update/davpanel-post-install-hook/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/install-update/skip-specific-openpanel-version-update",
+      "to": "/docs/2.0.10/articles/install-update/skip-specific-davpanel-version-update/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/license/how_to_cancel_openpanel_license",
+      "to": "/docs/2.0.10/articles/license/how_to_cancel_davpanel_license/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/license/how_to_downgrade_openpanel_license",
+      "to": "/docs/2.0.10/articles/license/how_to_downgrade_davpanel_license/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/license/openpanel-refund-policy",
+      "to": "/docs/2.0.10/articles/license/davpanel-refund-policy/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/license/openpanel_enterprise_for_nonprofits",
+      "to": "/docs/2.0.10/articles/license/davpanel_enterprise_for_nonprofits/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/license/transfer-openpanel-license-to-new-server",
+      "to": "/docs/2.0.10/articles/license/transfer-davpanel-license-to-new-server/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/license/upgrade_to_openpanel_enterprise_and-activate_license",
+      "to": "/docs/2.0.10/articles/license/upgrade_to_davpanel_enterprise_and-activate_license/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/license/what_happens_when_openpanel_enterprise_license_expires",
+      "to": "/docs/2.0.10/articles/license/what_happens_when_davpanel_enterprise_license_expires/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/admin",
+      "to": "/docs/2.0.10/articles/davcli/admin/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/api",
+      "to": "/docs/2.0.10/articles/davcli/api/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/backup",
+      "to": "/docs/2.0.10/articles/davcli/backup/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/config",
+      "to": "/docs/2.0.10/articles/davcli/config/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/docker",
+      "to": "/docs/2.0.10/articles/davcli/docker/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/domain",
+      "to": "/docs/2.0.10/articles/davcli/domain/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/domains",
+      "to": "/docs/2.0.10/articles/davcli/domains/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/email",
+      "to": "/docs/2.0.10/articles/davcli/email/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/error",
+      "to": "/docs/2.0.10/articles/davcli/error/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/faq",
+      "to": "/docs/2.0.10/articles/davcli/faq/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/files",
+      "to": "/docs/2.0.10/articles/davcli/files/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/ftp",
+      "to": "/docs/2.0.10/articles/davcli/ftp/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/hooks",
+      "to": "/docs/2.0.10/articles/davcli/hooks/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/imunify",
+      "to": "/docs/2.0.10/articles/davcli/imunify/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/license",
+      "to": "/docs/2.0.10/articles/davcli/license/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/locale",
+      "to": "/docs/2.0.10/articles/davcli/locale/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/opencli",
+      "to": "/docs/2.0.10/articles/davcli/davcli/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/php",
+      "to": "/docs/2.0.10/articles/davcli/php/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/phpmyadmin",
+      "to": "/docs/2.0.10/articles/davcli/phpmyadmin/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/plan",
+      "to": "/docs/2.0.10/articles/davcli/plan/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/port",
+      "to": "/docs/2.0.10/articles/davcli/port/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/proxy",
+      "to": "/docs/2.0.10/articles/davcli/proxy/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/report",
+      "to": "/docs/2.0.10/articles/davcli/report/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/sentinel",
+      "to": "/docs/2.0.10/articles/davcli/sentinel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/server",
+      "to": "/docs/2.0.10/articles/davcli/server/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/update",
+      "to": "/docs/2.0.10/articles/davcli/update/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/user",
+      "to": "/docs/2.0.10/articles/davcli/user/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/version",
+      "to": "/docs/2.0.10/articles/davcli/version/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/waf",
+      "to": "/docs/2.0.10/articles/davcli/waf/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/opencli/websites",
+      "to": "/docs/2.0.10/articles/davcli/websites/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/security/securing-openpanel",
+      "to": "/docs/2.0.10/articles/security/securing-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/server/cloudflared-tunnel-openpanel",
+      "to": "/docs/2.0.10/articles/server/cloudflared-tunnel-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/server/how-to-set-custom-ssl-openpanel-webmail",
+      "to": "/docs/2.0.10/articles/server/how-to-set-custom-ssl-davpanel-webmail/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/server/openadmin-system-crons",
+      "to": "/docs/2.0.10/articles/server/davadmin-system-crons/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/server/user-data-cache-in-openpanel-ui",
+      "to": "/docs/2.0.10/articles/server/user-data-cache-in-davpanel-ui/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/support/how-to-access-openpanel-demo",
+      "to": "/docs/2.0.10/articles/support/how-to-access-davpanel-demo/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/support/how-to-troubleshoot-openadmin-error",
+      "to": "/docs/2.0.10/articles/support/how-to-troubleshoot-davadmin-error/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/support/how-to-troubleshoot-openpanel-error",
+      "to": "/docs/2.0.10/articles/support/how-to-troubleshoot-davpanel-error/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/support/how-to-unlinstall-openpanel",
+      "to": "/docs/2.0.10/articles/support/how-to-unlinstall-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/support/openpanel-welcome-email-smtp-fix",
+      "to": "/docs/2.0.10/articles/support/davpanel-welcome-email-smtp-fix/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/support/where-openpanel-stores-logs",
+      "to": "/docs/2.0.10/articles/support/where-davpanel-stores-logs/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/transfers/import-cpanel-backup-to-openpanel",
+      "to": "/docs/2.0.10/articles/transfers/import-cpanel-backup-to-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/transfers/migrate-openadmin-to-new-server",
+      "to": "/docs/2.0.10/articles/transfers/migrate-davadmin-to-new-server/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/transfers/transfer-openpanel-account-to-another-server",
+      "to": "/docs/2.0.10/articles/transfers/transfer-davpanel-account-to-another-server/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/user-experience/how-to-setup-email-in-openpanel",
+      "to": "/docs/2.0.10/articles/user-experience/how-to-setup-email-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/user-experience/how-to-setup-ftp-in-openpanel",
+      "to": "/docs/2.0.10/articles/user-experience/how-to-setup-ftp-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/user-experience/how-to-setup-tls-ftp-in-openpanel",
+      "to": "/docs/2.0.10/articles/user-experience/how-to-setup-tls-ftp-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/websites/hosting-a-php-website-with-openpanel",
+      "to": "/docs/2.0.10/articles/websites/hosting-a-php-website-with-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/websites/hosting-a-static-website-with-openpanel",
+      "to": "/docs/2.0.10/articles/websites/hosting-a-static-website-with-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/websites/how-to-install-php-extensions-in-openpanel",
+      "to": "/docs/2.0.10/articles/websites/how-to-install-php-extensions-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/websites/how-to-install-wordpress-with-openpanel",
+      "to": "/docs/2.0.10/articles/websites/how-to-install-wordpress-with-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/websites/how-to-upload-wordpress-website-to-openpanel",
+      "to": "/docs/2.0.10/articles/websites/how-to-upload-wordpress-website-to-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/articles/websites/wordpress-plugins-themes-sets-in-openpanel",
+      "to": "/docs/2.0.10/articles/websites/wordpress-plugins-themes-sets-in-davpanel/"
+    },
+    {
+      "from": "/docs/2.0.10/category/opencli",
+      "to": "/docs/2.0.10/category/davcli/"
+    },
+    {
+      "from": "/docs/admin/advanced/cpanel",
+      "to": "/docs/admin/backups/cpanel/"
+    },
+    {
+      "from": "/docs/admin/advanced/demo-mode",
+      "to": "/docs/admin/system/demo-mode/"
+    },
+    {
+      "from": "/docs/admin/advanced/migrate",
+      "to": "/docs/admin/system/migrate/"
+    },
+    {
+      "from": "/docs/admin/advanced/reboot",
+      "to": "/docs/admin/system/reboot/"
+    },
+    {
+      "from": "/docs/admin/advanced/root-password",
+      "to": "/docs/admin/system/root-password/"
+    },
+    {
+      "from": "/docs/admin/advanced/ssh",
+      "to": "/docs/admin/system/ssh/"
+    },
+    {
+      "from": "/docs/admin/advanced/swap",
+      "to": "/docs/admin/system/swap/"
+    },
+    {
+      "from": "/docs/admin/advanced/timezone",
+      "to": "/docs/admin/system/timezone/"
+    },
+    {
+      "from": "/docs/admin/settings/openpanel",
+      "to": "/docs/admin/settings/davpanel/"
+    },
+    {
+      "from": "/docs/articles/accounts/how-to-add-custom-message-in-openpanel",
+      "to": "/docs/articles/accounts/how-to-add-custom-message-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/accounts/how-to-reset-openpanel-account-password",
+      "to": "/docs/articles/accounts/how-to-reset-davpanel-account-password/"
+    },
+    {
+      "from": "/docs/articles/accounts/troubleshooting-openpanel-login-errors",
+      "to": "/docs/articles/accounts/troubleshooting-davpanel-login-errors/"
+    },
+    {
+      "from": "/docs/articles/containers/how-does-openpanel-isolate-users",
+      "to": "/docs/articles/containers/how-does-davpanel-isolate-users/"
+    },
+    {
+      "from": "/docs/articles/containers/how-to-add-custom-docker-image-for-openpanel-user",
+      "to": "/docs/articles/containers/how-to-add-custom-docker-image-for-davpanel-user/"
+    },
+    {
+      "from": "/docs/articles/containers/how-to-set-mysql-mariadb-per-user-in-openpanel",
+      "to": "/docs/articles/containers/how-to-set-mysql-mariadb-per-user-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel",
+      "to": "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/containers/how-to-troubleshoot-services-with-openpanel",
+      "to": "/docs/articles/containers/how-to-troubleshoot-services-with-davpanel/"
+    },
+    {
+      "from": "/docs/articles/containers/how-traffic-flows-in-openpanel",
+      "to": "/docs/articles/containers/how-traffic-flows-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/containers/network-isolation-openpanel",
+      "to": "/docs/articles/containers/network-isolation-davpanel/"
+    },
+    {
+      "from": "/docs/articles/containers/volume-management-openpanel",
+      "to": "/docs/articles/containers/volume-management-davpanel/"
+    },
+    {
+      "from": "/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-openpanel",
+      "to": "/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/add-custom-icons-in-openpanel-dashboard",
+      "to": "/docs/articles/dev-experience/add-custom-icons-in-davpanel-dashboard/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/add-custom-services-to-openadmin",
+      "to": "/docs/articles/dev-experience/add-custom-services-to-davadmin/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/customizing-openadmin-email-templates",
+      "to": "/docs/articles/dev-experience/customizing-davadmin-email-templates/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/customizing-openpanel-user-interface",
+      "to": "/docs/articles/dev-experience/customizing-davpanel-user-interface/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/disable-openadmin-server-reboot",
+      "to": "/docs/articles/dev-experience/disable-davadmin-server-reboot/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/disable-openadmin-web-terminal",
+      "to": "/docs/articles/dev-experience/disable-davadmin-web-terminal/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/disable-openpanel-web-terminal",
+      "to": "/docs/articles/dev-experience/disable-davpanel-web-terminal/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/how-to-access-openadmin",
+      "to": "/docs/articles/dev-experience/how-to-access-davadmin/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/how-to-access-openpanel",
+      "to": "/docs/articles/dev-experience/how-to-access-davpanel/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/limit_access_to_openadmin",
+      "to": "/docs/articles/dev-experience/limit_access_to_davadmin/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/openadmin-api",
+      "to": "/docs/articles/dev-experience/davadmin-api/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/openadmin-keyboard-shortcuts",
+      "to": "/docs/articles/dev-experience/davadmin-keyboard-shortcuts/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/openpanel-pre-post-hooks",
+      "to": "/docs/articles/dev-experience/davpanel-pre-post-hooks/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/openpanel-structure",
+      "to": "/docs/articles/dev-experience/davpanel-structure/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/openpanel-system-services",
+      "to": "/docs/articles/dev-experience/davpanel-system-services/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/rate_limiting_for_openpanel",
+      "to": "/docs/articles/dev-experience/rate_limiting_for_davpanel/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/remove-custom-port-for-openadmin",
+      "to": "/docs/articles/dev-experience/remove-custom-port-for-davadmin/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/remove-custom-port-for-openpanel",
+      "to": "/docs/articles/dev-experience/remove-custom-port-for-davpanel/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/separate-domain-for-openpanel-access",
+      "to": "/docs/articles/dev-experience/separate-domain-for-davpanel-access/"
+    },
+    {
+      "from": "/docs/articles/dev-experience/troubleshooting-openpanel-guide",
+      "to": "/docs/articles/dev-experience/troubleshooting-davpanel-guide/"
+    },
+    {
+      "from": "/docs/articles/domains/cloudflare-with-openpanel",
+      "to": "/docs/articles/domains/cloudflare-with-davpanel/"
+    },
+    {
+      "from": "/docs/articles/domains/how-to-configure-nameservers-in-openpanel",
+      "to": "/docs/articles/domains/how-to-configure-nameservers-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/domains/how-to-enable-hsts-on-a-domain-in-openpanel",
+      "to": "/docs/articles/domains/how-to-enable-hsts-on-a-domain-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/domains/how-to-setup-dns-cluster-in-openpanel",
+      "to": "/docs/articles/domains/how-to-setup-dns-cluster-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/email/how-to-setup-fail2ban-mailserver-openpanel",
+      "to": "/docs/articles/email/how-to-setup-fail2ban-mailserver-davpanel/"
+    },
+    {
+      "from": "/docs/articles/email/how-to-use-remote-server-for-emails-in-openpanel",
+      "to": "/docs/articles/email/how-to-use-remote-server-for-emails-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/extensions/add-openpanel-in-virtualizor",
+      "to": "/docs/articles/extensions/add-davpanel-in-virtualizor/"
+    },
+    {
+      "from": "/docs/articles/extensions/openpanel-and-blesta",
+      "to": "/docs/articles/extensions/davpanel-and-blesta/"
+    },
+    {
+      "from": "/docs/articles/extensions/openpanel-and-clientexec",
+      "to": "/docs/articles/extensions/davpanel-and-clientexec/"
+    },
+    {
+      "from": "/docs/articles/extensions/openpanel-and-fossbilling",
+      "to": "/docs/articles/extensions/davpanel-and-fossbilling/"
+    },
+    {
+      "from": "/docs/articles/extensions/openpanel-and-whmcs",
+      "to": "/docs/articles/extensions/davpanel-and-whmcs/"
+    },
+    {
+      "from": "/docs/articles/extensions/openpanel-and-wisecp",
+      "to": "/docs/articles/extensions/davpanel-and-wisecp/"
+    },
+    {
+      "from": "/docs/articles/hosting-business/white-label-openpanel",
+      "to": "/docs/articles/hosting-business/white-label-davpanel/"
+    },
+    {
+      "from": "/docs/articles/install-update/create-openpanel-iso",
+      "to": "/docs/articles/install-update/create-davpanel-iso/"
+    },
+    {
+      "from": "/docs/articles/install-update/how-to-check-openpanel-version",
+      "to": "/docs/articles/install-update/how-to-check-davpanel-version/"
+    },
+    {
+      "from": "/docs/articles/install-update/how-to-disable-auto-update-openpanel",
+      "to": "/docs/articles/install-update/how-to-disable-auto-update-davpanel/"
+    },
+    {
+      "from": "/docs/articles/install-update/how-to-enable-auto-update-openpanel",
+      "to": "/docs/articles/install-update/how-to-enable-auto-update-davpanel/"
+    },
+    {
+      "from": "/docs/articles/install-update/how-to-manually-update-openpanel",
+      "to": "/docs/articles/install-update/how-to-manually-update-davpanel/"
+    },
+    {
+      "from": "/docs/articles/install-update/openpanel-main-ip-address",
+      "to": "/docs/articles/install-update/davpanel-main-ip-address/"
+    },
+    {
+      "from": "/docs/articles/install-update/openpanel-post-install-hook",
+      "to": "/docs/articles/install-update/davpanel-post-install-hook/"
+    },
+    {
+      "from": "/docs/articles/install-update/skip-specific-openpanel-version-update",
+      "to": "/docs/articles/install-update/skip-specific-davpanel-version-update/"
+    },
+    {
+      "from": "/docs/articles/license/how_to_cancel_openpanel_license",
+      "to": "/docs/articles/license/how_to_cancel_davpanel_license/"
+    },
+    {
+      "from": "/docs/articles/license/how_to_downgrade_openpanel_license",
+      "to": "/docs/articles/license/how_to_downgrade_davpanel_license/"
+    },
+    {
+      "from": "/docs/articles/license/openpanel-refund-policy",
+      "to": "/docs/articles/license/davpanel-refund-policy/"
+    },
+    {
+      "from": "/docs/articles/license/openpanel_enterprise_for_nonprofits",
+      "to": "/docs/articles/license/davpanel_enterprise_for_nonprofits/"
+    },
+    {
+      "from": "/docs/articles/license/transfer-openpanel-license-to-new-server",
+      "to": "/docs/articles/license/transfer-davpanel-license-to-new-server/"
+    },
+    {
+      "from": "/docs/articles/license/upgrade_to_openpanel_enterprise_and-activate_license",
+      "to": "/docs/articles/license/upgrade_to_davpanel_enterprise_and-activate_license/"
+    },
+    {
+      "from": "/docs/articles/license/what_happens_when_openpanel_enterprise_license_expires",
+      "to": "/docs/articles/license/what_happens_when_davpanel_enterprise_license_expires/"
+    },
+    {
+      "from": "/docs/articles/opencli/admin",
+      "to": "/docs/articles/davcli/admin/"
+    },
+    {
+      "from": "/docs/articles/opencli/api",
+      "to": "/docs/articles/davcli/api/"
+    },
+    {
+      "from": "/docs/articles/opencli/backup",
+      "to": "/docs/articles/davcli/backup/"
+    },
+    {
+      "from": "/docs/articles/opencli/config",
+      "to": "/docs/articles/davcli/config/"
+    },
+    {
+      "from": "/docs/articles/opencli/docker",
+      "to": "/docs/articles/davcli/docker/"
+    },
+    {
+      "from": "/docs/articles/opencli/domain",
+      "to": "/docs/articles/davcli/domain/"
+    },
+    {
+      "from": "/docs/articles/opencli/domains",
+      "to": "/docs/articles/davcli/domains/"
+    },
+    {
+      "from": "/docs/articles/opencli/email",
+      "to": "/docs/articles/davcli/email/"
+    },
+    {
+      "from": "/docs/articles/opencli/error",
+      "to": "/docs/articles/davcli/error/"
+    },
+    {
+      "from": "/docs/articles/opencli/faq",
+      "to": "/docs/articles/davcli/faq/"
+    },
+    {
+      "from": "/docs/articles/opencli/files",
+      "to": "/docs/articles/davcli/files/"
+    },
+    {
+      "from": "/docs/articles/opencli/ftp",
+      "to": "/docs/articles/davcli/ftp/"
+    },
+    {
+      "from": "/docs/articles/opencli/hooks",
+      "to": "/docs/articles/davcli/hooks/"
+    },
+    {
+      "from": "/docs/articles/opencli/imunify",
+      "to": "/docs/articles/davcli/imunify/"
+    },
+    {
+      "from": "/docs/articles/opencli/license",
+      "to": "/docs/articles/davcli/license/"
+    },
+    {
+      "from": "/docs/articles/opencli/locale",
+      "to": "/docs/articles/davcli/locale/"
+    },
+    {
+      "from": "/docs/articles/opencli/opencli",
+      "to": "/docs/articles/davcli/davcli/"
+    },
+    {
+      "from": "/docs/articles/opencli/php",
+      "to": "/docs/articles/davcli/php/"
+    },
+    {
+      "from": "/docs/articles/opencli/phpmyadmin",
+      "to": "/docs/articles/davcli/phpmyadmin/"
+    },
+    {
+      "from": "/docs/articles/opencli/plan",
+      "to": "/docs/articles/davcli/plan/"
+    },
+    {
+      "from": "/docs/articles/opencli/port",
+      "to": "/docs/articles/davcli/port/"
+    },
+    {
+      "from": "/docs/articles/opencli/proxy",
+      "to": "/docs/articles/davcli/proxy/"
+    },
+    {
+      "from": "/docs/articles/opencli/report",
+      "to": "/docs/articles/davcli/report/"
+    },
+    {
+      "from": "/docs/articles/opencli/sentinel",
+      "to": "/docs/articles/davcli/sentinel/"
+    },
+    {
+      "from": "/docs/articles/opencli/server",
+      "to": "/docs/articles/davcli/server/"
+    },
+    {
+      "from": "/docs/articles/opencli/update",
+      "to": "/docs/articles/davcli/update/"
+    },
+    {
+      "from": "/docs/articles/opencli/user",
+      "to": "/docs/articles/davcli/user/"
+    },
+    {
+      "from": "/docs/articles/opencli/version",
+      "to": "/docs/articles/davcli/version/"
+    },
+    {
+      "from": "/docs/articles/opencli/waf",
+      "to": "/docs/articles/davcli/waf/"
+    },
+    {
+      "from": "/docs/articles/opencli/websites",
+      "to": "/docs/articles/davcli/websites/"
+    },
+    {
+      "from": "/docs/articles/security/securing-openpanel",
+      "to": "/docs/articles/security/securing-davpanel/"
+    },
+    {
+      "from": "/docs/articles/server/cloudflared-tunnel-openpanel",
+      "to": "/docs/articles/server/cloudflared-tunnel-davpanel/"
+    },
+    {
+      "from": "/docs/articles/server/how-to-set-custom-ssl-openpanel-webmail",
+      "to": "/docs/articles/server/how-to-set-custom-ssl-davpanel-webmail/"
+    },
+    {
+      "from": "/docs/articles/server/openadmin-system-crons",
+      "to": "/docs/articles/server/davadmin-system-crons/"
+    },
+    {
+      "from": "/docs/articles/server/user-data-cache-in-openpanel-ui",
+      "to": "/docs/articles/server/user-data-cache-in-davpanel-ui/"
+    },
+    {
+      "from": "/docs/articles/support/how-to-access-openpanel-demo",
+      "to": "/docs/articles/support/how-to-access-davpanel-demo/"
+    },
+    {
+      "from": "/docs/articles/support/how-to-troubleshoot-openadmin-error",
+      "to": "/docs/articles/support/how-to-troubleshoot-davadmin-error/"
+    },
+    {
+      "from": "/docs/articles/support/how-to-troubleshoot-openpanel-error",
+      "to": "/docs/articles/support/how-to-troubleshoot-davpanel-error/"
+    },
+    {
+      "from": "/docs/articles/support/how-to-unlinstall-openpanel",
+      "to": "/docs/articles/support/how-to-unlinstall-davpanel/"
+    },
+    {
+      "from": "/docs/articles/support/openpanel-welcome-email-smtp-fix",
+      "to": "/docs/articles/support/davpanel-welcome-email-smtp-fix/"
+    },
+    {
+      "from": "/docs/articles/support/where-openpanel-stores-logs",
+      "to": "/docs/articles/support/where-davpanel-stores-logs/"
+    },
+    {
+      "from": "/docs/articles/transfers/import-cpanel-backup-to-openpanel",
+      "to": "/docs/articles/transfers/import-cpanel-backup-to-davpanel/"
+    },
+    {
+      "from": "/docs/articles/transfers/migrate-openadmin-to-new-server",
+      "to": "/docs/articles/transfers/migrate-davadmin-to-new-server/"
+    },
+    {
+      "from": "/docs/articles/transfers/transfer-openpanel-account-to-another-server",
+      "to": "/docs/articles/transfers/transfer-davpanel-account-to-another-server/"
+    },
+    {
+      "from": "/docs/articles/user-experience/how-to-setup-email-in-openpanel",
+      "to": "/docs/articles/user-experience/how-to-setup-email-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/user-experience/how-to-setup-ftp-in-openpanel",
+      "to": "/docs/articles/user-experience/how-to-setup-ftp-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/user-experience/how-to-setup-tls-ftp-in-openpanel",
+      "to": "/docs/articles/user-experience/how-to-setup-tls-ftp-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/websites/hosting-a-php-website-with-openpanel",
+      "to": "/docs/articles/websites/hosting-a-php-website-with-davpanel/"
+    },
+    {
+      "from": "/docs/articles/websites/hosting-a-static-website-with-openpanel",
+      "to": "/docs/articles/websites/hosting-a-static-website-with-davpanel/"
+    },
+    {
+      "from": "/docs/articles/websites/how-to-install-php-extensions-in-openpanel",
+      "to": "/docs/articles/websites/how-to-install-php-extensions-in-davpanel/"
+    },
+    {
+      "from": "/docs/articles/websites/how-to-install-wordpress-with-openpanel",
+      "to": "/docs/articles/websites/how-to-install-wordpress-with-davpanel/"
+    },
+    {
+      "from": "/docs/articles/websites/how-to-upload-wordpress-website-to-openpanel",
+      "to": "/docs/articles/websites/how-to-upload-wordpress-website-to-davpanel/"
+    },
+    {
+      "from": "/docs/articles/websites/wordpress-plugins-themes-sets-in-openpanel",
+      "to": "/docs/articles/websites/wordpress-plugins-themes-sets-in-davpanel/"
+    },
+    {
+      "from": "/docs/category/advanced",
+      "to": "/docs/panel/intro/"
+    },
+    {
+      "from": "/docs/category/caching",
+      "to": "/docs/category/cache-search/"
+    },
+    {
+      "from": "/docs/category/opencli",
+      "to": "/docs/category/davcli/"
+    },
+    {
+      "from": "/docs/panel/account/2fa",
+      "to": "/docs/panel/security/2fa/"
+    },
+    {
+      "from": "/docs/panel/account/account_activity",
+      "to": "/docs/panel/security/account_activity/"
+    },
+    {
+      "from": "/docs/panel/account/active_sessions",
+      "to": "/docs/panel/security/active_sessions/"
+    },
+    {
+      "from": "/docs/panel/account/login_history",
+      "to": "/docs/panel/security/login_history/"
+    },
+    {
+      "from": "/docs/panel/account/passkeys",
+      "to": "/docs/panel/security/passkeys/"
+    },
+    {
+      "from": "/docs/panel/advanced",
+      "to": "/docs/panel/intro/"
     },
     {
       "from": "/docs/panel/advanced/cronjobs",
@@ -57,16 +1601,16 @@
       "to": "/docs/panel/processes/process_manager/"
     },
     {
-      "from": "/docs/panel/advanced/services",
-      "to": "/docs/panel/processes/services/"
-    },
-    {
       "from": "/docs/panel/advanced/resource_usage",
       "to": "/docs/panel/statistics/resource_usage/"
     },
     {
       "from": "/docs/panel/advanced/server_info",
       "to": "/docs/panel/server_info/"
+    },
+    {
+      "from": "/docs/panel/advanced/services",
+      "to": "/docs/panel/processes/services/"
     },
     {
       "from": "/docs/panel/advanced/waf",
@@ -77,68 +1621,44 @@
       "to": "/docs/panel/webserver/webserver_settings/"
     },
     {
-      "from": "/docs/panel/account/2fa",
-      "to": "/docs/panel/security/2fa/"
+      "from": "/docs/panel/containers/mysql",
+      "to": "/docs/panel/mysql/server_type/"
     },
     {
-      "from": "/docs/panel/account/passkeys",
-      "to": "/docs/panel/security/passkeys/"
+      "from": "/docs/panel/containers/webserver",
+      "to": "/docs/panel/webserver/webserver_type/"
     },
     {
-      "from": "/docs/panel/account/active_sessions",
-      "to": "/docs/panel/security/active_sessions/"
+      "from": "/docs/panel/domains/goaccess",
+      "to": "/docs/panel/statistics/goaccess/"
     },
     {
-      "from": "/docs/panel/account/account_activity",
-      "to": "/docs/panel/security/account_activity/"
+      "from": "/docs/panel/domains/logs",
+      "to": "/docs/panel/statistics/logs/"
     },
     {
-      "from": "/docs/panel/account/login_history",
-      "to": "/docs/panel/security/login_history/"
+      "from": "/docs/panel/domains/vhosts",
+      "to": "/docs/panel/webserver/vhosts/"
     },
     {
-      "from": "/docs/panel/advanced",
-      "to": "/docs/panel/intro/"
+      "from": "/docs/panel/files/backup-wizard",
+      "to": "/docs/panel/backups/backup-wizard/"
     },
     {
-      "from": "/docs/category/advanced",
-      "to": "/docs/panel/intro/"
+      "from": "/docs/panel/files/backups",
+      "to": "/docs/panel/backups/"
     },
     {
-      "from": "/docs/category/caching",
-      "to": "/docs/category/cache-search/"
+      "from": "/docs/panel/files/disk_usage",
+      "to": "/docs/panel/statistics/disk_usage/"
     },
     {
-      "from": "/docs/admin/advanced/timezone",
-      "to": "/docs/admin/system/timezone/"
+      "from": "/docs/panel/files/inodes_explorer",
+      "to": "/docs/panel/statistics/inodes_explorer/"
     },
     {
-      "from": "/docs/admin/advanced/root-password",
-      "to": "/docs/admin/system/root-password/"
-    },
-    {
-      "from": "/docs/admin/advanced/ssh",
-      "to": "/docs/admin/system/ssh/"
-    },
-    {
-      "from": "/docs/admin/advanced/reboot",
-      "to": "/docs/admin/system/reboot/"
-    },
-    {
-      "from": "/docs/admin/advanced/swap",
-      "to": "/docs/admin/system/swap/"
-    },
-    {
-      "from": "/docs/admin/advanced/migrate",
-      "to": "/docs/admin/system/migrate/"
-    },
-    {
-      "from": "/docs/admin/advanced/demo-mode",
-      "to": "/docs/admin/system/demo-mode/"
-    },
-    {
-      "from": "/docs/admin/advanced/cpanel",
-      "to": "/docs/admin/backups/cpanel/"
+      "from": "/docs/panel/files/malware-scanner",
+      "to": "/docs/panel/security/malware-scanner/"
     }
   ]
 }

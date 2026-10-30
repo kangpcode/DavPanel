@@ -10,7 +10,7 @@ Customers with an **annual DavPanel Enterprise license** can have their existing
 
 The free migration service is available only if ALL of the following conditions are met:
 
-- You have an active **yearly** (annual billing) [Enterprise license](https://my.davpanel.com/index.php?rp=/store/openpanel/enterprise-license). Monthly licenses, trial licenses and the Community Edition are not eligible.
+- You have an active **yearly** (annual billing) [Enterprise license](https://my.davpanel.com/index.php?rp=/store/davpanel/enterprise-license). Monthly licenses, trial licenses and the Community Edition are not eligible.
 - The license is activated on the destination server, and DavPanel is installed and reachable.
 - The source server runs one of the supported control panels listed below.
 - The request is submitted by the license holder through our support system.

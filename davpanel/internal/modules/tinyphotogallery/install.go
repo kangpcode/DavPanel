@@ -7,16 +7,16 @@ import (
 	"strconv"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/installmanifest"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/modules/websites"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/installmanifest"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/websites"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // tinyPhotoGallerySourceFile is the only source TinyPhotoGallery ships: a single PHP file on the main branch, no tagged releases and no composer.json

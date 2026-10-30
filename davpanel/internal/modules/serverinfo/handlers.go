@@ -6,12 +6,12 @@ import (
 	"strconv"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/flash"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/flash"
+	"github.com/kangpcode/davpanel/internal/core/session"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // handleServerInfo serves a static page shell, entirely filled in client-side via the /json/system/hosting/* fetches below

@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Logs
 
-The **Containers > Logs** page allows you to view container logs (`podman logs`) directly from the OpenPanel interface.
+The **Containers > Logs** page allows you to view container logs (`podman logs`) directly from the DavPanel interface.
 
 ## Requirements
 
@@ -15,13 +15,13 @@ To access this feature:
 
 ## Accessing Logs
 
-1. In the OpenPanel menu, go to **Containers > Logs**.
+1. In the DavPanel menu, go to **Containers > Logs**.
 2. Click on **Select Container** to display a list of all available services.
 3. Select the service you want to view logs for.
 4. The log output for the selected container will appear below.
 
-![Container Logs page showing the last lines of the mariadb container log](/img/openpanel-screenshots/containers/logs-page.png#gh-light-mode-only)
-![Container Logs page showing the last lines of the mariadb container log](/img/openpanel-screenshots/containers/logs-page_dark.png#gh-dark-mode-only)
+![Container Logs page showing the last lines of the mariadb container log](/img/davpanel-screenshots/containers/logs-page.png#gh-light-mode-only)
+![Container Logs page showing the last lines of the mariadb container log](/img/davpanel-screenshots/containers/logs-page_dark.png#gh-dark-mode-only)
 
 You can optionally adjust the number of log lines shown using the dropdown menu in the top-right corner of the logs panel.
 

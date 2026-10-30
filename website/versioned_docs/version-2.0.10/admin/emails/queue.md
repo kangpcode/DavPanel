@@ -6,14 +6,14 @@ sidebar_position: 4
 
 View and manage mail that's queued but not yet delivered by the mailserver (Postfix).
 
-Use **OpenAdmin > Emails > Queue** to access it.
+Use **DavAdmin > Emails > Queue** to access it.
 
 ## Queue Table
 
 Each row shows one queued message, including its queue ID, sender, recipient(s), size, and the reason delivery is being retried.
 
-![Email Queue page with the queued messages table and the Refresh button](/img/openadmin-screenshots/emails/queue-page.png#gh-light-mode-only)
-![Email Queue page with the queued messages table and the Refresh button](/img/openadmin-screenshots/emails/queue-page_dark.png#gh-dark-mode-only)
+![Email Queue page with the queued messages table and the Refresh button](/img/davadmin-screenshots/emails/queue-page.png#gh-light-mode-only)
+![Email Queue page with the queued messages table and the Refresh button](/img/davadmin-screenshots/emails/queue-page_dark.png#gh-dark-mode-only)
 
 ## Actions
 

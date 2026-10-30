@@ -18,7 +18,7 @@ To access this feature:
 To change the tag for a Docker image:
 
 1. First, check the available tags for the image on [Docker Hub](https://hub.docker.com/).
-2. In the OpenPanel menu, go to **Docker > Change Image Tag**.
+2. In the DavPanel menu, go to **Docker > Change Image Tag**.
 3. Under **Select Service**, choose the service for which you want to change the image tag.
 4. Enter the **New Image Tag** in the input field.
 5. Click the **Change Tag** button to apply the change.

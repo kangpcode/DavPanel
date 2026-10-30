@@ -12,11 +12,11 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/sysinfo"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/sysinfo"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 const notifyConfigFilePath = "/etc/davpanel/davpanel/conf/davpanel.config"

@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
 )
 
 // apiActivity serves the same search/pagination view as handleViewActivityPage, as JSON instead of HTML

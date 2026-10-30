@@ -4,21 +4,21 @@ sidebar_position: 1
 
 # Users
 
-OpenPanel has a single user role named **User** that can only manage their docker container and inherits settings specified by the Admin user.
+DavPanel has a single user role named **User** that can only manage their docker container and inherits settings specified by the Admin user.
 
 
 ## List Users
 
 
 <Tabs>
-  <TabItem value="openadmin-users" label="OpenAdmin" default>
+  <TabItem value="davadmin-users" label="DavAdmin" default>
   
-  To access all OpenPanel users, navigate to **Accounts > Users**.
+  To access all DavPanel users, navigate to **Accounts > Users**.
   
   The Users page displays a table with user information and buttons to manage it.
   
-  ![Users page listing OpenPanel accounts with their status, plan, memory, CPU, disk and inodes usage and the Impersonate button](/img/openadmin-screenshots/accounts/users-list.png#gh-light-mode-only)
-  ![Users page listing OpenPanel accounts with their status, plan, memory, CPU, disk and inodes usage and the Impersonate button](/img/openadmin-screenshots/accounts/users-list_dark.png#gh-dark-mode-only)
+  ![Users page listing DavPanel accounts with their status, plan, memory, CPU, disk and inodes usage and the Impersonate button](/img/davadmin-screenshots/accounts/users-list.png#gh-light-mode-only)
+  ![Users page listing DavPanel accounts with their status, plan, memory, CPU, disk and inodes usage and the Impersonate button](/img/davadmin-screenshots/accounts/users-list_dark.png#gh-dark-mode-only)
 
   The **Memory**, **CPU**, **Disk** and **Inodes** columns show the user's current usage as a percentage of their plan limit. Hover over a ring to see the exact usage and limit, click the Memory or CPU ring to open the user's processes, or the Disk ring to open their Storage tab. A **?** means there is no disk usage data for that user yet.
 
@@ -30,8 +30,8 @@ OpenPanel has a single user role named **User** that can only manage their docke
   - **Package** – show only users on the selected hosting plan. The list includes every plan that has at least one user.
   - **Owner** (Enterprise license only, not shown to resellers) – show only users owned by the selected reseller, or users with no reseller.
 
-  ![Users page with the Package filter open, listing All packages and each hosting plan in use](/img/openadmin-screenshots/accounts/users-filters.png#gh-light-mode-only)
-  ![Users page with the Package filter open, listing All packages and each hosting plan in use](/img/openadmin-screenshots/accounts/users-filters_dark.png#gh-dark-mode-only)
+  ![Users page with the Package filter open, listing All packages and each hosting plan in use](/img/davadmin-screenshots/accounts/users-filters.png#gh-light-mode-only)
+  ![Users page with the Package filter open, listing All packages and each hosting plan in use](/img/davadmin-screenshots/accounts/users-filters_dark.png#gh-dark-mode-only)
 
   Filters work together with the search box, and **Showing X of Y** below the table counts the users that match. The selected Package and Owner are kept in the page address (for example `/users?plan=Standard+plan`), so a filtered list can be bookmarked or shared. The user count on the **Hosting Plans** page links to the Users page with that plan already selected.
 
@@ -39,8 +39,8 @@ OpenPanel has a single user role named **User** that can only manage their docke
 
   Additional columns can be displayed using the 'Show Columns' button.
 
-  ![Show Columns menu of the Users table with a toggle for each column, including 2FA and Passkeys](/img/openadmin-screenshots/accounts/users-columns.png#gh-light-mode-only)
-  ![Show Columns menu of the Users table with a toggle for each column, including 2FA and Passkeys](/img/openadmin-screenshots/accounts/users-columns_dark.png#gh-dark-mode-only)
+  ![Show Columns menu of the Users table with a toggle for each column, including 2FA and Passkeys](/img/davadmin-screenshots/accounts/users-columns.png#gh-light-mode-only)
+  ![Show Columns menu of the Users table with a toggle for each column, including 2FA and Passkeys](/img/davadmin-screenshots/accounts/users-columns_dark.png#gh-dark-mode-only)
 
   - **2FA** – whether the user has two-factor authentication enabled.
   - **Passkeys** – how many passkeys the user has registered, empty if they have none.
@@ -48,23 +48,23 @@ OpenPanel has a single user role named **User** that can only manage their docke
   Suspended users are highlighted in red.
 
   </TabItem>
-  <TabItem value="CLI-users" label="OpenCLI">
+  <TabItem value="CLI-users" label="DavCLI">
 
 To list all users, use the following command:
 
 ```bash
-opencli user-list
+davcli user-list
 ```
 
 Example output:
 ```bash
-opencli user-list
+davcli user-list
 +----+----------------------------------+----------------------+----------------+------------------+-------+---------------------+
 | id | username                         | email                | plan_name      | server           | owner | registered_date     |
 +----+----------------------------------+----------------------+----------------+------------------+-------+---------------------+
-|  3 | forums                           | stefan@openpanel.com | Standard plan  | forums           | NULL  | 2025-05-08 19:25:47 |
-|  7 | pcx3                             | stefan@pejcic.rs     | Developer Plus | pcx3             | NULL  | 2025-05-09 12:26:20 |
-|  9 | openpanelwebsite                 | info@openpanel.com   | Standard plan  | openpanelwebsite | NULL  | 2025-05-09 14:47:27 |
+|  3 | forums                           | stefan@davpanel.com | Standard plan  | forums           | NULL  | 2025-05-08 19:25:47 |
+|  7 | pcx3                             | kangpcode@users.noreply.github.com     | Developer Plus | pcx3             | NULL  | 2025-05-09 12:26:20 |
+|  9 | davpanelwebsite                 | info@davpanel.com   | Standard plan  | davpanelwebsite | NULL  | 2025-05-09 14:47:27 |
 | 19 | SUSPENDED_20250529173435_radovan | radovan@jecmenica.rs | Standard plan  | radovan          | NULL  | 2025-05-29 07:47:15 |
 +----+----------------------------------+----------------------+----------------+------------------+-------+---------------------+
 ```
@@ -72,7 +72,7 @@ opencli user-list
 You can also format the data as JSON:
 
 ```bash
-opencli user-list --json
+davcli user-list --json
 ```
   </TabItem>
   <TabItem value="API-users" label="API">
@@ -91,8 +91,8 @@ curl -X GET http://PANEL:2087/api/users -H "Authorization: Bearer JWT_TOKEN_HERE
 
 Tick the checkbox of one or more users, or the checkbox in the table header to select all users shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two users selected with the bulk actions bar offering Suspend, Unsuspend, Change plan, Change password, Change email, Change IP, Disable 2FA, Delete Passkeys, Generate backup and Delete](/img/openadmin-screenshots/accounts/users-bulk.png#gh-light-mode-only)
-![Two users selected with the bulk actions bar offering Suspend, Unsuspend, Change plan, Change password, Change email, Change IP, Disable 2FA, Delete Passkeys, Generate backup and Delete](/img/openadmin-screenshots/accounts/users-bulk_dark.png#gh-dark-mode-only)
+![Two users selected with the bulk actions bar offering Suspend, Unsuspend, Change plan, Change password, Change email, Change IP, Disable 2FA, Delete Passkeys, Generate backup and Delete](/img/davadmin-screenshots/accounts/users-bulk.png#gh-light-mode-only)
+![Two users selected with the bulk actions bar offering Suspend, Unsuspend, Change plan, Change password, Change email, Change IP, Disable 2FA, Delete Passkeys, Generate backup and Delete](/img/davadmin-screenshots/accounts/users-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -111,8 +111,8 @@ Only the action that fits a user runs on it: suspended users are skipped by **Su
 
 Actions that need a value, like **Change plan**, ask for it in the bar before you confirm:
 
-![Change plan step of the bulk actions bar with a dropdown of hosting plans for two selected users](/img/openadmin-screenshots/accounts/users-bulk-plan.png#gh-light-mode-only)
-![Change plan step of the bulk actions bar with a dropdown of hosting plans for two selected users](/img/openadmin-screenshots/accounts/users-bulk-plan_dark.png#gh-dark-mode-only)
+![Change plan step of the bulk actions bar with a dropdown of hosting plans for two selected users](/img/davadmin-screenshots/accounts/users-bulk-plan.png#gh-light-mode-only)
+![Change plan step of the bulk actions bar with a dropdown of hosting plans for two selected users](/img/davadmin-screenshots/accounts/users-bulk-plan_dark.png#gh-dark-mode-only)
 
 Click an action, confirm it, and it runs on the selected users one after another. When it's done the page reloads with a notice listing the users it worked for, or which ones failed and why.
 
@@ -120,26 +120,26 @@ Click an action, confirm it, and it runs on the selected users one after another
 
 
 <Tabs>
-  <TabItem value="openadmin-users-new" label="OpenAdmin" default>
+  <TabItem value="davadmin-users-new" label="DavAdmin" default>
 
 To create a new user, click on the **Create New** button on the Users page. A form is displayed where you can set the username, email address (optionally sending the user a welcome email with their login credentials), and generate a strong password.
 
 You can also choose the webserver for the account (and optionally enable Varnish Cache), the database type (MySQL or MariaDB), assign a reseller as the account's owner (Enterprise license only, and only when creating the user as a Super Admin/Admin), and select a hosting plan to assign to the user.
 
-![Create New user form with username, email, password, webserver, database type and hosting plan](/img/openadmin-screenshots/accounts/users-new.png#gh-light-mode-only)
-![Create New user form with username, email, password, webserver, database type and hosting plan](/img/openadmin-screenshots/accounts/users-new_dark.png#gh-dark-mode-only)
+![Create New user form with username, email, password, webserver, database type and hosting plan](/img/davadmin-screenshots/accounts/users-new.png#gh-light-mode-only)
+![Create New user form with username, email, password, webserver, database type and hosting plan](/img/davadmin-screenshots/accounts/users-new_dark.png#gh-dark-mode-only)
 
   </TabItem>
-  <TabItem value="CLI-users-new" label="OpenCLI">
+  <TabItem value="CLI-users-new" label="DavCLI">
 
 To create a new user run the following command:
 
 ```bash
-opencli user-add <USERNAME> <PASSWORD> <EMAIL> <PLAN_NAME>
+davcli user-add <USERNAME> <PASSWORD> <EMAIL> <PLAN_NAME>
 ```
 Example: 
 ```bash
-opencli user-add filip password1234 filip@openadmin.com default_plan_apache
+davcli user-add filip password1234 filip@davadmin.com default_plan_apache
 ```
 
 :::tip
@@ -156,7 +156,7 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer JWT_T
 
 Example:
 ```bash
-curl -X POST "http://PANEL:2087/api/users" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGcBns" -H "Content-Type: application/json" -d '{"username":"stefan","password":"strongishpassword1234","email":"stefan@pejcic.rs","plan_name":"default_plan_nginx"}'
+curl -X POST "http://PANEL:2087/api/users" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGcBns" -H "Content-Type: application/json" -d '{"username":"stefan","password":"strongishpassword1234","email":"kangpcode@users.noreply.github.com","plan_name":"default_plan_nginx"}'
 ```
 
 Example response:
@@ -173,8 +173,8 @@ Example response:
   </TabItem>
 </Tabs>
 
-- The OpenPanel username must be 3 to 20 characters long and can only contain letters and numbers.
-- The OpenPanel password must be 6 to 30 characters long and cannot contain an apostrophe (`'`).
+- The DavPanel username must be 3 to 20 characters long and can only contain letters and numbers.
+- The DavPanel password must be 6 to 30 characters long and cannot contain an apostrophe (`'`).
 
 
 ## Single User
@@ -197,13 +197,13 @@ Overview is the default tab. Its top part displays current usage statistics:
 - Time statistics usage was last update
 - Historical usage
 
-![Overview tab of a user with gauges for storage, inodes, CPU and memory usage and the View Past Usage button](/img/openadmin-screenshots/accounts/users-stats.png#gh-light-mode-only)
-![Overview tab of a user with gauges for storage, inodes, CPU and memory usage and the View Past Usage button](/img/openadmin-screenshots/accounts/users-stats_dark.png#gh-dark-mode-only)
+![Overview tab of a user with gauges for storage, inodes, CPU and memory usage and the View Past Usage button](/img/davadmin-screenshots/accounts/users-stats.png#gh-light-mode-only)
+![Overview tab of a user with gauges for storage, inodes, CPU and memory usage and the View Past Usage button](/img/davadmin-screenshots/accounts/users-stats_dark.png#gh-dark-mode-only)
 
 Clicking on 'View Past Usage' will display a table with past resource usage for the user: Date, CPU %, CPU usage, Memory %, Memory usage and Tasks.
 
-![Past resource usage table of a user with the date, CPU and memory usage and the number of tasks](/img/openadmin-screenshots/accounts/users-history.png#gh-light-mode-only)
-![Past resource usage table of a user with the date, CPU and memory usage and the number of tasks](/img/openadmin-screenshots/accounts/users-history_dark.png#gh-dark-mode-only)
+![Past resource usage table of a user with the date, CPU and memory usage and the number of tasks](/img/davadmin-screenshots/accounts/users-history.png#gh-light-mode-only)
+![Past resource usage table of a user with the date, CPU and memory usage and the number of tasks](/img/davadmin-screenshots/accounts/users-history_dark.png#gh-dark-mode-only)
 
 
 ### Services
@@ -220,15 +220,15 @@ Services tab displays all user services (docker containers). Columns can be togg
 
 An 'Edit Services' button also lets Administrators edit the raw service configuration.
 
-![Services tab listing the user containers with their CPU and memory usage, PIDs and actions](/img/openadmin-screenshots/accounts/users-services.png#gh-light-mode-only)
-![Services tab listing the user containers with their CPU and memory usage, PIDs and actions](/img/openadmin-screenshots/accounts/users-services_dark.png#gh-dark-mode-only)
+![Services tab listing the user containers with their CPU and memory usage, PIDs and actions](/img/davadmin-screenshots/accounts/users-services.png#gh-light-mode-only)
+![Services tab listing the user containers with their CPU and memory usage, PIDs and actions](/img/davadmin-screenshots/accounts/users-services_dark.png#gh-dark-mode-only)
 
 #### Bulk Actions
 
 Tick the checkbox of one or more services, or the checkbox in the table header to select all services shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two services of a user selected with the bulk actions bar offering Start, Stop, Restart, Edit CPU, Edit RAM and Edit PIDs](/img/openadmin-screenshots/accounts/users-services-bulk.png#gh-light-mode-only)
-![Two services of a user selected with the bulk actions bar offering Start, Stop, Restart, Edit CPU, Edit RAM and Edit PIDs](/img/openadmin-screenshots/accounts/users-services-bulk_dark.png#gh-dark-mode-only)
+![Two services of a user selected with the bulk actions bar offering Start, Stop, Restart, Edit CPU, Edit RAM and Edit PIDs](/img/davadmin-screenshots/accounts/users-services-bulk.png#gh-light-mode-only)
+![Two services of a user selected with the bulk actions bar offering Start, Stop, Restart, Edit CPU, Edit RAM and Edit PIDs](/img/davadmin-screenshots/accounts/users-services-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -249,15 +249,15 @@ Storage tab displays data from the [docker system df](https://docs.docker.com/re
 - Containers
 - Images
 
-![Storage tab with the user volumes, containers and images from docker system df](/img/openadmin-screenshots/accounts/users-storage.png#gh-light-mode-only)
-![Storage tab with the user volumes, containers and images from docker system df](/img/openadmin-screenshots/accounts/users-storage_dark.png#gh-dark-mode-only)
+![Storage tab with the user volumes, containers and images from docker system df](/img/davadmin-screenshots/accounts/users-storage.png#gh-light-mode-only)
+![Storage tab with the user volumes, containers and images from docker system df](/img/davadmin-screenshots/accounts/users-storage_dark.png#gh-dark-mode-only)
 
 ### Overview
 
 Below the usage statistics, the Overview tab displays detailed user information.
 
-![User details on the Overview tab: username, email, plan, locale, 2FA status, IP address, location, server, docker context and setup time](/img/openadmin-screenshots/accounts/users-info.png#gh-light-mode-only)
-![User details on the Overview tab: username, email, plan, locale, 2FA status, IP address, location, server, docker context and setup time](/img/openadmin-screenshots/accounts/users-info_dark.png#gh-dark-mode-only)
+![User details on the Overview tab: username, email, plan, locale, 2FA status, IP address, location, server, docker context and setup time](/img/davadmin-screenshots/accounts/users-info.png#gh-light-mode-only)
+![User details on the Overview tab: username, email, plan, locale, 2FA status, IP address, location, server, docker context and setup time](/img/davadmin-screenshots/accounts/users-info_dark.png#gh-dark-mode-only)
 
 Displayed information:
 
@@ -275,10 +275,10 @@ Displayed information:
 
 ### Permissions
 
-The Permissions tab lets Administrators view and, for individual users, override which OpenPanel features/pages are enabled. By default a user's permissions follow their hosting plan's defaults; switching to **Custom** mode allows enabling or disabling individual features for that user only, independent of the plan. Plan-wide feature defaults are managed separately in Feature Manager.
+The Permissions tab lets Administrators view and, for individual users, override which DavPanel features/pages are enabled. By default a user's permissions follow their hosting plan's defaults; switching to **Custom** mode allows enabling or disabling individual features for that user only, independent of the plan. Plan-wide feature defaults are managed separately in Feature Manager.
 
-![Permissions tab where the enabled OpenPanel features follow the plan or are set per user](/img/openadmin-screenshots/accounts/users-permissions.png#gh-light-mode-only)
-![Permissions tab where the enabled OpenPanel features follow the plan or are set per user](/img/openadmin-screenshots/accounts/users-permissions_dark.png#gh-dark-mode-only)
+![Permissions tab where the enabled DavPanel features follow the plan or are set per user](/img/davadmin-screenshots/accounts/users-permissions.png#gh-light-mode-only)
+![Permissions tab where the enabled DavPanel features follow the plan or are set per user](/img/davadmin-screenshots/accounts/users-permissions_dark.png#gh-dark-mode-only)
 
 ### Activity
 
@@ -288,8 +288,8 @@ Displays [users activity log](/docs/panel/security/account_activity/).
 - Action performed
 - IP Address
 
-![Activity Log tab with the date and the action performed](/img/openadmin-screenshots/accounts/users-activity.png#gh-light-mode-only)
-![Activity Log tab with the date and the action performed](/img/openadmin-screenshots/accounts/users-activity_dark.png#gh-dark-mode-only)
+![Activity Log tab with the date and the action performed](/img/davadmin-screenshots/accounts/users-activity.png#gh-light-mode-only)
+![Activity Log tab with the date and the action performed](/img/davadmin-screenshots/accounts/users-activity_dark.png#gh-dark-mode-only)
 
 ### Login Log
 
@@ -299,8 +299,8 @@ Displays a log of successful logins for the user, separate from the general Acti
 - Country
 - IP Address
 
-![Login Log tab with the date, country and IP address of each login](/img/openadmin-screenshots/accounts/users-logins.png#gh-light-mode-only)
-![Login Log tab with the date, country and IP address of each login](/img/openadmin-screenshots/accounts/users-logins_dark.png#gh-dark-mode-only)
+![Login Log tab with the date, country and IP address of each login](/img/davadmin-screenshots/accounts/users-logins.png#gh-light-mode-only)
+![Login Log tab with the date, country and IP address of each login](/img/davadmin-screenshots/accounts/users-logins_dark.png#gh-dark-mode-only)
 
 ### Edit
 From the Edit tab, Administrators can edit user information:
@@ -314,10 +314,10 @@ From the Edit tab, Administrators can edit user information:
 
 Click **Save** to apply the changes.
 
-![Edit tab with the username, email, password, IP address, reseller and hosting package fields](/img/openadmin-screenshots/accounts/users-edit.png#gh-light-mode-only)
-![Edit tab with the username, email, password, IP address, reseller and hosting package fields](/img/openadmin-screenshots/accounts/users-edit_dark.png#gh-dark-mode-only)
+![Edit tab with the username, email, password, IP address, reseller and hosting package fields](/img/davadmin-screenshots/accounts/users-edit.png#gh-light-mode-only)
+![Edit tab with the username, email, password, IP address, reseller and hosting package fields](/img/davadmin-screenshots/accounts/users-edit_dark.png#gh-dark-mode-only)
 
-Below the form, the Edit tab also lets Administrators set a custom message that is shown to this user in OpenPanel.
+Below the form, the Edit tab also lets Administrators set a custom message that is shown to this user in DavPanel.
 
 ### Export
 
@@ -325,38 +325,38 @@ The Export tab has two options:
 
 - **Generate full account backup** – Creates a compressed archive of the account's home directory, databases, domains, websites, email, FTP, DNS zones, SSL certificates, cronjobs and containers/images. Previously generated backups are listed below, where they can be downloaded or deleted.
 
-![Export tab with the Generate full account backup option and the list of existing backups](/img/openadmin-screenshots/accounts/users-export.png#gh-light-mode-only)
-![Export tab with the Generate full account backup option and the list of existing backups](/img/openadmin-screenshots/accounts/users-export_dark.png#gh-dark-mode-only)
+![Export tab with the Generate full account backup option and the list of existing backups](/img/davadmin-screenshots/accounts/users-export.png#gh-light-mode-only)
+![Export tab with the Generate full account backup option and the list of existing backups](/img/davadmin-screenshots/accounts/users-export_dark.png#gh-dark-mode-only)
 
-- **Transfer to another server** (Enterprise license only) – Migrates the user account, along with all its containers and data, to another OpenPanel server over SSH. You provide the remote server's address/port and root SSH credentials, and can optionally enable "Live Transfer" so that once the migration completes, the account is automatically suspended on the current server and its domains' DNS is updated to point to the new server.
+- **Transfer to another server** (Enterprise license only) – Migrates the user account, along with all its containers and data, to another DavPanel server over SSH. You provide the remote server's address/port and root SSH credentials, and can optionally enable "Live Transfer" so that once the migration completes, the account is automatically suspended on the current server and its domains' DNS is updated to point to the new server.
 
-![Transfer to another server form on the Export tab with the remote server, SSH credentials and the Live Transfer option](/img/openadmin-screenshots/accounts/users-transfer.png#gh-light-mode-only)
-![Transfer to another server form on the Export tab with the remote server, SSH credentials and the Live Transfer option](/img/openadmin-screenshots/accounts/users-transfer_dark.png#gh-dark-mode-only)
+![Transfer to another server form on the Export tab with the remote server, SSH credentials and the Live Transfer option](/img/davadmin-screenshots/accounts/users-transfer.png#gh-light-mode-only)
+![Transfer to another server form on the Export tab with the remote server, SSH credentials and the Live Transfer option](/img/davadmin-screenshots/accounts/users-transfer_dark.png#gh-dark-mode-only)
 
 ### Suspend
 
 <Tabs>
-  <TabItem value="openadmin-user-suspend" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-suspend" label="With DavAdmin" default>
 
-Suspending an account will immediately disable the user's access to the OpenPanel. This action involves pausing the user's Docker container and revoking access to their email, website, and other associated services. Please be aware of the immediate impact before proceeding.
+Suspending an account will immediately disable the user's access to the DavPanel. This action involves pausing the user's Docker container and revoking access to their email, website, and other associated services. Please be aware of the immediate impact before proceeding.
 
 To suspend a user, open the "Suspend" tab on that user's page and type the username to confirm, then click the **Suspend account** button.
 
-![Suspend tab asking to type the username before suspending the account](/img/openadmin-screenshots/accounts/users-suspend.png#gh-light-mode-only)
-![Suspend tab asking to type the username before suspending the account](/img/openadmin-screenshots/accounts/users-suspend_dark.png#gh-dark-mode-only)
+![Suspend tab asking to type the username before suspending the account](/img/davadmin-screenshots/accounts/users-suspend.png#gh-light-mode-only)
+![Suspend tab asking to type the username before suspending the account](/img/davadmin-screenshots/accounts/users-suspend_dark.png#gh-dark-mode-only)
 
   </TabItem>
-  <TabItem value="CLI-user-suspend" label="With OpenCLI">
+  <TabItem value="CLI-user-suspend" label="With DavCLI">
 
 To suspend (temporary disable access) to user, run the following command:
 
 ```bash
-opencli user-suspend <USERNAME>
+davcli user-suspend <USERNAME>
 ```
 Example:
 
 ```bash
-opencli user-suspend filip
+davcli user-suspend filip
 ```
 
 
@@ -366,22 +366,22 @@ opencli user-suspend filip
 ### Unsuspend
 
 <Tabs>
-  <TabItem value="openadmin-user-unsuspend" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-unsuspend" label="With DavAdmin" default>
 
 For a suspended user, the row of tabs on the user's page is replaced with a single **Unsuspend** button. Click it to restore access for the user.
 
   </TabItem>
-  <TabItem value="CLI-user-unsuspend" label="With OpenCLI">
+  <TabItem value="CLI-user-unsuspend" label="With DavCLI">
     
 To unsuspend (enable access) to user, run the following command:
 
 ```bash
-opencli user-unsuspend <USERNAME>
+davcli user-unsuspend <USERNAME>
 ```
 
 Example:
 ```bash
-opencli user-unsuspend filip
+davcli user-unsuspend filip
 ```
 
   </TabItem>
@@ -391,21 +391,21 @@ opencli user-unsuspend filip
 ### Reset Password
 
 <Tabs>
-  <TabItem value="openadmin-users-reset" label="OpenAdmin" default>
+  <TabItem value="davadmin-users-reset" label="DavAdmin" default>
 
 To reset password for a user, click on the "Edit" tab and set the new password in the Password field (leave it empty to keep the current password) then click **Save**.
 
-![Edit tab with the password field and the Generate button](/img/openadmin-screenshots/accounts/users-edit.png#gh-light-mode-only)
-![Edit tab with the password field and the Generate button](/img/openadmin-screenshots/accounts/users-edit_dark.png#gh-dark-mode-only)
+![Edit tab with the password field and the Generate button](/img/davadmin-screenshots/accounts/users-edit.png#gh-light-mode-only)
+![Edit tab with the password field and the Generate button](/img/davadmin-screenshots/accounts/users-edit_dark.png#gh-dark-mode-only)
 
 
   </TabItem>
-  <TabItem value="CLI-users-reset" label="OpenCLI">
+  <TabItem value="CLI-users-reset" label="DavCLI">
 
-To reset the password for a OpenPanel user, you can use the `user-password` command:
+To reset the password for a DavPanel user, you can use the `user-password` command:
 
 ```bash
-opencli user-password <USERNAME> <NEW_PASSWORD>
+davcli user-password <USERNAME> <NEW_PASSWORD>
 ```
 
 Use the `--ssh` flag to also change the password for the SSH user in the container.
@@ -413,13 +413,13 @@ Use the `--ssh` flag to also change the password for the SSH user in the contain
 Example:
 
 ```bash
-opencli user-password filip Ty7_K8_M2 --ssh
+davcli user-password filip Ty7_K8_M2 --ssh
 ```
 
   </TabItem>
   <TabItem value="API-users-reset" label="API">
 
-To reset password for an OpenPanel user, use the following api call:
+To reset password for an DavPanel user, use the following api call:
 
 ```bash
 curl -X PATCH http://PANEL:2087/api/users/USERNAME_HERE -H "Content-Type: application/json" -H "Authorization: Bearer JWT_TOKEN_HERE" -d '{"password": "NEW_PASSWORD_HERE"}'
@@ -432,24 +432,24 @@ curl -X PATCH http://PANEL:2087/api/users/USERNAME_HERE -H "Content-Type: applic
 ### Rename
 
 <Tabs>
-  <TabItem value="openadmin-user-username" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-username" label="With DavAdmin" default>
 
 To rename a user, click on the "Edit" tab for the user, then change the 'Username' field and click **Save**.
 
 
   </TabItem>
-  <TabItem value="CLI-user-email" label="With OpenCLI">
+  <TabItem value="CLI-user-email" label="With DavCLI">
 
 To change username for a user run the following command:
 
 ```bash
-opencli user-rename <old_username> <new_username>
+davcli user-rename <old_username> <new_username>
 ```
 
 Example:
 
 ```bash
-#opencli user-rename stefan pejcic
+#davcli user-rename stefan pejcic
 User 'stefan' successfully renamed to 'pejcic'.
 ```
   </TabItem>
@@ -459,17 +459,17 @@ User 'stefan' successfully renamed to 'pejcic'.
 ### Change Package
 
 <Tabs>
-  <TabItem value="openadmin-user-plan" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-plan" label="With DavAdmin" default>
 
 To change a package for a user, click on the "Edit" tab for the user, then select the new hosting plan and click **Save**.
 
   </TabItem>
-  <TabItem value="CLI-user-plan" label="With OpenCLI">
+  <TabItem value="CLI-user-plan" label="With DavCLI">
 
 To change a package for a user run the following command:
 
 ```bash
-opencli user-change_plan <USERNAME> '<NEW_PLAN_NAME>'
+davcli user-change_plan <USERNAME> '<NEW_PLAN_NAME>'
 ```
   </TabItem>
 </Tabs>
@@ -478,61 +478,61 @@ opencli user-change_plan <USERNAME> '<NEW_PLAN_NAME>'
 ### Change Email
 
 <Tabs>
-  <TabItem value="openadmin-user-email" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-email" label="With DavAdmin" default>
 
 To change email address for a user, click on the "Edit" tab for the user, then change the 'Email' field and click **Save**.
 
   </TabItem>
-  <TabItem value="CLI-user-email" label="With OpenCLI">
+  <TabItem value="CLI-user-email" label="With DavCLI">
 
 To change email address for a user run the following command:
 
 ```bash
-opencli user-email <USERNAME> <NEW_EMAIL>
+davcli user-email <USERNAME> <NEW_EMAIL>
 ```
 
 Example:
 
 ```bash
-#opencli user-email stefan stefan@pejcic.rs
-Email for user stefan updated to stefan@pejcic.rs.
+#davcli user-email stefan kangpcode@users.noreply.github.com
+Email for user stefan updated to kangpcode@users.noreply.github.com.
 ```
   </TabItem>
 </Tabs>
 
 
 
-### Login to OpenPanel
+### Login to DavPanel
 
-To auto-login to a user's OpenPanel account, click on the **Impersonate** button in the top-right corner of the user's page.
+To auto-login to a user's DavPanel account, click on the **Impersonate** button in the top-right corner of the user's page.
  
 
 ### Delete User
 
 
 <Tabs>
-  <TabItem value="openadmin-user-delete" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-delete" label="With DavAdmin" default>
 
 To delete a user, open the "Delete" tab for that user, type the username to confirm, then click **Delete account permanently**.
 
-![Delete tab asking to type the username before deleting the account permanently](/img/openadmin-screenshots/accounts/users-delete.png#gh-light-mode-only)
-![Delete tab asking to type the username before deleting the account permanently](/img/openadmin-screenshots/accounts/users-delete_dark.png#gh-dark-mode-only)
+![Delete tab asking to type the username before deleting the account permanently](/img/davadmin-screenshots/accounts/users-delete.png#gh-light-mode-only)
+![Delete tab asking to type the username before deleting the account permanently](/img/davadmin-screenshots/accounts/users-delete_dark.png#gh-dark-mode-only)
 
 
   </TabItem>
-  <TabItem value="CLI-user-delete" label="With OpenCLI">
+  <TabItem value="CLI-user-delete" label="With DavCLI">
     
 To delete a user and all his data run the following command:
 
 ```bash
-opencli user-delete <USERNAME>
+davcli user-delete <USERNAME>
 ```
 
 add `-y` flag to disable prompt.
 
 Example:
 ```bash
-opencli user-delete filip -y
+davcli user-delete filip -y
 ```
 
   </TabItem>

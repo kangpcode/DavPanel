@@ -3,8 +3,8 @@ package php
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
 )
 
 // Register wires all PHP, PHP ini/options/extensions, and phpMyAdmin routes onto mux - since ServeMux wildcards can't match a version embedded inside a literal "php<version>" segment, every version-scoped route captures the whole segment and the handler unwraps it with phpVersionFromSegment()/phpVersionFromIniSegment()

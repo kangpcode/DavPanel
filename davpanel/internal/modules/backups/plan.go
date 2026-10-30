@@ -12,8 +12,8 @@ import (
 	"strconv"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // restorePlan knows where each archive entry goes on the host, emails and dns zones only for domains the account owns

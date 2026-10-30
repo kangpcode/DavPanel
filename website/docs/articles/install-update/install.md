@@ -1,24 +1,24 @@
 ---
-sidebar_label: "Installing OpenPanel"
+sidebar_label: "Installing DavPanel"
 ---
 
-# How to Install OpenPanel on a Linux Server (One Command)
+# How to Install DavPanel on a Linux Server (One Command)
 
 Before starting, ensure your server meets [the minimum requirements](/docs/admin/intro/#requirements) and runs a supported distribution. To choose the right server size, see [System Requirements & Sizing](/docs/articles/install-update/system-requirements/).
 
-To install OpenPanel on your server:
+To install DavPanel on your server:
 
 1. Log in to your new server;
 - as root via SSH or
 - as a user with sudo privileges and type "sudo -i"
-2. Copy and paste openpanel installation command into the terminal
+2. Copy and paste davpanel installation command into the terminal
 ```shell
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
-The installation script supports [optional flags](/install) that can be used to configure openpanel, skip certain installation steps or simply display debugging information.
+The installation script supports [optional flags](/install) that can be used to configure davpanel, skip certain installation steps or simply display debugging information.
 
 If you encountered any errors while running the installation script, please copy & paste the installation log file to [GitHub Discussions](https://github.com/stefanpejcic/OpenPanel/discussions).
 
-![OpenPanel installer output in a terminal: the OpenPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the OpenAdmin URL with the generated username and password at the end](/img/openpanel-screenshots/install/installer-output-generic.png#screenshot)
+![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-generic.png#screenshot)
 

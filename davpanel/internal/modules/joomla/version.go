@@ -6,7 +6,7 @@ import (
 	"errors"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/githubapi"
+	"github.com/kangpcode/davpanel/internal/core/githubapi"
 )
 
 // latestJoomlaVersion asks GitHub's releases API for the latest stable Joomla tag (e.g. "6.1.2") - used server-side only when the install form's version field is left blank ("Latest"), since the form itself populates specific versions client-side straight from the same releases list (see drupal_install.html's analogous version-fetch script)

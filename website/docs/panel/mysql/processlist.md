@@ -8,8 +8,8 @@ This interface displays all currently active MySQL queries (connections).
 
 Checking the currently running queries is useful for identifying slow queries that slow down the website loading speed.
 
-![MySQL Processes table with the Refresh Processes button and the currently running queries](/img/openpanel-screenshots/mysql/processlist-list.png#gh-light-mode-only)
-![MySQL Processes table with the Refresh Processes button and the currently running queries](/img/openpanel-screenshots/mysql/processlist-list_dark.png#gh-dark-mode-only)
+![MySQL Processes table with the Refresh Processes button and the currently running queries](/img/davpanel-screenshots/mysql/processlist-list.png#gh-light-mode-only)
+![MySQL Processes table with the Refresh Processes button and the currently running queries](/img/davpanel-screenshots/mysql/processlist-list_dark.png#gh-dark-mode-only)
 
 Click **Refresh Processes** to reload the table with the current list of active processes.
 
@@ -27,8 +27,8 @@ Every killed query is recorded in the account's activity log.
 
 Tick the checkbox of one or more queries, or the checkbox in the table header to select every query shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two running queries selected with the bulk actions bar offering Kill](/img/openpanel-screenshots/mysql/processlist-bulk.png#gh-light-mode-only)
-![Two running queries selected with the bulk actions bar offering Kill](/img/openpanel-screenshots/mysql/processlist-bulk_dark.png#gh-dark-mode-only)
+![Two running queries selected with the bulk actions bar offering Kill](/img/davpanel-screenshots/mysql/processlist-bulk.png#gh-light-mode-only)
+![Two running queries selected with the bulk actions bar offering Kill](/img/davpanel-screenshots/mysql/processlist-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|

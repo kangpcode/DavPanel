@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Resellers
 
-The **Resellers** feature allows administrators to create and manage Reseller users within OpenPanel. Resellers can act as sub-administrators, managing their own set of user accounts within the limits defined by the root administrator.
+The **Resellers** feature allows administrators to create and manage Reseller users within DavPanel. Resellers can act as sub-administrators, managing their own set of user accounts within the limits defined by the root administrator.
 
 This feature is useful for hosting providers who want to delegate control to third-party resellers, while still maintaining overall control and isolation.
 
@@ -20,8 +20,8 @@ Resellers are managed from **Accounts > Resellers**. Reseller logins do not see 
 
 The interface displays a table of existing reseller users with the following columns:
 
-![Resellers page listing reseller accounts with their status, security, activity, limits and actions](/img/openadmin-screenshots/accounts/resellers-list.png#gh-light-mode-only)
-![Resellers page listing reseller accounts with their status, security, activity, limits and actions](/img/openadmin-screenshots/accounts/resellers-list_dark.png#gh-dark-mode-only)
+![Resellers page listing reseller accounts with their status, security, activity, limits and actions](/img/davadmin-screenshots/accounts/resellers-list.png#gh-light-mode-only)
+![Resellers page listing reseller accounts with their status, security, activity, limits and actions](/img/davadmin-screenshots/accounts/resellers-list_dark.png#gh-dark-mode-only)
 
 - **Username**  
   The unique identifier of the reseller user, with the name of their [Reseller Package](/docs/admin/plans/reseller_packages) below it when they're on one.
@@ -56,7 +56,7 @@ Each row also has an Edit menu with the available actions:
 - **Suspend** / **Unsuspend** - temporarily disable the reseller's access.
 - **Delete** - permanently remove the reseller account.
 
-To create a new reseller, click **Create New**, set a username and password, optionally pick a **Reseller Package**, and click **Create**. The package's limits are applied to the new reseller. Without a package, or before any packages exist, the reseller gets the default limits from `/etc/openpanel/openadmin/config/reseller_template.json`.
+To create a new reseller, click **Create New**, set a username and password, optionally pick a **Reseller Package**, and click **Create**. The package's limits are applied to the new reseller. Without a package, or before any packages exist, the reseller gets the default limits from `/etc/davpanel/davadmin/config/reseller_template.json`.
 
 Resellers can be turned off for the whole server with the **Disable Resellers** button next to **Create New**, and turned back on with **Enable Resellers**. While reseller accounts exist the **Disable Resellers** button is greyed out, hover it to see how many reseller accounts have to be deleted first.
 
@@ -70,8 +70,8 @@ Reseller users have access only to the features and account management tools ass
 
 Tick the checkbox of one or more resellers, or the checkbox in the table header to select all resellers shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two resellers selected with the bulk actions bar offering Suspend, Unsuspend and Delete](/img/openadmin-screenshots/accounts/resellers-bulk.png#gh-light-mode-only)
-![Two resellers selected with the bulk actions bar offering Suspend, Unsuspend and Delete](/img/openadmin-screenshots/accounts/resellers-bulk_dark.png#gh-dark-mode-only)
+![Two resellers selected with the bulk actions bar offering Suspend, Unsuspend and Delete](/img/davadmin-screenshots/accounts/resellers-bulk.png#gh-light-mode-only)
+![Two resellers selected with the bulk actions bar offering Suspend, Unsuspend and Delete](/img/davadmin-screenshots/accounts/resellers-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -86,17 +86,17 @@ Click an action, confirm it, and it runs on the selected resellers one after ano
 When a Reseller logs in, they see a **Reseller Account** page (`/account`) instead of the full Accounts section, where they can:
 
 - **Change Password** – Set a new password for their own login.
-- **Branding** – Set a custom **Logo URL** shown instead of the default OpenPanel logo on every account they own (does not apply to the login page).
+- **Branding** – Set a custom **Logo URL** shown instead of the default DavPanel logo on every account they own (does not apply to the login page).
 - **My Activity Log** – The button in the top right opens their own [Activity Log](/docs/admin/accounts/activity). Resellers can only see their own log, not the logs of other resellers or administrators.
 
-![Reseller Account page with the My Activity Log button, Change Password and Branding](/img/openadmin-screenshots/accounts/resellers-account.png#gh-light-mode-only)
-![Reseller Account page with the My Activity Log button, Change Password and Branding](/img/openadmin-screenshots/accounts/resellers-account_dark.png#gh-dark-mode-only)
+![Reseller Account page with the My Activity Log button, Change Password and Branding](/img/davadmin-screenshots/accounts/resellers-account.png#gh-light-mode-only)
+![Reseller Account page with the My Activity Log button, Change Password and Branding](/img/davadmin-screenshots/accounts/resellers-account_dark.png#gh-dark-mode-only)
 
 Resellers also have their own **Two-Factor Authentication** and **Passkeys** pages under Security, scoped to their own login only.
 
 ## Pages resellers can use
 
-Besides their users, [User Packages](/docs/admin/plans/hosting_plans), the Feature Manager and their own account, resellers can open these OpenAdmin pages. Each one only shows the users a reseller owns, those users' domains, databases and the emails on those domains:
+Besides their users, [User Packages](/docs/admin/plans/hosting_plans), the Feature Manager and their own account, resellers can open these DavAdmin pages. Each one only shows the users a reseller owns, those users' domains, databases and the emails on those domains:
 
 | Page | What resellers can do |
 |---|---|
@@ -107,7 +107,7 @@ Besides their users, [User Packages](/docs/admin/plans/hosting_plans), the Featu
 | **Emails > Accounts** | Add email accounts on their users' domains, change their password, quota and send/receive restrictions, delete them and open webmail. |
 | **Emails > Queue** | See queued messages sent from their users' domains or sent only to their users, and retry or delete them. Retry all and Delete all only act on those messages. |
 | **Emails > Email Deliverability** | See the DKIM, SPF and DMARC status of their users' domains. See [Email Deliverability](/docs/admin/emails/deliverability). |
-| **Backups > Import Account** | Upload and restore OpenPanel backups as their own users, within their limits, and see the logs of their own imports. See [Imports by resellers](/docs/admin/backups/cpanel#imports-by-resellers). |
+| **Backups > Import Account** | Upload and restore DavPanel backups as their own users, within their limits, and see the logs of their own imports. See [Imports by resellers](/docs/admin/backups/cpanel#imports-by-resellers). |
 | **Services > FTP** | See FTP accounts on their users' domains and set their quota. The Configuration tab isn't shown. |
 | **Security > Web Firewall (Coraza)** | The Domains and Logs tabs for their users' domains, including per domain and per user WAF rules. The overview and server wide rules stay with administrators. |
 | **Security > ImunifyAV** | A list of their users with the last scan and infected files. **Scan** queues a scan of the user's files and **Open** opens ImunifyAV logged in as that user, so only that user's files are shown. Installing ImunifyAV is up to the administrator. |
@@ -115,6 +115,6 @@ Besides their users, [User Packages](/docs/admin/plans/hosting_plans), the Featu
 | **Server > Scheduled Actions** | View the system jobs and their schedule, read only. |
 | **Settings > Locales** | Install and update locales. Setting the default locale and deleting locales stays with administrators. |
 
-The same rules apply to the API endpoints behind these pages when they're called with a reseller's token, see the [OpenAdmin API](/docs/articles/dev-experience/openadmin-api/).
+The same rules apply to the API endpoints behind these pages when they're called with a reseller's token, see the [DavAdmin API](/docs/articles/dev-experience/davadmin-api/).
 
-Business guide: [How to offer reseller hosting with OpenPanel](/docs/articles/hosting-business/reseller-hosting/)
+Business guide: [How to offer reseller hosting with DavPanel](/docs/articles/hosting-business/reseller-hosting/)

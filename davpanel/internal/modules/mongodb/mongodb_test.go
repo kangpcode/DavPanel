@@ -3,7 +3,7 @@ package mongodb
 import (
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/mongomanager"
+	"github.com/kangpcode/davpanel/internal/core/mongomanager"
 )
 
 func TestOpKillable(t *testing.T) {

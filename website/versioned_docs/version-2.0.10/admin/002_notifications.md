@@ -4,16 +4,16 @@ sidebar_position: 2
 
 # Notifications
 
-Notifications are accessible via the 'Notifications' menu item in OpenAdmin.
+Notifications are accessible via the 'Notifications' menu item in DavAdmin.
 
-![Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons](/img/openadmin-screenshots/002_notifications-list.png#gh-light-mode-only)
-![Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons](/img/openadmin-screenshots/002_notifications-list_dark.png#gh-dark-mode-only)
+![Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons](/img/davadmin-screenshots/002_notifications-list.png#gh-light-mode-only)
+![Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons](/img/davadmin-screenshots/002_notifications-list_dark.png#gh-dark-mode-only)
 
-OpenPanel tracks and notifies you of these events, grouped into categories:
+DavPanel tracks and notifies you of these events, grouped into categories:
 
-* **Services**: OpenPanel, OpenAdmin, Caddy, MySQL, Podman, BIND9, or Sentinel Firewall becoming unresponsive
+* **Services**: DavPanel, DavAdmin, Caddy, MySQL, Podman, BIND9, or Sentinel Firewall becoming unresponsive
 * **Resource Usage**: Load average, CPU, Memory, Disk, and SWAP usage exceeding a set threshold
-* **Server actions**: Server reboot, unusual traffic or SYN flood, Out of Memory (OOM) errors, DNS issues (misconfigured/unresolving domain or nameservers), OpenAdmin login from a new IP address, SSH login from a new IP address, and new version available
+* **Server actions**: Server reboot, unusual traffic or SYN flood, Out of Memory (OOM) errors, DNS issues (misconfigured/unresolving domain or nameservers), DavAdmin login from a new IP address, SSH login from a new IP address, and new version available
 * **Website traffic**: Total connections or connections per IP exceeding a set threshold
 * **User actions**: account and domain changes, such as admin/reseller/user accounts being created, suspended, renamed, or having their password changed; domains being added, removed, suspended, or having SSL/HSTS toggled; FTP accounts being created or deleted; and WAF being enabled or disabled
 

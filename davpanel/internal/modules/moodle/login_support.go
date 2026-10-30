@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 var (

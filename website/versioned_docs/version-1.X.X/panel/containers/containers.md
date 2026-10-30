@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Containers
 
-The **Containers** page in OpenPanel allows you to manage Docker services defined via Docker Compose files by your Administrator.
+The **Containers** page in DavPanel allows you to manage Docker services defined via Docker Compose files by your Administrator.
 
 This section provides a clear overview of your containerized services and their resource usage.
 
@@ -51,7 +51,7 @@ To change CPU or Memory limits for a service:
 3. Adjust the value in the input field.
 4. Click **Save**.
 
-> OpenPanel will check whether you have available resources to make this change. If valid, the container will restart automatically with the new limits.
+> DavPanel will check whether you have available resources to make this change. If valid, the container will restart automatically with the new limits.
 
 ## Adding New Services
 

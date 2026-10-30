@@ -7,11 +7,11 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
 )
 
 // stripQuotes strips a single layer of matching quotes, used here on raw config values before splitting them into restricted-name lists

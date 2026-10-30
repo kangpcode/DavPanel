@@ -10,8 +10,8 @@ Inode usage is a critical aspect of managing your hosting environment. Inodes ar
 
 The Inode Usage Chart provides a visual representation of inode usage across directories. It enables you to identify areas with high inode consumption and take action as needed.
 
-![Inodes Explorer page with a table of inode counts per folder and a bar chart](/img/openpanel-screenshots/files/inodes-page.png#gh-light-mode-only)
-![Inodes Explorer page with a table of inode counts per folder and a bar chart](/img/openpanel-screenshots/files/inodes-page_dark.png#gh-dark-mode-only)
+![Inodes Explorer page with a table of inode counts per folder and a bar chart](/img/davpanel-screenshots/files/inodes-page.png#gh-light-mode-only)
+![Inodes Explorer page with a table of inode counts per folder and a bar chart](/img/davpanel-screenshots/files/inodes-page_dark.png#gh-dark-mode-only)
 
 ## Browsing Inodes
 
@@ -31,7 +31,7 @@ Suppose you need to check the inode usage of a specific directory. Here's a simp
 
 ## Lowering Inode Usage
 
-Optimizing inode usage is crucial for maintaining your hosting environment's efficiency. Here are strategies to reduce inode usage within OpenPanel:
+Optimizing inode usage is crucial for maintaining your hosting environment's efficiency. Here are strategies to reduce inode usage within DavPanel:
 
 ### Regularly Clean Up Unnecessary Files
 - Delete Unused Files: Periodically remove files that are no longer needed, such as outdated backups, temporary files, and old logs.

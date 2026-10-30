@@ -1,32 +1,32 @@
 ---
-sidebar_label: "Installing OpenPanel via Ansible"
+sidebar_label: "Installing DavPanel via Ansible"
 ---
 
-# How to Install OpenPanel with Ansible
+# How to Install DavPanel with Ansible
 
-Use the following **Ansible playbook** to install OpenPanel on one or more target machines:
+Use the following **Ansible playbook** to install DavPanel on one or more target machines:
 
 ```yaml
 ---
-- name: Install OpenPanel on target machine
+- name: Install DavPanel on target machine
   hosts: all
   become: true
   vars:
-    # Customize installation flags as needed. Full list: https://openpanel.com/install
-    openpanel_install_flags: "--debug --username=admin --password=super123"
+    # Customize installation flags as needed. Full list: https://davpanel.com/install
+    davpanel_install_flags: "--debug --username=admin --password=super123"
 
   tasks:
-    - name: Download and run OpenPanel installer
+    - name: Download and run DavPanel installer
       shell: |
-        curl -sSL https://openpanel.org | bash -s -- {{ openpanel_install_flags }}
+        curl -sSL https://davpanel.org | bash -s -- {{ davpanel_install_flags }}
       args:
         executable: /bin/bash
 ```
 
-Save this as `install-openpanel.yml` and run:
+Save this as `install-davpanel.yml` and run:
 
 ```bash
-ansible-playbook -i inventory install-openpanel.yml
+ansible-playbook -i inventory install-davpanel.yml
 ```
 
-This will automatically install OpenPanel on all machines in your inventory.
+This will automatically install DavPanel on all machines in your inventory.

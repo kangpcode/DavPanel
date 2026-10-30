@@ -3,9 +3,9 @@ package ruby
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/modules/appinstall"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/modules/appinstall"
 )
 
 // RegisterAPI wires POST /api/ruby/install onto mux, gated behind the "ruby" feature flag - same shape as nodejs/python's RegisterAPI

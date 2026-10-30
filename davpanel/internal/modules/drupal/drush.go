@@ -5,15 +5,15 @@ import (
 	"net/http"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/modules/php"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/php"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // drushRequestParams pulls the domain/docroot query params every drush-backed handler needs, splits the main domain from any subdirectory suffix, verifies ownership, and resolves the PHP container to exec drush inside - shared by login/cache/logs so each handler only worries about its own drush subcommand

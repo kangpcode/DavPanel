@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 // RunCLI handles `davpanel daily-summary <username> [--date YYYY-MM-DD] [--base-url URL] [--no-save]`, the day defaults to yesterday

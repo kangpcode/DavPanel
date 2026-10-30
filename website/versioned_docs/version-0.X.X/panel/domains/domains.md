@@ -28,12 +28,12 @@ To add a new domain, click on the 'Add Domain' button, enter the domain name, an
 
 ![add_domain.png](/img/panel/v1/domains/add_domain.png)
 
-Unlike other hosting panels, OpenPanel has a single interface 'Domains' where you can add your primary domain, addon domains or subdomains.
+Unlike other hosting panels, DavPanel has a single interface 'Domains' where you can add your primary domain, addon domains or subdomains.
 
 When new domain name is added, the system will automatically try to generate a free [Let's Encrypt](https://letsencrypt.org/getting-started/) certificate. If successful, the certificate is automatically applied.
 
 :::info
-OpenPanel supports [Internationalized domain names (IDNs)](https://en.wikipedia.org/wiki/Internationalized_domain_name), and if such a domain is added, it will be automatically converted to [punycode](https://en.wikipedia.org/wiki/Punycode).
+DavPanel supports [Internationalized domain names (IDNs)](https://en.wikipedia.org/wiki/Internationalized_domain_name), and if such a domain is added, it will be automatically converted to [punycode](https://en.wikipedia.org/wiki/Punycode).
 :::
 
 ## Delete a Domain
@@ -92,7 +92,7 @@ To delete a redirect, click on the cross icon next to the redirect URL for that 
 
 HTTP/2 is an HTTP version that makes applications faster, simpler, and more robust in comparison with HTTP/1. To be able to use HTTP/2 you need to set up the connection through HTTPS. To make your website support HTTPS, enable the option Force HTTPS fot that domain.
 
-Starting OpenPanel [version 0.1.4](/docs/changelog/0.1#014) the HTTP/2 support is enabled automatically for all domains that have SSL and no further setting is needed.
+Starting DavPanel [version 0.1.4](/docs/changelog/0.1#014) the HTTP/2 support is enabled automatically for all domains that have SSL and no further setting is needed.
 
 
 ## HTTP/3
@@ -101,7 +101,7 @@ HTTP/3 is the latest version of the HTTP protocol, designed to improve web perfo
 
 To enable HTTP/3 for your domain, you need to ensure that your website is running over HTTPS. You can enable the **Force HTTPS** option for that domain to ensure all traffic is served securely.
 
-Starting from OpenPanel [version 0.3.0](/docs/changelog/0.3.0/#-polish), HTTP/3 support is automatically enabled for all domains that have SSL, so no additional configuration is required if you already have SSL set up. This ensures that your website can benefit from the speed and performance improvements of HTTP/3 seamlessly.
+Starting from DavPanel [version 0.3.0](/docs/changelog/0.3.0/#-polish), HTTP/3 support is automatically enabled for all domains that have SSL, so no additional configuration is required if you already have SSL set up. This ensures that your website can benefit from the speed and performance improvements of HTTP/3 seamlessly.
 
 
 
@@ -132,5 +132,5 @@ Upon saving, Nginx/Apache service restart will be triggered to immediately apply
 :::danger
 Editing VirtualHosts file is intended for advanced users only. This action can potentially lead to server misconfiguration or downtime if not done correctly.
 
-Please be cautious and make sure you understand the changes you are making. OpenPanel uses a rollback mechanism to check for errors, and if any issues are detected, system will try to revert the changes. However, it's important to have a backup of your configurations before making any changes.
+Please be cautious and make sure you understand the changes you are making. DavPanel uses a rollback mechanism to check for errors, and if any issues are detected, system will try to revert the changes. However, it's important to have a backup of your configurations before making any changes.
 :::

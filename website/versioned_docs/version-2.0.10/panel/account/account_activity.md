@@ -4,10 +4,10 @@ sidebar_position: 7
 
 # Activity Log
 
-The Account Activity page provides a log record of all your actions performed on the OpenPanel, along with the timestamp and IP address from which the action was executed. The primary objective of this page is to offer insights into who carried out specific actions, such as deleting a file, adding domains, resetting WordPress admin passwords, and more.
+The Account Activity page provides a log record of all your actions performed on the DavPanel, along with the timestamp and IP address from which the action was executed. The primary objective of this page is to offer insights into who carried out specific actions, such as deleting a file, adding domains, resetting WordPress admin passwords, and more.
 
-![Activity Log with type filter buttons, quick date ranges and a table of actions, each with a colored icon for its type](/img/openpanel-screenshots/account/activity-list.png#gh-light-mode-only)
-![Activity Log with type filter buttons, quick date ranges and a table of actions, each with a colored icon for its type](/img/openpanel-screenshots/account/activity-list_dark.png#gh-dark-mode-only)
+![Activity Log with type filter buttons, quick date ranges and a table of actions, each with a colored icon for its type](/img/davpanel-screenshots/account/activity-list.png#gh-light-mode-only)
+![Activity Log with type filter buttons, quick date ranges and a table of actions, each with a colored icon for its type](/img/davpanel-screenshots/account/activity-list_dark.png#gh-dark-mode-only)
 
 ## Action types
 
@@ -24,15 +24,15 @@ Every action in the log has a colored icon that shows what kind of action it was
 
 To show only one type, click its button above the table. Each button shows how many actions of that type match the current date range and search. Click **All** to show every type again.
 
-![Activity Log filtered to Destructive actions, showing only deletions, removals and resets with a red trash icon](/img/openpanel-screenshots/account/activity-type-filter.png#gh-light-mode-only)
-![Activity Log filtered to Destructive actions, showing only deletions, removals and resets with a red trash icon](/img/openpanel-screenshots/account/activity-type-filter_dark.png#gh-dark-mode-only)
+![Activity Log filtered to Destructive actions, showing only deletions, removals and resets with a red trash icon](/img/davpanel-screenshots/account/activity-type-filter.png#gh-light-mode-only)
+![Activity Log filtered to Destructive actions, showing only deletions, removals and resets with a red trash icon](/img/davpanel-screenshots/account/activity-type-filter_dark.png#gh-dark-mode-only)
 
 ## Date range
 
 Use the quick range buttons (**Today**, **7D**, **30D**, **3M**, **6M**) to show only recent actions, or click **Date** to pick a range yourself.
 
-![Date range picker open with presets on the left, a two month calendar with the selected range highlighted, and Cancel and Apply buttons](/img/openpanel-screenshots/account/activity-date-range.png#gh-light-mode-only)
-![Date range picker open with presets on the left, a two month calendar with the selected range highlighted, and Cancel and Apply buttons](/img/openpanel-screenshots/account/activity-date-range_dark.png#gh-dark-mode-only)
+![Date range picker open with presets on the left, a two month calendar with the selected range highlighted, and Cancel and Apply buttons](/img/davpanel-screenshots/account/activity-date-range.png#gh-light-mode-only)
+![Date range picker open with presets on the left, a two month calendar with the selected range highlighted, and Cancel and Apply buttons](/img/davpanel-screenshots/account/activity-date-range_dark.png#gh-dark-mode-only)
 
 In the picker, choose a preset on the left (including **Year to date**), or click a start day and an end day in the calendar, then click **Apply**. Both days are included in the range. To remove the range, click the **×** next to the selected dates, or **Clear filters** to reset the type, date and search at once.
 
@@ -54,7 +54,7 @@ Bookmark the address or send it to someone with access to the account, and the p
 
 ## Recorded actions:
 
-The OpenPanel interface records the following account activities:
+The DavPanel interface records the following account activities:
 
 * Added item to favorites
 * Removed item from favorites

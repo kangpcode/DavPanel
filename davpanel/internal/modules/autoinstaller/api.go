@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // RegisterAPI wires the autoinstaller API route onto mux.

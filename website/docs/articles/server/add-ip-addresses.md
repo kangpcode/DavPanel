@@ -1,16 +1,16 @@
 ---
 sidebar_label: "Add Extra IP Addresses"
-description: "How to add additional IPv4 addresses to an OpenPanel server (Ubuntu netplan, Debian, AlmaLinux/Rocky), make them persistent, and assign a dedicated IP to a hosting account."
+description: "How to add additional IPv4 addresses to an DavPanel server (Ubuntu netplan, Debian, AlmaLinux/Rocky), make them persistent, and assign a dedicated IP to a hosting account."
 ---
 
 # How to Add Extra IP Addresses to Your Server
 
-OpenPanel uses the server's main IP for all accounts by default. With additional IPs you can give a customer a **dedicated IP address** - for their own SSL setup, a separate sending reputation, or simply because their plan includes one.
+DavPanel uses the server's main IP for all accounts by default. With additional IPs you can give a customer a **dedicated IP address** - for their own SSL setup, a separate sending reputation, or simply because their plan includes one.
 
-There are two parts: adding the IP to the **server's network configuration**, then assigning it to an **account** in OpenPanel.
+There are two parts: adding the IP to the **server's network configuration**, then assigning it to an **account** in DavPanel.
 
 :::info IPv4 only
-This guide covers **IPv4**. Additional IPv6 addresses are not tested with OpenPanel yet.
+This guide covers **IPv4**. Additional IPv6 addresses are not tested with DavPanel yet.
 :::
 
 ---
@@ -100,19 +100,19 @@ Test from another machine that the IP answers, and **reboot once** to make sure 
 
 ## Step 3: Assign the IP to an Account
 
-OpenPanel detects new IPs automatically - no extra configuration needed.
+DavPanel detects new IPs automatically - no extra configuration needed.
 
-1. Go to **OpenAdmin → Accounts → Users → *username* → Edit**.
+1. Go to **DavAdmin → Accounts → Users → *username* → Edit**.
 2. Select the new IP in the **IP Address** field.
 3. Click **Save**.
 
 Or from the terminal:
 
 ```bash
-opencli user-ip USERNAME 203.0.113.50
+davcli user-ip USERNAME 203.0.113.50
 ```
 
-OpenPanel updates the user's DNS zones and proxy configuration, so all their current and future domains use the dedicated IP. If a domain's DNS is hosted elsewhere, update its `A` record there.
+DavPanel updates the user's DNS zones and proxy configuration, so all their current and future domains use the dedicated IP. If a domain's DNS is hosted elsewhere, update its `A` record there.
 
 See [Assign a dedicated IP to a user](/docs/articles/accounts/set-dedicated-ip-address-for-user/).
 
@@ -123,11 +123,11 @@ See [Assign a dedicated IP to a user](/docs/articles/accounts/set-dedicated-ip-a
 - **License**: only the server's **main** IP needs a license - additional IPs are free to use.
 - **Firewall**: Sentinel Firewall (CSF) applies to all IPs on the server; no changes are needed.
 - **Email** is still sent from the server's main IP, so its [reverse DNS](/docs/articles/email/reverse-dns-ptr-record/) is the one that matters for mail.
-- **Removing** a dedicated IP: `opencli user-ip USERNAME delete` moves the user back to the main IP. Do this **before** removing the IP from the server.
+- **Removing** a dedicated IP: `davcli user-ip USERNAME delete` moves the user back to the main IP. Do this **before** removing the IP from the server.
 
 ---
 
 ## Related
 
-- [Main IP in OpenPanel](/docs/articles/install-update/openpanel-main-ip-address/)
+- [Main IP in DavPanel](/docs/articles/install-update/davpanel-main-ip-address/)
 - [Change the server hostname or IP](/docs/articles/server/change-server-hostname-or-ip/)

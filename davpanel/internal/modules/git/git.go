@@ -20,7 +20,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/paths"
+	"github.com/kangpcode/davpanel/internal/core/paths"
 )
 
 const (

@@ -1,8 +1,8 @@
 # How to set or increase PHP INI memory_limit or other values?
 
-There are multiple ways to manage PHP settings in OpenPanel. This guide walks you through the available methods and when to use each one.
+There are multiple ways to manage PHP settings in DavPanel. This guide walks you through the available methods and when to use each one.
 
-## For OpenPanel users
+## For DavPanel users
 
 Depending on which modules are enabled, users can manage PHP settings using one or more of the following interfaces:
 
@@ -13,12 +13,12 @@ Depending on which modules are enabled, users can manage PHP settings using one 
 
 The default PHP version used for new domains can be configured via:
 
-**OpenPanel > PHP > Default version**
+**DavPanel > PHP > Default version**
 
 1. Select your desired PHP version.
 2. Click 'Change' to apply.
 
-![change default](/img/panel/v2/openpanel_cahnge_default_php_version.gif)
+![change default](/img/panel/v2/davpanel_cahnge_default_php_version.gif)
 
 ---
 
@@ -38,18 +38,18 @@ For full control, the **PHP.INI Editor** lets users directly modify the php.ini 
 
 [PHP.INI Editor Documentation](/docs/panel/php/php_ini_editor)
 
-![openpanel_php_ini_editor](/img/panel/v2/openpanel_php_ini_editor.gif)
+![davpanel_php_ini_editor](/img/panel/v2/davpanel_php_ini_editor.gif)
 
 ---
 
-## For OpenAdmin users
+## For DavAdmin users
 
 Administrators can configure system-wide PHP defaults and manage what settings users can change.
 
 ### Default PHP version
 
 Set the default PHP version for new users via:
-[**OpenAdmin > Settings > User Defaults**](/docs/admin/settings/defaults/)
+[**DavAdmin > Settings > User Defaults**](/docs/admin/settings/defaults/)
 
 1. Choose the default PHP version.
 2. Click 'Save' to confirm.
@@ -65,12 +65,12 @@ Users can only modify options that have been explicitly allowed by the administr
 Administrators can manage these options in two ways:
 
 From the panel:
-[**OpenAdmin > Settings > PHP Settings**](/docs/admin/settings/php/) page.
+[**DavAdmin > Settings > PHP Settings**](/docs/admin/settings/php/) page.
 
 ![options.png](/img/docs-content/1zcTP8Qx-options.png)
 
 Or via terminal:
-- **Global default (all users)**: `/etc/openpanel/php/options.txt`
+- **Global default (all users)**: `/etc/davpanel/php/options.txt`
 - **User-specific settings**: `/home/USERNAME/php.ini/options.txt`
 
 ---
@@ -80,11 +80,11 @@ Or via terminal:
 Administrators can configure the default php.ini files for all PHP versions.
 
 From the panel:
-[**OpenAdmin > Settings > PHP Settings**](/docs/admin/settings/php/) page.
+[**DavAdmin > Settings > PHP Settings**](/docs/admin/settings/php/) page.
 
 ![phpini.png](/img/docs-content/dVCpHWNV-phpini.png)
 
 Or via terminal:
-- **Global default (all users)**: `/etc/openpanel/php/ini/`
+- **Global default (all users)**: `/etc/davpanel/php/ini/`
 - **User-specific settings**: `/home/USERNAME/php.ini/`
 

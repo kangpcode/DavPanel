@@ -10,10 +10,10 @@ Install and manage [Drupal](https://www.drupal.org/) sites in an existing domain
 
 ## Install Drupal
 
-Navigate to **OpenPanel > Websites > Install App** and click **Install Drupal**.
+Navigate to **DavPanel > Websites > Install App** and click **Install Drupal**.
 
-![Install Drupal form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/drupal-form.png#gh-light-mode-only)
-![Install Drupal form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/drupal-form_dark.png#gh-dark-mode-only)
+![Install Drupal form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/drupal-form.png#gh-light-mode-only)
+![Install Drupal form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/drupal-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 

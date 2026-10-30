@@ -14,8 +14,8 @@ To suspend a domain:
 2. Optionally enter a **Reason** (e.g. "Unpaid invoice #4521 - contact billing"). This is shown next to the domain's status on the Domains page.
 3. Click **Confirm Suspend**.
 
-![Suspend domain confirmation with an optional reason field and the Confirm Suspend button](/img/openpanel-screenshots/domains/suspend-form.png#gh-light-mode-only)
-![Suspend domain confirmation with an optional reason field and the Confirm Suspend button](/img/openpanel-screenshots/domains/suspend-form_dark.png#gh-dark-mode-only)
+![Suspend domain confirmation with an optional reason field and the Confirm Suspend button](/img/davpanel-screenshots/domains/suspend-form.png#gh-light-mode-only)
+![Suspend domain confirmation with an optional reason field and the Confirm Suspend button](/img/davpanel-screenshots/domains/suspend-form_dark.png#gh-dark-mode-only)
 
 ## Suspended by the Administrator
 

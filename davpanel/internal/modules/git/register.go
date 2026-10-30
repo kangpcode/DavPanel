@@ -7,10 +7,10 @@ import (
 	"net/url"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // Register wires the Git page, the site manager tab's JSON, and the public push/webhook endpoints which do their own auth

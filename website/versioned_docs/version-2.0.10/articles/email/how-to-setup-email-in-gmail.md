@@ -1,6 +1,6 @@
 # How to Set Up Email in Gmail
 
-This guide explains how to add your **OpenPanel-created email account** to Gmail using a web browser.
+This guide explains how to add your **DavPanel-created email account** to Gmail using a web browser.
 
 > **Note:** If you are setting up email on a different device or service, see the main guide:
 > [How to setup your email client](/docs/articles/email/how-to-setup-your-email-client)
@@ -52,4 +52,4 @@ Click **Add Account** to finish setup.
 
 ---
 
-Your OpenPanel email is now integrated with Gmail. You can **send and receive emails directly** from your Gmail account.
+Your DavPanel email is now integrated with Gmail. You can **send and receive emails directly** from your Gmail account.

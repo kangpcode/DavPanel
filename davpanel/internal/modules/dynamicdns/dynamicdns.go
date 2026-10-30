@@ -11,8 +11,8 @@ import (
 	"syscall"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/dns"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/modules/dns"
 )
 
 const tokenAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"

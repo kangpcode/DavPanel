@@ -1,6 +1,6 @@
 # Troubleshooting Caddy Webserver
 
-OpenPanel uses Caddy webserver to handle SSL and reverse proxy to per-user webservers.
+DavPanel uses Caddy webserver to handle SSL and reverse proxy to per-user webservers.
 
 If Caddy is disabled, all websites hosted on the server are down.
 
@@ -54,7 +54,7 @@ docker exec caddy caddy validate --config /etc/caddy/Caddyfile
 * `warn` or `info` messages are fine.
 * Any `error` messages must be resolved before Caddy will start correctly.
 
-Main configuration file for Caddy is: `/etc/openpanel/caddy/Caddyfile` and per-domain files are stored in: `/etc/openpanel/caddy/domains/*.conf`
+Main configuration file for Caddy is: `/etc/davpanel/caddy/Caddyfile` and per-domain files are stored in: `/etc/davpanel/caddy/domains/*.conf`
 
 ---
 
@@ -93,4 +93,4 @@ If the above steps don’t resolve the issue, check the logs:
 docker logs -f caddy
 ```
 
-Copy any errors and search online or post them on [our Discord channel](https://discord.openpanel.com/) or [OpenPanel forums](https://community.openpanel.org/t/openadmin) for help.
+Copy any errors and search online or post them on [our Discord channel](https://discord.davpanel.com/) or [DavPanel forums](https://community.davpanel.org/t/davadmin) for help.

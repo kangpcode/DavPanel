@@ -6,12 +6,12 @@ sidebar_position: 2
 
 To add a new domain, simply enter the domain name and click **Add Domain**:
 
-![New Domain form with the domain name and document root fields](/img/openpanel-screenshots/domains/new-form.png#gh-light-mode-only)
-![New Domain form with the domain name and document root fields](/img/openpanel-screenshots/domains/new-form_dark.png#gh-dark-mode-only)
+![New Domain form with the domain name and document root fields](/img/davpanel-screenshots/domains/new-form.png#gh-light-mode-only)
+![New Domain form with the domain name and document root fields](/img/davpanel-screenshots/domains/new-form_dark.png#gh-dark-mode-only)
 
 Optionally, you can specify a custom **Document Root** - folder where website files will be stored.
 
-Once submitted, OpenPanel will display a detailed log of all actions performed. Example:
+Once submitted, DavPanel will display a detailed log of all actions performed. Example:
 
 ```bash
 Using document root: /var/www/html/another-website
@@ -34,7 +34,7 @@ Starting container for the default PHP version 8.4
 Domain another.com added successfully
 ```
 
-Because OpenPanel starts services on demand to conserve resources, adding your first domain may take slightly longer - it will start the necessary webserver and PHP containers.
+Because DavPanel starts services on demand to conserve resources, adding your first domain may take slightly longer - it will start the necessary webserver and PHP containers.
 Subsequent domains will be added much faster.
 
 See also: [Add a subdomain, addon or parked domain](/docs/articles/domains/subdomain-addon-parked-domain/)

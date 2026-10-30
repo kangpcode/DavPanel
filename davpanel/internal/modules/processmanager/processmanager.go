@@ -12,8 +12,8 @@ import (
 	"strings"
 	"sync"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // topDescriptors are the fields requested from `podman top` - "user", not "uid", since "uid" isn't a recognized AIX format descriptor and including it makes podman exec ps(1) inside the container instead, which fails on busybox/Alpine's ps and always showed "No processes"

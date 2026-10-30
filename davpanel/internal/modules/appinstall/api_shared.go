@@ -6,10 +6,10 @@ import (
 	stdpath "path"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // RegisterSharedAPI wires /api/ equivalents of the helper endpoints the Python/NodeJS install forms call over AJAX. Gated on "helpers", same as RegisterShared, which is unconditionally granted - so in practice this is API-key-only.

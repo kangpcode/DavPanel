@@ -1,6 +1,6 @@
 # Installation on AWS EC2
 
-This guide will walk you through deploying **OpenPanel** on an AWS EC2 instance with Ubuntu or Debian.
+This guide will walk you through deploying **DavPanel** on an AWS EC2 instance with Ubuntu or Debian.
 
 ## Prerequisites
 
@@ -35,7 +35,7 @@ This guide will walk you through deploying **OpenPanel** on an AWS EC2 instance 
 
 1. Select the desired **VPC** and **subnet**.
 2. Create a **security group** allowing all TCP traffic:  
-   > OpenPanel manages its own firewall, so allowing all TCP is acceptable.
+   > DavPanel manages its own firewall, so allowing all TCP is acceptable.
 3. Allocate and associate an **Elastic IP** to your instance for a fixed public IP.
 
 ---
@@ -55,17 +55,17 @@ ssh -i your_private_key.pem ubuntu@yourElasticIpAddress
 
 
 
-## Step 5: Run the OpenPanel Installer
+## Step 5: Run the DavPanel Installer
 
 Once logged in, run the installer script:
 
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
 ---
 
-## Step 6: Access OpenPanel
+## Step 6: Access DavPanel
 
 After installation:
 
@@ -75,11 +75,11 @@ After installation:
 
 ## Notes
 
-* Ensure your server meets [the minimum requirements](https://openpanel.com/docs/admin/intro/#requirements) for OpenPanel.
+* Ensure your server meets [the minimum requirements](https://davpanel.com/docs/admin/intro/#requirements) for DavPanel.
 * For production environments, consider restricting access to your security group after installation for security.
-* Refer to the [OpenPanel Install Command Generator](https://openpanel.com/install) for advanced configuration.
+* Refer to the [DavPanel Install Command Generator](https://davpanel.com/install) for advanced configuration.
 
 ---
 
-**Congratulations!** You have successfully installed OpenPanel on AWS EC2.
+**Congratulations!** You have successfully installed DavPanel on AWS EC2.
 

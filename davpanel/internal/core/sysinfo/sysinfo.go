@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/cache"
 )
 
 const CaddyfilePath = "/etc/davpanel/caddy/Caddyfile"
@@ -59,7 +59,7 @@ func fetchIPFrom(url string) (string, bool) {
 	return strings.TrimSpace(string(body)), true
 }
 
-func runOpencli(args ...string) (string, error) {
+func runDavcli(args ...string) (string, error) {
 	out, err := exec.Command("davcli", args...).Output()
 	return strings.TrimSpace(string(out)), err
 }
@@ -67,7 +67,7 @@ func runOpencli(args ...string) (string, error) {
 // GetDavPanelVersion returns the installed panel version, cached for 2h.
 func GetDavPanelVersion(ctx context.Context, c *cache.Cache) string {
 	v, _ := cache.Memoize(ctx, c, "app.get_davpanel_version", 2*time.Hour, func() (string, error) {
-		out, err := runOpencli("version")
+		out, err := runDavcli("version")
 		if err != nil || out == "" {
 			return "latest", nil
 		}
@@ -94,7 +94,7 @@ func fileExists(path string) bool {
 // GetDavPanelDomain returns the panel's configured domain, cached for 6 minutes
 func GetDavPanelDomain(ctx context.Context, c *cache.Cache) string {
 	v, _ := cache.Memoize(ctx, c, "app.get_davpanel_domain", 6*time.Minute, func() (string, error) {
-		out, err := runOpencli("domain")
+		out, err := runDavcli("domain")
 		if err != nil {
 			return "", nil
 		}
@@ -105,7 +105,7 @@ func GetDavPanelDomain(ctx context.Context, c *cache.Cache) string {
 
 // GetDavAdminPort returns the port the separate "davadmin" service (which sends notification emails) listens on; left uncached since its only caller already runs in a background goroutine
 func GetDavAdminPort() string {
-	out, err := runOpencli("admin", "port")
+	out, err := runDavcli("admin", "port")
 	if err != nil || out == "" {
 		return "2087"
 	}
@@ -115,7 +115,7 @@ func GetDavAdminPort() string {
 // GetDavPanelPort returns the port the panel itself listens on, cached for 1h
 func GetDavPanelPort(ctx context.Context, c *cache.Cache) string {
 	v, _ := cache.Memoize(ctx, c, "app.get_davpanel_port", time.Hour, func() (string, error) {
-		out, err := runOpencli("port")
+		out, err := runDavcli("port")
 		if err != nil {
 			return "", nil
 		}

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-wget -O /usr/local/bin/davcli https://raw.githubusercontent.com/stefanpejcic/davcli/refs/heads/main/davcli && chmod +x /usr/local/bin/davcli
+wget -O /usr/local/bin/davcli https://raw.githubusercontent.com/stefanpejcic/opencli/refs/heads/main/opencli && chmod +x /usr/local/bin/davcli
 wget -O  /etc/davpanel/davadmin/config/features.json https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davadmin/config/features.json
 
 CONFIG_FILE="/etc/davpanel/davpanel/conf/davpanel.config"

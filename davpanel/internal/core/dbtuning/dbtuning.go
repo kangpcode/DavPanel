@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
 )
 
 const (

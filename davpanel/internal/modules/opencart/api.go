@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"net/url"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // apiCloneForm builds the clone form from the API's JSON body and the site behind {site_id}

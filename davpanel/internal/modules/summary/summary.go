@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/modules/errorlogs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/modules/errorlogs"
 )
 
 // Item is one finding, Link is a panel path and stays empty when the user can't fix it from the panel

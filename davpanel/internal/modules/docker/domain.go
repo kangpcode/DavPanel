@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 // compose labels that remember which domain proxies to a custom container, so delete can undo it

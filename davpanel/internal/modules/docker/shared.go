@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os/exec"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
 )
 
 // ComposeContainer is a small start/stop/status/restart helper other modules use directly on the shared services (redis, memcached, mysql, postgres, phpmyadmin, valkey) rather than through the docker-compose.yml edit/save flow the rest of this package uses, exported here since internal/app can't import this package - "restart" is fire-and-forget, so this reports whether it launched, not whether it finished.

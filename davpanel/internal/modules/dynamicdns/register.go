@@ -3,8 +3,8 @@ package dynamicdns
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
 )
 
 // Register wires the dynamic DNS routes onto mux - the webcall update endpoint is deliberately NOT behind auth.RequireLogin, it's a public token-authenticated URL a router/IoT device calls

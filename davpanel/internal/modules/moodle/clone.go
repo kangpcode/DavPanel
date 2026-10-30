@@ -6,16 +6,16 @@ import (
 	"regexp"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/cmsclone"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/modules/crons"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/cmsclone"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/crons"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // mirrors drupal/clone.go's overall shape (site-limit check, DB create+dump-pipe, config rewrite, sites-table insert, cron registration) via internal/core/cmsclone, but the file-copy step here is NOT a plain "copy the docroot" like every other module's clone (see install.go's package doc comment and its approotHostPath/datarootHostPath/symlink construction) - Moodle's docroot is a symlink, not a real directory: the actual code lives in a sibling "<slug>_moodleapp/" directory and user data lives in a separate sibling "<slug>_moodledata/" directory, so this clone resolves both sibling directories itself from the source domain name using the same appkit.SiteSlug() call install.go used to create them, and cmsclone.ValidDocroot is never called here since there's no source_folder/docroot form field to validate

@@ -10,10 +10,10 @@ Install and manage [Open Journal Systems (OJS)](https://pkp.sfu.ca/software/ojs/
 
 ## Install OJS
 
-Navigate to **OpenPanel > Websites > Install App** and click **Install OJS**.
+Navigate to **DavPanel > Websites > Install App** and click **Install OJS**.
 
-![Install OJS form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/ojs-form.png#gh-light-mode-only)
-![Install OJS form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/ojs-form_dark.png#gh-dark-mode-only)
+![Install OJS form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/ojs-form.png#gh-light-mode-only)
+![Install OJS form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/ojs-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -21,7 +21,7 @@ On the install page, configure:
 * **OJS version** – Latest, or pin to a specific release, resolved live against [pkp/ojs's GitHub tags](https://github.com/pkp/ojs/tags).
 * **Admin username / password / email** – The initial Site Administrator account OJS creates during install. Leave the password blank to generate one.
 
-Behind the scenes, this downloads the matching packaged tarball directly from `pkp.sfu.ca` rather than GitHub — OJS's repository uses git submodules (`lib/pkp`, several plugins, `ui-library`) that a plain GitHub archive silently omits, which would produce a broken install, so PKP hosts already-bundled release packages instead. The archive is extracted into a sibling "app root" directory next to the domain's docroot, and the docroot is replaced with a symlink to it (the same technique the Moodle module uses, kept here mainly so Update has an atomic swap-and-rollback target). A separate sibling directory is created for OJS's file storage (submission uploads, etc.), kept outside the docroot/app-root tree entirely so it's never web-accessible. OpenPanel then creates a dedicated MySQL/MariaDB database, installs the PHP `ftp` extension if missing (required by OJS's Composer platform check), and runs OJS's own `tools/install.php` — which, unlike Moodle's or Joomla's installers, takes no CLI flags and only accepts its answers piped in over stdin. Afterwards, OpenPanel fixes up `base_url`, `time_zone`, and `allowed_hosts` in `config.inc.php` — all three are left wrong or blank by a non-interactive `tools/install.php` run and would otherwise lock the fresh site out of itself — deploys a one-time admin login helper file, and registers a per-minute cron job running `lib/pkp/tools/scheduler.php run`, OJS's documented way to run scheduled tasks in production instead of its discouraged built-in end-of-request task runner. Progress is streamed live as each step completes.
+Behind the scenes, this downloads the matching packaged tarball directly from `pkp.sfu.ca` rather than GitHub — OJS's repository uses git submodules (`lib/pkp`, several plugins, `ui-library`) that a plain GitHub archive silently omits, which would produce a broken install, so PKP hosts already-bundled release packages instead. The archive is extracted into a sibling "app root" directory next to the domain's docroot, and the docroot is replaced with a symlink to it (the same technique the Moodle module uses, kept here mainly so Update has an atomic swap-and-rollback target). A separate sibling directory is created for OJS's file storage (submission uploads, etc.), kept outside the docroot/app-root tree entirely so it's never web-accessible. DavPanel then creates a dedicated MySQL/MariaDB database, installs the PHP `ftp` extension if missing (required by OJS's Composer platform check), and runs OJS's own `tools/install.php` — which, unlike Moodle's or Joomla's installers, takes no CLI flags and only accepts its answers piped in over stdin. Afterwards, DavPanel fixes up `base_url`, `time_zone`, and `allowed_hosts` in `config.inc.php` — all three are left wrong or blank by a non-interactive `tools/install.php` run and would otherwise lock the fresh site out of itself — deploys a one-time admin login helper file, and registers a per-minute cron job running `lib/pkp/tools/scheduler.php run`, OJS's documented way to run scheduled tasks in production instead of its discouraged built-in end-of-request task runner. Progress is streamed live as each step completes.
 
 ## Manage an OJS site
 
@@ -34,7 +34,7 @@ Every OJS install shows up on the general **Site Manager** page (`/sites`) along
 
 ### Login as Admin
 
-The **Login as Admin** button generates a one-time login link and opens the OJS dashboard already authenticated, without needing the admin password. OJS core has no built-in CLI command for this, so OpenPanel deploys a small login helper PHP file into the app root at install time. Each click resolves the site's active Site Administrator account, issues a fresh token (stored in a dedicated `openpanel_login_tokens` table) valid for 10 minutes and usable once, and signs the browser in via PKP's own `Validation::registerUserSession()` helper — the same mechanism a real login uses, short of checking the password.
+The **Login as Admin** button generates a one-time login link and opens the OJS dashboard already authenticated, without needing the admin password. OJS core has no built-in CLI command for this, so DavPanel deploys a small login helper PHP file into the app root at install time. Each click resolves the site's active Site Administrator account, issues a fresh token (stored in a dedicated `davpanel_login_tokens` table) valid for 10 minutes and usable once, and signs the browser in via PKP's own `Validation::registerUserSession()` helper — the same mechanism a real login uses, short of checking the password.
 
 ### Cache
 
@@ -53,7 +53,7 @@ OJS sites get a dedicated backup system, separate from the account-level Backups
 
 ### Clone
 
-The **Clone** action copies an OJS site to a new domain (or subfolder). It copies both the app root and files directories, creates a new database from a dump of the source database, rewrites the database name/username/password/`base_url`/`files_dir` inside the copy's `config.inc.php` (an INI-format file, unlike Moodle's PHP `$CFG->` syntax), symlinks the destination docroot to the copy, registers the copy's own cron job, and runs a generic URL search-replace across the cloned database — OJS has no built-in equivalent of WP-CLI's `search-replace`, so OpenPanel handles it itself.
+The **Clone** action copies an OJS site to a new domain (or subfolder). It copies both the app root and files directories, creates a new database from a dump of the source database, rewrites the database name/username/password/`base_url`/`files_dir` inside the copy's `config.inc.php` (an INI-format file, unlike Moodle's PHP `$CFG->` syntax), symlinks the destination docroot to the copy, registers the copy's own cron job, and runs a generic URL search-replace across the cloned database — OJS has no built-in equivalent of WP-CLI's `search-replace`, so DavPanel handles it itself.
 
 ### Update
 

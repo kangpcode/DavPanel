@@ -10,27 +10,27 @@ sidebar_position: 5
 
 ## Install
 
-Starting version 1.5.4 - ImunifyAV is included with OpenPanel by default.
+Starting version 1.5.4 - ImunifyAV is included with DavPanel by default.
 
 If you are using an older version, to install, run:
 
 ```bash
-opencli imunify install
+davcli imunify install
 ```
 
-This command installs the latest PHP version, the *imunify360-agent*, and configures access through OpenAdmin.
+This command installs the latest PHP version, the *imunify360-agent*, and configures access through DavAdmin.
 
 ## Start
 
 To start the Imunify graphical interface, use:
 
 ```bash
-opencli imunify start
+davcli imunify start
 ```
 
 ## Login
 
-Access the Imunify GUI from **OpenAdmin > Security > Imunify**.
+Access the Imunify GUI from **DavAdmin > Security > Imunify**.
 
 ## Manage
 

@@ -4,16 +4,16 @@ sidebar_position: 14
 
 # Matomo
 
-Install and manage [Matomo](https://matomo.org/) — self-hosted, privacy-focused web analytics software, not a website CMS — in an existing domain or subfolder, the same install pattern as OpenPanel's other app managers even though Matomo serves an analytics dashboard rather than a public site. Simpler than the WordPress Manager in a few ways: no dedicated Matomo Manager sidebar page, no scanning the filesystem for existing installs, no hardening rules, and no maintenance-mode toggle (Matomo has no offline-mode primitive to switch). It does get its own backup/restore system, cloning, in-place updates, one-click admin login, cache clearing, and a log viewer.
+Install and manage [Matomo](https://matomo.org/) — self-hosted, privacy-focused web analytics software, not a website CMS — in an existing domain or subfolder, the same install pattern as DavPanel's other app managers even though Matomo serves an analytics dashboard rather than a public site. Simpler than the WordPress Manager in a few ways: no dedicated Matomo Manager sidebar page, no scanning the filesystem for existing installs, no hardening rules, and no maintenance-mode toggle (Matomo has no offline-mode primitive to switch). It does get its own backup/restore system, cloning, in-place updates, one-click admin login, cache clearing, and a log viewer.
 
 ---
 
 ## Install Matomo
 
-Navigate to **OpenPanel > AutoInstaller** and click **Install Matomo**.
+Navigate to **DavPanel > AutoInstaller** and click **Install Matomo**.
 
-![Install Matomo form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/matomo-form.png#gh-light-mode-only)
-![Install Matomo form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/matomo-form_dark.png#gh-dark-mode-only)
+![Install Matomo form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/matomo-form.png#gh-light-mode-only)
+![Install Matomo form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/matomo-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -35,7 +35,7 @@ Every Matomo install shows up on the general **Site Manager** page (`/sites`) al
 
 ### Login as Admin
 
-The **Login as Admin** button (in the page header) generates a one-time login link and opens the Matomo dashboard already authenticated. Matomo has no CLI or database-level one-time-login primitive to hook into, so OpenPanel's login helper replays Matomo's own public login form server-side (via a loopback request), then re-issues the resulting session cookie to your browser. It's gated by a random 64-character token baked into the helper file at install time.
+The **Login as Admin** button (in the page header) generates a one-time login link and opens the Matomo dashboard already authenticated. Matomo has no CLI or database-level one-time-login primitive to hook into, so DavPanel's login helper replays Matomo's own public login form server-side (via a loopback request), then re-issues the resulting session cookie to your browser. It's gated by a random 64-character token baked into the helper file at install time.
 
 ### Cache
 

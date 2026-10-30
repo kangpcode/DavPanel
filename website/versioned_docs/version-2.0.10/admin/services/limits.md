@@ -6,8 +6,8 @@ sidebar_position: 4
 
 The **Service Limits** section allows Administrators to view and adjust the allocated CPU and Memory resources for system services.
 
-![Service Limits page with CPU and memory limits for each system service](/img/openadmin-screenshots/services/limits-page.png#gh-light-mode-only)
-![Service Limits page with CPU and memory limits for each system service](/img/openadmin-screenshots/services/limits-page_dark.png#gh-dark-mode-only)
+![Service Limits page with CPU and memory limits for each system service](/img/davadmin-screenshots/services/limits-page.png#gh-light-mode-only)
+![Service Limits page with CPU and memory limits for each system service](/img/davadmin-screenshots/services/limits-page_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -17,7 +17,7 @@ To update limits, enter new values in the fields for the appropriate service.
 
 **Available Services** (by default):
 
-- openpanel
+- davpanel
 - caddy
 - mysql
 - clamav

@@ -1,13 +1,13 @@
 ---
 sidebar_label: "System Requirements & Sizing"
-description: "OpenPanel minimum and recommended system requirements, and how much RAM, CPU and disk you need for 1, 10, 50 or 100+ websites - with a link to the resource calculator."
+description: "DavPanel minimum and recommended system requirements, and how much RAM, CPU and disk you need for 1, 10, 50 or 100+ websites - with a link to the resource calculator."
 ---
 
-# OpenPanel System Requirements: How Much RAM, CPU and Disk Do You Need?
+# DavPanel System Requirements: How Much RAM, CPU and Disk Do You Need?
 
-This page lists the minimum requirements for installing OpenPanel and explains how to size a server for the number of websites and users you plan to host.
+This page lists the minimum requirements for installing DavPanel and explains how to size a server for the number of websites and users you plan to host.
 
-For an exact estimate for your setup, use the **[OpenPanel Resource Calculator](/calculator)**.
+For an exact estimate for your setup, use the **[DavPanel Resource Calculator](/calculator)**.
 
 ---
 
@@ -28,9 +28,9 @@ For an exact estimate for your setup, use the **[OpenPanel Resource Calculator](
 
 ---
 
-## How OpenPanel Uses Resources
+## How DavPanel Uses Resources
 
-OpenPanel runs every user's services (web server, PHP, database, caching) in that user's own isolated containers. This makes sizing more predictable than on traditional panels:
+DavPanel runs every user's services (web server, PHP, database, caching) in that user's own isolated containers. This makes sizing more predictable than on traditional panels:
 
 1. **A fixed system base.** The panel itself, the Caddy proxy, MySQL for panel data, Redis and optional services such as DNS, phpMyAdmin, email and malware scanning. Around **2-3 GB of RAM** for a typical setup without email, around **1 GB more** with email.
 2. **A small cost per idle user.** An account whose sites get no traffic uses only about **15 MB of RAM** and **~100 MB of disk** (plus its website files, databases and emails).
@@ -80,12 +80,12 @@ It also shows whether the setup fits the free **Community** edition or needs **E
 - **Disk speed matters more than size.** Use SSD or NVMe storage; databases and PHP are slow on HDDs.
 - **Swap.** The installer creates a swap file automatically on servers with 32 GB of RAM or less. Swap prevents crashes during memory spikes but is not a replacement for RAM. See [How to Add Swap](/docs/articles/server/how-to-add-swap/).
 - **Backups** need extra disk space (or remote storage) - see [Configuring Backups](/docs/articles/backups/configuring-backups/).
-- **Email** storage grows over time. Plan mailbox quotas, or [store email on a remote server](/docs/articles/email/how-to-use-remote-server-for-emails-in-openpanel/).
+- **Email** storage grows over time. Plan mailbox quotas, or [store email on a remote server](/docs/articles/email/how-to-use-remote-server-for-emails-in-davpanel/).
 
 ---
 
 ## Related
 
-- [Install OpenPanel](/docs/articles/install-update/install/)
+- [Install DavPanel](/docs/articles/install-update/install/)
 - [How to find which site is using high CPU or RAM](/docs/articles/server/high-cpu-ram-usage/)
 - [Suggested hosting plan limits](/docs/articles/hosting-business/hosting-plan-templates/)

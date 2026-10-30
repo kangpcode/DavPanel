@@ -59,7 +59,7 @@ const License: React.FC = () => {
                     <h2>3. Forks and Redistribution</h2>
                     <p>If you publish a fork, mirror, or modified version of the Software, you must:</p>
                     <ul>
-                        <li>Clearly and prominently identify it as a fork or modified version of DavPanel, with a visible link back to the original project (<a href="https://github.com/stefanpejcic/DavPanel">github.com/stefanpejcic/DavPanel</a>).</li>
+                        <li>Clearly and prominently identify it as a fork or modified version of DavPanel, with a visible link back to the original project (<a href="https://github.com/stefanpejcic/DavPanel">github.com/kangpcode/DavPanel</a>).</li>
                         <li>Retain all copyright, trademark, and proprietary notices included in the Software.</li>
                     </ul>
                     <p>

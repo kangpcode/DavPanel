@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
 )
 
 // Site is a row from the sites table, Container is set for apps that run in their own container

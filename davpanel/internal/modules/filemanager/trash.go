@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/paths"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/paths"
 )
 
 const trashRel = ".local/share/Trash"

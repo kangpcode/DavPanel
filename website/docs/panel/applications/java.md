@@ -4,7 +4,7 @@ sidebar_position: 24
 
 # Java
 
-Containerized [Java](https://www.java.com/) applications can be created and managed in **OpenPanel Enterprise Edition**.
+Containerized [Java](https://www.java.com/) applications can be created and managed in **DavPanel Enterprise Edition**.
 
 Step-by-step guide: [Deploy a Java / Spring Boot app](/docs/articles/websites/deploy-java-app/)
 
@@ -12,14 +12,14 @@ Step-by-step guide: [Deploy a Java / Spring Boot app](/docs/articles/websites/de
 
 ## Create an Application
 
-To create a new Java application, navigate to **OpenPanel > Websites > Install App** and click **Setup Java Application**.
+To create a new Java application, navigate to **DavPanel > Websites > Install App** and click **Setup Java Application**.
 
-![Install Java Application form with the application details, domain, startup command and the Small, Medium and Large resource presets](/img/openpanel-screenshots/applications/java_install-form.png#gh-light-mode-only)
-![Install Java Application form with the application details, domain, startup command and the Small, Medium and Large resource presets](/img/openpanel-screenshots/applications/java_install-form_dark.png#gh-dark-mode-only)
+![Install Java Application form with the application details, domain, startup command and the Small, Medium and Large resource presets](/img/davpanel-screenshots/applications/java_install-form.png#gh-light-mode-only)
+![Install Java Application form with the application details, domain, startup command and the Small, Medium and Large resource presets](/img/davpanel-screenshots/applications/java_install-form_dark.png#gh-dark-mode-only)
 
 On the next page, you can configure the following settings:
 
-* **Name** – The name of the application and container as displayed in OpenPanel.
+* **Name** – The name of the application and container as displayed in DavPanel.
 * **Port** – Set a custom port if your app uses one. Otherwise, port 80 is used by default.
 * **Domain Name / Subfolder** – The domain (and optional subfolder) where the application will be publicly accessible.
 * **Startup File** – The file executed at startup with the `java` command. Defaults to `Main.java`.
@@ -69,7 +69,7 @@ No **Run Install** step is needed for this example — leave it disabled and set
 
 ## Manage Applications
 
-Once your application is created, you can manage it from **OpenPanel > Websites > Sites**.
+Once your application is created, you can manage it from **DavPanel > Websites > Sites**.
 
 Click **Manage** next to the application name to open its management page.
 

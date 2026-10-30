@@ -6,8 +6,8 @@ sidebar_position: 14
 
 The **MySQL > Server Type** page lets you choose which database server runs your MySQL databases: **MySQL**, **MariaDB** or **Percona**.
 
-![Database Server page with cards for MySQL, MariaDB and Percona, the current one marked, and a notice to remove existing databases before switching](/img/openpanel-screenshots/containers/mysql-page.png#gh-light-mode-only)
-![Database Server page with cards for MySQL, MariaDB and Percona, the current one marked, and a notice to remove existing databases before switching](/img/openpanel-screenshots/containers/mysql-page_dark.png#gh-dark-mode-only)
+![Database Server page with cards for MySQL, MariaDB and Percona, the current one marked, and a notice to remove existing databases before switching](/img/davpanel-screenshots/containers/mysql-page.png#gh-light-mode-only)
+![Database Server page with cards for MySQL, MariaDB and Percona, the current one marked, and a notice to remove existing databases before switching](/img/davpanel-screenshots/containers/mysql-page_dark.png#gh-dark-mode-only)
 
 Each database server is shown as a card with a short description:
 

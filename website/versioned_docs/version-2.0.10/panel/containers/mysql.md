@@ -22,8 +22,8 @@ Before switching the database type, please ensure the following:
 - **All existing databases and users must be removed.**
 - The current mysql container must be **stopped** before the new one can be started.
 
-![Switch MySQL type page with the conditions for switching between MariaDB and MySQL](/img/openpanel-screenshots/containers/mysql-page.png#gh-light-mode-only)
-![Switch MySQL type page with the conditions for switching between MariaDB and MySQL](/img/openpanel-screenshots/containers/mysql-page_dark.png#gh-dark-mode-only)
+![Switch MySQL type page with the conditions for switching between MariaDB and MySQL](/img/davpanel-screenshots/containers/mysql-page.png#gh-light-mode-only)
+![Switch MySQL type page with the conditions for switching between MariaDB and MySQL](/img/davpanel-screenshots/containers/mysql-page_dark.png#gh-dark-mode-only)
 
 > ⚠️ If you already have databases configured, **back up all data**, remove all databases and users, then proceed with switching the mysql server.  
 > To avoid downtime, it's best to make this change **before adding any databases**.
@@ -32,7 +32,7 @@ Before switching the database type, please ensure the following:
 
 Since only two database types exist, there's nothing to pick from a list — the page shows a single button for the other available type.
 
-1. In the OpenPanel menu, navigate to **Containers > Switch MySQL Type**.
+1. In the DavPanel menu, navigate to **Containers > Switch MySQL Type**.
 2. Click the **Switch to `<type>`** button (for example, **Switch to mariadb**) to initiate the process.
 
 After confirmation:

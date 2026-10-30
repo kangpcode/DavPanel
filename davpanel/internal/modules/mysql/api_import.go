@@ -5,14 +5,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/core/validators"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/validators"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // apiMySQLImportDatabase imports an uploaded .sql/.sql.gz dump into a database (multipart field: "file") - the API equivalent of POST /mysql/import/{dbname}, reusing the same podman-stdin pipeline (importDatabaseDump, in importdb.go) the web upload form uses - wired from api.go's apiMySQLDatabasesPostDispatch, so it shares the "mysql" feature gate rather than the web route's separate "mysql_import" gate, since Go's ServeMux only allows one registration of the "POST /api/mysql/databases/{rest...}" wildcard

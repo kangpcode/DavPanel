@@ -12,7 +12,7 @@ import (
 
 	_ "github.com/lib/pq"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
 )
 
 type poolKey struct {

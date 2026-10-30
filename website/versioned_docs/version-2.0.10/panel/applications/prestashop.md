@@ -10,10 +10,10 @@ Install and manage [PrestaShop](https://www.prestashop.com/) sites in an existin
 
 ## Install PrestaShop
 
-Navigate to **OpenPanel > AutoInstaller** and click **Install PrestaShop**.
+Navigate to **DavPanel > AutoInstaller** and click **Install PrestaShop**.
 
-![Install PrestaShop form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/prestashop-form.png#gh-light-mode-only)
-![Install PrestaShop form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/prestashop-form_dark.png#gh-dark-mode-only)
+![Install PrestaShop form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/prestashop-form.png#gh-light-mode-only)
+![Install PrestaShop form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/prestashop-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -21,7 +21,7 @@ On the install page, configure:
 * **PrestaShop version** – Latest, or pin to a specific release, fetched live from GitHub's releases API (only versions that actually ship a downloadable `prestashop_<version>.zip` release asset are listed).
 * **Admin first/last name / password / email** – The initial administrator account PrestaShop creates during install. Leave the password blank to generate one.
 
-Behind the scenes, this downloads the matching `prestashop_<version>.zip` GitHub release asset (a two-layer package: the outer zip contains an inner `prestashop.zip`, which is the actual flat-root application), extracts it into the docroot, creates a dedicated MySQL/MariaDB database, and runs PrestaShop's own `install/index_cli.php` CLI installer with the details you provided. Immediately afterward, OpenPanel renames the `admin/` directory to a random name and removes the leftover `install/` folder — PrestaShop's own admin panel does this rename automatically the first time anyone visits it in a browser, but doing it right away means the directory is never left at the guessable default. Progress is streamed live as each step completes.
+Behind the scenes, this downloads the matching `prestashop_<version>.zip` GitHub release asset (a two-layer package: the outer zip contains an inner `prestashop.zip`, which is the actual flat-root application), extracts it into the docroot, creates a dedicated MySQL/MariaDB database, and runs PrestaShop's own `install/index_cli.php` CLI installer with the details you provided. Immediately afterward, DavPanel renames the `admin/` directory to a random name and removes the leftover `install/` folder — PrestaShop's own admin panel does this rename automatically the first time anyone visits it in a browser, but doing it right away means the directory is never left at the guessable default. Progress is streamed live as each step completes.
 
 ## Manage a PrestaShop site
 
@@ -34,7 +34,7 @@ Every PrestaShop install shows up on the general **Site Manager** page (`/sites`
 
 ### Login as Admin
 
-The **Login as Admin** button generates a one-time login link and opens the PrestaShop back office already authenticated, without needing the admin password. PrestaShop core has no built-in CLI command for this, so OpenPanel deploys a small login helper file into the (randomly-named) admin directory at install time that binds an employee session the same way PrestaShop's own login controller does after a successful password check — it never touches password verification itself. Each click issues a fresh token valid for 10 minutes and usable once.
+The **Login as Admin** button generates a one-time login link and opens the PrestaShop back office already authenticated, without needing the admin password. PrestaShop core has no built-in CLI command for this, so DavPanel deploys a small login helper file into the (randomly-named) admin directory at install time that binds an employee session the same way PrestaShop's own login controller does after a successful password check — it never touches password verification itself. Each click issues a fresh token valid for 10 minutes and usable once.
 
 ### Cache
 

@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 // mirrors wordpress/manage.go's handleCloneWordPress in shape (site-limit check, file copy, DB create+dump-pipe, config rewrite, sites-table insert) via internal/core/cmsclone, but differs from WordPress in that Drupal's base URL is request-derived with no trusted_host_patterns set, so there's no host-allowlist to update and no wp-cli-style DB search-replace - hardcoded URLs in node content still point at the source domain after cloning, same known limitation as joomla/clone.go

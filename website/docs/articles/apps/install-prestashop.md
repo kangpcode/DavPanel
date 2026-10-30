@@ -1,17 +1,17 @@
 ---
 sidebar_label: "PrestaShop"
-description: "How to install PrestaShop and start an online store with OpenPanel: one-click install, finding the admin URL, SSL, friendly URLs, PHP settings, cron and email."
+description: "How to install PrestaShop and start an online store with DavPanel: one-click install, finding the admin URL, SSL, friendly URLs, PHP settings, cron and email."
 ---
 
 # How to Install PrestaShop and Start an Online Store
 
-[PrestaShop](https://www.prestashop.com/) is a free, open-source e-commerce platform used by hundreds of thousands of online stores. OpenPanel installs it in one click, with a database, SSL and a secure admin folder.
+[PrestaShop](https://www.prestashop.com/) is a free, open-source e-commerce platform used by hundreds of thousands of online stores. DavPanel installs it in one click, with a database, SSL and a secure admin folder.
 
 ---
 
 ## Requirements
 
-- **OpenPanel Enterprise** - the **PrestaShop** module must be enabled for your hosting plan.
+- **DavPanel Enterprise** - the **PrestaShop** module must be enabled for your hosting plan.
 - A domain pointed to the server.
 - A PHP version supported by your PrestaShop version (PHP 8.1 for PrestaShop 8.x).
 - At least **1 GB of RAM** for the account - stores use more memory than simple websites.
@@ -20,21 +20,21 @@ description: "How to install PrestaShop and start an online store with OpenPanel
 
 ## Install PrestaShop
 
-1. Add the domain in **OpenPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
-2. Go to **OpenPanel → Websites → Install App** and click **Install PrestaShop**.
+1. Add the domain in **DavPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
+2. Go to **DavPanel → Websites → Install App** and click **Install PrestaShop**.
 3. Choose the **domain**, the **PrestaShop version** (*Latest*), and enter the **admin first name, last name, email and password**.
 4. Start the installation.
 
-![Install PrestaShop form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/prestashop-form.png#gh-light-mode-only)
-![Install PrestaShop form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/prestashop-form_dark.png#gh-dark-mode-only)
+![Install PrestaShop form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/prestashop-form.png#gh-light-mode-only)
+![Install PrestaShop form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/prestashop-form_dark.png#gh-dark-mode-only)
 
-OpenPanel downloads the official release, creates a MySQL/MariaDB database, runs PrestaShop's CLI installer, removes the `install/` folder and renames the `admin/` folder to a random name for security.
+DavPanel downloads the official release, creates a MySQL/MariaDB database, runs PrestaShop's CLI installer, removes the `install/` folder and renames the `admin/` folder to a random name for security.
 
 ---
 
 ## Log in to the Back Office
 
-Because the admin folder has a random name, the easiest way in is the **Login as Admin** button on the store's manage page in **OpenPanel → Websites → Sites**. It opens the back office already logged in.
+Because the admin folder has a random name, the easiest way in is the **Login as Admin** button on the store's manage page in **DavPanel → Websites → Sites**. It opens the back office already logged in.
 
 The back-office URL (with the random folder name) is also shown in the File Manager - look for the folder starting with `admin` in the store's directory. Bookmark it.
 
@@ -63,7 +63,7 @@ Configure **Advanced Parameters → E-mail** to send through SMTP, so order conf
 
 ### Cron tasks
 
-Some modules (currency rates, abandoned carts, feeds) need cron. Install the **Cron tasks manager** module, then add its URL as a job in **OpenPanel → Cron Jobs** with `curl`, for example:
+Some modules (currency rates, abandoned carts, feeds) need cron. Install the **Cron tasks manager** module, then add its URL as a job in **DavPanel → Cron Jobs** with `curl`, for example:
 
 ```bash
 curl -s "https://example.com/modules/cronjobs/cron.php?token=YOUR_TOKEN"
@@ -82,12 +82,12 @@ The store's manage page shows the PrestaShop, PHP and database versions, and has
 
 Back up the store with the account-level [Backups](/docs/panel/backups/backups/) before installing modules or updating.
 
-More: [PrestaShop in OpenPanel](/docs/panel/applications/prestashop/).
+More: [PrestaShop in DavPanel](/docs/panel/applications/prestashop/).
 
 ---
 
 ## Related
 
 - [Install OpenCart](/docs/articles/apps/install-opencart/)
-- [Install WordPress (for WooCommerce)](/docs/articles/websites/how-to-install-wordpress-with-openpanel/)
+- [Install WordPress (for WooCommerce)](/docs/articles/websites/how-to-install-wordpress-with-davpanel/)
 - [All installable apps](/docs/panel/applications/autoinstaller/)

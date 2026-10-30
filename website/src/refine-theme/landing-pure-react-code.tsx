@@ -239,7 +239,7 @@ services:
       - html_data:/var/www/html/
       - ./php.ini/8.5.ini:/usr/local/etc/php/php.ini
       - ./php.ini/8.5.ini:/usr/local/etc/php/conf.d/zz-docker-shinsenter-php.ini:ro
-      - /etc/openpanel/wordpress/wp-cli.phar:/usr/local/bin/wp:ro
+      - /etc/davpanel/wordpress/wp-cli.phar:/usr/local/bin/wp:ro
     environment:
       - APP_USER=root
       - APP_GROUP=root

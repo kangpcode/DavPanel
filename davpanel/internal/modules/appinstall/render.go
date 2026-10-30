@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // kindDisplay is the template-only presentation detail for a Kind (icon markup, label text) that appinstall's logic code has no need for, kept separate so Kind stays a plain data type

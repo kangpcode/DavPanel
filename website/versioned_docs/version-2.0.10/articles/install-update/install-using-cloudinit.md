@@ -1,6 +1,6 @@
-# Installing OpenPanel via Cloud-Init
+# Installing DavPanel via Cloud-Init
 
-Use the following **cloud-init YAML** configuration to automatically install OpenPanel on your server during first boot:
+Use the following **cloud-init YAML** configuration to automatically install DavPanel on your server during first boot:
 
 ```yaml
 #cloud-config
@@ -10,5 +10,5 @@ packages:
   - gnupg
 
 runcmd:
-  - curl -fsSL https://openpanel.org/ | bash
+  - curl -fsSL https://davpanel.org/ | bash
 ```

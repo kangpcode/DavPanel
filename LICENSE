@@ -1,3 +1,15 @@
+DavPanel fork notice
+====================
+
+This LICENSE file is the upstream OpenPanel license and is reproduced here
+unchanged except for this notice. DavPanel is a fork of OpenPanel, maintained by
+Dhafa Nazula Permadi (kangpcode) <kangpcode@users.noreply.github.com>.
+
+The directory names referenced below (`openpanel/` and `openadmin/`) correspond to
+`davpanel/` and `davadmin/` in this fork. The terms, including the trademark and
+redistribution requirements, still apply. See NOTICE.md for the full list of
+changes and for upstream attribution.
+
 OpenPanel — License
 
 This repository contains several components distributed under different

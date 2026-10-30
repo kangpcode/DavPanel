@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Activity Log
 
-OpenAdmin records every change made by Administrators and Resellers in a separate activity log for each account. Only requests that change something are recorded, opening or browsing pages is not.
+DavAdmin records every change made by Administrators and Resellers in a separate activity log for each account. Only requests that change something are recorded, opening or browsing pages is not.
 
 Each entry has the date and time, the IP address it was made from and a short description of the action, for example:
 
@@ -13,14 +13,14 @@ Each entry has the date and time, the IP address it was made from and a short de
 ```
 
 - Actions that failed end with `(failed)`, for example a domain that could not be added.
-- Actions made through the [OpenAdmin API](/docs/articles/dev-experience/openadmin-api) are recorded in the log of the administrator the API token belongs to and end with `(via API)`.
+- Actions made through the [DavAdmin API](/docs/articles/dev-experience/davadmin-api) are recorded in the log of the administrator the API token belongs to and end with `(via API)`.
 - Passwords and other values typed into forms are never written to the log.
-- Logins are not part of the activity log, they are shown in the **Activity** column and kept in `/var/log/openpanel/admin/login.log`.
+- Logins are not part of the activity log, they are shown in the **Activity** column and kept in `/var/log/davpanel/admin/login.log`.
 
 ## Viewing the Activity Log
 
-![Activity Log page of an administrator with the date, IP address and action of each change](/img/openadmin-screenshots/accounts/administrators-activity.png#gh-light-mode-only)
-![Activity Log page of an administrator with the date, IP address and action of each change](/img/openadmin-screenshots/accounts/administrators-activity_dark.png#gh-dark-mode-only)
+![Activity Log page of an administrator with the date, IP address and action of each change](/img/davadmin-screenshots/accounts/administrators-activity.png#gh-light-mode-only)
+![Activity Log page of an administrator with the date, IP address and action of each change](/img/davadmin-screenshots/accounts/administrators-activity_dark.png#gh-dark-mode-only)
 
 The **Activity** column on the [Administrators](/docs/admin/accounts/administrators) and [Resellers](/docs/admin/accounts/resellers) pages shows the last action of each account, with the IP address and time of their last login below it. Click the action, or pick **Activity Log** from the Edit menu, to open the full log:
 
@@ -37,13 +37,13 @@ The newest actions are shown first, 50 per page. Use the search to filter by act
 
 ## Log files
 
-The logs are stored in `/var/log/openpanel/admin/activity/<username>.log`, one line per action. Once a log grows past 2 MB, the oldest entries are removed so that about the newest 1 MB is kept.
+The logs are stored in `/var/log/davpanel/admin/activity/<username>.log`, one line per action. Once a log grows past 2 MB, the oldest entries are removed so that about the newest 1 MB is kept.
 
-When an account is renamed with `opencli admin rename` (or from OpenAdmin), its log file is renamed too, and when an account is deleted with `opencli admin delete` its log file is deleted.
+When an account is renamed with `davcli admin rename` (or from DavAdmin), its log file is renamed too, and when an account is deleted with `davcli admin delete` its log file is deleted.
 
 ## Actions recorded for Administrators
 
-Administrators can use every page in OpenAdmin, so every change below can appear in their log. Values in `<>` are replaced with the actual names.
+Administrators can use every page in DavAdmin, so every change below can appear in their log. Values in `<>` are replaced with the actual names.
 
 **Administrators**
 
@@ -178,7 +178,7 @@ Administrators can use every page in OpenAdmin, so every change below can appear
 - `Changed ImunifyAV`
 - `Changed Basic Authentication`
 - `Edited blocked user agents`
-- `Disabled OpenAdmin`
+- `Disabled DavAdmin`
 - `Changed WAF settings`
 - `Changed WAF rules`
 
@@ -208,11 +208,11 @@ Administrators can use every page in OpenAdmin, so every change below can appear
 - `Changed general settings`
 - `Changed locales`
 - `Changed enabled modules`
-- `Changed OpenPanel settings`
+- `Changed DavPanel settings`
 - `Changed PHP settings`
 - `Changed update settings`
 - `Changed update log`
-- `Started an OpenPanel update`
+- `Started an DavPanel update`
 - `Edited a default file for new users`
 
 **Bulk actions**

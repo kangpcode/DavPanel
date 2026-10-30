@@ -53,7 +53,7 @@ To delete files or folders click on the 'Delete' button. If multiple files or fo
 ![filemanager_delete.png](/img/panel/v1/files/filemanager_delete.png)
 
 :::danger
-OpenPanel FileManager does not utilize a separate Trash folder where files are temporarily moved and can later be restored from, similar to the Recycle Bin on your computer system. If you delete files using the delete option, they are permanently deleted immediately and cannot be recovered. Please exercise caution when using the delete function.
+DavPanel FileManager does not utilize a separate Trash folder where files are temporarily moved and can later be restored from, similar to the Recycle Bin on your computer system. If you delete files using the delete option, they are permanently deleted immediately and cannot be recovered. Please exercise caution when using the delete function.
 :::
 
 ## Download File
@@ -130,7 +130,7 @@ If a folder is empty, you will see the 'No items found.' message and the menu wi
 
 ## Search Files and Folders
 
-The Search button across the OpenPanel interface is used to search for options or websites, but On the FileManager interface, it has a special feature allowing you to also search for your files and folder names.
+The Search button across the DavPanel interface is used to search for options or websites, but On the FileManager interface, it has a special feature allowing you to also search for your files and folder names.
 
 To activate the search field, click on the Search icon in the top right corner.
 

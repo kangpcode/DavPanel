@@ -3,7 +3,7 @@ package mysqlmanager
 import (
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 func TestWithPrefix(t *testing.T) {

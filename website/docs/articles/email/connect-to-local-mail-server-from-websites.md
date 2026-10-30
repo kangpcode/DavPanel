@@ -18,7 +18,7 @@ stream_socket_client(): Unable to connect to ssl://host.containers.internal:995 
 
 ## Why this happens
 
-Each OpenPanel user's services (PHP, web server, database) run in rootless containers. From inside these containers, the server's own public IP address does not lead back to the host, so connecting to `mail.example.com` (which resolves to the server's public IP) is refused on every mail port.
+Each DavPanel user's services (PHP, web server, database) run in rootless containers. From inside these containers, the server's own public IP address does not lead back to the host, so connecting to `mail.example.com` (which resolves to the server's public IP) is refused on every mail port.
 
 The host can be reached from inside the containers at the special name `host.containers.internal`. But the mail server's SSL certificate is issued for `mail.example.com`, not for `host.containers.internal`, so applications that check the certificate (like WHMCS) reject that connection with `Unknown error`.
 
@@ -26,7 +26,7 @@ The fix is to keep using `mail.example.com` in the application, and make that na
 
 ## Step 1: Find the host address
 
-Replace `USERNAME` with the OpenPanel username and `php-fpm-8.3` with the PHP version the website uses:
+Replace `USERNAME` with the DavPanel username and `php-fpm-8.3` with the PHP version the website uses:
 
 ```bash
 USERNAME=USERNAME
@@ -130,9 +130,9 @@ Use `995` with WHMCS: its standard ticket importing uses POP3, so it connects to
 If the connection now works but login fails, check the password. Failed logins appear in the mail server log as `Password mismatch`:
 
 ```bash
-podman exec openadmin_mailserver grep "Password mismatch" /var/log/mail/mail.log | tail
+podman exec davadmin_mailserver grep "Password mismatch" /var/log/mail/mail.log | tail
 ```
 
 ## Apply to all new users (optional)
 
-To add the mail hostname to the PHP services of every new account, run the same `awk` command from Step 2 on the compose template for new users, `/etc/openpanel/docker/compose/1.0/docker-compose.yml`. Existing users are not affected.
+To add the mail hostname to the PHP services of every new account, run the same `awk` command from Step 2 on the compose template for new users, `/etc/davpanel/docker/compose/1.0/docker-compose.yml`. Existing users are not affected.

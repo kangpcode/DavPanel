@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
 )
 
 // pages list _header.html by hand all over the modules, the AI drawer has to come along without each of them listing it

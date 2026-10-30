@@ -4,7 +4,7 @@ sidebar_label: "Troubleshooting Caddy Webserver"
 
 # How to Troubleshoot the Caddy Web Server
 
-OpenPanel uses Caddy webserver to handle SSL and reverse proxy to per-user webservers.
+DavPanel uses Caddy webserver to handle SSL and reverse proxy to per-user webservers.
 
 If Caddy is disabled, all websites hosted on the server are down.
 
@@ -58,7 +58,7 @@ podman exec caddy caddy validate --config /etc/caddy/Caddyfile
 * `warn` or `info` messages are fine.
 * Any `error` messages must be resolved before Caddy will start correctly.
 
-Main configuration file for Caddy is: `/etc/openpanel/caddy/Caddyfile` and per-domain files are stored in: `/etc/openpanel/caddy/domains/*.conf`
+Main configuration file for Caddy is: `/etc/davpanel/caddy/Caddyfile` and per-domain files are stored in: `/etc/davpanel/caddy/domains/*.conf`
 
 ---
 
@@ -97,4 +97,4 @@ If the above steps don’t resolve the issue, check the logs:
 podman logs -f caddy
 ```
 
-Copy any errors and search online or post them on [our Discord channel](https://discord.openpanel.com/) or [GitHub Discussions](https://github.com/stefanpejcic/OpenPanel/discussions) for help.
+Copy any errors and search online or post them on [our Discord channel](https://discord.davpanel.com/) or [GitHub Discussions](https://github.com/stefanpejcic/OpenPanel/discussions) for help.

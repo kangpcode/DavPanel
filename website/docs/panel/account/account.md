@@ -3,14 +3,14 @@ sidebar_position: 1
 ---
 
 # Account
-OpenPanel offers a unique feature that allows you to change your username, unlike standard control panels that require hosting support for such modifications.  
+DavPanel offers a unique feature that allows you to change your username, unlike standard control panels that require hosting support for such modifications.  
 
 :::info
 Username changes must be enabled by the Administrator (`permit_username_change_by_user`, disabled by default). If the username field is not shown on this page, ask your hosting provider to enable it.
 :::
 
-![Email & Password page with the email address, new password and confirm password fields](/img/openpanel-screenshots/account/account-form.png#gh-light-mode-only)
-![Email & Password page with the email address, new password and confirm password fields](/img/openpanel-screenshots/account/account-form_dark.png#gh-dark-mode-only)
+![Email & Password page with the email address, new password and confirm password fields](/img/davpanel-screenshots/account/account-form.png#gh-light-mode-only)
+![Email & Password page with the email address, new password and confirm password fields](/img/davpanel-screenshots/account/account-form_dark.png#gh-dark-mode-only)
 
 On this page, you can:  
 - Change your login password and username.  

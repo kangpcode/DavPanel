@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 var (

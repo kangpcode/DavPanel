@@ -15,10 +15,10 @@ import (
 	"strconv"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/flash"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/flash"
+	"github.com/kangpcode/davpanel/internal/core/session"
 )
 
 // BulkAction is one button in the shared bulk-actions bar (partials/_bulk.html)

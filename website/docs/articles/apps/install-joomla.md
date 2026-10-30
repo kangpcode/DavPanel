@@ -1,17 +1,17 @@
 ---
 sidebar_label: "Joomla"
-description: "How to install Joomla with OpenPanel in one click: choosing a version, the Super User account, one-time admin login, SEF URLs, cache, PHP settings and backups."
+description: "How to install Joomla with DavPanel in one click: choosing a version, the Super User account, one-time admin login, SEF URLs, cache, PHP settings and backups."
 ---
 
 # How to Install Joomla
 
-[Joomla](https://www.joomla.org/) is a popular open-source CMS for websites, portals and online magazines. OpenPanel installs Joomla in one click and gives you a one-click admin login from the panel.
+[Joomla](https://www.joomla.org/) is a popular open-source CMS for websites, portals and online magazines. DavPanel installs Joomla in one click and gives you a one-click admin login from the panel.
 
 ---
 
 ## Requirements
 
-- **OpenPanel Enterprise** - the **Joomla** module must be enabled for your hosting plan.
+- **DavPanel Enterprise** - the **Joomla** module must be enabled for your hosting plan.
 - A domain pointed to the server.
 - A PHP version supported by your Joomla version (PHP 8.1+ for Joomla 5).
 
@@ -19,8 +19,8 @@ description: "How to install Joomla with OpenPanel in one click: choosing a vers
 
 ## Install Joomla
 
-1. Add the domain in **OpenPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
-2. Go to **OpenPanel → Websites → Install App** and click **Install Joomla**.
+1. Add the domain in **DavPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
+2. Go to **DavPanel → Websites → Install App** and click **Install Joomla**.
 3. Fill in:
    - **Domain** (leave the subfolder empty to install at the root),
    - **Site name**,
@@ -28,10 +28,10 @@ description: "How to install Joomla with OpenPanel in one click: choosing a vers
    - **Admin full name, username, password and email** - the Super User account.
 4. Start the installation.
 
-![Install Joomla form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/joomla-form.png#gh-light-mode-only)
-![Install Joomla form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/joomla-form_dark.png#gh-dark-mode-only)
+![Install Joomla form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/joomla-form.png#gh-light-mode-only)
+![Install Joomla form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/joomla-form_dark.png#gh-dark-mode-only)
 
-OpenPanel downloads the official Joomla package, creates a MySQL/MariaDB database and runs Joomla's CLI installer. The site is ready at `https://example.com` and the administrator at `https://example.com/administrator/`.
+DavPanel downloads the official Joomla package, creates a MySQL/MariaDB database and runs Joomla's CLI installer. The site is ready at `https://example.com` and the administrator at `https://example.com/administrator/`.
 
 ---
 
@@ -39,7 +39,7 @@ OpenPanel downloads the official Joomla package, creates a MySQL/MariaDB databas
 
 ### Log in without a password
 
-On the site's manage page in **OpenPanel → Websites → Sites**, click **Login as Admin** to open the Joomla administrator already logged in. Each link works once and expires after 10 minutes.
+On the site's manage page in **DavPanel → Websites → Sites**, click **Login as Admin** to open the Joomla administrator already logged in. Each link works once and expires after 10 minutes.
 
 ### Enable search-engine friendly URLs
 
@@ -68,12 +68,12 @@ The manage page shows the Joomla, PHP and database versions, files and database 
 
 Update Joomla itself from **System → Update → Joomla** in the administrator. For backups, use the account-level [Backups](/docs/panel/backups/backups/).
 
-More: [Joomla in OpenPanel](/docs/panel/applications/joomla/).
+More: [Joomla in DavPanel](/docs/panel/applications/joomla/).
 
 ---
 
 ## Related
 
-- [Install WordPress](/docs/articles/websites/how-to-install-wordpress-with-openpanel/)
+- [Install WordPress](/docs/articles/websites/how-to-install-wordpress-with-davpanel/)
 - [Install Drupal](/docs/articles/apps/install-drupal/)
 - [All installable apps](/docs/panel/applications/autoinstaller/)

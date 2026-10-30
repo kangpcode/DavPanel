@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Set Up Reverse DNS (PTR)"
-description: "How to set up reverse DNS (a PTR record) for your OpenPanel mail server: what hostname to use, where to set it at Hetzner, OVH, DigitalOcean, Vultr, Linode, Contabo and AWS, and how to check it."
+description: "How to set up reverse DNS (a PTR record) for your DavPanel mail server: what hostname to use, where to set it at Hetzner, OVH, DigitalOcean, Vultr, Linode, Contabo and AWS, and how to check it."
 ---
 
 # How to Set Up Reverse DNS (PTR Record) for Your Mail Server
@@ -21,13 +21,13 @@ All three must match.
 
 ## Step 1: Choose the Hostname
 
-Use the hostname your server and mail server identify themselves with - normally the **domain you set for OpenAdmin/OpenPanel**, e.g. `server.example.com`:
+Use the hostname your server and mail server identify themselves with - normally the **domain you set for DavAdmin/DavPanel**, e.g. `server.example.com`:
 
-- Set it in **OpenAdmin → Settings → General → Domain** (see [General settings](/docs/admin/settings/general/#domain)). OpenPanel also uses it as the mail server's hostname and for its SSL certificate.
+- Set it in **DavAdmin → Settings → General → Domain** (see [General settings](/docs/admin/settings/general/#domain)). DavPanel also uses it as the mail server's hostname and for its SSL certificate.
 - Make sure the hostname has an **`A` record** pointing to the server's IP.
 
 :::warning
-If OpenAdmin is accessed by IP only (no domain set), the mail server doesn't have a proper hostname. Set a domain before sending email from the server.
+If DavAdmin is accessed by IP only (no domain set), the mail server doesn't have a proper hostname. Set a domain before sending email from the server.
 :::
 
 ---
@@ -81,7 +81,7 @@ No. One IP address has one PTR record. All domains on the server send from the s
 **What about IPv6?**
 If the server sends mail over IPv6, the IPv6 address needs its own PTR record too - otherwise Gmail rejects the message. Set it the same way, or disable IPv6 for outgoing mail.
 
-**Can I set the PTR record in OpenPanel's DNS zone editor?**
+**Can I set the PTR record in DavPanel's DNS zone editor?**
 No - reverse DNS zones belong to the IP owner (your provider).
 
 ---

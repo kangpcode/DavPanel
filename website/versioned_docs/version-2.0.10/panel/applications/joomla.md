@@ -10,10 +10,10 @@ Install and manage [Joomla](https://www.joomla.org/) sites in an existing domain
 
 ## Install Joomla
 
-Navigate to **OpenPanel > AutoInstaller** and click **Install Joomla**.
+Navigate to **DavPanel > AutoInstaller** and click **Install Joomla**.
 
-![Install Joomla form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/joomla-form.png#gh-light-mode-only)
-![Install Joomla form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/joomla-form_dark.png#gh-dark-mode-only)
+![Install Joomla form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/joomla-form.png#gh-light-mode-only)
+![Install Joomla form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/joomla-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -35,7 +35,7 @@ Every Joomla install shows up on the general **Site Manager** page (`/sites`) al
 
 ### Login as Admin
 
-The **Login as Admin** button generates a one-time login link and opens the Joomla administrator dashboard already authenticated, without needing the admin password. Joomla core has no built-in CLI command for this (unlike Drupal's `drush user:login`), so OpenPanel deploys a small login helper file into the docroot at install time; each click issues a fresh token valid for 10 minutes and usable once.
+The **Login as Admin** button generates a one-time login link and opens the Joomla administrator dashboard already authenticated, without needing the admin password. Joomla core has no built-in CLI command for this (unlike Drupal's `drush user:login`), so DavPanel deploys a small login helper file into the docroot at install time; each click issues a fresh token valid for 10 minutes and usable once.
 
 ### Cache
 

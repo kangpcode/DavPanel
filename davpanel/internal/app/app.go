@@ -11,13 +11,13 @@ import (
 
 	"github.com/gorilla/sessions"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
-	"gist.github.com/kangpcode/davpanel/internal/core/db"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/secret"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
-	"gist.github.com/kangpcode/davpanel/internal/core/sysinfo"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/db"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/secret"
+	"github.com/kangpcode/davpanel/internal/core/session"
+	"github.com/kangpcode/davpanel/internal/core/sysinfo"
 )
 
 const (

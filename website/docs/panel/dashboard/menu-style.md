@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Menu Style
 
-OpenPanel has two menu styles:
+DavPanel has two menu styles:
 
 - **Classic**: features are grouped in expandable sections in the sidebar, for example **MySQL** expands into Databases, Users, Database Wizard and more.
 - **Modern**: the sidebar has one link per area, and the pages of that area are shown as tabs at the top of each page. For example, **MySQL** opens the databases list, with tabs for Users, Import, phpMyAdmin, Remote Access, Running Queries and the rest.

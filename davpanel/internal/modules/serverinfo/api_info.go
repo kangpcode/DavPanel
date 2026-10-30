@@ -3,9 +3,9 @@ package serverinfo
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // RegisterInfoAPI wires GET /api/server/info onto mux: a single-call convenience endpoint combining the three buildHosting* payloads /server/info's page already fetches client-side as separate calls

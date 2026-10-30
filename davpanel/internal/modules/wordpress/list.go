@@ -3,8 +3,8 @@ package wordpress
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
 )
 
 // SiteRow is one row of manager/wp/list.html's table/cards.

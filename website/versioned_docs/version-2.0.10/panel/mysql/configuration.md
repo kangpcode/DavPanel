@@ -6,12 +6,12 @@ sidebar_position: 10
 
 The MySQL Configuration page lets you edit low-level `my.cnf` settings for your database service, without needing terminal access.
 
-![MySQL Configuration page with a table of settings, editable values and the Save Changes button](/img/openpanel-screenshots/mysql/configuration-page.png#gh-light-mode-only)
-![MySQL Configuration page with a table of settings, editable values and the Save Changes button](/img/openpanel-screenshots/mysql/configuration-page_dark.png#gh-dark-mode-only)
+![MySQL Configuration page with a table of settings, editable values and the Save Changes button](/img/davpanel-screenshots/mysql/configuration-page.png#gh-light-mode-only)
+![MySQL Configuration page with a table of settings, editable values and the Save Changes button](/img/davpanel-screenshots/mysql/configuration-page_dark.png#gh-dark-mode-only)
 
 ## How to Change Configuration
 
-1. Open **OpenPanel** and navigate to **MySQL > Configuration**.
+1. Open **DavPanel** and navigate to **MySQL > Configuration**.
 2. Modify the values you want to change.
 3. Click **Save** to apply changes.
 
@@ -54,4 +54,4 @@ The list of configurable keys is determined by the system administrator. By defa
 
 **Customizing Available Options**
 
-Administrators can change which keys are exposed here by editing `/etc/openpanel/mysql/keys.txt` (one key per line). If that file doesn't exist, the default list above is used.
+Administrators can change which keys are exposed here by editing `/etc/davpanel/mysql/keys.txt` (one key per line). If that file doesn't exist, the default list above is used.

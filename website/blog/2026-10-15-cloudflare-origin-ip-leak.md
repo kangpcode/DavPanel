@@ -1,10 +1,10 @@
 ---
 title: "Is Your Origin IP Leaking Behind Cloudflare? How to Lock Your Server to Cloudflare-Only Traffic"
-description: "Cloudflare only protects you if attackers can't reach your server directly. Learn the 7 ways an origin IP leaks (DNS history, mail records, unproxied subdomains, certificates, pingbacks), how to check yours, and how to allow only Cloudflare traffic per domain, in OpenPanel, Nginx, ufw and cPanel."
+description: "Cloudflare only protects you if attackers can't reach your server directly. Learn the 7 ways an origin IP leaks (DNS history, mail records, unproxied subdomains, certificates, pingbacks), how to check yours, and how to allow only Cloudflare traffic per domain, in DavPanel, Nginx, ufw and cPanel."
 slug: cloudflare-origin-ip-leak
-authors: stefanpejcic
+authors: kangpcode
 tags: [Cloudflare, Security, DDoS, Firewall, Caddy, Nginx, cPanel, Tutorial]
-image: https://openpanel.com/img/blog/cloudflare_origin_ip_cover.png
+image: https://davpanel.com/img/blog/cloudflare_origin_ip_cover.png
 hide_table_of_contents: false
 ---
 
@@ -93,17 +93,17 @@ Some records can't be proxied. Cloudflare only proxies HTTP and HTTPS, so **mail
 
 This is the step that makes a leaked IP useless: the server answers requests for your domain **only** when they come from Cloudflare's IP ranges. Everything else is refused before it reaches your application.
 
-### In OpenPanel
+### In DavPanel
 
-OpenPanel has a **Cloudflare-only** switch per domain. In OpenPanel, go to **Domains**, open the domain's **Actions** menu and click **Restrict to Cloudflare**. An orange cloud appears next to the domain name:
+DavPanel has a **Cloudflare-only** switch per domain. In DavPanel, go to **Domains**, open the domain's **Actions** menu and click **Restrict to Cloudflare**. An orange cloud appears next to the domain name:
 
-![Domains list with an orange Cloudflare icon next to restricted domains and the actions menu with Remove Cloudflare restriction](/img/openpanel-screenshots/domains/domains-actions.png#gh-light-mode-only)
-![Domains list with an orange Cloudflare icon next to restricted domains and the actions menu with Remove Cloudflare restriction](/img/openpanel-screenshots/domains/domains-actions_dark.png#gh-dark-mode-only)
+![Domains list with an orange Cloudflare icon next to restricted domains and the actions menu with Remove Cloudflare restriction](/img/davpanel-screenshots/domains/domains-actions.png#gh-light-mode-only)
+![Domains list with an orange Cloudflare icon next to restricted domains and the actions menu with Remove Cloudflare restriction](/img/davpanel-screenshots/domains/domains-actions_dark.png#gh-dark-mode-only)
 
 To restrict several domains at once, select them and use the **Cloudflare** bulk action:
 
-![Bulk actions bar set to Restrict to Cloudflare for the selected domain](/img/openpanel-screenshots/domains/domains-bulk-cloudflare.png#gh-light-mode-only)
-![Bulk actions bar set to Restrict to Cloudflare for the selected domain](/img/openpanel-screenshots/domains/domains-bulk-cloudflare_dark.png#gh-dark-mode-only)
+![Bulk actions bar set to Restrict to Cloudflare for the selected domain](/img/davpanel-screenshots/domains/domains-bulk-cloudflare.png#gh-light-mode-only)
+![Bulk actions bar set to Restrict to Cloudflare for the selected domain](/img/davpanel-screenshots/domains/domains-bulk-cloudflare_dark.png#gh-dark-mode-only)
 
 From then on, a direct request gets a `403` and never reaches PHP, the database or the WAF. We tested it on a server with two domains, one restricted:
 
@@ -118,15 +118,15 @@ Access allowed only through Cloudflare
 A few details that make it safe to turn on:
 
 - **It's per domain.** On a shared server some sites use Cloudflare and some don't. A server-wide firewall rule would break the ones that don't, a per-domain switch only affects the sites behind Cloudflare.
-- **You don't maintain the IP list by hand.** OpenPanel builds it from Cloudflare's published ranges (`cloudflare.com/ips`), and `opencli domains-cloudflare` refreshes it.
+- **You don't maintain the IP list by hand.** DavPanel builds it from Cloudflare's published ranges (`cloudflare.com/ips`), and `davcli domains-cloudflare` refreshes it.
 - **The server can still reach its own sites.** Its own IPs are allowed, so wp-cron, loopback requests and health checks keep working.
 
-Server administrators can restrict domains for every user from **OpenAdmin > Domains** (the **Cloudflare** bulk action), or from the terminal:
+Server administrators can restrict domains for every user from **DavAdmin > Domains** (the **Cloudflare** bulk action), or from the terminal:
 
 ```bash
-opencli domains-cloudflare enable example.com          # one domain
-opencli domains-cloudflare status --all                # which domains are restricted
-opencli domains-cloudflare enable --all -y             # every current and new domain
+davcli domains-cloudflare enable example.com          # one domain
+davcli domains-cloudflare status --all                # which domains are restricted
+davcli domains-cloudflare enable --all -y             # every current and new domain
 ```
 
 :::warning
@@ -187,7 +187,7 @@ On cPanel you're left with a server-wide firewall rule (CSF or iptables, with th
 
 Behind Cloudflare, every connection to your server comes from a Cloudflare IP. Without telling your web server to trust Cloudflare's `CF-Connecting-IP` header, your access logs, statistics and rate limits all see a handful of Cloudflare addresses instead of your visitors. Rate limiting is the dangerous one: one busy Cloudflare edge can carry hundreds of real visitors, and a per-IP limit would block all of them at once.
 
-In OpenPanel, the web server trusts `CF-Connecting-IP`, but only from Cloudflare's ranges (on new installations, and on updated servers once rate limiting is turned on), so the [rate limits](/docs/admin/domains/ratelimit) and logs count each real visitor. A visitor who sends a fake `CF-Connecting-IP` header straight to the server is ignored, because the header is only read on connections from Cloudflare.
+In DavPanel, the web server trusts `CF-Connecting-IP`, but only from Cloudflare's ranges (on new installations, and on updated servers once rate limiting is turned on), so the [rate limits](/docs/admin/domains/ratelimit) and logs count each real visitor. A visitor who sends a fake `CF-Connecting-IP` header straight to the server is ignored, because the header is only read on connections from Cloudflare.
 
 On Nginx, the `set_real_ip_from` lines in Step 3 do the same. On Apache, configure `mod_remoteip` with `RemoteIPHeader CF-Connecting-IP` and a `RemoteIPTrustedProxy` line per Cloudflare range.
 
@@ -206,23 +206,23 @@ If the IP is in DNS history or was attacked before:
 
 Cloudflare-only makes sure attackers have to come through Cloudflare. It's still worth limiting what *any* single visitor, or any single site, can do on the server itself:
 
-- **Rate limits per IP and per domain**, so one scraper or one viral page can't use all PHP workers. OpenPanel sets these per domain under [Domains > Rate Limiting](/docs/admin/domains/ratelimit), and they count real visitor IPs behind Cloudflare.
-- **A web application firewall**. OpenPanel runs CorazaWAF with the OWASP Core Rule Set per domain.
+- **Rate limits per IP and per domain**, so one scraper or one viral page can't use all PHP workers. DavPanel sets these per domain under [Domains > Rate Limiting](/docs/admin/domains/ratelimit), and they count real visitor IPs behind Cloudflare.
+- **A web application firewall**. DavPanel runs CorazaWAF with the OWASP Core Rule Set per domain.
 - **Resource limits per account**, so one overloaded site slows down only itself and not every other site on the server.
 
-## OpenPanel vs. cPanel: Cloudflare-only access
+## DavPanel vs. cPanel: Cloudflare-only access
 
-| | OpenPanel | cPanel |
+| | DavPanel | cPanel |
 |---|---|---|
 | Restrict one domain to Cloudflare | Yes, one click in the domain's actions menu | No, needs manual `.htaccess` or firewall rules |
 | Bulk restrict many domains | Yes, bulk action for users and admins | No |
 | Cloudflare IP list | Built from Cloudflare's published ranges | Manual |
 | Real visitor IP behind Cloudflare | Yes, trusted only from Cloudflare's ranges | Yes, `mod_remoteip` via `cloudflare.conf` |
 | Server keeps access to its own sites (cron, loopback) | Yes | Depends on your rules |
-| Command line | `opencli domains-cloudflare` | No |
+| Command line | `davcli domains-cloudflare` | No |
 | Cloudflare plugin | Not needed | Retired in 2022 |
 
-If you're comparing control panels, see our [cPanel alternative guide](/blog/honest-cpanel-alternative-openpanel) for the full feature comparison.
+If you're comparing control panels, see our [cPanel alternative guide](/blog/honest-cpanel-alternative-davpanel) for the full feature comparison.
 
 ## Checklist
 
@@ -235,9 +235,9 @@ dig +short MX example.com
 curl -s -o /dev/null -w "%{http_code}\n" -H "Host: example.com" http://YOUR_SERVER_IP/
 # 200 = exposed, 403 = Cloudflare-only is working
 
-# 3. in OpenPanel: restrict the domain and check it
-opencli domains-cloudflare enable example.com
-opencli domains-cloudflare status example.com
+# 3. in DavPanel: restrict the domain and check it
+davcli domains-cloudflare enable example.com
+davcli domains-cloudflare status example.com
 ```
 
 - Every website record is proxied (orange cloud).

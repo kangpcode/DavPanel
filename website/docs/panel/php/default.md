@@ -6,8 +6,8 @@ sidebar_position: 2
 
 Choose the PHP version that new domains use by default.
 
-![Default PHP version page with a card for each installed PHP version, its support status and the current default marked](/img/openpanel-screenshots/php/default-form.png#gh-light-mode-only)
-![Default PHP version page with a card for each installed PHP version, its support status and the current default marked](/img/openpanel-screenshots/php/default-form_dark.png#gh-dark-mode-only)
+![Default PHP version page with a card for each installed PHP version, its support status and the current default marked](/img/davpanel-screenshots/php/default-form.png#gh-light-mode-only)
+![Default PHP version page with a card for each installed PHP version, its support status and the current default marked](/img/davpanel-screenshots/php/default-form_dark.png#gh-dark-mode-only)
 
 Each installed PHP version is shown as a card, newest first, with its support status:
 

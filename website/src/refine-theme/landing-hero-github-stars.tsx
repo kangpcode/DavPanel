@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { OrangeStarIcon } from './icons/orange-star';
 import { HeroBadge } from './hero-badge';
 
-const REPO = 'stefanpejcic/DavPanel';
+const REPO = 'kangpcode/DavPanel';
 
 export const LandingHeroGithubStars = () => {
     const [stars, setStars] = useState<number | null>(null);

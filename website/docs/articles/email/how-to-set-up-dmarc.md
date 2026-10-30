@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Set Up DMARC"
-description: "How to set up a DMARC record for your domain in OpenPanel: what the default record does, how to read reports, and how to move safely from p=none to quarantine and reject."
+description: "How to set up a DMARC record for your domain in DavPanel: what the default record does, how to read reports, and how to move safely from p=none to quarantine and reject."
 ---
 
 # How to Set Up DMARC for Your Domain
@@ -9,9 +9,9 @@ description: "How to set up a DMARC record for your domain in OpenPanel: what th
 
 ---
 
-## The Default Record in OpenPanel
+## The Default Record in DavPanel
 
-When you add a domain, OpenPanel creates a basic DMARC record in its DNS zone:
+When you add a domain, DavPanel creates a basic DMARC record in its DNS zone:
 
 ```
 _dmarc.example.com.   TXT   "v=DMARC1; p=none;"
@@ -19,7 +19,7 @@ _dmarc.example.com.   TXT   "v=DMARC1; p=none;"
 
 `p=none` means "monitor only - don't block anything". It satisfies the "has a DMARC record" requirement, but doesn't protect your domain from spoofing yet, and you don't receive any reports.
 
-Check your domains in **OpenPanel → Email → Deliverability** - it shows whether SPF, DKIM and DMARC are published correctly. See [Email Deliverability](/docs/panel/emails/email_deliverability/).
+Check your domains in **DavPanel → Email → Deliverability** - it shows whether SPF, DKIM and DMARC are published correctly. See [Email Deliverability](/docs/panel/emails/email_deliverability/).
 
 ---
 
@@ -34,7 +34,7 @@ DMARC passes only when **SPF or DKIM passes and aligns** with the domain in the 
 
 ## Step 1: Start Monitoring with Reports
 
-Edit the `_dmarc` TXT record in **OpenPanel → Domains → DNS** (or at your external DNS provider) and add a report address:
+Edit the `_dmarc` TXT record in **DavPanel → Domains → DNS** (or at your external DNS provider) and add a report address:
 
 ```
 v=DMARC1; p=none; rua=mailto:dmarc@example.com; fo=1
@@ -98,7 +98,7 @@ Or send a test email to [mail-tester.com](https://www.mail-tester.com/) - see [T
 | Two `_dmarc` TXT records | DMARC is ignored - keep exactly one. |
 | Record placed at `example.com` instead of `_dmarc.example.com` | No DMARC found. |
 | Jumping straight to `p=reject` | Legitimate mail from third-party services gets rejected. |
-| Domain uses Cloudflare DNS, record edited in OpenPanel | Changes have no effect - edit DNS where the domain's nameservers point. |
+| Domain uses Cloudflare DNS, record edited in DavPanel | Changes have no effect - edit DNS where the domain's nameservers point. |
 
 ---
 

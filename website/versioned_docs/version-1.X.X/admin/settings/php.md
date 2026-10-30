@@ -8,7 +8,7 @@ Manage the default PHP version and configuration files for new user accounts.
 
 ### Available Options
 
-These options determine which PHP settings users can modify from their **OpenPanel > PHP Options** page.
+These options determine which PHP settings users can modify from their **DavPanel > PHP Options** page.
 
 The default editable options include:
 

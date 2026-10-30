@@ -12,9 +12,9 @@ import (
 	"strings"
 	"syscall"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/paths"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/paths"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // FolderInfo describes one folder returned by the folder picker.

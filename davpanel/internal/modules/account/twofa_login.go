@@ -8,7 +8,7 @@ import (
 
 	"github.com/gorilla/sessions"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 const (

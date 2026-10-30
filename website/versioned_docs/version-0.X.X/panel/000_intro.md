@@ -2,15 +2,15 @@
 sidebar_position: 1
 ---
 
-# Get Started with OpenPanel
+# Get Started with DavPanel
 
-OpenPanel offers a distinct advantage over other hosting panels by providing each user with an isolated environment and tools to fully manage it. This ensures that you enjoy full control over your environment, simillar to a VPS experience. You can effortlessly install new PHP versions, modify server configurations, view domain logs, restart services, and perform numerous other advanced tasks.
+DavPanel offers a distinct advantage over other hosting panels by providing each user with an isolated environment and tools to fully manage it. This ensures that you enjoy full control over your environment, simillar to a VPS experience. You can effortlessly install new PHP versions, modify server configurations, view domain logs, restart services, and perform numerous other advanced tasks.
 
-![openpanel scheme](/img/admin/openpanel_scheme.png)
+![davpanel scheme](/img/admin/davpanel_scheme.png)
 
 This panel is the culmination of years of experience in the hosting industry, having spent decades working with various hosting panels we  made sure to include all features that simply make sense.
 
-When we designed OpenPanel, we prioritized features that are not only user-friendly for beginners but also advanced enough to alleviate maintenance tasks for system administrators and hosting support teams.
+When we designed DavPanel, we prioritized features that are not only user-friendly for beginners but also advanced enough to alleviate maintenance tasks for system administrators and hosting support teams.
 
 
 Some of the unique features worth mentioning are:
@@ -27,6 +27,6 @@ Some of the unique features worth mentioning are:
 
 ## Support
 
-Our [Community](https://community.openpanel.com/) serves as our virtual Headquater, where the community helps each other.
+Our [Community](https://community.davpanel.com/) serves as our virtual Headquater, where the community helps each other.
 
 **Learn, share** and **discuss** with other community members your questions.

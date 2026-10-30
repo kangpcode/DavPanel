@@ -6,11 +6,11 @@ import (
 	"log"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/cpanelpw"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/werkzeugpw"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/cpanelpw"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/werkzeugpw"
 )
 
 type loginResult struct {

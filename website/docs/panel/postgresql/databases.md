@@ -4,8 +4,8 @@ sidebar_position: 1
 
 # Databases
 
-![PostgreSQL Databases page listing databases with their size, assigned users and actions](/img/openpanel-screenshots/postgresql/databases-list.png#gh-light-mode-only)
-![PostgreSQL Databases page listing databases with their size, assigned users and actions](/img/openpanel-screenshots/postgresql/databases-list_dark.png#gh-dark-mode-only)
+![PostgreSQL Databases page listing databases with their size, assigned users and actions](/img/davpanel-screenshots/postgresql/databases-list.png#gh-light-mode-only)
+![PostgreSQL Databases page listing databases with their size, assigned users and actions](/img/davpanel-screenshots/postgresql/databases-list_dark.png#gh-dark-mode-only)
 
 PostgreSQL databases are used to store and manage your application's data, making it accessible and organized for your applications and services.
 
@@ -28,8 +28,8 @@ System databases (`postgres`, `template0`, `template1`) are always listed separa
 
 To create a new PostgreSQL database, click on the "New Database" button and fill in the name of the new database.
 
-![Create PostgreSQL Database form with the database name field](/img/openpanel-screenshots/postgresql/new_db-form.png#gh-light-mode-only)
-![Create PostgreSQL Database form with the database name field](/img/openpanel-screenshots/postgresql/new_db-form_dark.png#gh-dark-mode-only)
+![Create PostgreSQL Database form with the database name field](/img/davpanel-screenshots/postgresql/new_db-form.png#gh-light-mode-only)
+![Create PostgreSQL Database form with the database name field](/img/davpanel-screenshots/postgresql/new_db-form_dark.png#gh-dark-mode-only)
 
 ## Database Actions
 
@@ -43,8 +43,8 @@ Each database row has these actions:
 
 Tick the checkbox of one or more databases, or the checkbox in the table header to select every database shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two PostgreSQL databases selected with the bulk actions bar offering Export, Assign user, Remove user and Delete](/img/openpanel-screenshots/postgresql/databases-bulk.png#gh-light-mode-only)
-![Two PostgreSQL databases selected with the bulk actions bar offering Export, Assign user, Remove user and Delete](/img/openpanel-screenshots/postgresql/databases-bulk_dark.png#gh-dark-mode-only)
+![Two PostgreSQL databases selected with the bulk actions bar offering Export, Assign user, Remove user and Delete](/img/davpanel-screenshots/postgresql/databases-bulk.png#gh-light-mode-only)
+![Two PostgreSQL databases selected with the bulk actions bar offering Export, Assign user, Remove user and Delete](/img/davpanel-screenshots/postgresql/databases-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -63,8 +63,8 @@ To delete an existing PostgreSQL database, click on the "Delete" button next to 
 
 The button turns into **Confirm** with a 5-second countdown. Click it again before the countdown ends to delete the database; otherwise it reverts to **Delete**.
 
-![Delete button turned into a Confirm button with a countdown after the first click](/img/openpanel-screenshots/postgresql/databases-delete.png#gh-light-mode-only)
-![Delete button turned into a Confirm button with a countdown after the first click](/img/openpanel-screenshots/postgresql/databases-delete_dark.png#gh-dark-mode-only)
+![Delete button turned into a Confirm button with a countdown after the first click](/img/davpanel-screenshots/postgresql/databases-delete.png#gh-light-mode-only)
+![Delete button turned into a Confirm button with a countdown after the first click](/img/davpanel-screenshots/postgresql/databases-delete_dark.png#gh-dark-mode-only)
 
 :::danger
 ⚠️ Deleting a PostgreSQL database will permanently delete all tables and data for that database.

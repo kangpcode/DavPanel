@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Swap
 
-*OpenAdmin > System > Swap* lets Administrators view current swap usage, change the swap file allocation, and drop (clear) swap.
+*DavAdmin > System > Swap* lets Administrators view current swap usage, change the swap file allocation, and drop (clear) swap.
 
 Step-by-step guide: [How to Add or Resize Swap](/docs/articles/server/how-to-add-swap/)
 
@@ -14,8 +14,8 @@ Shows total/used/free swap (as reported by `free -m`) and a table of every activ
 
 When swap is more than 90% used, a warning is shown: the server is short on memory, so add RAM, lower memory usage on [Processes](/docs/admin/advanced/processes), or increase swap.
 
-![Swap page with the current swap usage, the swap size field with Apply, and the Drop Swap button](/img/openadmin-screenshots/advanced/swap-page.png#gh-light-mode-only)
-![Swap page with the current swap usage, the swap size field with Apply, and the Drop Swap button](/img/openadmin-screenshots/advanced/swap-page_dark.png#gh-dark-mode-only)
+![Swap page with the current swap usage, the swap size field with Apply, and the Drop Swap button](/img/davadmin-screenshots/advanced/swap-page.png#gh-light-mode-only)
+![Swap page with the current swap usage, the swap size field with Apply, and the Drop Swap button](/img/davadmin-screenshots/advanced/swap-page_dark.png#gh-dark-mode-only)
 
 ### Change allocation
 

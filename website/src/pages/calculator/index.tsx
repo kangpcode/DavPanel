@@ -52,7 +52,7 @@ interface AddonCost {
 }
 
 const COMMUNITY_ADDONS: Record<string, AddonCost> = {
-    openpanelui: {
+    davpanelui: {
         cpu: 0.5,
         ramGb: 0.5,
         diskGb: 2.6,
@@ -239,7 +239,7 @@ const Calculator: React.FC = () => {
     const [cronEnabled, setCronEnabled] = useState(true);
 
     const [addons, setAddons] = useState<Record<string, boolean>>({
-        openpanelui: true,
+        davpanelui: true,
         davadminui: true,
         caddy: true,
         dns: false,

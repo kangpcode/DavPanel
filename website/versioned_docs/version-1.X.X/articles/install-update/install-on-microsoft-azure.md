@@ -1,6 +1,6 @@
-# OpenPanel Installation on Microsoft Azure
+# DavPanel Installation on Microsoft Azure
 
-This guide will walk you through deploying **OpenPanel** on an Azure Virtual Machine with Ubuntu.
+This guide will walk you through deploying **DavPanel** on an Azure Virtual Machine with Ubuntu.
 
 ---
 
@@ -27,8 +27,8 @@ This guide will walk you through deploying **OpenPanel** on an Azure Virtual Mac
      - `22` (SSH)
      - `80` (HTTP)
      - `443` (HTTPS)
-     - `2083` (OpenPanel)
-     - `2087` (OpenAdmin)
+     - `2083` (DavPanel)
+     - `2087` (DavAdmin)
      - `443 UDP` (for HTTP/3 support)
 
 ---
@@ -45,19 +45,19 @@ ssh -i your_private_key azure@yourIpAddress
 
 ---
 
-## Step 3: Run the OpenPanel Installer
+## Step 3: Run the DavPanel Installer
 
 Once logged in, run the installer script:
 
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
 > Follow the prompts to select your preferred database engine and complete installation.
 
 ---
 
-## Step 4: Access OpenPanel
+## Step 4: Access DavPanel
 
 1. Open your browser and navigate to:
 
@@ -71,10 +71,10 @@ https://yourIpAddress:2087
 
 ## Notes
 
-* Ensure your VM meets [OpenPanel minimum requirements](https://openpanel.com/docs/admin/intro/#requirements).
+* Ensure your VM meets [DavPanel minimum requirements](https://davpanel.com/docs/admin/intro/#requirements).
 * After installation, consider restricting firewall access for better security.
-* Use the [OpenPanel Install Command Generator](https://openpanel.com/install) for advanced configuration options.
+* Use the [DavPanel Install Command Generator](https://davpanel.com/install) for advanced configuration options.
 
 ---
 
-**Congratulations!** You have successfully installed OpenPanel on Microsoft Azure.
+**Congratulations!** You have successfully installed DavPanel on Microsoft Azure.

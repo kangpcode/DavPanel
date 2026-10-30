@@ -1,11 +1,11 @@
 ---
 sidebar_label: "Let's Encrypt Rate Limits & Renewals"
-description: "Why Let's Encrypt SSL certificates fail to issue or renew in OpenPanel: rate limits (too many certificates, failed validations), DNS and firewall problems, CAA records and Cloudflare - and how to fix each one."
+description: "Why Let's Encrypt SSL certificates fail to issue or renew in DavPanel: rate limits (too many certificates, failed validations), DNS and firewall problems, CAA records and Cloudflare - and how to fix each one."
 ---
 
 # Let's Encrypt Rate Limits and SSL Renewal Failures
 
-OpenPanel issues and renews free **Let's Encrypt** certificates automatically. Most of the time you never have to think about it - but when a certificate fails to issue or renew, the cause is almost always one of the few problems below.
+DavPanel issues and renews free **Let's Encrypt** certificates automatically. Most of the time you never have to think about it - but when a certificate fails to issue or renew, the cause is almost always one of the few problems below.
 
 ---
 
@@ -19,9 +19,9 @@ OpenPanel issues and renews free **Let's Encrypt** certificates automatically. M
 To see what's happening for a domain, administrators can run:
 
 ```bash
-opencli domains-ssl example.com status   # AutoSSL, Custom SSL or no SSL
-opencli domains-ssl example.com info     # certificate details and expiry
-opencli domains-ssl example.com logs     # recent issuance/renewal log lines
+davcli domains-ssl example.com status   # AutoSSL, Custom SSL or no SSL
+davcli domains-ssl example.com info     # certificate details and expiry
+davcli domains-ssl example.com logs     # recent issuance/renewal log lines
 ```
 
 ---
@@ -46,7 +46,7 @@ See the current values in the [Let's Encrypt documentation](https://letsencrypt.
 - **Don't reinstall or delete domains** to "reset" SSL - that uses up the duplicate-certificate limit.
 - **Migrating many domains?** Move DNS in batches, so certificates are requested gradually.
 
-OpenPanel's proxy (Caddy) also falls back to another free certificate authority when Let's Encrypt is unavailable or rate-limited, so most sites still get a valid certificate.
+DavPanel's proxy (Caddy) also falls back to another free certificate authority when Let's Encrypt is unavailable or rate-limited, so most sites still get a valid certificate.
 
 ---
 
@@ -73,7 +73,7 @@ Validation needs incoming connections on **port 80 and 443**. Check any firewall
 
 ### 4. Cloudflare proxy
 
-With Cloudflare's orange cloud on, Cloudflare answers the validation requests. Use **Full (strict)** SSL mode, or temporarily switch the record to **DNS only** while the first certificate is issued - see [Use Cloudflare with OpenPanel](/docs/articles/domains/cloudflare-with-openpanel/).
+With Cloudflare's orange cloud on, Cloudflare answers the validation requests. Use **Full (strict)** SSL mode, or temporarily switch the record to **DNS only** while the first certificate is issued - see [Use Cloudflare with DavPanel](/docs/articles/domains/cloudflare-with-davpanel/).
 
 ### 5. A CAA record blocks Let's Encrypt
 
@@ -89,7 +89,7 @@ Add `0 issue "letsencrypt.org"` to the domain's CAA records, or remove the CAA r
 
 A redirect from the domain to another site, or a strict web application firewall rule, can block the validation request under `/.well-known/acme-challenge/`. Temporarily remove the redirect and try again - see [403 errors](/docs/articles/domains/error-on-website-disable-coraza-waf/).
 
-### 7. The domain isn't in OpenPanel
+### 7. The domain isn't in DavPanel
 
 Certificates are issued only for domains added on the **Domains** page (and their `www`). Other hostnames pointing to the server - for example `test.example.com` when only `example.com` is added - don't get a certificate. Add them as domains.
 
@@ -99,11 +99,11 @@ Certificates are issued only for domains added on the **Domains** page (and thei
 
 Once the cause is fixed:
 
-1. Go to **OpenPanel → Domains → SSL** for the domain.
+1. Go to **DavPanel → Domains → SSL** for the domain.
 2. Click **Generate now** (or **Switch to Let's Encrypt and generate** if it was using a custom certificate).
 3. Open `https://example.com` in a browser.
 
-If it still fails, check the logs with `opencli domains-ssl example.com logs` and see the [SSL troubleshooting guide](/docs/articles/domains/ssl-troubleshooting-guide/).
+If it still fails, check the logs with `davcli domains-ssl example.com logs` and see the [SSL troubleshooting guide](/docs/articles/domains/ssl-troubleshooting-guide/).
 
 ---
 
@@ -111,4 +111,4 @@ If it still fails, check the logs with `opencli domains-ssl example.com logs` an
 
 - [Wildcard SSL certificates](/docs/articles/domains/wildcard-ssl-certificate/)
 - [Install a custom SSL certificate](/docs/articles/domains/install-custom-ssl-certificate/)
-- [SSL in OpenPanel](/docs/panel/domains/ssl/)
+- [SSL in DavPanel](/docs/panel/domains/ssl/)

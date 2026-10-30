@@ -3,7 +3,7 @@ package dashboard
 import (
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 func TestStripQuotes(t *testing.T) {

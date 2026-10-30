@@ -1,13 +1,13 @@
 ---
-sidebar_label: "OpenPanel Installation on Oracle Cloud"
-description: "How to install the OpenPanel hosting control panel for free on an Oracle Cloud Always Free Ampere A1 ARM instance: shape, security list ports, iptables fix, and email limitations."
+sidebar_label: "DavPanel Installation on Oracle Cloud"
+description: "How to install the DavPanel hosting control panel for free on an Oracle Cloud Always Free Ampere A1 ARM instance: shape, security list ports, iptables fix, and email limitations."
 ---
 
 # How to Install a Free Hosting Control Panel on Oracle Cloud (Always Free Tier)
 
-Oracle Cloud's **Always Free** tier includes an **Ampere A1** ARM instance with up to **4 CPU cores and 24 GB of RAM** at no cost. OpenPanel supports ARM64, and together with the free [OpenPanel Community edition](/docs/articles/license/pricing/) you get a complete hosting control panel for **free**.
+Oracle Cloud's **Always Free** tier includes an **Ampere A1** ARM instance with up to **4 CPU cores and 24 GB of RAM** at no cost. DavPanel supports ARM64, and together with the free [DavPanel Community edition](/docs/articles/license/pricing/) you get a complete hosting control panel for **free**.
 
-This guide covers creating the instance, opening the right ports (Oracle blocks almost everything by default), and installing OpenPanel.
+This guide covers creating the instance, opening the right ports (Oracle blocks almost everything by default), and installing DavPanel.
 
 ---
 
@@ -23,7 +23,7 @@ This guide covers creating the instance, opening the right ports (Oracle blocks 
 1. In the Oracle Cloud Console, go to **Compute** → **Instances** → **Create instance**.
 2. **Image**: click **Change image** and select **Canonical Ubuntu 24.04** (recommended) or **Oracle Linux 9**.
 3. **Shape**: click **Change shape** → **Ampere** → **VM.Standard.A1.Flex**.
-   - Set **OCPUs** and **memory** - the Always Free limit is 4 OCPUs and 24 GB RAM in total. For a single OpenPanel server, use all of it (4 OCPU / 24 GB), or at least 2 OCPU / 12 GB.
+   - Set **OCPUs** and **memory** - the Always Free limit is 4 OCPUs and 24 GB RAM in total. For a single DavPanel server, use all of it (4 OCPU / 24 GB), or at least 2 OCPU / 12 GB.
 4. **Networking**: keep **Assign a public IPv4 address** enabled.
 5. **SSH keys**: upload or paste your public key.
 6. **Boot volume**: optionally increase the size - the Always Free tier includes 200 GB of block storage in total.
@@ -41,7 +41,7 @@ The Always Free **VM.Standard.E2.1.Micro** (AMD) instance has only 1 GB of RAM. 
 
 ## Step 2: Open Ports in the Security List
 
-Oracle Cloud blocks all inbound traffic except SSH (port 22) at the network level. You must open the ports OpenPanel uses:
+Oracle Cloud blocks all inbound traffic except SSH (port 22) at the network level. You must open the ports DavPanel uses:
 
 1. Open the instance, click the **Subnet** link, then open the subnet's **Security List** (usually *Default Security List for vcn-...*).
 2. Click **Add Ingress Rules** and add a rule for each port with **Source CIDR** `0.0.0.0/0`:
@@ -50,7 +50,7 @@ Oracle Cloud blocks all inbound traffic except SSH (port 22) at the network leve
 |---|---|---|
 | Websites | TCP | `80`, `443` |
 | Websites (HTTP/3) | UDP | `443` |
-| OpenPanel / OpenAdmin | TCP | `2083`, `2087` |
+| DavPanel / DavAdmin | TCP | `2083`, `2087` |
 | DNS | TCP and UDP | `53` |
 | phpMyAdmin | TCP | `2053`, `8888` |
 | Email (Enterprise) | TCP | `25`, `143`, `465`, `587`, `993` |
@@ -70,13 +70,13 @@ ssh ubuntu@your-instance-ip
 sudo -i
 ```
 
-![Terminal showing the first SSH connection as ubuntu and switching to root with sudo -i on an ARM64 (AArch64) instance: confirming the server's host key fingerprint, the Ubuntu 24.04 welcome message, and the root prompt](/img/openpanel-screenshots/install/ssh-oracle-cloud.png#screenshot)
+![Terminal showing the first SSH connection as ubuntu and switching to root with sudo -i on an ARM64 (AArch64) instance: confirming the server's host key fingerprint, the Ubuntu 24.04 welcome message, and the root prompt](/img/davpanel-screenshots/install/ssh-oracle-cloud.png#screenshot)
 
 ---
 
 ## Step 4: Remove Oracle's Default Firewall Rules
 
-Besides the security list, Oracle images come with their own host firewall that rejects everything except SSH. OpenPanel installs [Sentinel Firewall (CSF)](/docs/admin/security/firewall/) to manage the firewall, so remove the default rules first.
+Besides the security list, Oracle images come with their own host firewall that rejects everything except SSH. DavPanel installs [Sentinel Firewall (CSF)](/docs/admin/security/firewall/) to manage the firewall, so remove the default rules first.
 
 **On Ubuntu:**
 
@@ -94,26 +94,26 @@ systemctl disable --now firewalld
 ```
 
 :::danger
-Only do this right before installing OpenPanel. Until CSF is installed, the only protection is the Oracle security list from Step 2.
+Only do this right before installing DavPanel. Until CSF is installed, the only protection is the Oracle security list from Step 2.
 :::
 
 ---
 
-## Step 5: Run the OpenPanel Installer
+## Step 5: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
-The installer detects the ARM64 (AArch64) CPU automatically. Installation takes about 5 minutes; when it finishes, it prints the **OpenAdmin URL**, **username** and **password**.
+The installer detects the ARM64 (AArch64) CPU automatically. Installation takes about 5 minutes; when it finishes, it prints the **DavAdmin URL**, **username** and **password**.
 
 For optional flags (domain, admin username, ports), use the [install command generator](/install).
 
-![OpenPanel installer output on an ARM64 (AArch64) server: the OpenPanel banner with version, OS, architecture, IP and Podman engine, each installation step marked OK, and the OpenAdmin URL with the generated username and password at the end](/img/openpanel-screenshots/install/installer-output-arm.png#screenshot)
+![DavPanel installer output on an ARM64 (AArch64) server: the DavPanel banner with version, OS, architecture, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-arm.png#screenshot)
 
 ---
 
-## Step 6: Log in to OpenAdmin
+## Step 6: Log in to DavAdmin
 
 ```
 https://your-instance-ip:2087
@@ -121,8 +121,8 @@ https://your-instance-ip:2087
 
 Log in with the printed credentials and continue with the [post-install steps](/docs/admin/intro/#post-install-steps).
 
-![OpenAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to OpenPanel button](/img/openadmin-screenshots/000_intro-login.png#gh-light-mode-only)
-![OpenAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to OpenPanel button](/img/openadmin-screenshots/000_intro-login_dark.png#gh-dark-mode-only)
+![DavAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to DavPanel button](/img/davadmin-screenshots/000_intro-login.png#gh-light-mode-only)
+![DavAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to DavPanel button](/img/davadmin-screenshots/000_intro-login_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -145,6 +145,6 @@ The default public IP is **ephemeral** and is lost if the instance is terminated
 ## Next Steps
 
 - [Set a domain and SSL for the panel](/docs/admin/settings/general/#domain)
-- [Configure custom nameservers](/docs/articles/domains/how-to-configure-nameservers-in-openpanel/)
+- [Configure custom nameservers](/docs/articles/domains/how-to-configure-nameservers-in-davpanel/)
 - [Create hosting plans](/docs/admin/plans/hosting_plans/)
-- [Secure the server for production](/docs/articles/security/securing-openpanel/)
+- [Secure the server for production](/docs/articles/security/securing-davpanel/)

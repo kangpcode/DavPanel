@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Process Manager
 
-The **Process Manager** interface allows you to monitor all currently running processes on your server. You can search, view detailed command information, and terminate (kill) individual processes directly from the OpenPanel interface.
+The **Process Manager** interface allows you to monitor all currently running processes on your server. You can search, view detailed command information, and terminate (kill) individual processes directly from the DavPanel interface.
 
 Processes are listed sorted by PID by default, and every column (including CPU %) can be sorted by clicking its header - making it easy to identify and act on resource-intensive tasks.
 
@@ -29,13 +29,13 @@ Processes are listed sorted by PID by default, and every column (including CPU %
 
 ## How to Use
 
-1. **Go to** `Processes & Services > Processes` in the OpenPanel sidebar.
+1. **Go to** `Processes & Services > Processes` in the DavPanel sidebar.
 2. Use the **search box** to find a specific process by PID, command, or container name.
 3. Click **"View full command"** to expand long-running command strings.
 4. Click the **Terminate** button to immediately kill the process.
 
-![Process Manager listing processes per container with their user, PID, CPU, time and command](/img/openpanel-screenshots/advanced/process_manager-list.png#gh-light-mode-only)
-![Process Manager listing processes per container with their user, PID, CPU, time and command](/img/openpanel-screenshots/advanced/process_manager-list_dark.png#gh-dark-mode-only)
+![Process Manager listing processes per container with their user, PID, CPU, time and command](/img/davpanel-screenshots/advanced/process_manager-list.png#gh-light-mode-only)
+![Process Manager listing processes per container with their user, PID, CPU, time and command](/img/davpanel-screenshots/advanced/process_manager-list_dark.png#gh-dark-mode-only)
 
 ## Interface Details
 
@@ -60,8 +60,8 @@ Each row in the table provides:
 
 Tick the checkbox of one or more processes, or the checkbox in the table header to select every process shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two processes selected with the bulk actions bar offering Kill](/img/openpanel-screenshots/advanced/process_manager-bulk.png#gh-light-mode-only)
-![Two processes selected with the bulk actions bar offering Kill](/img/openpanel-screenshots/advanced/process_manager-bulk_dark.png#gh-dark-mode-only)
+![Two processes selected with the bulk actions bar offering Kill](/img/davpanel-screenshots/advanced/process_manager-bulk.png#gh-light-mode-only)
+![Two processes selected with the bulk actions bar offering Kill](/img/davpanel-screenshots/advanced/process_manager-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|

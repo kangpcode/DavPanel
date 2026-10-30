@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 func testTranslator(t *testing.T) i18n.Translator {

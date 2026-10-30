@@ -12,7 +12,7 @@ const providers = [
     services: "VPS, Dedicated",
     managedSupport: "No",
     freeEnterprise: "No",
-    link: "https://hostkey.com/apps/hosting-control-panels/openpanel/",
+    link: "https://hostkey.com/apps/hosting-control-panels/davpanel/",
     logo: "/img/hosting-providers/hostkey_logo.png",
   },
   {
@@ -57,7 +57,7 @@ const providers = [
     services: "VPS",
     managedSupport: "No",
     freeEnterprise: "No",
-    link: "https://cloudzy.com/marketplace/openpanel/",
+    link: "https://cloudzy.com/marketplace/davpanel/",
     logo: "/img/hosting-providers/cloudzy-logo.svg",
   },  
 ];

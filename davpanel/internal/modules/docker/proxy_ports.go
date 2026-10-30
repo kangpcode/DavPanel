@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // ToggleProxyHTTPPort comments or uncomments the PROXY_HTTP_PORT line in a user's .env file, enabling or disabling the port varnish listens on

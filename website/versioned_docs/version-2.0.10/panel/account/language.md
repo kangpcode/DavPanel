@@ -6,8 +6,8 @@ sidebar_position: 2
 
 You can customize your experience by selecting your preferred language.  
 
-![Change Language page with the language dropdown showing the current locale](/img/openpanel-screenshots/account/language-page.png#gh-light-mode-only)
-![Change Language page with the language dropdown showing the current locale](/img/openpanel-screenshots/account/language-page_dark.png#gh-dark-mode-only)
+![Change Language page with the language dropdown showing the current locale](/img/davpanel-screenshots/account/language-page.png#gh-light-mode-only)
+![Change Language page with the language dropdown showing the current locale](/img/davpanel-screenshots/account/language-page_dark.png#gh-dark-mode-only)
 
 ## Changing Your Language  
 1. Navigate to **Account > Change Language**.
@@ -17,7 +17,7 @@ You can customize your experience by selecting your preferred language.
 
 
 ## Available Languages
-Languages are configured by Administrator from [OpenAdmin > Settings > Locales](/docs/admin/settings/locales/)
+Languages are configured by Administrator from [DavAdmin > Settings > Locales](/docs/admin/settings/locales/)
 
 ## Missing a Language?  
-If your language is not available, you can help translate OpenPanel [here](/docs/admin/settings/locales/#edit-locale) to improve accessibility for everyone.
+If your language is not available, you can help translate DavPanel [here](/docs/admin/settings/locales/#edit-locale) to improve accessibility for everyone.

@@ -10,7 +10,7 @@ sidebar_position: 5
 - Log analytics  
 - Real-time data exploration  
 
-You can manage the OpenSearch service through **OpenPanel > Caching > OpenSearch**, enabling fast, scalable search capabilities for your applications and systems.
+You can manage the OpenSearch service through **DavPanel > Caching > OpenSearch**, enabling fast, scalable search capabilities for your applications and systems.
 
 ---
 

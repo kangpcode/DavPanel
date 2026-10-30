@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
 )
 
 // Register wires /api/endpoints onto mux.

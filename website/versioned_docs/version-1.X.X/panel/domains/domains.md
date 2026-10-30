@@ -36,7 +36,7 @@ To add a new domain:
 2. Enter the domain name.
 3. Click **"Add Domain"** to save.
 
-Unlike other panels, OpenPanel treats all domains equally. From this single interface, you can add **primary domains**, **addon domains**, or **subdomains**.
+Unlike other panels, DavPanel treats all domains equally. From this single interface, you can add **primary domains**, **addon domains**, or **subdomains**.
 
 Once added, the system will automatically attempt to issue a free [Let’s Encrypt](https://letsencrypt.org/getting-started/) SSL certificate. If successful, the certificate will be applied immediately.
 
@@ -92,4 +92,4 @@ To edit this file:
 2. A new page will open with the Vhost file content.
 3. Make your changes and click **"Save"**.
 
-Once saved, OpenPanel will automatically restart the webserver to apply changes.
+Once saved, DavPanel will automatically restart the webserver to apply changes.

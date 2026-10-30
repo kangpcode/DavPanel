@@ -1,14 +1,14 @@
 ---
 sidebar_label: "Deploy a Django App"
-description: "How to deploy a Django project with Gunicorn on OpenPanel: settings for production and HTTPS, MySQL or PostgreSQL, migrations, static files with WhiteNoise, createsuperuser and troubleshooting."
+description: "How to deploy a Django project with Gunicorn on DavPanel: settings for production and HTTPS, MySQL or PostgreSQL, migrations, static files with WhiteNoise, createsuperuser and troubleshooting."
 ---
 
 # How to Deploy a Django App with Gunicorn
 
-This guide shows how to deploy a **Django** project on OpenPanel. Django runs with **Gunicorn** in its own Python container, and OpenPanel's web server serves it on your domain with a free SSL certificate.
+This guide shows how to deploy a **Django** project on DavPanel. Django runs with **Gunicorn** in its own Python container, and DavPanel's web server serves it on your domain with a free SSL certificate.
 
 :::info
-Python applications are available in **OpenPanel Enterprise**. The feature must be enabled for your hosting plan.
+Python applications are available in **DavPanel Enterprise**. The feature must be enabled for your hosting plan.
 :::
 
 ---
@@ -55,7 +55,7 @@ DEBUG = os.environ.get("DEBUG", "0") == "1"
 ALLOWED_HOSTS = ["example.com", "www.example.com"]
 CSRF_TRUSTED_ORIGINS = ["https://example.com", "https://www.example.com"]
 
-# OpenPanel terminates SSL and forwards requests to Gunicorn over HTTP
+# DavPanel terminates SSL and forwards requests to Gunicorn over HTTP
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 USE_X_FORWARDED_HOST = True
 
@@ -90,9 +90,9 @@ DB_PASSWORD=strong-password
 
 ## Step 2: Create the Database
 
-In **OpenPanel → MySQL → Database Wizard**, create a database and a user with all privileges, and put the names into `.env`.
+In **DavPanel → MySQL → Database Wizard**, create a database and a user with all privileges, and put the names into `.env`.
 
-Inside OpenPanel, databases are reached by **service name**, never `localhost`:
+Inside DavPanel, databases are reached by **service name**, never `localhost`:
 
 | Database | `HOST` | `PORT` |
 |---|---|---|
@@ -104,13 +104,13 @@ Inside OpenPanel, databases are reached by **service name**, never `localhost`:
 
 ## Step 3: Upload the Code
 
-Add the domain in **OpenPanel → Domains**, then upload the project to the domain folder (`/var/www/html/example.com/`) with the [File Manager](/docs/panel/files/files/) or [FTP](/docs/panel/files/FTP/) - or deploy it from Git in the next step.
+Add the domain in **DavPanel → Domains**, then upload the project to the domain folder (`/var/www/html/example.com/`) with the [File Manager](/docs/panel/files/files/) or [FTP](/docs/panel/files/FTP/) - or deploy it from Git in the next step.
 
 ---
 
 ## Step 4: Create the Python Application
 
-Go to **OpenPanel → Websites → Install App → Setup Python Application**:
+Go to **DavPanel → Websites → Install App → Setup Python Application**:
 
 | Field | Value |
 |---|---|
@@ -124,8 +124,8 @@ Go to **OpenPanel → Websites → Install App → Setup Python Application**:
 | **Git repository** | optional, `https://` URL |
 | **CPU / Memory** | e.g. `1` core, `1` GB |
 
-![Install Python Application form with the application details, domain, startup file and the Small, Medium and Large resource presets](/img/openpanel-screenshots/applications/python_install-form.png#gh-light-mode-only)
-![Install Python Application form with the application details, domain, startup file and the Small, Medium and Large resource presets](/img/openpanel-screenshots/applications/python_install-form_dark.png#gh-dark-mode-only)
+![Install Python Application form with the application details, domain, startup file and the Small, Medium and Large resource presets](/img/davpanel-screenshots/applications/python_install-form.png#gh-light-mode-only)
+![Install Python Application form with the application details, domain, startup file and the Small, Medium and Large resource presets](/img/davpanel-screenshots/applications/python_install-form_dark.png#gh-dark-mode-only)
 
 **Custom Startup Command** - runs migrations, collects static files, then starts Gunicorn:
 
@@ -143,7 +143,7 @@ Because migrations and `collectstatic` run on every start, deploying a new versi
 
 ## Step 5: Create an Admin User
 
-Open **OpenPanel → Containers → Terminal**, select the `mysite` container and run:
+Open **DavPanel → Containers → Terminal**, select the `mysite` container and run:
 
 ```bash
 python manage.py createsuperuser
@@ -181,7 +181,7 @@ WhiteNoise serves **static** files only. For files uploaded by users (`MEDIA_ROO
 | **502 Bad Gateway** | Gunicorn isn't running or listens on the wrong address. Check the app **Logs**; bind to `0.0.0.0:8000`. |
 | `DisallowedHost` | Add the domain to `ALLOWED_HOSTS`. |
 | `CSRF verification failed` on forms | Add `https://yourdomain` to `CSRF_TRUSTED_ORIGINS` and set `SECURE_PROXY_SSL_HEADER`. |
-| Redirect loop with `SECURE_SSL_REDIRECT` | Set `SECURE_PROXY_SSL_HEADER` as above - OpenPanel already redirects HTTP to HTTPS. |
+| Redirect loop with `SECURE_SSL_REDIRECT` | Set `SECURE_PROXY_SSL_HEADER` as above - DavPanel already redirects HTTP to HTTPS. |
 | No CSS in the admin | `collectstatic` didn't run, or WhiteNoise middleware is missing. |
 | `mysqlclient` fails to install | Use a full Python version from the dropdown (not a custom `-slim` image), or switch to `PyMySQL`. |
 
@@ -191,4 +191,4 @@ WhiteNoise serves **static** files only. For files uploaded by users (`MEDIA_ROO
 
 - [Deploy a Flask app](/docs/articles/websites/deploy-flask-app/)
 - [Python applications reference](/docs/panel/applications/python/)
-- [Connect to MySQL from applications](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-openpanel/)
+- [Connect to MySQL from applications](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-davpanel/)

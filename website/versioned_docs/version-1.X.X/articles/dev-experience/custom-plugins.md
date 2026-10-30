@@ -1,18 +1,18 @@
 # Custom Plugins
 
-OpenPanel version 1.5.0 and newer support custom plugins.
+DavPanel version 1.5.0 and newer support custom plugins.
 
 ## Requirements
 
 Currently, plugins have a few requirements and limitations:
 
-* A readme.txt file must be present for the plugin to be loaded by OpenPanel.
+* A readme.txt file must be present for the plugin to be loaded by DavPanel.
 * The Python (.py) file name must match the plugin's folder name.
 * Installing additional pip modules is not supported.
 
 ## Example: Traceroute
 
-[Traceroute](https://github.com/stefanpejcic/traceroute) is a sample OpenPanel plugin that serves as a starter template for integrating third-party products and services into OpenPanel as plugins.
+[Traceroute](https://github.com/stefanpejcic/traceroute) is a sample DavPanel plugin that serves as a starter template for integrating third-party products and services into DavPanel as plugins.
 
 [![2025-07-21-14-34.png](/img/docs-content/X7cTZdzx-2025-07-21-14-34.png)](/img/docs-content/X7cTZdzx-2025-07-21-14-34.png)
 
@@ -25,7 +25,7 @@ Currently, plugins have a few requirements and limitations:
 | `description`    | `Run traceroute to IP or hostname.`                    | Short description of what the plugin does.                       |
 | `link`           | `/advanced/traceroute`                                 | URL route to access the plugin from UI.                          |
 | `version`        | `1.0.0`                                                | Version number of the plugin.                                    |
-| `author`         | `Stefan Pejcic`                                        | Author or developer of the plugin.                               |
+| `author`         | `Dhafa Nazula Permadi`                                        | Author or developer of the plugin.                               |
 | `category`       | `advanced`                                             | Section in Dashboard and sidebar menu under which to display.    |
 | `icon`           | `bi bi-person`                                         | Bootstrap Icon class name to use for Dashboard icons.            |
 | `show_in_search` | `1`                                                    | Whether the plugin should appear in search results (1=yes, 0=no).|
@@ -55,8 +55,8 @@ import requests
 # https://python-babel.github.io/flask-babel/
 from flask_babel import Babel, _
 
-# Import stuff from OpenPanel core
-from app import app, inject_data, get_openpanel_ip, login_required_route
+# Import stuff from DavPanel core
+from app import app, inject_data, get_davpanel_ip, login_required_route
 
 # custom function example
 def get_client_ip():
@@ -69,7 +69,7 @@ def get_client_ip():
 
 
 
-# you can not run pip install for additional tools, and since mtr is not available in OpenPanel UI container, we need to use vanilla python to simulate traceroute output
+# you can not run pip install for additional tools, and since mtr is not available in DavPanel UI container, we need to use vanilla python to simulate traceroute output
 def simple_traceroute(dest_name, max_hops=30, timeout=1):
     try:
         dest_addr = socket.gethostbyname(dest_name)
@@ -145,9 +145,9 @@ def traceroute():
     with open(template_path) as f:
         template = f.read()
 
-    # return ip address for openpanel account
-    current_username = inject_data().get('current_username') # returns username of the current openpanel account
-    server_ip = get_openpanel_ip(current_username) # returns IP for the current openpanel account
+    # return ip address for davpanel account
+    current_username = inject_data().get('current_username') # returns username of the current davpanel account
+    server_ip = get_davpanel_ip(current_username) # returns IP for the current davpanel account
     client_ip = get_client_ip() # returns ip form our custom function
 
     return render_template_string(
@@ -169,11 +169,11 @@ Flask templates documentation: https://flask.palletsprojects.com/en/stable/tutor
 
 <!-- 
 HTML comments are visible only when dev_mode is enabled
-https://dev.openpanel.com/cli/config.html#dev-mode
+https://dev.davpanel.com/cli/config.html#dev-mode
 -->
 
 
-<!-- remove this extends line if you do NOT want the page to have OpenPanel UI header, sidebar, footer.. -->
+<!-- remove this extends line if you do NOT want the page to have DavPanel UI header, sidebar, footer.. -->
 {% extends 'base.html' %}
 
 {% block content %}
@@ -249,7 +249,7 @@ https://dev.openpanel.com/cli/config.html#dev-mode
 
 ## Installing
 
-Plugins must be placed inside the `/etc/openpanel/modules/` directory. Each plugin should reside in its own folder. For example, the `traceroute` plugin should be installed in `/etc/openpanel/modules/traceroute/`.
+Plugins must be placed inside the `/etc/davpanel/modules/` directory. Each plugin should reside in its own folder. For example, the `traceroute` plugin should be installed in `/etc/davpanel/modules/traceroute/`.
 
 Inside the plugin folder, include the following files:
 
@@ -261,11 +261,11 @@ Inside the plugin folder, include the following files:
 It is recommended to install plugins via Git for easy updating. To install the `traceroute` plugin, run:
 
 ```bash
-cd /etc/openpanel/modules/ && git clone https://github.com/stefanpejcic/traceroute
+cd /etc/davpanel/modules/ && git clone https://github.com/stefanpejcic/traceroute
 ```
 
-After installation, use the OpenAdmin UI to add the plugin’s features to the desired Feature Sets.
+After installation, use the DavAdmin UI to add the plugin’s features to the desired Feature Sets.
 
 [![2025-07-21-14-59.png](/img/docs-content/g2r5JQFq-2025-07-21-14-59.png)](/img/docs-content/g2r5JQFq-2025-07-21-14-59.png)
 
-And finally, restart the OpenPanel UI to load the new plugin. 
+And finally, restart the DavPanel UI to load the new plugin. 

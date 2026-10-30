@@ -19,8 +19,8 @@ View current server specification, your hosting plan and panel details. The page
 - Processor
 - Nameservers
 
-![Server tab of the Server Information page with hostname, load, uptime, IP address, ports and operating system](/img/openpanel-screenshots/advanced/server_info-page.png#gh-light-mode-only)
-![Server tab of the Server Information page with hostname, load, uptime, IP address, ports and operating system](/img/openpanel-screenshots/advanced/server_info-page_dark.png#gh-dark-mode-only)
+![Server tab of the Server Information page with hostname, load, uptime, IP address, ports and operating system](/img/davpanel-screenshots/advanced/server_info-page.png#gh-light-mode-only)
+![Server tab of the Server Information page with hostname, load, uptime, IP address, ports and operating system](/img/davpanel-screenshots/advanced/server_info-page_dark.png#gh-dark-mode-only)
 
 ## Hosting Plan
 
@@ -40,13 +40,13 @@ View current server specification, your hosting plan and panel details. The page
 - MySQL Server
 - Web Server
 
-![Hosting Plan tab of the Server Information page with the plan name and its limits for CPU, memory, disk, domains, websites, databases, email and FTP](/img/openpanel-screenshots/advanced/server_info-plan.png#gh-light-mode-only)
-![Hosting Plan tab of the Server Information page with the plan name and its limits for CPU, memory, disk, domains, websites, databases, email and FTP](/img/openpanel-screenshots/advanced/server_info-plan_dark.png#gh-dark-mode-only)
+![Hosting Plan tab of the Server Information page with the plan name and its limits for CPU, memory, disk, domains, websites, databases, email and FTP](/img/davpanel-screenshots/advanced/server_info-plan.png#gh-light-mode-only)
+![Hosting Plan tab of the Server Information page with the plan name and its limits for CPU, memory, disk, domains, websites, databases, email and FTP](/img/davpanel-screenshots/advanced/server_info-plan_dark.png#gh-dark-mode-only)
 
 ## Panel
 
 - Panel Version
 - Enabled Features, each linking to its documentation
 
-![Panel tab of the Server Information page with the panel version and the features enabled for the account](/img/openpanel-screenshots/advanced/server_info-panel.png#gh-light-mode-only)
-![Panel tab of the Server Information page with the panel version and the features enabled for the account](/img/openpanel-screenshots/advanced/server_info-panel_dark.png#gh-dark-mode-only)
+![Panel tab of the Server Information page with the panel version and the features enabled for the account](/img/davpanel-screenshots/advanced/server_info-panel.png#gh-light-mode-only)
+![Panel tab of the Server Information page with the panel version and the features enabled for the account](/img/davpanel-screenshots/advanced/server_info-panel_dark.png#gh-dark-mode-only)

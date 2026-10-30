@@ -1,6 +1,6 @@
 # Error Establishing a Database Connection
 
-If you see the error **“Error establishing a database connection”** in the OpenAdmin interface, it indicates that the database connection has failed.
+If you see the error **“Error establishing a database connection”** in the DavAdmin interface, it indicates that the database connection has failed.
 
 ![admin error mysql](/img/docs-content/tJMCcCx1-mysql-error-on-admin.png)
 
@@ -8,11 +8,11 @@ If you see the error **“Error establishing a database connection”** in the O
 
 ## MySQL Service
 
-OpenPanel and OpenAdmin use a MySQL Docker service defined in `/root/docker-compose.yml`.
+DavPanel and DavAdmin use a MySQL Docker service defined in `/root/docker-compose.yml`.
 
 First, ensure that the service is running:
 
-**From OpenAdmin:**
+**From DavAdmin:**
 
 1. Go to **Services > Services Status**.
 2. Check the status of the MySQL service.
@@ -24,7 +24,7 @@ First, ensure that the service is running:
 podman ps -a
 ```
 
-Look for the `openpanel_mysql` service in the output.
+Look for the `davpanel_mysql` service in the output.
 
 ---
 
@@ -34,21 +34,21 @@ If the MySQL service fails to start, Podman will keep restarting it. You can obs
 
 Example:
 ```bash
-root@openpanel:~# podman ps -a
+root@davpanel:~# podman ps -a
 CONTAINER ID   IMAGE                COMMAND                  CREATED          STATUS                          PORTS     NAMES
-6d9885164cba   mysql/mysql-server   "/entrypoint.sh mysql…"   30 minutes ago   Restarting (1) 22 seconds ago             openpanel_mysql
+6d9885164cba   mysql/mysql-server   "/entrypoint.sh mysql…"   30 minutes ago   Restarting (1) 22 seconds ago             davpanel_mysql
 ```
 
 
 * If the uptime is only a few seconds and the status shows **not running** or **unhealthy**, check the service logs:
 
 ```bash
-podman logs -f openpanel_mysql
+podman logs -f davpanel_mysql
 ```
 
 Example:
 ```bash
-root@openpanel:~# podman logs -f openpanel_mysql
+root@davpanel:~# podman logs -f davpanel_mysql
 [Entrypoint] MySQL Docker Image 8.0.32-1.2.11-server
 [Entrypoint] Starting MySQL 8.0.32-1.2.11-server
 2025-10-17T15:36:55.291441Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
@@ -65,7 +65,7 @@ root@openpanel:~# podman logs -f openpanel_mysql
 
 In this example, error is: *Another process with pid 60 is using unix socket file.*
 
-[Googling the error](https://stackoverflow.com/questions/36103721/docker-db-container-running-another-process-with-pid-id-is-using-unix-socket) we get the solution: `cd /root && podman-compose down --volumes` **NOTE: this will remove all existing mysql data including users, plans, domains.. only run it on a fresh installation, ie. if this mysql error occurs after installing openpanel**.
+[Googling the error](https://stackoverflow.com/questions/36103721/docker-db-container-running-another-process-with-pid-id-is-using-unix-socket) we get the solution: `cd /root && podman-compose down --volumes` **NOTE: this will remove all existing mysql data including users, plans, domains.. only run it on a fresh installation, ie. if this mysql error occurs after installing davpanel**.
 
 * Copy any error messages and search online. Common issues include:
 
@@ -81,7 +81,7 @@ You can test the connection directly from the terminal using the `mysql` command
 Example error:
 
 ```bash
-root@openpanel:~# mysql
+root@davpanel:~# mysql
 ERROR 2026 (HY000): TLS/SSL error: SSL is required, but the server does not support it
 ```
 
@@ -92,7 +92,7 @@ To resolve this error *TLS/SSL error: SSL is required, but the server does not s
 
 Example error:
 ```bash
-root@openpanel:~# mysql
+root@davpanel:~# mysql
 ERROR 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3306' (111)
 ```
 
@@ -102,7 +102,7 @@ If this is a fresh installation and there are no users or plans yet, MySQL may f
 cd /root
 podman-compose down
 podman volume rm root_mysql # DANGER: this will delete all users and plans, only run it on a fresh install!
-podman-compose up -d openpanel_mysql openpanel
+podman-compose up -d davpanel_mysql davpanel
 ```
 
 Otherwise, check if credentials stored in `/etc/my.cnf` are correct:

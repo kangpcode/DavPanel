@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 // activityLogDir is a const system path we can't redirect in tests, so this only runs if it's writable (e.g. root in a container) and skips otherwise

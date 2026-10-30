@@ -17,8 +17,8 @@ The webserver, Varnish and Caddy configuration templates are on the [VirtualHost
 
 This is the HTML page shown on new domains that do **not** have `index.html` or `index.php` in their document root.
 
-![Default Page template editor with a live preview of the page shown on new domains](/img/openadmin-screenshots/domains/file_templates-default.png#gh-light-mode-only)
-![Default Page template editor with a live preview of the page shown on new domains](/img/openadmin-screenshots/domains/file_templates-default_dark.png#gh-dark-mode-only)
+![Default Page template editor with a live preview of the page shown on new domains](/img/davadmin-screenshots/domains/file_templates-default.png#gh-light-mode-only)
+![Default Page template editor with a live preview of the page shown on new domains](/img/davadmin-screenshots/domains/file_templates-default_dark.png#gh-dark-mode-only)
 
 ```html
 <!DOCTYPE html>
@@ -52,8 +52,8 @@ To revert to the original template:
 
 This is the HTML page shown on domains that users suspend **manually**, and on domains an Administrator suspends with the **Default suspended page** reason.
 
-![Suspended Website template editor with a live preview](/img/openadmin-screenshots/domains/file_templates-suspended-website.png#gh-light-mode-only)
-![Suspended Website template editor with a live preview](/img/openadmin-screenshots/domains/file_templates-suspended-website_dark.png#gh-dark-mode-only)
+![Suspended Website template editor with a live preview](/img/davadmin-screenshots/domains/file_templates-suspended-website.png#gh-light-mode-only)
+![Suspended Website template editor with a live preview](/img/davadmin-screenshots/domains/file_templates-suspended-website_dark.png#gh-dark-mode-only)
 
 ```html
 <!DOCTYPE html>
@@ -87,18 +87,18 @@ To revert to the original template:
 
 ## Suspension Reasons
 
-Suspension reasons are pages an Administrator can pick when [suspending a domain](/docs/admin/domains/domains/#suspend-a-domain). Visitors of the suspended domain see the reason's page, and the user sees the reason's name next to the domain in OpenPanel.
+Suspension reasons are pages an Administrator can pick when [suspending a domain](/docs/admin/domains/domains/#suspend-a-domain). Visitors of the suspended domain see the reason's page, and the user sees the reason's name next to the domain in DavPanel.
 
-![Suspension Reasons with the Copyright / DMCA Violation reason open showing its name, Delete button, HTML and live preview, and the Add suspension reason row](/img/openadmin-screenshots/domains/file_templates-suspension-reasons.png#gh-light-mode-only)
-![Suspension Reasons with the Copyright / DMCA Violation reason open showing its name, Delete button, HTML and live preview, and the Add suspension reason row](/img/openadmin-screenshots/domains/file_templates-suspension-reasons_dark.png#gh-dark-mode-only)
+![Suspension Reasons with the Copyright / DMCA Violation reason open showing its name, Delete button, HTML and live preview, and the Add suspension reason row](/img/davadmin-screenshots/domains/file_templates-suspension-reasons.png#gh-light-mode-only)
+![Suspension Reasons with the Copyright / DMCA Violation reason open showing its name, Delete button, HTML and live preview, and the Add suspension reason row](/img/davadmin-screenshots/domains/file_templates-suspension-reasons_dark.png#gh-dark-mode-only)
 
-OpenPanel comes with three reasons:
+DavPanel comes with three reasons:
 
 | Reason | File |
 |---|---|
-| Copyright / DMCA Violation | `/etc/openpanel/caddy/templates/suspended/dmca.html` |
-| Overdue Payment / Billing | `/etc/openpanel/caddy/templates/suspended/billing.html` |
-| Phishing / Security Violation | `/etc/openpanel/caddy/templates/suspended/phishing.html` |
+| Copyright / DMCA Violation | `/etc/davpanel/caddy/templates/suspended/dmca.html` |
+| Overdue Payment / Billing | `/etc/davpanel/caddy/templates/suspended/billing.html` |
+| Phishing / Security Violation | `/etc/davpanel/caddy/templates/suspended/phishing.html` |
 
 Click a reason to open it, then change its **Name** or HTML and click **Save Files**. The preview on the right updates as you type. The name is saved in the first line of the file as `<!-- name: ... -->`, renaming a reason keeps its file, so domains already suspended with it keep their page.
 
@@ -119,8 +119,8 @@ Servers updated from an older version get the three default reasons with the 2.0
 
 This is the HTML page shown on all domains owned by the user when their account is suspended **by the Administrator**.
 
-![Suspended User template editor with a live preview](/img/openadmin-screenshots/domains/file_templates-suspended-user.png#gh-light-mode-only)
-![Suspended User template editor with a live preview](/img/openadmin-screenshots/domains/file_templates-suspended-user_dark.png#gh-dark-mode-only)
+![Suspended User template editor with a live preview](/img/davadmin-screenshots/domains/file_templates-suspended-user.png#gh-light-mode-only)
+![Suspended User template editor with a live preview](/img/davadmin-screenshots/domains/file_templates-suspended-user_dark.png#gh-dark-mode-only)
 
 ```html
 <!DOCTYPE html>

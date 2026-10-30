@@ -6,7 +6,7 @@ sidebar_position: 6
 
 Easily create a new MySQL user in just a few clicks. Users are used for interacting with databases or the MySQL server.
 
-Navigate to **OpenPanel > MySQL > Create User**:
+Navigate to **DavPanel > MySQL > Create User**:
 
 1. **Enter a Username**  
    Type your desired username into the input field. Make sure the name is unique and follows MySQL naming rules (e.g., avoid spaces or special characters).

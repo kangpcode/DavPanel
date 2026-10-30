@@ -19,17 +19,17 @@ import (
 	"syscall"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cache"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
-	"gist.github.com/kangpcode/davpanel/internal/modules/php"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/cache"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
+	"github.com/kangpcode/davpanel/internal/modules/php"
+	"github.com/kangpcode/davpanel/internal/web"
 	"golang.org/x/net/idna"
 )
 
@@ -679,18 +679,18 @@ func setVarnishForSite(ctx context.Context, a *appctx.App, s *wpCacheSite, on bo
 				return "", errors.New("Failed to start Varnish: " + errMsg)
 			}
 		}
-		if out, err := runOpencli(ctx, "domains-varnish", s.Domain, "on"); err != nil {
+		if out, err := runDavcli(ctx, "domains-varnish", s.Domain, "on"); err != nil {
 			return "", fmt.Errorf("failed to enable Varnish for %s: %s", s.Domain, out)
 		}
 		return "Page cache is now enabled for " + s.Domain + ".", nil
 	}
-	if out, err := runOpencli(ctx, "domains-varnish", s.Domain, "off"); err != nil {
+	if out, err := runDavcli(ctx, "domains-varnish", s.Domain, "off"); err != nil {
 		return "", fmt.Errorf("failed to disable Varnish for %s: %s", s.Domain, out)
 	}
 	return "Page cache is now disabled for " + s.Domain + ".", nil
 }
 
-func runOpencli(ctx context.Context, args ...string) (string, error) {
+func runDavcli(ctx context.Context, args ...string) (string, error) {
 	runCtx, cancel := context.WithTimeout(ctx, 60*time.Second)
 	defer cancel()
 	out, err := exec.CommandContext(runCtx, "davcli", args...).CombinedOutput()

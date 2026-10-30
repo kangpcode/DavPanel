@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Resellers
 
-The **Resellers** feature allows administrators to create and manage Reseller users within OpenPanel. Resellers can act as sub-administrators, managing their own set of user accounts within the limits defined by the root administrator.
+The **Resellers** feature allows administrators to create and manage Reseller users within DavPanel. Resellers can act as sub-administrators, managing their own set of user accounts within the limits defined by the root administrator.
 
 This feature is useful for hosting providers who want to delegate control to third-party resellers, while still maintaining overall control and isolation.
 
@@ -22,8 +22,8 @@ The interface displays a table of existing reseller users with the following col
 
 - **Username**  
 
-![Resellers page with the reseller table columns and the Enable Resellers button](/img/openadmin-screenshots/accounts/resellers-list.png#gh-light-mode-only)
-![Resellers page with the reseller table columns and the Enable Resellers button](/img/openadmin-screenshots/accounts/resellers-list_dark.png#gh-dark-mode-only)
+![Resellers page with the reseller table columns and the Enable Resellers button](/img/davadmin-screenshots/accounts/resellers-list.png#gh-light-mode-only)
+![Resellers page with the reseller table columns and the Enable Resellers button](/img/davadmin-screenshots/accounts/resellers-list_dark.png#gh-dark-mode-only)
   The unique identifier of the reseller user.
 
 - **Status**  
@@ -72,6 +72,6 @@ Reseller users have access only to the features and account management tools ass
 When a Reseller logs in, they see a **Reseller Account** page (`/account`) instead of the full Accounts section, where they can:
 
 - **Change Password** – Set a new password for their own login.
-- **Branding** – Set a custom **Logo URL** shown instead of the default OpenPanel logo on every account they own (does not apply to the login page).
+- **Branding** – Set a custom **Logo URL** shown instead of the default DavPanel logo on every account they own (does not apply to the login page).
 
 Resellers also have their own **Two-Factor Authentication** and **Passkeys** pages under Security, scoped to their own login only.

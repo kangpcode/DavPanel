@@ -3,8 +3,8 @@ package filemanager
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
 )
 
 // RegisterAPI wires the /api/ equivalents of the file manager's routes onto mux, gated behind the "filemanager" feature flag - several handlers already speak pure JSON with no session/flash dependency and are reused unmodified, the listing/edit-file GET handlers support "?output=json" via forceJSONOutput, and everything else (create/rename/permissions/upload/archive/save) needed a JSON-response variant, split across api_crud.go, api_content.go, and api_transfer.go

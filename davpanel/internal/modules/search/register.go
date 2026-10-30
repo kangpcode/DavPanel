@@ -3,8 +3,8 @@ package search
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
 )
 
 // Register wires the /json/search/{what} route onto mux, gated by the "search" feature - unconditionally granted to every user (see baselineFeatures), each `what` sub-type has its own finer-grained gate inside HandleSearch (see gateFor)

@@ -4,49 +4,49 @@ sidebar_position: 6
 
 # Custom Code
 
-The Custom Code section, accessible via OpenAdmin > Settings > Custom Code, allows you to inject and manage custom code that extends or modifies the behavior and appearance of the OpenPanel UI.
+The Custom Code section, accessible via DavAdmin > Settings > Custom Code, allows you to inject and manage custom code that extends or modifies the behavior and appearance of the DavPanel UI.
 
 ## Custom CSS
-Inject your own CSS styles that will be applied across all pages of the OpenPanel UI. 
+Inject your own CSS styles that will be applied across all pages of the DavPanel UI. 
 
-Stored in `/etc/openpanel/openpanel/custom_code/custom.css` file.
+Stored in `/etc/davpanel/davpanel/custom_code/custom.css` file.
 
 ## Custom JS
 Add custom JavaScript to all pages. This is ideal for extending UI functionality, adding widgets, or integrating third-party tools.
 
-Stored in `/etc/openpanel/openpanel/custom_code/custom.js` file.
+Stored in `/etc/davpanel/davpanel/custom_code/custom.js` file.
 
 ## Code in Header
 Insert custom code directly into the head tag of every page. Useful for meta tags, analytics scripts, and global settings.
 
-Stored in `/etc/openpanel/openpanel/custom_code/in_header.html` file.
+Stored in `/etc/davpanel/davpanel/custom_code/in_header.html` file.
 
 ## Code in Footer
 Insert custom code directly into the footer section of all pages. This is commonly used for tracking scripts, analytics, or deferred JavaScript.
 
-Stored in `/etc/openpanel/openpanel/custom_code/in_footer.html` file.
+Stored in `/etc/davpanel/davpanel/custom_code/in_footer.html` file.
 
 ## How-to Articles
-Edit Knowledge Base articles displayed in *OpenPanel > Dashboard* page.
+Edit Knowledge Base articles displayed in *DavPanel > Dashboard* page.
 
 Default:
 ```json
 {
     "how_to_topics": [
-        {"title": "How to install WordPress", "link": "https://openpanel.com/docs/panel/applications/wordpress#install-wordpress"},
-        {"title": "How to enable REDIS Caching", "link": "https://openpanel.com/docs/panel/caching/Redis/#connect-to-redis"},
-        {"title": "How to create DNS records", "link": "https://openpanel.com/docs/panel/domains/dns/#create-record"},
-        {"title": "How to create a new MySQL database", "link": "https://openpanel.com/docs/panel/databases/#create-a-mysql-database"},
-        {"title": "How to add a Cron Job", "link": "https://openpanel.com/docs/panel/advanced/cronjobs#add-a-cronjob"},
-        {"title": "How to add a custom SSL Certificate", "link": "https://openpanel.com/docs/panel/domains/ssl/#custom-ssl"}
+        {"title": "How to install WordPress", "link": "https://davpanel.com/docs/panel/applications/wordpress#install-wordpress"},
+        {"title": "How to enable REDIS Caching", "link": "https://davpanel.com/docs/panel/caching/Redis/#connect-to-redis"},
+        {"title": "How to create DNS records", "link": "https://davpanel.com/docs/panel/domains/dns/#create-record"},
+        {"title": "How to create a new MySQL database", "link": "https://davpanel.com/docs/panel/databases/#create-a-mysql-database"},
+        {"title": "How to add a Cron Job", "link": "https://davpanel.com/docs/panel/advanced/cronjobs#add-a-cronjob"},
+        {"title": "How to add a custom SSL Certificate", "link": "https://davpanel.com/docs/panel/domains/ssl/#custom-ssl"}
     ],
-    "knowledge_base_link": "https://openpanel.com/docs/panel/intro/?source=openpanel_server"
+    "knowledge_base_link": "https://davpanel.com/docs/panel/intro/?source=davpanel_server"
 }
 ```
 
 ## Custom Section
 
-You can add a **custom section** with icon-based items to the *Dashboard* in **OpenPanel**.
+You can add a **custom section** with icon-based items to the *Dashboard* in **DavPanel**.
 
 custom section supports the following fields:
 
@@ -175,33 +175,33 @@ Example:
 
 ```bash
 facebook.com
-openpanel.com
+davpanel.com
 pejcic.rs
-openpanel.org
-demo.openpanel.org
+davpanel.org
+demo.davpanel.org
 ```
 
-Stored in `/etc/openpanel/openpanel/conf/domain_restriction.txt` file.
+Stored in `/etc/davpanel/davpanel/conf/domain_restriction.txt` file.
 
 ## After Update
-Define custom bash commands that will automatically run after each OpenPanel update. Ideal for restoring customizations or triggering automation scripts.
+Define custom bash commands that will automatically run after each DavPanel update. Ideal for restoring customizations or triggering automation scripts.
 
-![openadmin custom code](/img/admin/custom_code.png)
+![davadmin custom code](/img/admin/custom_code.png)
 
-This powerful customization layer helps ensure OpenPanel fits seamlessly into your environment.
+This powerful customization layer helps ensure DavPanel fits seamlessly into your environment.
 
 Examples:
 
-- [Custom email templates](https://community.openpanel.org/d/214-customizing-openpanel-email-templates)
-- [Custom OpenAdmin color scheme](https://community.openpanel.org/d/216-customizing-openadmin-color-scheme)
+- [Custom email templates](https://community.davpanel.org/d/214-customizing-davpanel-email-templates)
+- [Custom DavAdmin color scheme](https://community.davpanel.org/d/216-customizing-davadmin-color-scheme)
 
 
-Stored in `/root/openpanel_run_after_update` file.
+Stored in `/root/davpanel_run_after_update` file.
 
 ## Before Startup
 
-Add custom bash code to be executed before starting OpenPanel.
+Add custom bash code to be executed before starting DavPanel.
 
-Stored in `/root/openpanel_run_on_startup` file.
+Stored in `/root/davpanel_run_on_startup` file.
 
 

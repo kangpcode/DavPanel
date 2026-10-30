@@ -4,14 +4,14 @@ sidebar_position: 11
 
 # Configuration
 
-![PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button](/img/openpanel-screenshots/postgresql/configuration-page.png#gh-light-mode-only)
-![PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button](/img/openpanel-screenshots/postgresql/configuration-page_dark.png#gh-dark-mode-only)
+![PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button](/img/davpanel-screenshots/postgresql/configuration-page.png#gh-light-mode-only)
+![PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button](/img/davpanel-screenshots/postgresql/configuration-page_dark.png#gh-dark-mode-only)
 
 The PostgreSQL Configuration page lets you edit low-level `postgresql.conf` settings for your database service, without needing terminal access.
 
 ## How to Change Configuration
 
-1. Open **OpenPanel** and navigate to **PostgreSQL > Configuration**.
+1. Open **DavPanel** and navigate to **PostgreSQL > Configuration**.
 2. Modify the values you want to change.
 3. Click **Save Changes** to apply changes.
 
@@ -19,7 +19,7 @@ Settings are written to a configuration override for your account, and the Postg
 
 ## Optimize Database
 
-When the Configuration page opens, OpenPanel checks your PostgreSQL service in the background and suggests settings that fit how it's actually used. While it checks you'll see *Checking your database for possible optimizations...*.
+When the Configuration page opens, DavPanel checks your PostgreSQL service in the background and suggests settings that fit how it's actually used. While it checks you'll see *Checking your database for possible optimizations...*.
 
 If it finds something to improve, an **Optimize Database** banner shows at the top of the page and an optimize icon (⚡) shows next to each setting that has a suggestion.
 
@@ -71,4 +71,4 @@ The list of configurable keys is determined by the system administrator. By defa
 
 **Customizing Available Options**
 
-Administrators can change which keys are exposed here by editing `/etc/openpanel/postgres/keys.txt` (one key per line). If that file doesn't exist, the default list above is used.
+Administrators can change which keys are exposed here by editing `/etc/davpanel/postgres/keys.txt` (one key per line). If that file doesn't exist, the default list above is used.

@@ -4,54 +4,54 @@ sidebar_position: 10
 
 # Custom Code
 
-The Custom Code section, accessible via OpenAdmin > Settings > Custom Code, allows you to inject and manage custom code that extends or modifies the behavior and appearance of the OpenPanel UI.
+The Custom Code section, accessible via DavAdmin > Settings > Custom Code, allows you to inject and manage custom code that extends or modifies the behavior and appearance of the DavPanel UI.
 
 :::info
 Custom CSS, Custom JS, Code in Header, Code in Footer, Custom Section, and Welcome Email below require an active **Enterprise** license (and a non-reseller account) to edit. The remaining options on this page (WordPress Plugins/Themes Sets, After Update, Before Startup) are available on all license types.
 :::
 
 :::info
-How-to Articles, PageSpeed API Key, Forbidden Usernames, and Restricted Domains moved to [OpenAdmin > Settings > OpenPanel](/docs/admin/settings/openpanel).
+How-to Articles, PageSpeed API Key, Forbidden Usernames, and Restricted Domains moved to [DavAdmin > Settings > DavPanel](/docs/admin/settings/davpanel).
 :::
 
 ## Custom CSS
-Inject your own CSS styles that will be applied across all pages of the OpenPanel UI. 
+Inject your own CSS styles that will be applied across all pages of the DavPanel UI. 
 
-![Custom CSS editor with the Insert Example button](/img/openadmin-screenshots/settings/custom_code-css.png#gh-light-mode-only)
-![Custom CSS editor with the Insert Example button](/img/openadmin-screenshots/settings/custom_code-css_dark.png#gh-dark-mode-only)
+![Custom CSS editor with the Insert Example button](/img/davadmin-screenshots/settings/custom_code-css.png#gh-light-mode-only)
+![Custom CSS editor with the Insert Example button](/img/davadmin-screenshots/settings/custom_code-css_dark.png#gh-dark-mode-only)
 
-Stored in `/etc/openpanel/openpanel/custom_code/custom.css` file.
+Stored in `/etc/davpanel/davpanel/custom_code/custom.css` file.
 
 ## Custom JS
 Add custom JavaScript to all pages. This is ideal for extending UI functionality, adding widgets, or integrating third-party tools.
 
-![Custom JS editor](/img/openadmin-screenshots/settings/custom_code-js.png#gh-light-mode-only)
-![Custom JS editor](/img/openadmin-screenshots/settings/custom_code-js_dark.png#gh-dark-mode-only)
+![Custom JS editor](/img/davadmin-screenshots/settings/custom_code-js.png#gh-light-mode-only)
+![Custom JS editor](/img/davadmin-screenshots/settings/custom_code-js_dark.png#gh-dark-mode-only)
 
-Stored in `/etc/openpanel/openpanel/custom_code/custom.js` file.
+Stored in `/etc/davpanel/davpanel/custom_code/custom.js` file.
 
 ## Code in Header
 Insert custom code directly into the head tag of every page. Useful for meta tags, analytics scripts, and global settings.
 
-![Code in Header editor for the head tag of every OpenPanel page](/img/openadmin-screenshots/settings/custom_code-header.png#gh-light-mode-only)
-![Code in Header editor for the head tag of every OpenPanel page](/img/openadmin-screenshots/settings/custom_code-header_dark.png#gh-dark-mode-only)
+![Code in Header editor for the head tag of every DavPanel page](/img/davadmin-screenshots/settings/custom_code-header.png#gh-light-mode-only)
+![Code in Header editor for the head tag of every DavPanel page](/img/davadmin-screenshots/settings/custom_code-header_dark.png#gh-dark-mode-only)
 
-Stored in `/etc/openpanel/openpanel/custom_code/in_header.html` file.
+Stored in `/etc/davpanel/davpanel/custom_code/in_header.html` file.
 
 ## Code in Footer
 Insert custom code directly into the footer section of all pages. This is commonly used for tracking scripts, analytics, or deferred JavaScript.
 
-![Code in Footer editor](/img/openadmin-screenshots/settings/custom_code-footer.png#gh-light-mode-only)
-![Code in Footer editor](/img/openadmin-screenshots/settings/custom_code-footer_dark.png#gh-dark-mode-only)
+![Code in Footer editor](/img/davadmin-screenshots/settings/custom_code-footer.png#gh-light-mode-only)
+![Code in Footer editor](/img/davadmin-screenshots/settings/custom_code-footer_dark.png#gh-dark-mode-only)
 
-Stored in `/etc/openpanel/openpanel/custom_code/in_footer.html` file.
+Stored in `/etc/davpanel/davpanel/custom_code/in_footer.html` file.
 
 ## Custom Section
 
-You can add a **custom section** with icon-based items to the *Dashboard* in **OpenPanel**.
+You can add a **custom section** with icon-based items to the *Dashboard* in **DavPanel**.
 
-![Custom Section editor for the OpenPanel dashboard](/img/openadmin-screenshots/settings/custom_code-section.png#gh-light-mode-only)
-![Custom Section editor for the OpenPanel dashboard](/img/openadmin-screenshots/settings/custom_code-section_dark.png#gh-dark-mode-only)
+![Custom Section editor for the DavPanel dashboard](/img/davadmin-screenshots/settings/custom_code-section.png#gh-light-mode-only)
+![Custom Section editor for the DavPanel dashboard](/img/davadmin-screenshots/settings/custom_code-section_dark.png#gh-dark-mode-only)
 
 custom section supports the following fields:
 
@@ -149,7 +149,7 @@ Example:
 
 ## Welcome Email
 
-HTML message that is placed straight into a new mailbox when the user ticks **Send a welcome email with instructions to set up a mail client** on *OpenPanel > Emails > New*. It is saved into the inbox on the server with `doveadm`, so it is never sent over the internet and doesn't go to any external address.
+HTML message that is placed straight into a new mailbox when the user ticks **Send a welcome email with instructions to set up a mail client** on *DavPanel > Emails > New*. It is saved into the inbox on the server with `doveadm`, so it is never sent over the internet and doesn't go to any external address.
 
 Click **Restore Default** to load the [default template](https://raw.githubusercontent.com/stefanpejcic/openpanel-configuration/refs/heads/main/openpanel/custom_code/welcome.html) into the editor, then click Save.
 
@@ -161,7 +161,7 @@ These placeholders are replaced when the message is created:
 |---|---|
 | `{{EMAIL}}` | the new email address, also used as the username |
 | `{{DOMAIN}}` | the domain of the email address |
-| `{{MAIL_HOST}}` | the mail server hostname, same as *Emails > Connect Devices* in OpenPanel |
+| `{{MAIL_HOST}}` | the mail server hostname, same as *Emails > Connect Devices* in DavPanel |
 | `{{IMAP_PORT}}` | `993` if the hostname has an SSL certificate, otherwise `143` |
 | `{{SMTP_PORT}}` | `465` if the hostname has an SSL certificate, otherwise `587` |
 | `{{SECURITY}}` | `SSL/TLS` or `STARTTLS` |
@@ -169,7 +169,7 @@ These placeholders are replaced when the message is created:
 
 If the file is empty or missing, no welcome message is added and the email account is still created.
 
-Stored in `/etc/openpanel/openpanel/custom_code/welcome.html` file.
+Stored in `/etc/davpanel/davpanel/custom_code/welcome.html` file.
 
 ## WordPress Plugins Set
 
@@ -179,8 +179,8 @@ Enter one item per row. Supported formats:
 * **wp\_org\_slug** — the plugin slug from the WordPress.org plugin page
 * **URL** — a direct link to a `.zip` plugin file hosted online
 
-![WordPress Plugins Set editor](/img/openadmin-screenshots/settings/custom_code-plugins.png#gh-light-mode-only)
-![WordPress Plugins Set editor](/img/openadmin-screenshots/settings/custom_code-plugins_dark.png#gh-dark-mode-only)
+![WordPress Plugins Set editor](/img/davadmin-screenshots/settings/custom_code-plugins.png#gh-light-mode-only)
+![WordPress Plugins Set editor](/img/davadmin-screenshots/settings/custom_code-plugins_dark.png#gh-dark-mode-only)
 
 ## WordPress Themes Set
 
@@ -190,31 +190,31 @@ Enter one item per row. Supported formats:
 * **wp\_org\_slug** — the theme slug from the WordPress.org themes page
 * **URL** — a direct link to a `.zip` theme file hosted online
 
-![WordPress Themes Set editor](/img/openadmin-screenshots/settings/custom_code-themes.png#gh-light-mode-only)
-![WordPress Themes Set editor](/img/openadmin-screenshots/settings/custom_code-themes_dark.png#gh-dark-mode-only)
+![WordPress Themes Set editor](/img/davadmin-screenshots/settings/custom_code-themes.png#gh-light-mode-only)
+![WordPress Themes Set editor](/img/davadmin-screenshots/settings/custom_code-themes_dark.png#gh-dark-mode-only)
 
 ## After Update
-Define custom bash commands that will automatically run after each OpenPanel update. Ideal for restoring customizations or triggering automation scripts.
+Define custom bash commands that will automatically run after each DavPanel update. Ideal for restoring customizations or triggering automation scripts.
 
-![After update script editor](/img/openadmin-screenshots/settings/custom_code-after.png#gh-light-mode-only)
-![After update script editor](/img/openadmin-screenshots/settings/custom_code-after_dark.png#gh-dark-mode-only)
+![After update script editor](/img/davadmin-screenshots/settings/custom_code-after.png#gh-light-mode-only)
+![After update script editor](/img/davadmin-screenshots/settings/custom_code-after_dark.png#gh-dark-mode-only)
 
-This powerful customization layer helps ensure OpenPanel fits seamlessly into your environment.
+This powerful customization layer helps ensure DavPanel fits seamlessly into your environment.
 
 Examples:
 
-- [Custom email templates](/docs/articles/dev-experience/customizing-openadmin-email-templates/)
+- [Custom email templates](/docs/articles/dev-experience/customizing-davadmin-email-templates/)
 
 
-Stored in `/root/openpanel_run_after_update` file.
+Stored in `/root/davpanel_run_after_update` file.
 
 ## Before Startup
 
-Add custom bash code to be executed before starting OpenPanel.
+Add custom bash code to be executed before starting DavPanel.
 
-![Before startup script editor](/img/openadmin-screenshots/settings/custom_code-before.png#gh-light-mode-only)
-![Before startup script editor](/img/openadmin-screenshots/settings/custom_code-before_dark.png#gh-dark-mode-only)
+![Before startup script editor](/img/davadmin-screenshots/settings/custom_code-before.png#gh-light-mode-only)
+![Before startup script editor](/img/davadmin-screenshots/settings/custom_code-before_dark.png#gh-dark-mode-only)
 
-Stored in `/root/openpanel_run_on_startup` file.
+Stored in `/root/davpanel_run_on_startup` file.
 
 

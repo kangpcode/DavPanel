@@ -1152,7 +1152,7 @@ html[data-theme="dark"] .sourcecode-badge {
     );
 }
 
-.landing-opencli-terminal-mask {
+.landing-davcli-terminal-mask {
     mask-image: linear-gradient(
         180deg,
         rgba(0, 0, 0, 0) 0%,

@@ -1,6 +1,6 @@
 ---
 sidebar_label: "DokuWiki"
-description: "How to install DokuWiki, a simple wiki that needs no database, with OpenPanel: one-click install, access control, plugins, templates, backups, cloning and updates."
+description: "How to install DokuWiki, a simple wiki that needs no database, with DavPanel: one-click install, access control, plugins, templates, backups, cloning and updates."
 ---
 
 # How to Install DokuWiki (Wiki Without a Database)
@@ -11,22 +11,22 @@ description: "How to install DokuWiki, a simple wiki that needs no database, wit
 
 ## Requirements
 
-- OpenPanel Community or Enterprise - the **DokuWiki** module must be enabled for your hosting plan.
+- DavPanel Community or Enterprise - the **DokuWiki** module must be enabled for your hosting plan.
 - A domain or subdomain, e.g. `docs.example.com`.
 
 ---
 
 ## Install DokuWiki
 
-1. Add the domain in **OpenPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
-2. Go to **OpenPanel → Websites → Install App** and click **Install DokuWiki**.
+1. Add the domain in **DavPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
+2. Go to **DavPanel → Websites → Install App** and click **Install DokuWiki**.
 3. Fill in the **domain**, **site title**, and the **admin username, password, full name and email**.
 4. Start the installation.
 
-![Install DokuWiki form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/dokuwiki-form.png#gh-light-mode-only)
-![Install DokuWiki form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/dokuwiki-form_dark.png#gh-dark-mode-only)
+![Install DokuWiki form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/dokuwiki-form.png#gh-light-mode-only)
+![Install DokuWiki form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/dokuwiki-form_dark.png#gh-dark-mode-only)
 
-OpenPanel always installs the current stable DokuWiki release and creates the admin account for you - there's no setup wizard to complete.
+DavPanel always installs the current stable DokuWiki release and creates the admin account for you - there's no setup wizard to complete.
 
 Open `https://docs.example.com` and log in with the admin account.
 
@@ -48,14 +48,14 @@ To get `docs.example.com/page` instead of `doku.php?id=page`, set **Use nice URL
 
 ## Managing the Wiki
 
-The wiki's manage page in **OpenPanel → Websites → Sites** has:
+The wiki's manage page in **DavPanel → Websites → Sites** has:
 
 - **Update** - installs the newest stable release while keeping `conf/`, `data/` (your pages) and `lib/plugins/`.
 - **Clone** - copies the wiki to another domain.
 - **Backups** - files-only backups (that's everything, since there's no database) with one-click restore.
 - **Remove** - deletes the wiki.
 
-More: [DokuWiki in OpenPanel](/docs/panel/applications/dokuwiki/).
+More: [DokuWiki in DavPanel](/docs/panel/applications/dokuwiki/).
 
 ---
 

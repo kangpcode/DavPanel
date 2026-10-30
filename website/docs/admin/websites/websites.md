@@ -9,9 +9,9 @@ Websites page lists every website in Site Manager across all users on the server
 ## List websites
 
 <Tabs>
-  <TabItem value="openadmin-websites-list" label="With OpenAdmin" default>
+  <TabItem value="davadmin-websites-list" label="With DavAdmin" default>
 
-To list all websites navigate to **Websites** in OpenAdmin.
+To list all websites navigate to **Websites** in DavAdmin.
 
 The table shows these columns:
 
@@ -19,7 +19,7 @@ The table shows these columns:
 |---------------------|-----------------------------------------------------------------------------|
 | **Site**            | Favicon and address of the website, with its folder on the server below it. Click the address to open the site. |
 | **Type**            | Icon of the application, for example WordPress, Joomla, Website Builder or Node.js. Hover over it to see the name. |
-| **Owner**           | The OpenPanel user who owns the website, marked **SUSPENDED** when that user is suspended. |
+| **Owner**           | The DavPanel user who owns the website, marked **SUSPENDED** when that user is suspended. |
 | **Version**         | Installed version of the application. WordPress sites show when a newer WordPress version is available. |
 | **Git**             | Name and branch of the [Git](/docs/panel/applications/git/) repository that deploys to the website, whether it's remote or local, its deploy mode and when it was last deployed. **Error** marks a failed pull (hover for details) and **+N more** other repositories deploying to the same site. Shown only when the Git module is enabled. |
 | **Vulnerabilities** | Known vulnerable plugins, themes or core versions from the last [vulnerability scan](#scan-for-vulnerabilities). WordPress only. |
@@ -35,12 +35,12 @@ Use the search box (**Search sites, owners, domains...**) to filter the list by 
 Click a column header to sort by it.
 
   </TabItem>
-  <TabItem value="CLI-websites-list" label="With OpenCLI">
+  <TabItem value="CLI-websites-list" label="With DavCLI">
 
 To list all websites run:
 
 ```bash
-opencli websites-all
+davcli websites-all
 ```
 
   </TabItem>
@@ -51,23 +51,23 @@ opencli websites-all
 Websites installed by users outside of Site Manager, for example uploaded over FTP or the File Manager, are not listed until they are detected.
 
 <Tabs>
-  <TabItem value="openadmin-websites-scan" label="With OpenAdmin" default>
+  <TabItem value="davadmin-websites-scan" label="With DavAdmin" default>
 
 Click **Scan for Websites**, enter a username or leave the field empty to scan all users, and click **Start Scan**. The scan runs in the background and new sites show up in the list once it finishes.
 
   </TabItem>
-  <TabItem value="CLI-websites-scan" label="With OpenCLI">
+  <TabItem value="CLI-websites-scan" label="With DavCLI">
 
 To scan a single user run:
 
 ```bash
-opencli websites-scan <USERNAME>
+davcli websites-scan <USERNAME>
 ```
 
 To scan all users run:
 
 ```bash
-opencli websites-scan -all
+davcli websites-scan -all
 ```
 
   </TabItem>
@@ -81,8 +81,8 @@ Click the **⋯** button at the end of a row to open the actions menu:
 |------------------------------|-----------------------------------------------------------------------------|
 | **Visit site**               | Opens the website in a new tab.                                             |
 | **Log in to wp-admin**       | Logs you in to the WordPress dashboard as an administrator. WordPress only. |
-| **Manage as owner**          | Logs in to OpenPanel as the owner and opens this website in Site Manager.  |
-| **Owner account**            | Opens the owner's account page in OpenAdmin.                                |
+| **Manage as owner**          | Logs in to DavPanel as the owner and opens this website in Site Manager.  |
+| **Owner account**            | Opens the owner's account page in DavAdmin.                                |
 | **Edit Virtual Host**        | Opens the web server configuration of the website's domain.                 |
 | **Check PageSpeed**          | Runs a [Google PageSpeed check](#check-pagespeed).                          |
 | **Scan with ImunifyAV**      | Queues an [ImunifyAV scan](#scan-with-imunifyav) of the owner's files. Shown only when ImunifyAV is installed. |
@@ -94,23 +94,23 @@ Click the **⋯** button at the end of a row to open the actions menu:
 Hover over the PageSpeed score to see the Performance score, First Contentful Paint, Speed Index and Time to Interactive for desktop and mobile, and click **Update** to run the check again.
 
 <Tabs>
-  <TabItem value="openadmin-websites-pagespeed" label="With OpenAdmin" default>
+  <TabItem value="davadmin-websites-pagespeed" label="With DavAdmin" default>
 
 Select **Check PageSpeed** from the actions menu, or select several websites and use the bulk action with the same name.
 
   </TabItem>
-  <TabItem value="CLI-websites-pagespeed" label="With OpenCLI">
+  <TabItem value="CLI-websites-pagespeed" label="With DavCLI">
 
 To check a single website run:
 
 ```bash
-opencli websites-pagespeed <DOMAIN>
+davcli websites-pagespeed <DOMAIN>
 ```
 
 To check all websites run:
 
 ```bash
-opencli websites-pagespeed -all
+davcli websites-pagespeed -all
 ```
 
   </TabItem>
@@ -121,23 +121,23 @@ opencli websites-pagespeed -all
 WordPress sites can be scanned for known vulnerabilities in their core version, plugins and themes. When something is found, the Vulnerabilities column shows how many vulnerabilities were found in how many components. Click it to see each vulnerable plugin or theme with details from Wordfence, WPScan, Patchstack and CVE.
 
 <Tabs>
-  <TabItem value="openadmin-websites-vulnerability" label="With OpenAdmin" default>
+  <TabItem value="davadmin-websites-vulnerability" label="With DavAdmin" default>
 
 Select **Scan for vulnerabilities** from the actions menu, or select several websites and use the bulk action with the same name. Websites that are not WordPress are skipped.
 
   </TabItem>
-  <TabItem value="CLI-websites-vulnerability" label="With OpenCLI">
+  <TabItem value="CLI-websites-vulnerability" label="With DavCLI">
 
 To scan a single website run:
 
 ```bash
-opencli websites-vulnerability <DOMAIN>
+davcli websites-vulnerability <DOMAIN>
 ```
 
 To scan all WordPress websites run:
 
 ```bash
-opencli websites-vulnerability --all
+davcli websites-vulnerability --all
 ```
 
   </TabItem>

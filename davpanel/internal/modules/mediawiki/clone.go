@@ -5,10 +5,10 @@ import (
 	"regexp"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/modules/crons"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/crons"
 )
 
 // mirrors drupal/clone.go in structure (site-limit check, file copy, DB create+dump-pipe, config rewrite, sites-table insert) via internal/core/cmsclone, with two MediaWiki-specific differences: LocalSettings.php hardcodes $wgServer/$wgScriptPath to the source domain (unlike Drupal's runtime-derived base URL), so both must be rewritten to the clone's own domain or it keeps generating/accepting links only for the source; and MediaWiki needs its own per-site cron job (maintenance/runJobs.php) registered for the clone, mirroring install.go's own crons.AddJob call, or the clone's job queue never runs

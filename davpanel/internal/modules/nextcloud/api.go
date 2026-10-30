@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"net/url"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // handleNextcloudVersions backs nextcloud_install.html's version dropdown - there's no GitHub releases API to hit client-side the way joomla/opencart's install forms do, so this exposes the server-side HTML-scrape result (version.go) as JSON instead

@@ -6,7 +6,7 @@ sidebar_position: 2
 
 Edit the DNS zone for any domain hosted on the server.
 
-1. Navigate to **OpenAdmin > Domains > DNS Zone Editor**.
+1. Navigate to **DavAdmin > Domains > DNS Zone Editor**.
 2. Select the domain whose zone you want to edit.
 3. Make your changes in the editor and click **Save** when done.
 

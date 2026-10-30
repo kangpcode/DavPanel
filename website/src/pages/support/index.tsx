@@ -32,7 +32,7 @@ const PrivacyPolicy: React.FC = () => {
                 
                     <ul>
                         <li><a href="/search">Search Documentation</a></li>
-                        <li><a href="https://github.com/stefanpejcic/OpenPanel/discussions">Search Discussions</a></li>
+                        <li><a href="https://github.com/kangpcode/DavPanel/discussions">Search Discussions</a></li>
                     </ul>
 
                     <h3>Step 2a: Open a support ticket (Enterprise Edition)</h3>
@@ -46,14 +46,14 @@ const PrivacyPolicy: React.FC = () => {
                     <h3>Step 2b: Post on GitHub Discussions (Community Edition)</h3>
                     <p>If you can wait for answers from our community and don't want to spend any money, ask your question in GitHub Discussions. Every member of the DavPanel staff also monitors Discussions and tries to help out whenever we can. We generally prioritize paid support queries (we've got bills to pay, after all), but our Discussions are very active, and our community is knowledgeable.</p>
                     <ul>
-                        <li><a href="https://github.com/stefanpejcic/OpenPanel/discussions">Ask the Community</a></li>
+                        <li><a href="https://github.com/kangpcode/DavPanel/discussions">Ask the Community</a></li>
                     </ul>
 
                     <h3>Step 3: Found a bug?</h3>
                     <p>If you've found a bug in DavPanel or DavAdmin, Community or Enterprise edition, <a
-                            href="https://github.com/stefanpejcic/openpanel/issues/new?assignees=&labels=Bug&projects=&template=1_Bug_report.yaml">please
+                            href="https://github.com/kangpcode/DavPanel/issues/new?assignees=&labels=Bug&projects=&template=1_Bug_report.yaml">please
                             file a bug</a> in the relevant GitHub issue tracker for the project you're reporting on or <a
-                            href="https://github.com/stefanpejcic/OpenPanel/discussions">post to Discussions</a> or report to the appropriate <code>security@</code>
+                            href="https://github.com/kangpcode/DavPanel/discussions">post to Discussions</a> or report to the appropriate <code>security@</code>
                         email address if reporting security issues. It benefits everyone when you let us know about bugs you find in our
                         software.</p>
 

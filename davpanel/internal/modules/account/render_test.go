@@ -6,11 +6,11 @@ import (
 	"strings"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/mcptokens"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/mcptokens"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // baseLayout is a minimal web.LayoutData for rendering the authenticated pages in this package, distinct from loginPageData's pre-session standalone context

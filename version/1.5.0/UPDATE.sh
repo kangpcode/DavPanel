@@ -27,7 +27,7 @@ else
     echo "Line added successfully. Backup saved as $file.bak"
     changed=1
     if [[ "$changed" -eq 1 ]]; then
-        echo "- Restarting Openpanel container"
+        echo "- Restarting Davpanel container"
         docker restart davpanel 2>/dev/null && \
             echo "- Restarted successfully." || \
             echo "Could not restart davpanel container"

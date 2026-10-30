@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // extractJoomlaDatabaseInfoForLogin is a local copy of websites.extractJoomlaDatabaseInfo (unexported in another package, so duplicated here, same pattern wordpress/drupal already use rather than sharing across module packages) - only the fields handleJoomlaLogin actually needs are populated

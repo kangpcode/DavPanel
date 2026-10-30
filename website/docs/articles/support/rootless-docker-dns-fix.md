@@ -6,7 +6,7 @@ sidebar_label: "Fix Outbound DNS/Internet in User Containers"
 
 ## Symptom
 
-Containers of an OpenPanel user have no outbound internet access, and DNS resolution fails for external hostnames, even though:
+Containers of an DavPanel user have no outbound internet access, and DNS resolution fails for external hostnames, even though:
 
 - The host server has full internet access.
 - System containers (for example Caddy) resolve DNS correctly.
@@ -15,7 +15,7 @@ Containers of an OpenPanel user have no outbound internet access, and DNS resolu
 **Example errors** (run as root on the server):
 
 ```bash
-source /usr/local/opencli/lib/podman.sh
+source /usr/local/davcli/lib/podman.sh
 
 podman_user <user> exec apache wget -q --spider --timeout=5 https://example.com/feed.xml
 # wget: bad address 'example.com'
@@ -30,14 +30,14 @@ podman_user <user> exec apache nslookup example.com 8.8.8.8
 
 ## Fix (Podman)
 
-OpenPanel runs each user's containers with rootless **Podman**. The DNS servers for all of a user's containers are set in the user's Podman configuration, not in `docker-compose.yml`.
+DavPanel runs each user's containers with rootless **Podman**. The DNS servers for all of a user's containers are set in the user's Podman configuration, not in `docker-compose.yml`.
 
 ### 1. Test from the right container
 
 Test from the container that actually makes the outbound request - usually the PHP-FPM container, not the web server:
 
 ```bash
-source /usr/local/opencli/lib/podman.sh
+source /usr/local/davcli/lib/podman.sh
 podman_user <user> exec <phpfpm-container> curl -sI https://example.com/
 ```
 
@@ -62,7 +62,7 @@ If the file or the `dns_servers` line is missing (for example for an account cre
 DNS settings apply when a container is created, so recreate the running services:
 
 ```bash
-source /usr/local/opencli/lib/podman.sh
+source /usr/local/davcli/lib/podman.sh
 cd /home/<user>
 podman_compose_user <user> down
 podman_compose_user <user> up -d <service> [<service> ...]
@@ -84,7 +84,7 @@ Both should now return output instead of timing out.
 Collect this output before contacting support:
 
 ```bash
-opencli report --public
+davcli report --public
 podman_user <user> info
 podman_user <user> network ls
 cat /etc/containers/containers.conf.d/*.conf
@@ -96,7 +96,7 @@ Also check that the server itself can resolve names (`dig example.com`) and that
 
 ## Older Installations (Rootless Docker)
 
-Servers installed before OpenPanel 2.0 may still run user containers with rootless **Docker**. On those servers the cause and fix are different:
+Servers installed before DavPanel 2.0 may still run user containers with rootless **Docker**. On those servers the cause and fix are different:
 
 ### Root Cause
 
@@ -164,7 +164,7 @@ Both commands should now return valid output instead of timing out.
 Collect and review the following before escalating to platform support:
 
 ```bash
-opencli report --public
+davcli report --public
 docker info
 docker --context=<user> network inspect <network-name>
 ```

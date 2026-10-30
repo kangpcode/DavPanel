@@ -4,13 +4,13 @@ sidebar_position: 6
 
 # Backups
 
-In OpenPanel, backups are configurable directly **by the panel users**, unlike other panels where backups are managed by the admin.
+In DavPanel, backups are configurable directly **by the panel users**, unlike other panels where backups are managed by the admin.
 
 This empowers users to define their own backup schedules, choose exactly what to back up, and select from a wide range of supported destinations.
 As a result, administrators have fewer tasks to manage, and users gain greater control and flexibility.
 
-![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/openpanel-screenshots/files/backups-page.png#gh-light-mode-only)
-![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/openpanel-screenshots/files/backups-page_dark.png#gh-dark-mode-only)
+![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/davpanel-screenshots/files/backups-page.png#gh-light-mode-only)
+![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/davpanel-screenshots/files/backups-page_dark.png#gh-dark-mode-only)
 
 :::info Admin Configured mode
 If your administrator runs backups centrally for all users (**Admin Configured** mode, see [User Backups](/docs/admin/backups/user/)), the **Destinations** and **Settings** pages below aren't available to you - the destination and its credentials are managed by the administrator. You can still use **List Backups** and **Restore Logs** to browse and restore your own backups.
@@ -18,7 +18,7 @@ If your administrator runs backups centrally for all users (**Admin Configured**
 
 ## Destinations
 
-OpenPanel supports the following destinations:
+DavPanel supports the following destinations:
 
 - [**S3 storage**](#s3) - AWS S3, Filebase, MinIO, etc.
 - [**WebDAV**](#webdav) - Remote backups using WebDAV.
@@ -28,8 +28,8 @@ OpenPanel supports the following destinations:
 
 User can select destination from **Backups > Destinations** page.
 
-![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/openpanel-screenshots/files/backups_destination-page.png#gh-light-mode-only)
-![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/openpanel-screenshots/files/backups_destination-page_dark.png#gh-dark-mode-only)
+![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/davpanel-screenshots/files/backups_destination-page.png#gh-light-mode-only)
+![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/davpanel-screenshots/files/backups_destination-page_dark.png#gh-dark-mode-only)
 
 Once backup is selected, it's options are available on **Backups > Settings page**.
 
@@ -442,8 +442,8 @@ backup
 
 The **Restore & Download** page (`/backups/list`) lets you browse the backup files that already exist on your configured destination, restore them back onto your account, or download them to your computer. This currently works only for the **SSH/SFTP** destination.
 
-![Restore & Download page with the backup search and the Reindex Destination button](/img/openpanel-screenshots/files/backups_list-list.png#gh-light-mode-only)
-![Restore & Download page with the backup search and the Reindex Destination button](/img/openpanel-screenshots/files/backups_list-list_dark.png#gh-dark-mode-only)
+![Restore & Download page with the backup search and the Reindex Destination button](/img/davpanel-screenshots/files/backups_list-list.png#gh-light-mode-only)
+![Restore & Download page with the backup search and the Reindex Destination button](/img/davpanel-screenshots/files/backups_list-list_dark.png#gh-dark-mode-only)
 
 1. Click **Reindex Destination** to connect to the remote destination and list the available backup archives. Reindexing runs in the background and the page updates automatically once it finishes.
 2. Each indexed backup shows its filename, detected contents (`html`, `vhosts`, `mail`, `mysql`, `postgres`, `crons`) and the databases found inside it.

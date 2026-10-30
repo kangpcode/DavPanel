@@ -4,8 +4,8 @@ import (
 	"net/url"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 func TestParseActivityLine(t *testing.T) {

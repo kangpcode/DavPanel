@@ -2,14 +2,14 @@ import React from "react";
 import clsx from "clsx";
 import { useColorMode } from "@docusaurus/theme-common";
 import { LandingArrowRightIcon } from "./icons/landing-arrow-right";
-import { LandingHeroShowcaseOpenCliTerminal } from "./landing-hero-showcase-opencli-terminal";
+import { LandingHeroShowcaseDavCliTerminal } from "./landing-hero-showcase-davcli-terminal";
 
 const ShowcaseCRM = ({ className }: { className?: string }) => {
     const { colorMode } = useColorMode();
     const src =
         colorMode === "dark"
-            ? "/img/landing/openpanel-illustration-dark.svg"
-            : "/img/landing/openpanel-illustration-light.svg";
+            ? "/img/landing/davpanel-illustration-dark.svg"
+            : "/img/landing/davpanel-illustration-light.svg";
 
     return (
         <img
@@ -37,15 +37,15 @@ const ShowcaseHR = ({ className }: { className?: string }) => {
 };
 
 const ShowcaseDevOps = ({ className }: { className?: string }) => {
-    return <LandingHeroShowcaseOpenCliTerminal className={className} />;
+    return <LandingHeroShowcaseDavCliTerminal className={className} />;
 };
 
 const ShowcaseCommunity = ({ className }: { className?: string }) => {
     const { colorMode } = useColorMode();
     const src =
         colorMode === "dark"
-            ? "/img/landing/openpanel-community-illustration-dark.svg"
-            : "/img/landing/openpanel-community-illustration-light.svg";
+            ? "/img/landing/davpanel-community-illustration-dark.svg"
+            : "/img/landing/davpanel-community-illustration-light.svg";
 
     return (
         <img
@@ -445,7 +445,7 @@ const apps = [
         label: "User panel demo",
     },
     {
-        name: "OpenCLI",
+        name: "DavCLI",
         nameLarge: "Terminal Commands",
         link: "https://dev.davpanel.com/cli/commands.html",
         showcase: ShowcaseDevOps,

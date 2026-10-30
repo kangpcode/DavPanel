@@ -15,7 +15,7 @@ import (
 	"strings"
 	"syscall"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/paths"
+	"github.com/kangpcode/davpanel/internal/core/paths"
 )
 
 // homeRoot is where account homes live, tests point it at a temp dir

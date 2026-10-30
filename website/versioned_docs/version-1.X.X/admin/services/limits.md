@@ -14,7 +14,7 @@ To update limits, enter new values in the fields for the appropriate service.
 
 **Available Services**:
 
-- openpanel
+- davpanel
 - caddy
 - mysql
 - clamav

@@ -7,7 +7,7 @@ import (
 	"sort"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 const keepDays = 90

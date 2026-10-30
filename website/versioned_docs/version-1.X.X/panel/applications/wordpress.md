@@ -6,11 +6,11 @@ sidebar_position: 1
 
 ![wp_manager_grid.png](/img/panel/v2/wpmanager.png)
 
-The WordPress Manager is your all-in-one tool inside OpenPanel for installing and managing WordPress websites — without ever needing to log in to wp-admin. It makes handling multiple sites fast, simple, and efficient.
+The WordPress Manager is your all-in-one tool inside DavPanel for installing and managing WordPress websites — without ever needing to log in to wp-admin. It makes handling multiple sites fast, simple, and efficient.
 
 ## Manage WordPress sites
 
-The WordPress Manager lets you adjust settings, create backups, update plugins, toggle debugging, and more — all directly from OpenPanel. No need to open multiple dashboards or remember dozens of logins.
+The WordPress Manager lets you adjust settings, create backups, update plugins, toggle debugging, and more — all directly from DavPanel. No need to open multiple dashboards or remember dozens of logins.
 Perfect for agencies, developers, and anyone managing several WordPress sites at once.
 
 ### WP Manager
@@ -26,7 +26,7 @@ On the main WP Manager page you can:
 
 ### Install WordPress
 
-Installing WordPress is quick and automatic. OpenPanel takes care of everything — downloading WordPress from WordPress.org, creating the database, linking it to your domain, and configuring your new site.
+Installing WordPress is quick and automatic. DavPanel takes care of everything — downloading WordPress from WordPress.org, creating the database, linking it to your domain, and configuring your new site.
 
 1. Add your **domain name** first.
 2. Open **Site Manager** from the sidebar and click **+ New Website**.
@@ -48,14 +48,14 @@ Click **Start Installation** and you’re done.
 
 ![wp_install.png](/img/panel/v2/wpinstall2.png)
 
-📘 Read the full guide: [How to Install WordPress® With OpenPanel](/docs/articles/websites/how-to-install-wordpress-with-openpanel/#install-wordpress-via-wp-manager)
+📘 Read the full guide: [How to Install WordPress® With DavPanel](/docs/articles/websites/how-to-install-wordpress-with-davpanel/#install-wordpress-via-wp-manager)
 
 ### Scanning (Importing) Installations
 
 If you already have WordPress installed manually, you can import it into the WP Manager.
 The system scans your hosting files for `wp-config.php` and automatically adds the found websites.
 
-📘 Read the full guide: [How to Migrate a WordPress® Installation to OpenPanel](/docs/articles/websites/how-to-upload-wordpress-website-to-openpanel/)
+📘 Read the full guide: [How to Migrate a WordPress® Installation to DavPanel](/docs/articles/websites/how-to-upload-wordpress-website-to-davpanel/)
 
 ### Themes and Plugins Sets
 
@@ -70,7 +70,7 @@ For example, you might set up a default combo like:
 
 Every time you install a new site — boom, it’s ready with your preferred setup.
 
-📘 Read the full guide: [WordPress Plugin & Theme Sets in OpenPanel](/docs/articles/websites/wordpress-plugins-themes-sets-in-openpanel/)
+📘 Read the full guide: [WordPress Plugin & Theme Sets in DavPanel](/docs/articles/websites/wordpress-plugins-themes-sets-in-davpanel/)
 
 ### Refresh Website Data
 
@@ -101,7 +101,7 @@ Temporary links last 15 minutes.
 
 Click **Live Preview** to generate one:
 
-![website_temporary_url_openpanel.gif](/img/panel/v2/wppreview.png)
+![website_temporary_url_davpanel.gif](/img/panel/v2/wppreview.png)
 
 ### Screenshot
 
@@ -121,7 +121,7 @@ Need it sooner? Click the refresh icon over the screenshot.
 
 Website performance is monitored daily using **Google PageSpeed Insights**. For both mobile and desktop devices, you can view the check time along with key metrics such as **First Contentful Paint**, **Speed Index**, and **Time to Interactive**.
 
-You can also [add your own PageSpeed Insights API key](/docs/articles/websites/google-pagespeed-insights-api-key/#adding-the-api-key-in-openpanel) to customize the data collection.
+You can also [add your own PageSpeed Insights API key](/docs/articles/websites/google-pagespeed-insights-api-key/#adding-the-api-key-in-davpanel) to customize the data collection.
 
 ![speed](/img/panel/v2/speed.png)
 

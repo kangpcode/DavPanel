@@ -24,7 +24,7 @@ A 502 Bad Gateway error is common when using Nginx. It means the web server (Ngi
 
 ## 2. Wait
 
-If you are not the website owner and have no access to OpenPanel account, the only thing you can do is notify the owner for this issue and wait till website starts responding again.
+If you are not the website owner and have no access to DavPanel account, the only thing you can do is notify the owner for this issue and wait till website starts responding again.
 
 ---
 

@@ -10,10 +10,10 @@ Install and manage [Nextcloud](https://nextcloud.com/) sites in an existing doma
 
 ## Install Nextcloud
 
-Navigate to **OpenPanel > AutoInstaller** and click **Install Nextcloud**.
+Navigate to **DavPanel > AutoInstaller** and click **Install Nextcloud**.
 
-![Install Nextcloud form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/nextcloud-form.png#gh-light-mode-only)
-![Install Nextcloud form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/nextcloud-form_dark.png#gh-dark-mode-only)
+![Install Nextcloud form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/nextcloud-form.png#gh-light-mode-only)
+![Install Nextcloud form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/nextcloud-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -34,7 +34,7 @@ Every Nextcloud install shows up on the general **Site Manager** page (`/sites`)
 
 ### Login as Admin
 
-The **Login as Admin** button generates a one-time login link and opens the Nextcloud dashboard already authenticated, without needing the admin password. Nextcloud core has no built-in CLI command for this, so OpenPanel deploys a small login helper file into the docroot at install time that authenticates through Nextcloud's own public `IUserSession::completeLogin()` API; each click issues a fresh token valid for 10 minutes and usable once.
+The **Login as Admin** button generates a one-time login link and opens the Nextcloud dashboard already authenticated, without needing the admin password. Nextcloud core has no built-in CLI command for this, so DavPanel deploys a small login helper file into the docroot at install time that authenticates through Nextcloud's own public `IUserSession::completeLogin()` API; each click issues a fresh token valid for 10 minutes and usable once.
 
 ### Cache
 

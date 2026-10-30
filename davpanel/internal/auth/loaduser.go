@@ -13,10 +13,10 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/mcptokens"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
-	"gist.github.com/kangpcode/davpanel/internal/core/sysinfo"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/mcptokens"
+	"github.com/kangpcode/davpanel/internal/core/session"
+	"github.com/kangpcode/davpanel/internal/core/sysinfo"
 )
 
 const (

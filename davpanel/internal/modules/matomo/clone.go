@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 // mirrors drupal/clone.go in structure (site-limit check, file copy, DB create+dump-pipe, config rewrite, sites-table insert) via internal/core/cmsclone - Matomo's own difference: config/config.ini.php is INI, not a PHP array/define() list, and it hardcodes a [General] trusted_hosts[] array of allowed HTTP Host headers, so the clone's own domain must be appended there or Matomo rejects every request to the clone with "untrusted host"

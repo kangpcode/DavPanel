@@ -2,15 +2,15 @@
 
 You can import tables into a MySQL/MariaDB database using one of the following methods:
 
-* **Import Database** feature (via OpenPanel)
+* **Import Database** feature (via DavPanel)
 * **phpMyAdmin** interface
-* **Terminal** feature (via OpenPanel)
+* **Terminal** feature (via DavPanel)
 
 ---
 
-## 1. Import Database (via OpenPanel)
+## 1. Import Database (via DavPanel)
 
-The **Import Database** feature must be enabled on your plan for the option to appear in your OpenPanel dashboard.
+The **Import Database** feature must be enabled on your plan for the option to appear in your DavPanel dashboard.
 Once available, follow the guide here: [Database Import Documentation](/docs/panel/mysql/import/)
 
 ---
@@ -25,7 +25,7 @@ If the **phpMyAdmin** feature is enabled:
 
 Alternatively, you can upload the SQL file using the **File Manager** to the `/var/www/html` directory. The uploaded files will then be visible on the phpMyAdmin import page.
 
-Documentation: [phpMyAdmin Import Guide](https://openpanel.com/docs/panel/mysql/phpmyadmin/)
+Documentation: [phpMyAdmin Import Guide](https://davpanel.com/docs/panel/mysql/phpmyadmin/)
 
 ---
 
@@ -33,7 +33,7 @@ Documentation: [phpMyAdmin Import Guide](https://openpanel.com/docs/panel/mysql/
 
 To use terminal access:
 
-* The **Docker** feature must be enabled on your plan for container access to be visible in OpenPanel.
+* The **Docker** feature must be enabled on your plan for container access to be visible in DavPanel.
 * Once enabled, select your MySQL/MariaDB container from the dashboard.
 * Open the terminal and run the following commands to import your SQL file:
 

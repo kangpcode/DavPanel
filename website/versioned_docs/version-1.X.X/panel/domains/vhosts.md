@@ -24,6 +24,6 @@ Depending on your web server -**Nginx**, **OpenResty**, **OpenLiteSpeed**, or **
 
 :::info
 ⚠️ **Important:** Always create a backup of the configuration file before making any changes.
-While OpenPanel performs basic validation on save (including syntax checks and automatic rollback on failure), you should not rely solely on this safeguard. Maintaining your own backups ensures you can manually restore the configuration if needed.
+While DavPanel performs basic validation on save (including syntax checks and automatic rollback on failure), you should not rely solely on this safeguard. Maintaining your own backups ensures you can manually restore the configuration if needed.
 :::
 

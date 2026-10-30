@@ -5,9 +5,9 @@ import (
 	"os/exec"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // HandleDirectorySize serves `/json/directory-size`, used by both the file manager table's "Calculate" links and various app single-page views - feature "helpers" is unconditionally granted to every user (see baselineFeatures), so like /docker/tags and /json/check_if_file_exists this is registered unconditionally rather than gated behind "filemanager"

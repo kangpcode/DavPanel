@@ -18,16 +18,16 @@ import (
 
 	"github.com/gorilla/csrf"
 
-	davpanel "gist.github.com/kangpcode/davpanel"
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
-	"gist.github.com/kangpcode/davpanel/internal/modules"
-	"gist.github.com/kangpcode/davpanel/internal/modules/backups"
-	"gist.github.com/kangpcode/davpanel/internal/modules/errorlogs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/git"
-	"gist.github.com/kangpcode/davpanel/internal/modules/summary"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	davpanel "github.com/kangpcode/davpanel"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/session"
+	"github.com/kangpcode/davpanel/internal/modules"
+	"github.com/kangpcode/davpanel/internal/modules/backups"
+	"github.com/kangpcode/davpanel/internal/modules/errorlogs"
+	"github.com/kangpcode/davpanel/internal/modules/git"
+	"github.com/kangpcode/davpanel/internal/modules/summary"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 const (

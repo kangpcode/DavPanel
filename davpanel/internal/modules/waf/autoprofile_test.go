@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 func withOwnerAllows(t *testing.T, allowed bool) {

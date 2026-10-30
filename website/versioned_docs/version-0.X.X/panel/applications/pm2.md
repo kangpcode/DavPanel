@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # NodeJS and Python
 
-The PM2 page allows you to run Python or NodeJS applications from within the OpenPanel interface.
+The PM2 page allows you to run Python or NodeJS applications from within the DavPanel interface.
 
 ![pm2_noapps.png](/img/panel/v1/applications/pm2_noapps.png)
 

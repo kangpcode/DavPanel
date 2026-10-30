@@ -5,12 +5,12 @@ import (
 	"net/http"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
 )
 
 // apiMySQLSetRootPassword changes the MySQL root user's password (both the given host, defaulting to '%', and 'localhost'), then persists it to my.cnf/.env, no restart needed - the API equivalent of POST /mysql/root-password (handleRootPasswordMySQL in rootpassword.go) - there's no GET counterpart since the root password isn't readable anywhere, so this is write-only, and deliberately has no strength check, matching handleRootPasswordMySQL's own comment that the root password is admin-only

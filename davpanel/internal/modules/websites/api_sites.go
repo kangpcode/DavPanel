@@ -7,13 +7,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // RegisterSitesAPI wires the /api/sites routes onto mux. Several routes share a <domain> prefix with a literal suffix (e.g. /api/sites/{domain}/safebrowsing, /temporary-link, /visitors, /wp-info), and a domain itself may contain slashes (subfolder installs), so the most specific literal suffix has to win over treating the whole tail as the domain. Since ServeMux requires a "{...}" wildcard to be the final segment, a single "{rest...}" catch-all per method is registered instead, and apiSitesGetDispatch/apiSitesPostDispatch manually strip the known literal suffixes off the tail to resolve the real route. apiregistry.Add still records each logical route separately so /api/endpoints lists them individually.

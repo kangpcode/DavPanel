@@ -1,6 +1,6 @@
 # Add Custom Steps to the Onboarding Wizard
 
-OpenPanel's [Onboarding wizard](/docs/panel/dashboard/onboarding) walks new users through the features already built into the panel - webserver, PHP, database, Varnish, backups, and security. If you want to guide users through setting up something that isn't part of that list - for example, enabling Redis as a cache - you can register an extra step from custom JavaScript, without patching or forking OpenPanel.
+DavPanel's [Onboarding wizard](/docs/panel/dashboard/onboarding) walks new users through the features already built into the panel - webserver, PHP, database, Varnish, backups, and security. If you want to guide users through setting up something that isn't part of that list - for example, enabling Redis as a cache - you can register an extra step from custom JavaScript, without patching or forking DavPanel.
 
 ## How it works
 
@@ -22,20 +22,20 @@ Your step appears right before the final "Finish" screen, after Security.
 Edit (or create) the custom JS override file:
 
 ```bash
-nano /etc/openpanel/openpanel/custom_code/custom.js
+nano /etc/davpanel/davpanel/custom_code/custom.js
 ```
 
-This file is always loaded by the OpenPanel interface, so anything you put there runs on every page - not just onboarding. If the file didn't already exist, restart the `openpanel` container once so it picks up the new override:
+This file is always loaded by the DavPanel interface, so anything you put there runs on every page - not just onboarding. If the file didn't already exist, restart the `davpanel` container once so it picks up the new override:
 
 ```bash
-cd /root && podman-compose up -d openpanel
+cd /root && podman-compose up -d davpanel
 ```
 
 Further edits to an existing `custom.js` take effect immediately on page reload - no restart needed.
 
 ## Example: add a Redis step
 
-Redis already has a full page in OpenPanel (`/cache/redis`) with a same-origin JSON API the panel's own pages use (`GET`/`POST /cache/redis?output=json`), but it isn't one of the wizard's built-in steps. Here's a complete step that lets users enable or disable it during onboarding:
+Redis already has a full page in DavPanel (`/cache/redis`) with a same-origin JSON API the panel's own pages use (`GET`/`POST /cache/redis?output=json`), but it isn't one of the wizard's built-in steps. Here's a complete step that lets users enable or disable it during onboarding:
 
 ```js
 // Adds a "Redis" step to the account-setup onboarding wizard.
@@ -81,7 +81,7 @@ window.OPOnboardingSteps.push({
 
 A few things worth noting about the example:
 
-- `wizard.getJSON(url)` and `wizard.formPost(url, params)` are the same helpers the built-in steps use to talk to OpenPanel's own session-authenticated page routes (not the Bearer-token `/api/*` routes) - they already attach the CSRF token, so you don't need to handle that yourself.
+- `wizard.getJSON(url)` and `wizard.formPost(url, params)` are the same helpers the built-in steps use to talk to DavPanel's own session-authenticated page routes (not the Bearer-token `/api/*` routes) - they already attach the CSRF token, so you don't need to handle that yourself.
 - Setting `wizard.error` reuses the wizard's existing error banner, shown above the step content.
 - `this` inside the step definition refers to the object you pushed onto `window.OPOnboardingSteps`, so it's a convenient place to stash per-step state (like `_choice` above) between `init`, `render`, and `submit`.
 
@@ -99,4 +99,4 @@ If you need a condition that isn't one of the wizard's existing `opts` flags, ca
 
 ## Testing
 
-The wizard only shows automatically until the user finishes or dismisses it. To see your changes without creating a throwaway account, delete the onboarding marker file for a test user and reload the dashboard - see [resetting onboarding for a user](/docs/admin/settings/openpanel/#onboarding).
+The wizard only shows automatically until the user finishes or dismisses it. To see your changes without creating a throwaway account, delete the onboarding marker file for a test user and reload the dashboard - see [resetting onboarding for a user](/docs/admin/settings/davpanel/#onboarding).

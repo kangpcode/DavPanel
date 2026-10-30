@@ -10,10 +10,10 @@ Install and manage [Flarum](https://flarum.org/) forums in an existing domain, v
 
 ## Install Flarum
 
-Navigate to **OpenPanel > Websites > Install App** and click **Install Flarum**.
+Navigate to **DavPanel > Websites > Install App** and click **Install Flarum**.
 
-![Install Flarum form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/flarum-form.png#gh-light-mode-only)
-![Install Flarum form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/flarum-form_dark.png#gh-dark-mode-only)
+![Install Flarum form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/flarum-form.png#gh-light-mode-only)
+![Install Flarum form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/flarum-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -22,7 +22,7 @@ On the install page, configure:
 * **Forum title** – The forum's display name.
 * **Admin username / password / email** – The initial administrator account Flarum creates during install. Leave the password blank to generate one.
 
-Behind the scenes, this runs `composer create-project flarum/flarum` into the docroot, creates a dedicated MySQL/MariaDB database, and runs Flarum's own non-interactive console installer (`php flarum install --file=<json> --config=config.php`) against it. Since Flarum's real docroot is its `public/` subdirectory, OpenPanel links `public/`'s contents up into the domain's docroot so the site is servable from the domain root (or subfolder) directly. Installing Flarum 2.x requires the domain's PHP version to be 8.1 or newer — the install is blocked with a clear error otherwise. Progress is streamed live as each step completes.
+Behind the scenes, this runs `composer create-project flarum/flarum` into the docroot, creates a dedicated MySQL/MariaDB database, and runs Flarum's own non-interactive console installer (`php flarum install --file=<json> --config=config.php`) against it. Since Flarum's real docroot is its `public/` subdirectory, DavPanel links `public/`'s contents up into the domain's docroot so the site is servable from the domain root (or subfolder) directly. Installing Flarum 2.x requires the domain's PHP version to be 8.1 or newer — the install is blocked with a clear error otherwise. Progress is streamed live as each step completes.
 
 ## Manage a Flarum forum
 

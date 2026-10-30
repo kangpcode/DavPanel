@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // LogRule is one rule that matched a request, in plain words for the Basic log view

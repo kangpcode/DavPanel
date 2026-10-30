@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 	"gopkg.in/yaml.v3"
 )
 

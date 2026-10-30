@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Edit Zone Templates
 
-This interface allows you to edit the DNS zone file templates that OpenPanel uses when creating zones for new domains.  
+This interface allows you to edit the DNS zone file templates that DavPanel uses when creating zones for new domains.  
 It is useful if you require custom DNS configurations.
 
 ![edit zone screenshot](/img/admin/dns_templates_admin.png)
@@ -25,7 +25,7 @@ You can include the following variables in your DNS zone templates:
 | `{ns3}`         | Hostname of the tertiary nameserver.                                       |
 | `{ns4}`         | Hostname of the quaternary nameserver.                                     |
 | `{server_ip}`   | IP address of the domain (either IPv4 or IPv6, depending on the template). |
-| `{rpemail}`     | Contact email address from OpenAdmin, or `root@domain`.                    |
+| `{rpemail}`     | Contact email address from DavAdmin, or `root@domain`.                    |
 
 ---
 

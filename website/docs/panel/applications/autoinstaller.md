@@ -6,8 +6,8 @@ sidebar_position: 4
 
 Auto Installer allows you to one-click install applications.
 
-![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/openpanel-screenshots/applications/autoinstaller-page.png#gh-light-mode-only)
-![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/openpanel-screenshots/applications/autoinstaller-page_dark.png#gh-dark-mode-only)
+![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/davpanel-screenshots/applications/autoinstaller-page.png#gh-light-mode-only)
+![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/davpanel-screenshots/applications/autoinstaller-page_dark.png#gh-dark-mode-only)
 
 ## Available Applications
 
@@ -53,7 +53,7 @@ If your account has the **Docker** feature enabled, the Auto Installer also show
 
 Clicking **Install** opens the [Add a container](/docs/panel/containers/#adding-new-services) form already filled in with the image, limits, networks, a data volume and the environment variables the app needs. Pick a domain in the **Domain** step, change anything else you like, and click **Create container**. The app is then reachable on that domain and listed in [Site Manager](/docs/panel/applications/sites/).
 
-The list of templates is loaded from [applications.yml](https://github.com/stefanpejcic/openpanel-configuration/blob/main/docker/templates/applications.yml) in the OpenPanel configuration repository and cached for 24 hours. If GitHub can't be reached, the copy on the server at `/etc/openpanel/docker/templates/applications.yml` is used.
+The list of templates is loaded from [applications.yml](https://github.com/stefanpejcic/openpanel-configuration/blob/main/docker/templates/applications.yml) in the DavPanel configuration repository and cached for 24 hours. If GitHub can't be reached, the copy on the server at `/etc/davpanel/docker/templates/applications.yml` is used.
 
 :::tip
 Some apps finish their setup on first visit, for example Uptime Kuma and n8n ask you to create the admin account, and Gitea shows its installation page.

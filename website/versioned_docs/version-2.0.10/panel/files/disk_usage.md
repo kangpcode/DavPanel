@@ -11,8 +11,8 @@ Disk usage refers to the amount of space occupied by the content of your website
 
 The Disk Usage Chart provides a visual representation of disk usage per directory. It allows you to quickly assess which directories are consuming the most storage space.
 
-![Disk Usage page with a table of folder sizes and a bar chart of disk usage per folder](/img/openpanel-screenshots/files/disk_usage-page.png#gh-light-mode-only)
-![Disk Usage page with a table of folder sizes and a bar chart of disk usage per folder](/img/openpanel-screenshots/files/disk_usage-page_dark.png#gh-dark-mode-only)
+![Disk Usage page with a table of folder sizes and a bar chart of disk usage per folder](/img/davpanel-screenshots/files/disk_usage-page.png#gh-light-mode-only)
+![Disk Usage page with a table of folder sizes and a bar chart of disk usage per folder](/img/davpanel-screenshots/files/disk_usage-page_dark.png#gh-dark-mode-only)
 
 ## Browsing Directories
 
@@ -32,7 +32,7 @@ Suppose you want to check the disk usage of a specific directory. Follow these s
 
 ## Lowering Disk Usage
 
-Managing disk usage is essential to maintain the performance and stability of your hosting environment. Here are some tips and best practices for reducing disk usage within OpenPanel:
+Managing disk usage is essential to maintain the performance and stability of your hosting environment. Here are some tips and best practices for reducing disk usage within DavPanel:
 
 ### Regularly Clean Up Unused Files
 - Remove Temporary Files: Periodically delete temporary files, such as log files, cache files, and old backups. These files can accumulate and consume valuable disk space over time.

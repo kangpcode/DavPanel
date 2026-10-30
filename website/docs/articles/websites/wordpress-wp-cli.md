@@ -1,11 +1,11 @@
 ---
 sidebar_label: "Use WP-CLI"
-description: "How to use WP-CLI with WordPress sites in OpenPanel: run wp commands from the web terminal or with a cron job, common commands for plugins, users, search-replace, cache and database."
+description: "How to use WP-CLI with WordPress sites in DavPanel: run wp commands from the web terminal or with a cron job, common commands for plugins, users, search-replace, cache and database."
 ---
 
-# How to Use WP-CLI in OpenPanel
+# How to Use WP-CLI in DavPanel
 
-[WP-CLI](https://wp-cli.org/) is the command-line tool for WordPress. It lets you update plugins, reset passwords, search and replace URLs or export the database in seconds. WP-CLI is **preinstalled** in every OpenPanel PHP container - it's what WP Manager itself uses behind the scenes.
+[WP-CLI](https://wp-cli.org/) is the command-line tool for WordPress. It lets you update plugins, reset passwords, search and replace URLs or export the database in seconds. WP-CLI is **preinstalled** in every DavPanel PHP container - it's what WP Manager itself uses behind the scenes.
 
 Many common tasks don't need WP-CLI at all: the [WP Manager](/docs/panel/applications/wordpress/) has buttons for updates, cache, debugging, maintenance mode, backups and cloning.
 
@@ -17,7 +17,7 @@ WordPress runs in your domain's PHP container (for example `php-fpm-8.3`), so WP
 
 ### Option 1: Web terminal (Enterprise)
 
-1. Go to **OpenPanel → Containers → Terminal**.
+1. Go to **DavPanel → Containers → Terminal**.
 2. Select the PHP container your site uses, e.g. `php-fpm-8.3`.
 3. Run commands with the site path and `--allow-root`:
 
@@ -36,7 +36,7 @@ See [Terminal](/docs/panel/containers/terminal/).
 
 ### Option 2: Cron job with "Run" (any plan with cron jobs)
 
-1. Go to **OpenPanel → Cron Jobs → Create New**.
+1. Go to **DavPanel → Cron Jobs → Create New**.
 2. **Container**: `php-fpm-8.3`.
 3. **Command**: your WP-CLI command, e.g. `wp core version --path=/var/www/html/example.com --allow-root`.
 4. Save, then click **Run** to execute it immediately and see the output.

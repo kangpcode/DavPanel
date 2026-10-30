@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Domain Visitors
 
-OpenPanel uses the [goaccess](https://github.com/allinurl/goaccess) web log analyzer tool to generate visual reports for every domain from the Nginx access logs.
+DavPanel uses the [goaccess](https://github.com/allinurl/goaccess) web log analyzer tool to generate visual reports for every domain from the Nginx access logs.
 
 To view a report for a domain name simply select it from the select:
 

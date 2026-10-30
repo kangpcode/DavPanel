@@ -6,8 +6,8 @@ sidebar_position: 5
 
 Resource Usage provides real-time information about your server's CPU, RAM, and other performance metrics. You can monitor your server's resource consumption and access historical data to make informed decisions.
 
-![Resource Usage page with gauges for current CPU and RAM usage](/img/openpanel-screenshots/advanced/resource_usage-page.png#gh-light-mode-only)
-![Resource Usage page with gauges for current CPU and RAM usage](/img/openpanel-screenshots/advanced/resource_usage-page_dark.png#gh-dark-mode-only)
+![Resource Usage page with gauges for current CPU and RAM usage](/img/davpanel-screenshots/advanced/resource_usage-page.png#gh-light-mode-only)
+![Resource Usage page with gauges for current CPU and RAM usage](/img/davpanel-screenshots/advanced/resource_usage-page_dark.png#gh-dark-mode-only)
 
 ## CPU Usage
 
@@ -23,8 +23,8 @@ To view past CPU usage data, click the **View Usage History** button in the top 
 
 This will open the Historical Resource Usage page that allows you to track historical CPU and memory usage, enabling you to make informed decisions and analyze your server's performance over time.
 
-![Historical CPU and Memory Usage charts and a table of past usage](/img/openpanel-screenshots/advanced/resource_history-page.png#gh-light-mode-only)
-![Historical CPU and Memory Usage charts and a table of past usage](/img/openpanel-screenshots/advanced/resource_history-page_dark.png#gh-dark-mode-only)
+![Historical CPU and Memory Usage charts and a table of past usage](/img/davpanel-screenshots/advanced/resource_history-page.png#gh-light-mode-only)
+![Historical CPU and Memory Usage charts and a table of past usage](/img/davpanel-screenshots/advanced/resource_history-page_dark.png#gh-dark-mode-only)
 
 ## RAM Usage
 

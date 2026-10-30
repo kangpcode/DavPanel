@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/searchdata"
+	"github.com/kangpcode/davpanel/internal/core/searchdata"
 )
 
 func TestGateFor(t *testing.T) {

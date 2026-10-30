@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"net/url"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // apiOJSClone resolves {site_id} into the source_domain handleOJSClone expects (there's no source_folder) and takes every other clone field from the JSON body

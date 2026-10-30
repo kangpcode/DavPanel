@@ -13,11 +13,11 @@ import (
 	"sync"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apidocs"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apidocs"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // This file implements the /mcp JSON-RPC endpoint (initialize, tools/list, tools/call). One tool is generated per documented /api/ route+method (apidocs.EndpointsJSON), and calling a tool just replays the equivalent HTTP request through the app's own mux, forwarding the caller's Authorization header - no business logic gets duplicated here.

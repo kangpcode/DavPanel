@@ -7,20 +7,20 @@ import (
 	"path/filepath"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/githubapi"
-	"gist.github.com/kangpcode/davpanel/internal/core/installmanifest"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
-	"gist.github.com/kangpcode/davpanel/internal/modules/mysql"
-	"gist.github.com/kangpcode/davpanel/internal/modules/websites"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/githubapi"
+	"github.com/kangpcode/davpanel/internal/core/installmanifest"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
+	"github.com/kangpcode/davpanel/internal/modules/mysql"
+	"github.com/kangpcode/davpanel/internal/modules/websites"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // ensureContainerTmpOnSameFilesystem makes the given PHP container's own /tmp resolve onto the same filesystem as /var/www/html - identical fix to prestashop/install.go's helper of the same name (sys_temp_dir can't be overridden per-directory, so redirecting /tmp at the filesystem level is the only mechanism that works), applied here too since Matomo's installer also writes temp files during the DB setup step
@@ -257,7 +257,7 @@ func handleInstallStream(a *appctx.App, w http.ResponseWriter, r *http.Request) 
 		emit(map[string]any{"status": "Warning: could not store admin credentials for auto-login: " + credErr.Error()})
 	} else {
 		loginFilePath := filepath.Join(hostOSPath, davpanelLoginFileName)
-		if writeErr := tenantfs.WriteFile(loginFilePath, []byte(buildOpenpanelLoginPHP(creds.Login, creds.Password, creds.Token, webServer)), 0o644); writeErr == nil {
+		if writeErr := tenantfs.WriteFile(loginFilePath, []byte(buildDavPanelLoginPHP(creds.Login, creds.Password, creds.Token, webServer)), 0o644); writeErr == nil {
 			_ = tenantfs.Lchown(loginFilePath, uid, uid)
 		}
 	}

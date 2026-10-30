@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // DomainWithSite is one row of a user's domains joined with their site count.

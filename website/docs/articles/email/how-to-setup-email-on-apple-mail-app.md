@@ -1,6 +1,6 @@
 # How to Set Up Email on Apple Mail (Mac)
 
-This guide explains how to set up your **OpenPanel-created email account** in the Apple Mail app on macOS.
+This guide explains how to set up your **DavPanel-created email account** in the Apple Mail app on macOS.
 
 > **Note:** If you are setting up email on a different device or service, see the main guide:
 > [How to setup your email client](/docs/articles/email/how-to-setup-your-email-client)

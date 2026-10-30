@@ -4,21 +4,21 @@ sidebar_position: 14
 
 # SofaWiki
 
-Install and manage [SofaWiki](https://github.com/bellenuit/sofawiki) sites in an existing domain — considerably simpler than the WordPress Manager: no database at all, no admin account created by OpenPanel, no CLI installer to drive, no dedicated SofaWiki Manager sidebar page, no scanning for existing installs, no hardening rules, no maintenance mode, no admin auto-login, and no cache to clear. Install, a read-only overview, cloning, a files-only backup system, and uninstall.
+Install and manage [SofaWiki](https://github.com/bellenuit/sofawiki) sites in an existing domain — considerably simpler than the WordPress Manager: no database at all, no admin account created by DavPanel, no CLI installer to drive, no dedicated SofaWiki Manager sidebar page, no scanning for existing installs, no hardening rules, no maintenance mode, no admin auto-login, and no cache to clear. Install, a read-only overview, cloning, a files-only backup system, and uninstall.
 
 ---
 
 ## Install SofaWiki
 
-Navigate to **OpenPanel > Websites > Install App** and click **Install SofaWiki**.
+Navigate to **DavPanel > Websites > Install App** and click **Install SofaWiki**.
 
-![Install SofaWiki form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/sofawiki-form.png#gh-light-mode-only)
-![Install SofaWiki form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/sofawiki-form_dark.png#gh-dark-mode-only)
+![Install SofaWiki form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/sofawiki-form.png#gh-light-mode-only)
+![Install SofaWiki form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/sofawiki-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
 * **Domain** – The domain (and optional subfolder) to install into. Leave the subfolder blank to install at the domain root.
-* **Admin email** – Used only as the site record's contact email in Site Manager; SofaWiki itself has no admin account for OpenPanel to create.
+* **Admin email** – Used only as the site record's contact email in Site Manager; SofaWiki itself has no admin account for DavPanel to create.
 
 Behind the scenes, this downloads SofaWiki's master-branch archive from GitHub (there are no tagged releases upstream, and no `composer.json`), extracts it into the docroot, and fixes file ownership. There is no database to provision and no CLI installer to run — SofaWiki's own first-visit setup wizard (fix folder permissions, create the configuration, set an admin login, write the main page) is left for the site owner to complete themselves in the browser, exactly as it would be after uploading the files by FTP. Progress is streamed live as each step completes.
 

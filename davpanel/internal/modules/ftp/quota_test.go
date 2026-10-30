@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
 )
 
 func TestNormalizeQuota(t *testing.T) {

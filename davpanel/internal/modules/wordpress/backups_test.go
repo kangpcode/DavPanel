@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
 )
 
 func TestBackupFolderRE(t *testing.T) {

@@ -1,12 +1,12 @@
-# OpenPanel Cron Troubleshooting Guide
+# DavPanel Cron Troubleshooting Guide
 
-This is a **generic troubleshooting guide** for OpenPanel cron jobs.
+This is a **generic troubleshooting guide** for DavPanel cron jobs.
 
 ------------------------------------------------------------------------
 
-## **1) How cron works in OpenPanel**
+## **1) How cron works in DavPanel**
 
-In OpenPanel:
+In DavPanel:
 
 -   Cron **does NOT run directly on the host** like traditional Linux
     crontab.
@@ -24,7 +24,7 @@ Before troubleshooting cron, always verify that the command itself
 works.
 
 Access the user container terminal:
-https://openpanel.com/docs/panel/containers/terminal/#accessing-the-terminal
+https://davpanel.com/docs/panel/containers/terminal/#accessing-the-terminal
 
 Inside the container, run your command manually, for example:
 
@@ -46,7 +46,7 @@ Only continue with cron troubleshooting **after this works manually.**
 
 Each user must have their own cron service active.
 
-Check in OpenPanel: https://openpanel.com/docs/panel/advanced/services/
+Check in DavPanel: https://davpanel.com/docs/panel/advanced/services/
 
 You should see a **cron service running for the user**.
 
@@ -106,9 +106,9 @@ container = openlitespeed
 
 ## **5) Check cron execution logs (very important)**
 
-OpenPanel provides per-job execution logs.
+DavPanel provides per-job execution logs.
 
-Cron job logs: https://openpanel.com/docs/panel/advanced/cronjobs/#logs
+Cron job logs: https://davpanel.com/docs/panel/advanced/cronjobs/#logs
 
 Look for: - Job started - Job failed - PHP errors - Permission denied -
 "Container not found"
@@ -202,7 +202,7 @@ Check: - Is cron service running? → Services page\
 ### ❓ "Cron runs but command fails"
 
 Check: - Run manually inside container first\
-- Check cron logs in OpenPanel\
+- Check cron logs in DavPanel\
 - Check container logs
 
 ### ❓ "Cron runs but the app still complains"

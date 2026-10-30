@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
 )
 
 // n8n-specific install/display config, kept apart from nodejs.go/python.go/ruby.go/java.go so each type is easy to find and change independently. Unlike those, n8n is a fixed workflow-automation app with no startup file, package manager, or git deploy - see Kind.Simple/Kind.DataVolume.

@@ -1,6 +1,6 @@
-# OpenPanel Installation on DigitalOcean
+# DavPanel Installation on DigitalOcean
 
-This guide will walk you through deploying **OpenPanel** on a DigitalOcean Droplet with Ubuntu.
+This guide will walk you through deploying **DavPanel** on a DigitalOcean Droplet with Ubuntu.
 
 ---
 
@@ -37,16 +37,16 @@ ssh root@yourDropletIpAddress
 
 ---
 
-## Step 3: Run the OpenPanel Installer
+## Step 3: Run the DavPanel Installer
 
 Once logged in, run the installer script:
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
 ---
 
-## Step 4: Access OpenPanel
+## Step 4: Access DavPanel
 
 1. Open your browser and navigate to:
 
@@ -60,10 +60,10 @@ https://yourDropletIpAddress:2087
 
 ## Notes
 
-* Ensure your Droplet meets [OpenPanel minimum requirements](https://openpanel.com/docs/admin/intro/#requirements).
+* Ensure your Droplet meets [DavPanel minimum requirements](https://davpanel.com/docs/admin/intro/#requirements).
 * For production, restrict firewall access to limit exposure after installation.
-* Use the [OpenPanel Install Command Generator](https://openpanel.com/install) for advanced configuration options.
+* Use the [DavPanel Install Command Generator](https://davpanel.com/install) for advanced configuration options.
 
 ---
 
-**Congratulations!** You have successfully installed OpenPanel on DigitalOcean.
+**Congratulations!** You have successfully installed DavPanel on DigitalOcean.

@@ -1,12 +1,12 @@
 ---
 sidebar_label: "PHP2Shell: patch PHP before the images are rebuilt"
-description: "How to patch PHP2Shell (CVE-2026-109618, CVE-2026-109619) on an OpenPanel server before phpMyAdmin, Roundcube and shinsenter/php ship fixed images: rebuild PHP inside each image from php.net source."
-keywords: [PHP2Shell, CVE-2026-109618, CVE-2026-109619, PHP, PHP-FPM, phpMyAdmin, Roundcube, shinsenter, OpenPanel, security]
+description: "How to patch PHP2Shell (CVE-2026-109618, CVE-2026-109619) on an DavPanel server before phpMyAdmin, Roundcube and shinsenter/php ship fixed images: rebuild PHP inside each image from php.net source."
+keywords: [PHP2Shell, CVE-2026-109618, CVE-2026-109619, PHP, PHP-FPM, phpMyAdmin, Roundcube, shinsenter, DavPanel, security]
 ---
 
 # PHP2Shell (CVE-2026-109618, CVE-2026-109619): patch PHP before the images are rebuilt
 
-PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35 fix PHP2Shell, two unauthenticated remote code execution bugs in PHP itself ([blog post](/blog/php-security-update-openpanel)). On OpenPanel, PHP serves requests in three places, and all three come from images OpenPanel does not build:
+PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35 fix PHP2Shell, two unauthenticated remote code execution bugs in PHP itself ([blog post](/blog/php-security-update-davpanel)). On DavPanel, PHP serves requests in three places, and all three come from images DavPanel does not build:
 
 | Where | Image | Runs PHP as |
 |---|---|---|
@@ -14,9 +14,9 @@ PHP 8.5.12, 8.4.27, 8.3.36 and 8.2.35 fix PHP2Shell, two unauthenticated remote 
 | phpMyAdmin (port 2053) | `phpmyadmin:latest` | Apache mod_php |
 | Webmail | `roundcube/roundcubemail:latest` | Apache mod_php |
 
-`opencli docker-update` pulls the newest of those images, but it cannot install a fix the image's maintainers have not published yet. On October 21, 2026 at 18:12 UTC, hours after PHP's release, `shinsenter/php:8.3-fpm` still had PHP 8.3.35, `shinsenter/php:8.2-fpm` 8.2.34, `phpmyadmin:latest` 8.3.35 and `roundcube/roundcubemail:latest` 8.4.26.
+`davcli docker-update` pulls the newest of those images, but it cannot install a fix the image's maintainers have not published yet. On October 21, 2026 at 18:12 UTC, hours after PHP's release, `shinsenter/php:8.3-fpm` still had PHP 8.3.35, `shinsenter/php:8.2-fpm` 8.2.34, `phpmyadmin:latest` 8.3.35 and `roundcube/roundcubemail:latest` 8.4.26.
 
-This guide patches PHP inside the images you already run, without waiting. [`Dockerfile`](/scripts/php-rebuild/Dockerfile) recompiles the image's own PHP from the php.net source with the image's own configure flags (the source is checked against php.net's SHA-256 and the PHP release managers' GPG signatures) and installs it over the old one. A patch release keeps the extension API, so the image's extensions (ionCube included) and its configuration stay as they are. [`php-rebuild.sh`](/scripts/php-rebuild/php-rebuild.sh) finds the newest release of the image's PHP branch and builds it. Both were used on an OpenPanel 2.0.15 server on the day of the release; a build takes about 12 minutes on 8 vCPUs.
+This guide patches PHP inside the images you already run, without waiting. [`Dockerfile`](/scripts/php-rebuild/Dockerfile) recompiles the image's own PHP from the php.net source with the image's own configure flags (the source is checked against php.net's SHA-256 and the PHP release managers' GPG signatures) and installs it over the old one. A patch release keeps the extension API, so the image's extensions (ionCube included) and its configuration stay as they are. [`php-rebuild.sh`](/scripts/php-rebuild/php-rebuild.sh) finds the newest release of the image's PHP branch and builds it. Both were used on an DavPanel 2.0.15 server on the day of the release; a build takes about 12 minutes on 8 vCPUs.
 
 :::warning
 Run everything below as root in a plain SSH session (`tmux` or `nohup` for the builds), not with `systemd-run` or from a systemd service: podman leaves each container's `conmon` monitor in the calling unit, and systemd kills it when the unit ends.
@@ -26,7 +26,7 @@ Run everything below as root in a plain SSH session (`tmux` or `nohup` for the b
 
 ```bash
 podman exec phpmyadmin php -r 'echo PHP_VERSION, PHP_EOL;'
-podman exec openadmin_roundcube php -r 'echo PHP_VERSION, PHP_EOL;'
+podman exec davadmin_roundcube php -r 'echo PHP_VERSION, PHP_EOL;'
 
 # the PHP a new account or a PHP version switch gets, from the shared image store:
 for v in 8.2 8.3 8.4 8.5; do
@@ -36,7 +36,7 @@ for v in 8.2 8.3 8.4 8.5; do
 done
 
 # what the users' running php-fpm containers run:
-source /usr/local/opencli/lib/podman.sh
+source /usr/local/davcli/lib/podman.sh
 for f in /home/*/docker-compose.yml; do
   u=$(basename "$(dirname "$f")")
   for c in $(podman_user "$u" ps --format '{{.Names}}' | grep '^php-fpm-'); do
@@ -51,8 +51,8 @@ Download the two files:
 
 ```bash
 mkdir -p /root/php-rebuild && cd /root/php-rebuild
-curl -fsSLO https://openpanel.com/scripts/php-rebuild/Dockerfile
-curl -fsSLO https://openpanel.com/scripts/php-rebuild/php-rebuild.sh
+curl -fsSLO https://davpanel.com/scripts/php-rebuild/Dockerfile
+curl -fsSLO https://davpanel.com/scripts/php-rebuild/php-rebuild.sh
 ```
 
 ## 2. phpMyAdmin
@@ -63,15 +63,15 @@ bash php-rebuild.sh "$(podman inspect -f '{{.Image}}' phpmyadmin)" localhost/php
 podman tag localhost/php-rebuild/phpmyadmin "$(podman inspect -f '{{.ImageName}}' phpmyadmin)"
 ```
 
-The `openpanel` container depends on `phpmyadmin`, so podman will not remove phpMyAdmin while the panel exists, and the panel is recreated with it (down for about 40 seconds). Remove them one at a time: `podman rm openpanel phpmyadmin` checks both at once and refuses the second.
+The `davpanel` container depends on `phpmyadmin`, so podman will not remove phpMyAdmin while the panel exists, and the panel is recreated with it (down for about 40 seconds). Remove them one at a time: `podman rm davpanel phpmyadmin` checks both at once and refuses the second.
 
 ```bash
 cd /root
-podman stop phpmyadmin openpanel
-podman rm openpanel
+podman stop phpmyadmin davpanel
+podman rm davpanel
 podman rm phpmyadmin
 podman-compose up -d --no-deps phpmyadmin
-podman-compose up -d --no-deps openpanel
+podman-compose up -d --no-deps davpanel
 podman exec phpmyadmin php -r 'echo PHP_VERSION, PHP_EOL;'
 ```
 
@@ -85,30 +85,30 @@ Roundcube's SQLite database has no volume: `/var/roundcube/db/sqlite.db` lives i
 
 ```bash
 cd /root/php-rebuild
-bash php-rebuild.sh "$(podman inspect -f '{{.Image}}' openadmin_roundcube)" localhost/php-rebuild/roundcube
-podman tag localhost/php-rebuild/roundcube "$(podman inspect -f '{{.ImageName}}' openadmin_roundcube)"
+bash php-rebuild.sh "$(podman inspect -f '{{.Image}}' davadmin_roundcube)" localhost/php-rebuild/roundcube
+podman tag localhost/php-rebuild/roundcube "$(podman inspect -f '{{.ImageName}}' davadmin_roundcube)"
 
-podman stop openadmin_roundcube
-podman cp openadmin_roundcube:/var/roundcube/db/sqlite.db /root/php-rebuild/roundcube-sqlite.db
-podman rm openadmin_roundcube
+podman stop davadmin_roundcube
+podman cp davadmin_roundcube:/var/roundcube/db/sqlite.db /root/php-rebuild/roundcube-sqlite.db
+podman rm davadmin_roundcube
 cd /usr/local/mail/openmail && podman-compose up -d --no-deps roundcube
 ```
 
 The new container's first start copies Roundcube into place and only then creates its database. Wait for Apache before putting the old database back:
 
 ```bash
-until podman logs openadmin_roundcube 2>&1 | grep -q 'resuming normal operations'; do sleep 2; done
-podman stop openadmin_roundcube
-podman cp /root/php-rebuild/roundcube-sqlite.db openadmin_roundcube:/var/roundcube/db/sqlite.db
-podman start openadmin_roundcube
-podman exec openadmin_roundcube php -r 'echo PHP_VERSION, PHP_EOL;'
+until podman logs davadmin_roundcube 2>&1 | grep -q 'resuming normal operations'; do sleep 2; done
+podman stop davadmin_roundcube
+podman cp /root/php-rebuild/roundcube-sqlite.db davadmin_roundcube:/var/roundcube/db/sqlite.db
+podman start davadmin_roundcube
+podman exec davadmin_roundcube php -r 'echo PHP_VERSION, PHP_EOL;'
 ```
 
 Webmail is down for about a minute.
 
 ## 4. Users' PHP (shinsenter/php)
 
-Every user's podman reads OpenPanel's shared image store, `/var/lib/containers/shared-storage`, so a rebuilt image placed there serves every account, including new accounts and PHP version switches. Rebuild each PHP version that is still vulnerable (8.3 here) and copy it into the store with `skopeo` (installed by `opencli docker-update` since 2.0.16, otherwise `apt-get install -y skopeo`):
+Every user's podman reads DavPanel's shared image store, `/var/lib/containers/shared-storage`, so a rebuilt image placed there serves every account, including new accounts and PHP version switches. Rebuild each PHP version that is still vulnerable (8.3 here) and copy it into the store with `skopeo` (installed by `davcli docker-update` since 2.0.16, otherwise `apt-get install -y skopeo`):
 
 ```bash
 cd /root/php-rebuild
@@ -123,13 +123,13 @@ find $S -name '*.lock' -exec chmod o+rw {} \;
 ```
 
 :::danger
-Never pull or load into the shared store with `podman --root /var/lib/containers/shared-storage`. With the default runroot (root's own), a pull or load that creates layers unmounts the layer of every running root container (caddy, the mail server, the panel, MySQL and the rest): they keep running, but the next restart of any of them fails. See [If a container won't restart](#if-a-container-wont-restart). podman refuses a different `--runroot` for that store (`database configuration mismatch`), so writes go through skopeo with the store's own runroot, as above and as `opencli docker-update` does since OpenPanel 2.0.17. Reads (`image inspect`, `images`) are fine with `podman --root`. The `chmod` lines are the ones OpenPanel's own scripts run after writing to the store, so the users' podman can read it and take its locks.
+Never pull or load into the shared store with `podman --root /var/lib/containers/shared-storage`. With the default runroot (root's own), a pull or load that creates layers unmounts the layer of every running root container (caddy, the mail server, the panel, MySQL and the rest): they keep running, but the next restart of any of them fails. See [If a container won't restart](#if-a-container-wont-restart). podman refuses a different `--runroot` for that store (`database configuration mismatch`), so writes go through skopeo with the store's own runroot, as above and as `davcli docker-update` does since DavPanel 2.0.17. Reads (`image inspect`, `images`) are fine with `podman --root`. The `chmod` lines are the ones DavPanel's own scripts run after writing to the store, so the users' podman can read it and take its locks.
 :::
 
 Then recreate the running `php-fpm-<version>` containers on the new image, through each user's own podman socket, and reload the user's web server so it connects to the new container:
 
 ```bash
-source /usr/local/opencli/lib/podman.sh
+source /usr/local/davcli/lib/podman.sh
 for f in /home/*/docker-compose.yml; do
   u=$(basename "$(dirname "$f")")
   podman_user "$u" ps --format '{{.Names}}' | grep -qx "php-fpm-$v" || continue
@@ -151,14 +151,14 @@ OpenLiteSpeed runs its own `lsphp`, not shinsenter/php, and is not covered here.
 
 ## 5. When the upstream images catch up
 
-The rebuilt images carry the upstream names, so `opencli docker-update` replaces them with the maintainers' own once those are newer. Check that a newer image really is fixed before you run it, without touching the local tags:
+The rebuilt images carry the upstream names, so `davcli docker-update` replaces them with the maintainers' own once those are newer. Check that a newer image really is fixed before you run it, without touching the local tags:
 
 ```bash
 podman --root /tmp/probe/root --runroot /tmp/probe/run run --rm --entrypoint php docker.io/library/phpmyadmin:latest -r 'echo PHP_VERSION;'
 rm -rf /tmp/probe
 ```
 
-Since OpenPanel 2.0.17, `opencli docker-update` checks the PHP version inside an image and leaves the containers alone while it is still unpatched, and the 2.0.17 update moves Roundcube's database to a volume before it updates Roundcube. Run the checks in step 1 again after any update.
+Since DavPanel 2.0.17, `davcli docker-update` checks the PHP version inside an image and leaves the containers alone while it is still unpatched, and the 2.0.17 update moves Roundcube's database to a volume before it updates Roundcube. Run the checks in step 1 again after any update.
 
 ## If a container won't restart
 

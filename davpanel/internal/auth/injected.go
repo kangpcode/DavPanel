@@ -3,7 +3,7 @@ package auth
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 // Injected returns the logged-in user's id, username and container context

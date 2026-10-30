@@ -3,7 +3,7 @@
 When running command: 
 
 ```bash
-opencli user-login stefan
+davcli user-login stefan
 ```
 
 If you receive an error:

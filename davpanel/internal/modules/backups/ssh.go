@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )

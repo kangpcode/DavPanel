@@ -3,9 +3,9 @@ package python
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/modules/appinstall"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/modules/appinstall"
 )
 
 // RegisterAPI wires POST /api/python/install onto mux, gated behind the "python" feature flag - see nodejs.RegisterAPI's comment, same shared appinstall.HandleInstall, no API-specific variant needed

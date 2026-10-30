@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // adminBackupEnvPath is the server default DavAdmin's "apply to existing accounts" links every account's backup.env to

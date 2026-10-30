@@ -5,8 +5,8 @@ import (
 	"html/template"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/flash"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/flash"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
 )
 
 // FlashDisplay is a pre-processed flash message ready for the flash-message stack: reversed order (newest on top), a 1-based Index, ZClass already resolved from the z-index cycle, and any leading "<br>" stripped from the text.

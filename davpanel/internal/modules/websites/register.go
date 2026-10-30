@@ -3,8 +3,8 @@ package websites
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
 )
 
 // Register wires the websites module's routes onto mux: the /sites listing page and its side JSON endpoints - the /website CMS-type dispatcher is registered separately once its per-type templates are ready.

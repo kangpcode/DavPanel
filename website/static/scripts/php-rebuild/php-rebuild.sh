@@ -8,7 +8,7 @@
 # extensions and its config are kept. Needs podman (or CONTAINER_ENGINE=docker), curl, jq and the
 # Dockerfile next to this script. Debian-based images only (the Dockerfile uses apt-get).
 #
-# Guide: https://openpanel.com/docs/articles/security/php2shell-patch-php-before-images-are-rebuilt
+# Guide: https://davpanel.com/docs/articles/security/php2shell-patch-php-before-images-are-rebuilt
 set -euo pipefail
 image=${1:?usage: php-rebuild.sh IMAGE TAG}
 tag=${2:?usage: php-rebuild.sh IMAGE TAG}

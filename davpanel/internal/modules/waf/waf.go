@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // excludedRuleID and excludedTag are always the first (hidden) entry in SecRuleRemoveById/SecRuleRemoveByTag, stripped from what's shown/edited in the UI

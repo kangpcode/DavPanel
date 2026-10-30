@@ -8,8 +8,8 @@ import { ArrowLeftLongIcon } from "./icons/arrow-left-long";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const EnterpriseTable = ({ className }: { className?: string }) => {
-    const [activeTab, setActiveTab] = useState<"cloudpanel" | "openpanel">(
-        "openpanel",
+    const [activeTab, setActiveTab] = useState<"cloudpanel" | "davpanel">(
+        "davpanel",
     );
 
     return (
@@ -61,7 +61,7 @@ export const EnterpriseTable = ({ className }: { className?: string }) => {
                     >
                         <TableStickyHeader
                             activeTab={activeTab}
-                            setActiveTab={(tab: "cloudpanel" | "openpanel") => {
+                            setActiveTab={(tab: "cloudpanel" | "davpanel") => {
                                 setActiveTab(tab);
                             }}
                         />
@@ -97,8 +97,8 @@ const TableItemHeading = ({ children }) => {
         <div
             className={clsx(
                 "pl-4 landing-sm:pl-10 pb-4 pt-4 pr-4",
-                "bg-refine-openpanel-table-alt",
-                "dark:bg-refine-openpanel-table-alt-dark",
+                "bg-refine-davpanel-table-alt",
+                "dark:bg-refine-davpanel-table-alt-dark",
                 "border-b",
                 "border-gray-200",
                 "dark:border-gray-700",
@@ -161,7 +161,7 @@ const TableItemDescription = ({ children, isLast }) => {
 
 const TableItemContentGroup = ({
     cloudpanel,
-    openpanel,
+    davpanel,
     activeTab,
     isLast,
     valueType,
@@ -209,11 +209,11 @@ const TableItemContentGroup = ({
                     activeTab={activeTab}
                     valueType={valueType}
                     className={clsx(
-                        activeTab !== "openpanel" && "hidden landing-md:flex",
-                        activeTab === "openpanel" && "flex",
+                        activeTab !== "davpanel" && "hidden landing-md:flex",
+                        activeTab === "davpanel" && "flex",
                     )}
                 >
-                    {openpanel}
+                    {davpanel}
                 </TableItemContent>
             </div>
         </div>
@@ -223,7 +223,7 @@ const TableItemContentGroup = ({
 const TableItem = ({
     description,
     cloudpanel,
-    openpanel,
+    davpanel,
     activeTab,
     isLast,
     valueType,
@@ -253,7 +253,7 @@ const TableItem = ({
                     {description}
                 </TableItemDescription>
                 <TableItemContentGroup
-                    {...{ cloudpanel, openpanel, activeTab, isLast, valueType }}
+                    {...{ cloudpanel, davpanel, activeTab, isLast, valueType }}
                 />
             </div>
         </div>
@@ -300,7 +300,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                 type="button"
                 onClick={() => {
                     setActiveTab((prev) => {
-                        if (prev === "cloudpanel") return "openpanel";
+                        if (prev === "cloudpanel") return "davpanel";
                         return "cloudpanel";
                     });
                 }}
@@ -315,7 +315,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                     "rounded-full",
                     "w-12 h-6",
                     "items-center justify-center",
-                    activeTab === "openpanel" &&
+                    activeTab === "davpanel" &&
                         "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500",
                     activeTab === "cloudpanel" &&
                         "bg-refine-blue dark:bg-refine-cyan-alt text-gray-0 dark:text-gray-900",
@@ -325,7 +325,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                     className={clsx(
                         "transition-transform duration-200 ease-in-out",
                         activeTab === "cloudpanel" && "rotate-360",
-                        activeTab === "openpanel" && "rotate-180",
+                        activeTab === "davpanel" && "rotate-180",
                     )}
                 />
             </button>
@@ -380,8 +380,8 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                         "landing-md:w-[296px]",
                         "landing-lg:w-[396px]",
                         "p-4 landing-md:p-6",
-                        activeTab !== "openpanel" && "hidden landing-md:flex",
-                        activeTab === "openpanel" && "flex",
+                        activeTab !== "davpanel" && "hidden landing-md:flex",
+                        activeTab === "davpanel" && "flex",
                         "items-center",
                         "justify-start",
                         "text-center",
@@ -393,8 +393,8 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                         className={clsx(
                             "font-semibold",
                             "whitespace-nowrap",
-                            activeTab === "openpanel" && "opacity-100",
-                            activeTab !== "openpanel" &&
+                            activeTab === "davpanel" && "opacity-100",
+                            activeTab !== "davpanel" &&
                                 "opacity-0 landing-md:opacity-100",
                             "transition-opacity",
                             "ease-in-out",
@@ -495,12 +495,12 @@ const tableData = [
                 cloudpanel: (
                     <TableText>26 - 60€/ month</TableText>
                 ),
-                openpanel: (
+                davpanel: (
                     <TableText>14.95€ / month</TableText>
                 ),
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
@@ -508,12 +508,12 @@ const tableData = [
                 cloudpanel: (
                     <TableText>Per account</TableText>
                 ),
-                openpanel: (
+                davpanel: (
                     <TableText>Per server</TableText>
                 ),
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             }
         ],
@@ -524,46 +524,46 @@ const tableData = [
             {
                 description: "Supported OS",
                 cloudpanel: <TableText><a href="https://docs.cloudpanel.net/installation-guide/system-requirements/" target="_blank">AlmaLinux 8,9,10 Ubuntu 22 Cloudlinux 7,8,9 RockyLinux 8,9</a></TableText>,
-                openpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
+                davpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Support for ARM CPUs (Aarch64)",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "User Isolation",
                 cloudpanel: <TableText>Only with Cloudlinux</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Service Isolation",
                 cloudpanel: <TableText>Shared services (PHP, MySQL..)</TableText>,
-                openpanel: <TableText>Service per user</TableText>,
+                davpanel: <TableText>Service per user</TableText>,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Kernel Updates",
                 cloudpanel: <TableText>Only with KernelCare</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -574,37 +574,37 @@ const tableData = [
             {
                 description: "Apache",
                 cloudpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Nginx",
                 cloudpanel: <TableText>only as a Reverse Proxy</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },            
             {
                 description: "OpenLitespeed",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "OpenResty",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             }
         ],
@@ -616,46 +616,46 @@ const tableData = [
             {
                 description: "Varnish Caching",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Redis",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Memcached",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },         
             {
                 description: "OpenSearch",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "ElasticSearch",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             }
         ],
@@ -667,37 +667,37 @@ const tableData = [
             {
                 description: "Supported versions",
                 cloudpanel: <TableText>8.1 - 8.4</TableText>,
-                openpanel: <TableText>5.6 - 8.5</TableText>,
+                davpanel: <TableText>5.6 - 8.5</TableText>,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "PHP Selector",
                 cloudpanel: <TableText>Only with Cloudlinux</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PHP.INI Editor",
                 cloudpanel: <TableText>Limited</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },         
             {
                 description: "PHP service per user",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -709,19 +709,19 @@ const tableData = [
             {
                 description: "Users can manage Containers",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             }, 
             {
                 description: "Users can add Containers",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             }
         ],
@@ -732,37 +732,37 @@ const tableData = [
             {
                 description: "Process Manager",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Web Terminal",
                 cloudpanel: <TableText>Per user</TableText>,
-                openpanel: <TableText>Per service</TableText>,
+                davpanel: <TableText>Per service</TableText>,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },         
             {
                 description: "Edit webserver settings",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "View Resource Usage",
                 cloudpanel: <TableText>Only with CLoudlinux</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },   
         ],
@@ -773,46 +773,46 @@ const tableData = [
             {
                 description: "Format",
                 cloudpanel: <TableText>Unix</TableText>,
-                openpanel: <TableText>GO</TableText>,
+                davpanel: <TableText>GO</TableText>,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Min Schedule",
                 cloudpanel: <TableText>Minute</TableText>,
-                openpanel: <TableText>Seconds</TableText>,
+                davpanel: <TableText>Seconds</TableText>,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "No overlap",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },            
             {
                 description: "Edit cron file",
                 cloudpanel: <TableText>Only with Shell enabled</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Logs",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -823,91 +823,91 @@ const tableData = [
             {
                 description: "File Manager",
                 cloudpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Upload multiple files",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Drag&Drop Uploads",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "File Editor",
                 cloudpanel: <TableText>Basic</TableText>,
-                openpanel: <TableText><a href="https://microsoft.github.io/monaco-editor/">Monaco (VS Code) Editor</a></TableText>,
+                davpanel: <TableText><a href="https://microsoft.github.io/monaco-editor/">Monaco (VS Code) Editor</a></TableText>,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "FTP",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Malware Scanner",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Download from URL",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Disk Usage Explorer",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Inodes Explorer",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Fix Permissions",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -918,91 +918,91 @@ const tableData = [
             {
                 description: "MySQL",
                 cloudpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "MariaDB",
                 cloudpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Percona",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "phpMyAdmin",
                 cloudpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PostgreSQL",
                 cloudpanel: <CheckIcon />,
-                openpanel: <TableText>BETA</TableText>,
+                davpanel: <TableText>BETA</TableText>,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Import Databases",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Root Privileges",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },   
             {
                 description: "Edit MySQL Configuration",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },  
             {
                 description: "Manage Processes",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },         
             {
                 description: "Switch MySQL to MariaDB",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },    
         ],
@@ -1013,82 +1013,82 @@ const tableData = [
             {
                 description: "Administrator Accounts",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "User can change username",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Features per user",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Detailed Activity Log",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Detailed Login Log",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Add pages to favorites",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Dark Mode",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Custom message per user",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
              {
                 description: "Customize email templates",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },    
         ],
@@ -1099,37 +1099,37 @@ const tableData = [
             {
                 description: "Edit WAF rules per domain",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "View WAF logs per domain",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },  
             {
                 description: ".onion Domains",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Suspend Domains",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },    
         ],
@@ -1140,37 +1140,37 @@ const tableData = [
             {
                 description: "HTML Website Builder",
                 cloudpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "WP Manager",
                 cloudpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Temporary Domains",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Node / Python Enviroment",
                 cloudpanel: <TableText>venv</TableText>,
-                openpanel: <TableText>Containerized</TableText>,
+                davpanel: <TableText>Containerized</TableText>,
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
           
@@ -1182,28 +1182,28 @@ const tableData = [
             {
                 description: "Postfix",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Sieve (RFC 5228) filtering",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Fail2ban",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },  
         ],
@@ -1214,64 +1214,64 @@ const tableData = [
             {
                 description: "Coraza WAF",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Sentinel Firewall (CSF)",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Custom ports",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },    
             {
                 description: "Containerization",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Disable admin panel",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Rate-limit logins",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Manage Sessions",
                 cloudpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cloudpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             }
         ],
@@ -1286,7 +1286,7 @@ const tableData = [
                         <TableText>312 - 720€ / year</TableText>
                     </div>
                 ),
-                openpanel: (
+                davpanel: (
                     <div className={clsx("flex flex-col", "gap-6", "w-full")}>
                         <TableText>149.50€ / year (17% OFF)</TableText>
                         <EnterpriseGetInTouchButton
@@ -1297,7 +1297,7 @@ const tableData = [
                 ),
                 valueType: {
                     cloudpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
         ],

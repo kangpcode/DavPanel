@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/githubapi"
+	"github.com/kangpcode/davpanel/internal/core/githubapi"
 )
 
 // ojsVersionRE matches pkp/ojs's GitHub tag naming, inconsistent across history (newer tags are bare "3_5_0-5", older ones prefixed "ojs-3_1_2-4") - requiring the string to end right after the build number excludes pre-release tags like "3_4_0rc3"

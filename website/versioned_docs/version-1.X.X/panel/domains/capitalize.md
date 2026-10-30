@@ -4,7 +4,7 @@ sidebar_position: 8
 
 # Capitalize Domains
 
-The **Capitalize** feature allows you to change the letter casing of your domain names for display purposes in the OpenPanel UI. This affects how domains are shown across all pages, without altering the actual DNS or domain configuration.
+The **Capitalize** feature allows you to change the letter casing of your domain names for display purposes in the DavPanel UI. This affects how domains are shown across all pages, without altering the actual DNS or domain configuration.
 
 To capitalize a domain:
 
@@ -14,7 +14,7 @@ Navigate to **Domains** and open the **Actions** menu for the desired domain, th
 
 Click on any letter in the domain name to toggle its case (uppercase/lowercase).
 
-![capitalize action demo](/img/panel/v2/openpanel_capitalize_domains.gif)
+![capitalize action demo](/img/panel/v2/davpanel_capitalize_domains.gif)
 
 Once you've made your changes, click the **Save** button.
 

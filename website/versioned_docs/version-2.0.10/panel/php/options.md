@@ -6,8 +6,8 @@ sidebar_position: 3
 
 The PHP Options page allows you to modify PHP settings stored in the `php.ini` file.
 
-![PHP 8.5 Options page with editable values such as memory_limit, max_execution_time and upload limits](/img/openpanel-screenshots/php/options-page.png#gh-light-mode-only)
-![PHP 8.5 Options page with editable values such as memory_limit, max_execution_time and upload limits](/img/openpanel-screenshots/php/options-page_dark.png#gh-dark-mode-only)
+![PHP 8.5 Options page with editable values such as memory_limit, max_execution_time and upload limits](/img/davpanel-screenshots/php/options-page.png#gh-light-mode-only)
+![PHP 8.5 Options page with editable values such as memory_limit, max_execution_time and upload limits](/img/davpanel-screenshots/php/options-page_dark.png#gh-dark-mode-only)
 
 For more advanced users, the [**PHP.INI Editor**](/docs/panel/php/php_ini_editor/) can be used - if available.
 
@@ -15,7 +15,7 @@ For more advanced users, the [**PHP.INI Editor**](/docs/panel/php/php_ini_editor
 
 ## How to Change PHP Options
 
-1. Open **OpenPanel** and navigate to **PHP > PHP Options**.
+1. Open **DavPanel** and navigate to **PHP > PHP Options**.
 2. Select the desired **PHP version** from the dropdown.
 3. Modify the options you want to change.
 4. Click **Save** to apply changes.
@@ -50,6 +50,6 @@ The list of configurable PHP options is determined by the system administrator. 
 
 Administrators can customize the available options:
 
-- **For all new users**: Edit `/etc/openpanel/php/options.txt`
+- **For all new users**: Edit `/etc/davpanel/php/options.txt`
 - **For a specific user**: Edit `/home/USERNAME/php.ini/options.txt`
 

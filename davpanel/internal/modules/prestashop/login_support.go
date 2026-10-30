@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // extractPrestashopDatabaseInfoForLogin is a local copy of websites.extractPrestashopDatabaseInfo (unexported there, duplicated here like the other CMS modules do), only populates the fields handlePrestashopLogin needs

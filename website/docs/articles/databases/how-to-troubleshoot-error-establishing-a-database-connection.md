@@ -6,13 +6,13 @@ If your website/application is alerting you that there was an error establishing
 
 ## Check the configuration file for errors
 
-OpenPanel runs each user service inside its own container. PHP applications reach the database through a Unix socket shared between the MySQL/MariaDB and PHP containers, so the database host in their config should be:
+DavPanel runs each user service inside its own container. PHP applications reach the database through a Unix socket shared between the MySQL/MariaDB and PHP containers, so the database host in their config should be:
 
 * `localhost` - the default for PHP apps, connects through the socket
 * `mysql` or `mariadb` - the database container name, works too, and is required on accounts created before the socket was added
 * never `127.0.0.1` - that connects over TCP inside the PHP container, where no database is listening
 
-Non-PHP apps (Node.js, Python...) always use `mysql` or `mariadb` on port `3306`. More details: [Connecting to MySQL from applications](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-openpanel/).
+Non-PHP apps (Node.js, Python...) always use `mysql` or `mariadb` on port `3306`. More details: [Connecting to MySQL from applications](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-davpanel/).
 
 Compare this with the website's configuration file, in this example we are editing the wp-config.php file of a WordPress installation using File Manager:
 
@@ -28,21 +28,21 @@ After saving this change the new configuration is applied and our WordPress inst
 
 ## Make sure the database service (container) is running
 
-The easiest way to make sure the database service is running is by accessing the Openpanel > MySQL/Databases page, if your databases are listed on that page that means the container is healthy and running.
+The easiest way to make sure the database service is running is by accessing the Davpanel > MySQL/Databases page, if your databases are listed on that page that means the container is healthy and running.
 
 If you get a blank page or an empty table instead it means that the database container is inactive, simply accessing this page will send a trigger to start the container automatically.
 
 However if data doesn't appear on the page in a couple of minutes there's an issue with the database container.
 
-If the Docker feature is enabled for your plan you can check the database container's logs on OpenPanel > Containers/Logs , you can also stop and start the container on OpenPanel > Containers .
+If the Docker feature is enabled for your plan you can check the database container's logs on DavPanel > Containers/Logs , you can also stop and start the container on DavPanel > Containers .
 
 ![containers.png](/img/docs-content/imgur-GGvHfXb.png)
 
-If the Docker feature is not enabled for your plan and data doesn't appear on the Openpanel > MySQL/Databases page contact your server administrator so that they can check further.
+If the Docker feature is not enabled for your plan and data doesn't appear on the Davpanel > MySQL/Databases page contact your server administrator so that they can check further.
 
 ## Make sure that the website's database user is properly assigned to the database
 
-You can reassign a user to a database at any time on OpenPanel > MySQL/Assign User to DB:
+You can reassign a user to a database at any time on DavPanel > MySQL/Assign User to DB:
 
 ![assign user to database](/img/docs-content/prsWZfTz-assignuser.png)
 
@@ -50,7 +50,7 @@ Simply select your user and database from the dropdown menus and click the "Assi
 
 ## Try Resetting the password of your database user
 
-You can change your database user's password on OpenPanel > MySQL/Users:
+You can change your database user's password on DavPanel > MySQL/Users:
 
 ![password1.png](/img/docs-content/1tQPpC9F-password1.png)
 
@@ -66,7 +66,7 @@ Edit your website's configuration file using File Manager and switch the existin
 
 ## Test the connection manually
 
-In order to connect to your database from a remote location you'll first need to open the following page: OpenPanel > MySQL/Remote MySQL .
+In order to connect to your database from a remote location you'll first need to open the following page: DavPanel > MySQL/Remote MySQL .
 
 ![remotemysql.png](/img/docs-content/43vjTJg9-remotemysql.png)
 
@@ -74,7 +74,7 @@ To enable remote database access click on the "Click to Enable" button and wait 
 
 Next open your database client, in our example we'll be using DBeaver for Windows.
 
-Create a new remote connection within your client, copy the server and port parameters from the "Remote" section of the Remote MySQL page on OpenPanel and paste them inside your client.
+Create a new remote connection within your client, copy the server and port parameters from the "Remote" section of the Remote MySQL page on DavPanel and paste them inside your client.
 
 ![dbclient.png](/img/docs-content/Ssw3pjvZ-dbclient.png)
 

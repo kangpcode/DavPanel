@@ -32,7 +32,7 @@ When SSH access is enabled, it permits SSH connections from any location to the 
 ## Changing Your SSH Password from WebTerminal
 
 
-1. Navigate to *OpenPanel > WebTerminal*
+1. Navigate to *DavPanel > WebTerminal*
 2. Enter the command:
    ```shell
    passwd
@@ -44,9 +44,9 @@ When SSH access is enabled, it permits SSH connections from any location to the 
    passwd: all authentication tokens updated successfully
    ```
    
-## Changing Your SSH Password from OpenPanel interface
+## Changing Your SSH Password from DavPanel interface
 
-To modify the SSH password for your account from the OpenPanel interface, navigate to *SSH* and click on the 'Change SSH Password' button. Set the new password in the modal and confirm.
+To modify the SSH password for your account from the DavPanel interface, navigate to *SSH* and click on the 'Change SSH Password' button. Set the new password in the modal and confirm.
 
 The password will immediately be changed; however, all existing ssh connections will remain active.
 

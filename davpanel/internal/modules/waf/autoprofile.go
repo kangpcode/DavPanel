@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 // profileKeyForSiteType maps a sites.type value to its profile key, "" when there's no profile for that app

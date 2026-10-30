@@ -4,23 +4,23 @@ sidebar_position: 1
 
 # Hosting Plans
 
-Hosting plans outline the available services and limitations for users. [Docker images](https://dev.openpanel.co/images/) specify the pre-installed services for a plan. [Enabled Features](/docs/admin/settings/openpanel/#enable-features) determine which pages users can access from the OpenPanel interface. 
+Hosting plans outline the available services and limitations for users. [Docker images](https://dev.davpanel.co/images/) specify the pre-installed services for a plan. [Enabled Features](/docs/admin/settings/davpanel/#enable-features) determine which pages users can access from the DavPanel interface. 
 
 
 ## List hosting plans
 
 <Tabs>
-  <TabItem value="openadmin-plan-list" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-list" label="With DavAdmin" default>
 
 
 To list existing plans navigate to Plans page:
 
-![openadmin list plans](/img/admin/adminpanel_plans.png)
+![davadmin list plans](/img/admin/adminpanel_plans.png)
 
 | Field              | Description                                                               |
 | ------------------ | ------------------------------------------------------------------------- |
 | **ID**             | Unique ID for the plan.                                                    |
-| **Plan Name**      | Display name that users will see in their OpenPanel dashboards.            |
+| **Plan Name**      | Display name that users will see in their DavPanel dashboards.            |
 | **Description**    | Visible only to administrators.                                           |
 | **Image**          | Name of the Docker image used when creating new accounts on the plan.        |
 | **Docker Size**     | Disk space allocated for the user's container .          |
@@ -37,17 +37,17 @@ To list existing plans navigate to Plans page:
 
 
   </TabItem>
-  <TabItem value="CLI-plan-list" label="With OpenCLI">
+  <TabItem value="CLI-plan-list" label="With DavCLI">
 
 To list all current hosting packages (plans) run:
 
 ```bash
-opencli plan-list
+davcli plan-list
 ```
 
 Example output:
 ```bash
-opencli plan-list
+davcli plan-list
 +----+-----------------+------------------------+---------------+----------------+------------+--------------+----------+------+------+-----------------+-----------+
 | id | name            | description            | domains_limit | websites_limit | disk_limit | inodes_limit | db_limit | cpu  | ram  | docker_image    | bandwidth |
 +----+-----------------+------------------------+---------------+----------------+------------+--------------+----------+------+------+-----------------+-----------+
@@ -61,7 +61,7 @@ opencli plan-list
 You can also format the data as JSON:
 
 ```bash
-opencli plan-list --json
+davcli plan-list --json
 ```
 
   </TabItem>
@@ -70,24 +70,24 @@ opencli plan-list --json
 ## Create a plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-new" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-new" label="With DavAdmin" default>
 
 To create a new hosting plan click on the 'Create new plan' button and set the desired limits for the plan.
 
-![openadmin create new plan](/img/admin/adminpanel_plans_create_new.gif)
+![davadmin create new plan](/img/admin/adminpanel_plans_create_new.gif)
 
   </TabItem>
-  <TabItem value="CLI-plan-new" label="With OpenCLI">
+  <TabItem value="CLI-plan-new" label="With DavCLI">
     
 To create a new plan run the following command:
 
 ```bash
-opencli plan-create <NAME> <DESCRIPTION> <DOMAINS_LIMIT> <WEBSITES_LIMIT> <DISK_LIMIT> <INODES_LIMITS> <DATABASES_LIMIT> <CPU_LIMIT> <RAM_LIMIT> <DOCKER_IMAGE> <PORT_SPEED_LIMIT>
+davcli plan-create <NAME> <DESCRIPTION> <DOMAINS_LIMIT> <WEBSITES_LIMIT> <DISK_LIMIT> <INODES_LIMITS> <DATABASES_LIMIT> <CPU_LIMIT> <RAM_LIMIT> <DOCKER_IMAGE> <PORT_SPEED_LIMIT>
 ```
 
 Example:
 ```bash
-opencli plan-create cloud_8 "Custom plan with 8GB of RAM&CPU" 0 0 15 500000 0 8 8 nginx 200
+davcli plan-create cloud_8 "Custom plan with 8GB of RAM&CPU" 0 0 15 500000 0 8 8 nginx 200
 ```
 
   </TabItem>
@@ -105,29 +105,29 @@ To change plan limits click on the edit button for the plan and set the new limi
 
 Step 1.             |  Step 2.
 :-------------------------:|:-------------------------:
-![openadmin edit plan step 1](/img/admin/openadmin_edit_plan_1.png)  |  ![openadmin edit plan step 2](/img/admin/openadmin_edit_plan_2.png)
+![davadmin edit plan step 1](/img/admin/davadmin_edit_plan_1.png)  |  ![davadmin edit plan step 2](/img/admin/davadmin_edit_plan_2.png)
 
 The new limits will be applied immediately to all accounts.
 
 ## List Users on Plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-usage" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-usage" label="With DavAdmin" default>
 
 To view all users that are currently using a hosting plan, simply sort the users table by that plan name, or in the search fields type the plan name.
 
   </TabItem>
-  <TabItem value="CLI-plan-usage" label="With OpenCLI">
+  <TabItem value="CLI-plan-usage" label="With DavCLI">
     
 List all users that are currently using a plan:
 
 ```bash
-opencli plan-usage
+davcli plan-usage
 ```
 
 Example:
 ```bash
-opencli plan-usage 2
+davcli plan-usage 2
 +----+----------+-------+----------------+---------------------+
 | id | username | email | plan_name      | registered_date     |
 +----+----------+-------+----------------+---------------------+
@@ -139,7 +139,7 @@ opencli plan-usage 2
 You can also format the data as JSON:
 
 ```bash
-opencli plan-usage --json
+davcli plan-usage --json
 ```
   </TabItem>
 </Tabs>
@@ -147,26 +147,26 @@ opencli plan-usage --json
 ## Delete Plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-delete" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-delete" label="With DavAdmin" default>
     
 To delete a hosting plan click on the delete button next to the plan name.
 
 Step 1.             |  Step 2.
 :-------------------------:|:-------------------------:
-![openadmin delete plan step 1](/img/admin/admin_delete_plan_1.png)  |  ![openadmin delete plan step 2](/img/admin/admin_delete_plan_2.png)
+![davadmin delete plan step 1](/img/admin/admin_delete_plan_1.png)  |  ![davadmin delete plan step 2](/img/admin/admin_delete_plan_2.png)
 
   </TabItem>
-  <TabItem value="CLI-plan-delete" label="With OpenCLI">
+  <TabItem value="CLI-plan-delete" label="With DavCLI">
 
 To delete a hosting plan: 
 
 ```bash
-opencli plan-delete <PLAN_NAME> 
+davcli plan-delete <PLAN_NAME> 
 ```
 
 Example:
 ```bash
-opencli plan-delete 32
+davcli plan-delete 32
 ```
   </TabItem>
 </Tabs>

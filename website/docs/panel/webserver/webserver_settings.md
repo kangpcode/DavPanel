@@ -4,10 +4,10 @@ sidebar_position: 1
 
 # WebServer Settings
 
-The **WebServer Settings** interface enables OpenPanel users to edit the primary webserver configuration file directly using a text editor.
+The **WebServer Settings** interface enables DavPanel users to edit the primary webserver configuration file directly using a text editor.
 
-![Web server configuration editor with the Restore Default and Save Changes buttons](/img/openpanel-screenshots/advanced/webserver_settings-editor.png#gh-light-mode-only)
-![Web server configuration editor with the Restore Default and Save Changes buttons](/img/openpanel-screenshots/advanced/webserver_settings-editor_dark.png#gh-dark-mode-only)
+![Web server configuration editor with the Restore Default and Save Changes buttons](/img/davpanel-screenshots/advanced/webserver_settings-editor.png#gh-light-mode-only)
+![Web server configuration editor with the Restore Default and Save Changes buttons](/img/davpanel-screenshots/advanced/webserver_settings-editor_dark.png#gh-dark-mode-only)
 
 These settings are **global** and apply to **all domains** (i.e., affect the virtual hosts configuration).
 

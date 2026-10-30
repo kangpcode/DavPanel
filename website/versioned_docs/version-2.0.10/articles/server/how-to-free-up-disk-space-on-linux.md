@@ -1,6 +1,6 @@
 # How To Free Up Disk Space
 
-Low disk space can affect server stability and performance. This guide helps you identify and free up disk space on your OpenPanel server.
+Low disk space can affect server stability and performance. This guide helps you identify and free up disk space on your DavPanel server.
 
 ---
 
@@ -150,14 +150,14 @@ ncdu /
 
 ---
 
-### 10. Update OpenPanel (Optional)
+### 10. Update DavPanel (Optional)
 
-Updating OpenPanel removes previous docker images
+Updating DavPanel removes previous docker images
 
 ```bash
-opencli update --force
+davcli update --force
 ```
 
 ---
 
-> **Tip:** Enable disk usage alerts via **OpenAdmin > Settings > Notifications**.
+> **Tip:** Enable disk usage alerts via **DavAdmin > Settings > Notifications**.

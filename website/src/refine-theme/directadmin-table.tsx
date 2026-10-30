@@ -8,8 +8,8 @@ import { ArrowLeftLongIcon } from "./icons/arrow-left-long";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const EnterpriseTable = ({ className }: { className?: string }) => {
-    const [activeTab, setActiveTab] = useState<"directadmin" | "openpanel">(
-        "openpanel",
+    const [activeTab, setActiveTab] = useState<"directadmin" | "davpanel">(
+        "davpanel",
     );
 
     return (
@@ -61,7 +61,7 @@ export const EnterpriseTable = ({ className }: { className?: string }) => {
                     >
                         <TableStickyHeader
                             activeTab={activeTab}
-                            setActiveTab={(tab: "directadmin" | "openpanel") => {
+                            setActiveTab={(tab: "directadmin" | "davpanel") => {
                                 setActiveTab(tab);
                             }}
                         />
@@ -97,8 +97,8 @@ const TableItemHeading = ({ children }) => {
         <div
             className={clsx(
                 "pl-4 landing-sm:pl-10 pb-4 pt-4 pr-4",
-                "bg-refine-openpanel-table-alt",
-                "dark:bg-refine-openpanel-table-alt-dark",
+                "bg-refine-davpanel-table-alt",
+                "dark:bg-refine-davpanel-table-alt-dark",
                 "border-b",
                 "border-gray-200",
                 "dark:border-gray-700",
@@ -161,7 +161,7 @@ const TableItemDescription = ({ children, isLast }) => {
 
 const TableItemContentGroup = ({
     directadmin,
-    openpanel,
+    davpanel,
     activeTab,
     isLast,
     valueType,
@@ -209,11 +209,11 @@ const TableItemContentGroup = ({
                     activeTab={activeTab}
                     valueType={valueType}
                     className={clsx(
-                        activeTab !== "openpanel" && "hidden landing-md:flex",
-                        activeTab === "openpanel" && "flex",
+                        activeTab !== "davpanel" && "hidden landing-md:flex",
+                        activeTab === "davpanel" && "flex",
                     )}
                 >
-                    {openpanel}
+                    {davpanel}
                 </TableItemContent>
             </div>
         </div>
@@ -223,7 +223,7 @@ const TableItemContentGroup = ({
 const TableItem = ({
     description,
     directadmin,
-    openpanel,
+    davpanel,
     activeTab,
     isLast,
     valueType,
@@ -253,7 +253,7 @@ const TableItem = ({
                     {description}
                 </TableItemDescription>
                 <TableItemContentGroup
-                    {...{ directadmin, openpanel, activeTab, isLast, valueType }}
+                    {...{ directadmin, davpanel, activeTab, isLast, valueType }}
                 />
             </div>
         </div>
@@ -300,7 +300,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                 type="button"
                 onClick={() => {
                     setActiveTab((prev) => {
-                        if (prev === "directadmin") return "openpanel";
+                        if (prev === "directadmin") return "davpanel";
                         return "directadmin";
                     });
                 }}
@@ -315,7 +315,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                     "rounded-full",
                     "w-12 h-6",
                     "items-center justify-center",
-                    activeTab === "openpanel" &&
+                    activeTab === "davpanel" &&
                         "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500",
                     activeTab === "directadmin" &&
                         "bg-refine-blue dark:bg-refine-cyan-alt text-gray-0 dark:text-gray-900",
@@ -325,7 +325,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                     className={clsx(
                         "transition-transform duration-200 ease-in-out",
                         activeTab === "directadmin" && "rotate-360",
-                        activeTab === "openpanel" && "rotate-180",
+                        activeTab === "davpanel" && "rotate-180",
                     )}
                 />
             </button>
@@ -380,8 +380,8 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                         "landing-md:w-[296px]",
                         "landing-lg:w-[396px]",
                         "p-4 landing-md:p-6",
-                        activeTab !== "openpanel" && "hidden landing-md:flex",
-                        activeTab === "openpanel" && "flex",
+                        activeTab !== "davpanel" && "hidden landing-md:flex",
+                        activeTab === "davpanel" && "flex",
                         "items-center",
                         "justify-start",
                         "text-center",
@@ -393,8 +393,8 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                         className={clsx(
                             "font-semibold",
                             "whitespace-nowrap",
-                            activeTab === "openpanel" && "opacity-100",
-                            activeTab !== "openpanel" &&
+                            activeTab === "davpanel" && "opacity-100",
+                            activeTab !== "davpanel" &&
                                 "opacity-0 landing-md:opacity-100",
                             "transition-opacity",
                             "ease-in-out",
@@ -493,19 +493,19 @@ const tableData = [
             {
                 description: "Monthly Pricing",
                 directadmin: <TableText>5 - 29$/ month</TableText>,
-                openpanel: <TableText>14.95€ / month</TableText>,
+                davpanel: <TableText>14.95€ / month</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Pricing model",
                 directadmin: <TableText>Per account</TableText>,
-                openpanel: <TableText>Per server</TableText>,
+                davpanel: <TableText>Per server</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
         ],
@@ -516,46 +516,46 @@ const tableData = [
             {
                 description: "Supported OS",
                 directadmin: <TableText><a href="https://docs.directadmin.com/getting-started/installation/system-requirements.html" target="_blank">AlmaLinux, Rocky, CentOS Stream, Debian, Ubuntu</a></TableText>,
-                openpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
+                davpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Support for ARM CPUs (Aarch64)",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "User Isolation",
                 directadmin: <TableText>Alpha jailed shell / needs Cloudlinux</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Service Isolation",
                 directadmin: <TableText>Shared services (PHP, MySQL..)</TableText>,
-                openpanel: <TableText>Service per user</TableText>,
+                davpanel: <TableText>Service per user</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Kernel Updates",
                 directadmin: <TableText>Only with KernelCare</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -566,37 +566,37 @@ const tableData = [
             {
                 description: "Apache",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Nginx",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "OpenLitespeed",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "OpenResty",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -607,37 +607,37 @@ const tableData = [
             {
                 description: "Varnish Caching",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Valkey / Redis",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Memcached",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "OpenSearch / ElasticSearch",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -648,46 +648,46 @@ const tableData = [
             {
                 description: "Supported versions",
                 directadmin: <TableText>5.6 - 8.3</TableText>,
-                openpanel: <TableText>5.6 - 8.5</TableText>,
+                davpanel: <TableText>5.6 - 8.5</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "PHP Selector",
                 directadmin: <TableText>Native (CustomBuild)</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PHP.INI Editor",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PHP service per user",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PHP version per domain",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -698,19 +698,19 @@ const tableData = [
             {
                 description: "Users can manage Containers",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Users can add Containers",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -721,55 +721,55 @@ const tableData = [
             {
                 description: "API for every UI action",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Native MCP server for AI agents",
                 directadmin: <TableText>Community project (unofficial)</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Process Manager",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Web Terminal",
                 directadmin: <TableText>Per user</TableText>,
-                openpanel: <TableText>Per service</TableText>,
+                davpanel: <TableText>Per service</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Edit webserver settings",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "View Resource Usage",
                 directadmin: <TableText>Limited (best with Cloudlinux)</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -780,46 +780,46 @@ const tableData = [
             {
                 description: "Format",
                 directadmin: <TableText>Unix</TableText>,
-                openpanel: <TableText>GO</TableText>,
+                davpanel: <TableText>GO</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Min Schedule",
                 directadmin: <TableText>Minute</TableText>,
-                openpanel: <TableText>Seconds</TableText>,
+                davpanel: <TableText>Seconds</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "No overlap",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit cron file",
                 directadmin: <TableText>Advanced/hidden option</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Logs",
                 directadmin: <TableText>Email only</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -830,91 +830,91 @@ const tableData = [
             {
                 description: "File Manager",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Upload multiple files",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Drag & Drop Upload",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "File Editor",
                 directadmin: <TableText>Basic (syntax highlighting)</TableText>,
-                openpanel: <TableText>Monaco (VS Code), Ace, CodeMirror</TableText>,
+                davpanel: <TableText>Monaco (VS Code), Ace, CodeMirror</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "FTP",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Malware Scanner",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Download from URL",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Disk Usage Explorer",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Inodes Explorer",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Fix Permissions",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -925,100 +925,100 @@ const tableData = [
             {
                 description: "MySQL",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "MariaDB",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Percona",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "phpMyAdmin",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PostgreSQL",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Import Databases",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Optimize Tables",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Root Privileges",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit MySQL Configuration",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Manage Processes",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Switch MySQL to MariaDB",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1029,100 +1029,100 @@ const tableData = [
             {
                 description: "Account limit",
                 directadmin: <TableText>Tied to tier (2/10/Unlimited)</TableText>,
-                openpanel: <CrossIcon />,
+                davpanel: <CrossIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Multiple Administrator Accounts",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "User can change username",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Features per user",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Detailed Activity Log",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Detailed Login Log",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Add pages to favorites",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Dark Mode",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Custom message per user",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Private notes for Administrators",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Customize email templates",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1133,109 +1133,109 @@ const tableData = [
             {
                 description: "Automatic SSL ",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit VirtualHosts file",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Change docroot",
                 directadmin: <TableText>Limited for primary domain</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "GoAccess",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "DNS Zone Editor",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Dynamic DNS",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit zone file",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "TLSA records",
                 directadmin: <TableText>Disabled by default</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Export/Import zone",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "User can reset zone",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Comments for DNS records",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Suspend Domains",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1246,55 +1246,55 @@ const tableData = [
             {
                 description: "HTML Website Builder",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "WP Manager",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Temporary Domains",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Google PageSpeed monitoring",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Google Safe Browsing monitoring",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Node / Python Environment",
                 directadmin: <TableText>venv</TableText>,
-                openpanel: <TableText>Containerized</TableText>,
+                davpanel: <TableText>Containerized</TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
         ],
@@ -1305,46 +1305,46 @@ const tableData = [
             {
                 description: "Postfix",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Autologin to Webmail",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Sieve (RFC 5228) filtering",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Fail2ban",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Export Addresses",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1355,136 +1355,136 @@ const tableData = [
             {
                 description: "CVE Vulnerabilities",
                 directadmin: <TableText><a href="https://www.cve.org/CVERecord/SearchResults?query=directadmin" target="_blank">30+</a></TableText>,
-                openpanel: <TableText><a href="https://www.cve.org/CVERecord/SearchResults?query=openpanel">3 before 1.0 release</a></TableText>,
+                davpanel: <TableText><a href="https://www.cve.org/CVERecord/SearchResults?query=davpanel">3 before 1.0 release</a></TableText>,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Granular per-user permissions",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "2FA",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Enforce 2FA for users",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Passkeys",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "IP Blocker",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Coraza WAF",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit WAF rules per domain",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "View WAF logs per domain",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Sentinel Firewall (CSF)",
                 directadmin: <TableText>Legacy (CSF discontinued 2025)</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Custom ports",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Containerization",
                 directadmin: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Disable admin panel",
                 directadmin: <TableText>Via port/firewall only</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Rate-limit logins",
                 directadmin: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Manage Sessions",
                 directadmin: <TableText>Partial (IP-bound only)</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1495,19 +1495,19 @@ const tableData = [
             {
                 description: "Price Increase (3yr)",
                 directadmin: <TableText>Repeated hikes (undisclosed %)</TableText>,
-                openpanel: <CrossIcon />,
+                davpanel: <CrossIcon />,
                 valueType: {
                     directadmin: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Forever free tier",
                 directadmin: <CrossIcon />,
-                openpanel: <TableText><a href="/community">Community Edition</a></TableText>,
+                davpanel: <TableText><a href="/community">Community Edition</a></TableText>,
                 valueType: {
                     directadmin: "icon",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
@@ -1517,7 +1517,7 @@ const tableData = [
                         <TableText>~16.6% off monthly (exact price undisclosed)</TableText>
                     </div>
                 ),
-                openpanel: (
+                davpanel: (
                     <div className={clsx("flex flex-col", "gap-6", "w-full")}>
                         <TableText>149.50€ / year (17% OFF)</TableText>
                         <EnterpriseGetInTouchButton
@@ -1528,7 +1528,7 @@ const tableData = [
                 ),
                 valueType: {
                     directadmin: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
         ],

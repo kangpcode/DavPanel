@@ -6,16 +6,16 @@ sidebar_position: 1
 
 ![wp_manager_grid.png](/img/panel/v1/applications/wp_manager_grid.png)
 
-WordPress Manager is a powerful tool integrated into OpenPanel, enabling you to easily install and manage WordPress websites directly from your hosting panel.
+WordPress Manager is a powerful tool integrated into DavPanel, enabling you to easily install and manage WordPress websites directly from your hosting panel.
 
 **Key Features:**
 - [Single-click login to wp-admin](/docs/panel/applications/wordpress#auto-login-to-wp-admin)
-- [Change DEBUG/Update preferences](https://docs.openpanel.co/docs/panel/applications/wordpress#update-preferences)
+- [Change DEBUG/Update preferences](https://docs.davpanel.co/docs/panel/applications/wordpress#update-preferences)
 - [Backup and Restore](/docs/panel/applications/wordpress#backup-and-restore)
 
 ## Manage WordPress sites
 
-Using the manager, you can modify WordPress settings without the need to log in to the actual website. This feature is especially handy for managing multiple websites, as you can efficiently manage options in bulk, create backups, update plugins, enable automatic WordPress core updates, enable debugging, and much more—all from the OpenPanel interface.
+Using the manager, you can modify WordPress settings without the need to log in to the actual website. This feature is especially handy for managing multiple websites, as you can efficiently manage options in bulk, create backups, update plugins, enable automatic WordPress core updates, enable debugging, and much more—all from the DavPanel interface.
 
 ### WP Manager overview
 
@@ -29,7 +29,7 @@ On the main WP Manager page you can:
 
 ### Install WordPress
 
-You can quickly install any of the latest 10 WordPress versions with just a few clicks. Each WordPress installation is sourced directly from wp.org, and OpenPanel handles all additional steps, including creating a MySQL database and user, connecting it with the files, configuring the domain based on your choice of Nginx or Apache WebServer, and setting up WordPress.
+You can quickly install any of the latest 10 WordPress versions with just a few clicks. Each WordPress installation is sourced directly from wp.org, and DavPanel handles all additional steps, including creating a MySQL database and user, connecting it with the files, configuring the domain based on your choice of Nginx or Apache WebServer, and setting up WordPress.
 
 To install WordPress you need to first add a domain name.
 
@@ -132,11 +132,11 @@ Click on the 'Login as Admin' button.
 
 ### Preview with temporary link
 
-This option allows you to preview websites using temporary domains provided by OpenPanel, helpful if your domain hasn't been pointed to the server's IP address yet or lacks an SSL certificate. Temporary links are valid for 15 minutes. 
+This option allows you to preview websites using temporary domains provided by DavPanel, helpful if your domain hasn't been pointed to the server's IP address yet or lacks an SSL certificate. Temporary links are valid for 15 minutes. 
 
 To view website using temporary link, click on the 'Preview' button:
 
-![website_temporary_url_openpanel.gif](/img/panel/v1/applications/website_temporary_url_openpanel.gif)
+![website_temporary_url_davpanel.gif](/img/panel/v1/applications/website_temporary_url_davpanel.gif)
 
 
 ### Edit WordPress settings
@@ -221,7 +221,7 @@ After backup process is finished you will receive a notification.
 
 #### Restore from backup
 
-To restore website from a backup created with OpenPanel WP Manager backup option simply click on the 'Restore' button for that website in WP Manager:
+To restore website from a backup created with DavPanel WP Manager backup option simply click on the 'Restore' button for that website in WP Manager:
 
 ![wp_manager_site_restore_1.png](/img/panel/v1/applications/wp_manager_site_restore_1.png)
 

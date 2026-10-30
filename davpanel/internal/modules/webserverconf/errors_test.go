@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
 )
 
 func TestDescribeTestFailure(t *testing.T) {

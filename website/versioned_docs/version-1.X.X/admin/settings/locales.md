@@ -4,44 +4,44 @@ sidebar_position: 5
 
 # Locales (Languages)
 
-Manage the languages available to OpenPanel users.
+Manage the languages available to DavPanel users.
 
-![openadmin admin panel locales](/img/admin/locales.png)
+![davadmin admin panel locales](/img/admin/locales.png)
 
 ## Install Locale
 
 By default, only the **EN** locale is installed. To enable other locales, they must be installed first.
 
 <Tabs>
-  <TabItem value="openadmin-install-locale" label="With OpenAdmin" default>
+  <TabItem value="davadmin-install-locale" label="With DavAdmin" default>
 
-To install a locale, go to **OpenAdmin > Settings > Locales** and click the **Install** button next to the desired locale.
+To install a locale, go to **DavAdmin > Settings > Locales** and click the **Install** button next to the desired locale.
 
   </TabItem>
-  <TabItem value="CLI-install-locale" label="With OpenCLI">
+  <TabItem value="CLI-install-locale" label="With DavCLI">
 
 To install a locale from the terminal, use its locale prefix from [Github](https://github.com/stefanpejcic/openpanel-translations/tree/main) and run:
 
 ```bash
-opencli locale <LOCALE_HERE>
+davcli locale <LOCALE_HERE>
 ```
 
 Example: Install Turkish locale:
 
 ```bash
-opencli locale tr-tr
+davcli locale tr-tr
 ```
 
 Example: Install multiple locales:
 
 ```bash
-opencli locale sr-sr tr-tr zh-cn
+davcli locale sr-sr tr-tr zh-cn
 ```
 
 Example: Install all available locales:
 
 ```bash
-opencli locale $(curl -s "https://api.github.com/repos/stefanpejcic/openpanel-translations/contents" | jq -r '.[] | select(.type=="dir") | .name' | tr '\n' ' ')
+davcli locale $(curl -s "https://api.github.com/repos/stefanpejcic/openpanel-translations/contents" | jq -r '.[] | select(.type=="dir") | .name' | tr '\n' ' ')
 ```
 
   </TabItem>
@@ -52,9 +52,9 @@ opencli locale $(curl -s "https://api.github.com/repos/stefanpejcic/openpanel-tr
 
 
 <Tabs>
-  <TabItem value="openadmin-default-locale" label="With OpenAdmin" default>
+  <TabItem value="davadmin-default-locale" label="With DavAdmin" default>
 
-To make a specific locale the default, go to **OpenAdmin > Settings > Locales** and click the **Set Default** button next to the desired locale.
+To make a specific locale the default, go to **DavAdmin > Settings > Locales** and click the **Set Default** button next to the desired locale.
 
   </TabItem>
   <TabItem value="CLI-default-locale" label="From Terminal">
@@ -62,13 +62,13 @@ To make a specific locale the default, go to **OpenAdmin > Settings > Locales** 
 To set a default locale from the terminal:
 
 ```bash
-echo <LOCALE_HERE> > /etc/openpanel/openpanel/default_locale
+echo <LOCALE_HERE> > /etc/davpanel/davpanel/default_locale
 ```
 
 Example: Set Turkish as the default:
 
 ```bash
-echo tr > /etc/openpanel/openpanel/default_locale
+echo tr > /etc/davpanel/davpanel/default_locale
 ```
 
   </TabItem>

@@ -1,0 +1,47 @@
+---
+sidebar_label: "Troubleshooting service issues with DavPanel"
+---
+
+# How to Troubleshoot User Services (Web Server, MySQL, PHP)
+
+If you've run into issues with a service that is managed by DavPanel and your account has the Docker feature enabled you can use it to restart the service container and check the logs for further troubleshooting.
+
+Simpy go to Davpanel > Containers and try stopping/starting the service container:
+
+![containersGUI.png](/img/docs-content/650sKYW3-containersgui.png)
+
+To check logs go to Davpanel > Containers > Logs and select a container from the dropdown menu to view it's logs:
+
+![containersLogsGUI.png](/img/docs-content/Fzh4bqF1-containerlogsgui.png)
+
+If the Docker feature is not enabled for your account contact your administrator so they can check further.
+
+## Troubleshooting service issues as an Administrator 
+
+Login to DavAdmin on port 2087 , go to Users and click on an username start managing that account:
+
+![containersAdmin1.png](/img/docs-content/rpYjNt8p-containers-Admin1.png)
+
+Within the user management page go to the Services tab and Enable/Disable the service:
+
+![containersAdmin2.png](/img/docs-content/hv4G4hdV-containers-Admin2.png)
+
+If restarting the container doesn't solve the issue you'll need to troubleshoot further, access the server via SSH and investigate by running the following commands:
+
+`machinectl shell $username@ /bin/bash -c 'systemctl --user status'` (replace $username with the DavPanel user)
+
+A status overview of the user’s own systemd service manager will be displayed:
+
+![containersAdminSSH1](/img/docs-content/FKRzQY0S-containers-Admin-SSH1.png)
+
+`machinectl shell $username@ /bin/bash -c 'journalctl --user -u $docker'` (replace $username with the DavPanel user)
+
+The Docker service logs will be displayed:
+
+![containersAdminSSH2](/img/docs-content/6qjwc0mJ-containers-Admin-SSH2.png)
+
+In case you don't find any errors or potential causes within the output of these commands you should start the service container manually and watch the logs with the command:
+
+`source /usr/local/davcli/lib/podman.sh && cd /home/$username && podman_compose_user $username up SERVICE_NAME` (replace $username with the DavPanel user and SERVICE_NAME with the name of the service you are troubleshooting)
+
+

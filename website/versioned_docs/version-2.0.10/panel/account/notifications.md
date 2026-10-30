@@ -6,8 +6,8 @@ sidebar_position: 3
 
 Users can set actions for which to receive email notifications:
 
-![Email Notifications page with a checkbox for each event and the Save Preferences button](/img/openpanel-screenshots/account/notifications-form.png#gh-light-mode-only)
-![Email Notifications page with a checkbox for each event and the Save Preferences button](/img/openpanel-screenshots/account/notifications-form_dark.png#gh-dark-mode-only)
+![Email Notifications page with a checkbox for each event and the Save Preferences button](/img/davpanel-screenshots/account/notifications-form.png#gh-light-mode-only)
+![Email Notifications page with a checkbox for each event and the Save Preferences button](/img/davpanel-screenshots/account/notifications-form_dark.png#gh-dark-mode-only)
 
 :::info
 If you do not see the Notifications page, ask your provider to enable the [notifications module](/docs/admin/settings/modules/#notifications).
@@ -34,7 +34,7 @@ If you do not see the Notifications page, ask your provider to enable the [notif
 | notify_twofactorauth_change_notification_disabled | Notify when notifications for two-factor authenticatin change are disabled | 1 |
 
 
-User does not receive notifications for actions performed through the OpenAdmin interface (such as impersonating a user, changing a password, disabling 2FA, etc.) or from API calls (e.g., from WHMCS, Blesta, FOSSBilling, ClientExec, WISECP).
+User does not receive notifications for actions performed through the DavAdmin interface (such as impersonating a user, changing a password, disabling 2FA, etc.) or from API calls (e.g., from WHMCS, Blesta, FOSSBilling, ClientExec, WISECP).
 
 
 ## Email notifications

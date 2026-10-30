@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 func accountsBulkActions(t i18n.Translator) []web.BulkAction {

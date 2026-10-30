@@ -26,7 +26,7 @@ Upon checking error log, the following error is appended:
 
 In the error itself we can see that the domain is using invalid path to php-fpm service: **/run/php/phpphp8.2-fpm.sock** instead of  **/run/php/php8.2-fpm.sock**
 
-To fix this, from _OpenPanel > Domains_ click on the three dots for the domain and click on "_Edit VirtualHosts_"
+To fix this, from _DavPanel > Domains_ click on the three dots for the domain and click on "_Edit VirtualHosts_"
 
 ![screenshot](https://i.postimg.cc/fRQqQSSb/2024-01-15-11-48.png)
 

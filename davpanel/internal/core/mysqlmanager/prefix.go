@@ -3,7 +3,7 @@ package mysqlmanager
 import (
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 // Prefix is "<context>_" when davpanel.config has mysql_enforce_username_prefix=yes, empty otherwise

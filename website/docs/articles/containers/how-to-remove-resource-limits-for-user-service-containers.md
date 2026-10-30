@@ -4,7 +4,7 @@ sidebar_label: "Unlimited CPU&RAM"
 
 # How to Remove CPU and RAM Limits for User Services
 
-Setting unlimited CPU and RAM resources allows an OpenPanel user account to consume all available CPU cores and physical memory on the server.
+Setting unlimited CPU and RAM resources allows an DavPanel user account to consume all available CPU cores and physical memory on the server.
 
 **This is strongly discouraged**, even on a single-user VPS, as a rogue process or compromised website could destabilize the entire system. It's important to set resource limits to ensure the system has enough capacity for essential services such as monitoring, container orchestration, DNS, and more.
 
@@ -40,7 +40,7 @@ sed -i '/deploy:/,/^[^[:space:]]/{
 If the user already has running services, stop and restart them to apply the changes (replace `dorotea` with the username):
 
 ```bash
-source /usr/local/opencli/lib/podman.sh
+source /usr/local/davcli/lib/podman.sh
 USERNAME=dorotea && \
 cd /home/$USERNAME && \
 running_services=$(podman_user $USERNAME ps --format '{{.Names}}') && \
@@ -61,7 +61,7 @@ sed -i '/deploy:/,/^[^[:space:]]/{
   /cpus:/d
   /memory:/d
   /pids:/d
-}' /etc/openpanel/docker/compose/1.0/docker-compose.yml
+}' /etc/davpanel/docker/compose/1.0/docker-compose.yml
 ```
 
 ---

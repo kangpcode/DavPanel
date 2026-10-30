@@ -18,7 +18,7 @@ export const BannerExamples: FC<Props> = ({
     description = "Effortlessly install new PHP versions, modify server configurations, view domain logs, restart services, and more.",
     button = {
         text: "Discover DavPanel",
-        href: "https://davpanel.com/features?ref=banner-openpanel-alternative",
+        href: "https://davpanel.com/features?ref=banner-davpanel-alternative",
         onClick: undefined,
     },
 }) => {

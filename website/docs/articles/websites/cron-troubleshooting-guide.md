@@ -1,16 +1,16 @@
 ---
-sidebar_label: "OpenPanel Cron Troubleshooting Guide"
+sidebar_label: "DavPanel Cron Troubleshooting Guide"
 ---
 
 # Cron Job Not Running? Troubleshooting Guide
 
-This is a **generic troubleshooting guide** for OpenPanel cron jobs.
+This is a **generic troubleshooting guide** for DavPanel cron jobs.
 
 ------------------------------------------------------------------------
 
-## **1) How cron works in OpenPanel**
+## **1) How cron works in DavPanel**
 
-In OpenPanel:
+In DavPanel:
 
 -   Cron **does NOT run directly on the host** like traditional Linux
     crontab.
@@ -28,7 +28,7 @@ Before troubleshooting cron, always verify that the command itself
 works.
 
 Access the user container terminal:
-https://openpanel.com/docs/panel/containers/terminal/#accessing-the-terminal
+https://davpanel.com/docs/panel/containers/terminal/#accessing-the-terminal
 
 Inside the container, run your command manually, for example:
 
@@ -50,14 +50,14 @@ Only continue with cron troubleshooting **after this works manually.**
 
 Each user must have their own cron service active.
 
-Check in OpenPanel: https://openpanel.com/docs/panel/processes/services/
+Check in DavPanel: https://davpanel.com/docs/panel/processes/services/
 
 You should see a **cron service running for the user**.
 
 ### If it is NOT running, start it manually (terminal):
 
 ``` bash
-source /usr/local/opencli/lib/podman.sh
+source /usr/local/davcli/lib/podman.sh
 cd /home/USERNAME && podman_compose_user USERNAME up -d cron
 ```
 
@@ -111,9 +111,9 @@ container = openlitespeed
 
 ## **5) Check cron execution logs (very important)**
 
-OpenPanel provides per-job execution logs.
+DavPanel provides per-job execution logs.
 
-Cron job logs: https://openpanel.com/docs/panel/cronjobs/#logs
+Cron job logs: https://davpanel.com/docs/panel/cronjobs/#logs
 
 Look for: - Job started - Job failed - PHP errors - Permission denied -
 "Container not found"
@@ -127,7 +127,7 @@ Paths inside the container may differ from host paths.
 Open a shell inside the container:
 
 ``` bash
-opencli docker USERNAME CONTAINER
+davcli docker USERNAME CONTAINER
 ```
 
 then run:
@@ -149,7 +149,7 @@ actually exists inside the container.
 If jobs still don't run, inspect the cron container itself:
 
 ``` bash
-source /usr/local/opencli/lib/podman.sh
+source /usr/local/davcli/lib/podman.sh
 podman_user USERNAME logs cron
 ```
 
@@ -207,13 +207,13 @@ command = php -q /var/www/html/example.com/apps/console/console.php daily
 ### ❓ "Cron doesn't run at all"
 
 Check: - Is cron service running? → Services page\
-- Is there a cron container? → `source /usr/local/opencli/lib/podman.sh && podman_user USERNAME ps | grep cron`\
+- Is there a cron container? → `source /usr/local/davcli/lib/podman.sh && podman_user USERNAME ps | grep cron`\
 - Does `/home/USERNAME/crons.ini` exist?
 
 ### ❓ "Cron runs but command fails"
 
 Check: - Run manually inside container first\
-- Check cron logs in OpenPanel\
+- Check cron logs in DavPanel\
 - Check container logs
 
 ### ❓ "Cron runs but the app still complains"

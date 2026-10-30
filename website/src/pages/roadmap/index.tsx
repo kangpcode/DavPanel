@@ -309,7 +309,7 @@ const Roadmap: React.FC = () => {
                                 Join Discord
                             </Link>
                             <Link
-                                to="https://github.com/stefanpejcic/OpenPanel/discussions"
+                                to="https://github.com/kangpcode/DavPanel/discussions"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={clsx(

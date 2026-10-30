@@ -9,8 +9,8 @@ import (
 	"regexp"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
 )
 
 // wordpressFiles lists every top-level file/dir a stock WordPress install creates, used by cleanup, remove, and detach to know what to delete.

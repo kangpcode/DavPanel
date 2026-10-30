@@ -4,12 +4,12 @@ sidebar_position: 27
 
 # Git
 
-Deploy websites from Git repositories. Clone a repository from GitHub, GitLab, Bitbucket or any other Git server, or create a repository on the server and push to it from your computer. OpenPanel checks out the selected branch into a folder of your website on every deploy.
+Deploy websites from Git repositories. Clone a repository from GitHub, GitLab, Bitbucket or any other Git server, or create a repository on the server and push to it from your computer. DavPanel checks out the selected branch into a folder of your website on every deploy.
 
-![Git page with the repositories table showing each repository, its website, deployment mode, latest commit and last deploy](/img/openpanel-screenshots/applications/git-list.png#gh-light-mode-only)
-![Git page with the repositories table showing each repository, its website, deployment mode, latest commit and last deploy](/img/openpanel-screenshots/applications/git-list_dark.png#gh-dark-mode-only)
+![Git page with the repositories table showing each repository, its website, deployment mode, latest commit and last deploy](/img/davpanel-screenshots/applications/git-list.png#gh-light-mode-only)
+![Git page with the repositories table showing each repository, its website, deployment mode, latest commit and last deploy](/img/davpanel-screenshots/applications/git-list_dark.png#gh-dark-mode-only)
 
-Go to **OpenPanel > Websites > Git** to manage all repositories of your account. The same repositories are also listed on the [Git tab](#git-tab-in-the-site-manager) of each website in the Site Manager.
+Go to **DavPanel > Websites > Git** to manage all repositories of your account. The same repositories are also listed on the [Git tab](#git-tab-in-the-site-manager) of each website in the Site Manager.
 
 :::info
 The Git page is available only when your hosting provider has enabled the Git module for your plan.
@@ -17,7 +17,7 @@ The Git page is available only when your hosting provider has enabled the Git mo
 
 ## How it works
 
-Every repository is stored on the server outside of your websites, so the `.git` folder never ends up in a public directory. When a repository is deployed, OpenPanel:
+Every repository is stored on the server outside of your websites, so the `.git` folder never ends up in a public directory. When a repository is deployed, DavPanel:
 
 1. checks out the latest commit of the selected branch into the deploy directory,
 2. removes files that were deleted from the repository since the previous deploy,
@@ -29,8 +29,8 @@ Every repository is stored on the server outside of your websites, so the `.git`
 
 Click **Add Repository** and choose where the repository comes from.
 
-![Add Repository form with the remote and local source options, repository URL, name, branch, website, deploy directory, deployment mode and deploy actions](/img/openpanel-screenshots/applications/git-add.png#gh-light-mode-only)
-![Add Repository form with the remote and local source options, repository URL, name, branch, website, deploy directory, deployment mode and deploy actions](/img/openpanel-screenshots/applications/git-add_dark.png#gh-dark-mode-only)
+![Add Repository form with the remote and local source options, repository URL, name, branch, website, deploy directory, deployment mode and deploy actions](/img/davpanel-screenshots/applications/git-add.png#gh-light-mode-only)
+![Add Repository form with the remote and local source options, repository URL, name, branch, website, deploy directory, deployment mode and deploy actions](/img/davpanel-screenshots/applications/git-add_dark.png#gh-dark-mode-only)
 
 | Field | Description |
 |---|---|
@@ -52,10 +52,10 @@ When you enter an SSH URL, the form shows the SSH public key of your account. Ad
 
 ### Pushing to a local repository
 
-A local repository is reached over HTTPS through the panel. After you create it, OpenPanel shows the **Username** (your panel username), a **Password** for this repository and the **Clone URL**. Copy the password right away, it is not shown again.
+A local repository is reached over HTTPS through the panel. After you create it, DavPanel shows the **Username** (your panel username), a **Password** for this repository and the **Clone URL**. Copy the password right away, it is not shown again.
 
 ```bash
-git remote add origin https://OPENPANEL_URL:2083/git-http/USERNAME/REPOSITORY.git
+git remote add origin https://DAVPANEL_URL:2083/git-http/USERNAME/REPOSITORY.git
 git push -u origin main
 ```
 
@@ -84,12 +84,12 @@ The output of the last deploy is shown in the repository's **Settings**. If a co
 
 ## Webhooks
 
-Every remote repository has a **Webhook URL** in its **Settings**. Add it as a push webhook in GitHub, GitLab or Bitbucket, and OpenPanel pulls the repository every time you push there. In automatic mode the changes are also deployed.
+Every remote repository has a **Webhook URL** in its **Settings**. Add it as a push webhook in GitHub, GitLab or Bitbucket, and DavPanel pulls the repository every time you push there. In automatic mode the changes are also deployed.
 
 ## Manage repositories
 
-![Show Columns menu with switches for each column of the repositories table](/img/openpanel-screenshots/applications/git-columns.png#gh-light-mode-only)
-![Show Columns menu with switches for each column of the repositories table](/img/openpanel-screenshots/applications/git-columns_dark.png#gh-dark-mode-only)
+![Show Columns menu with switches for each column of the repositories table](/img/davpanel-screenshots/applications/git-columns.png#gh-light-mode-only)
+![Show Columns menu with switches for each column of the repositories table](/img/davpanel-screenshots/applications/git-columns_dark.png#gh-dark-mode-only)
 
 Use the search box to filter repositories by name, domain or URL, **Show Columns** to pick the columns (the *Branch* column is hidden by default), and the arrows next to a column name to sort the table.
 
@@ -103,36 +103,36 @@ The icons in the **Actions** column are:
 
 ### Settings
 
-![Settings row of a local repository with its clone URL, branch, deploy directory, deployment mode, deploy actions and the output of the last deploy](/img/openpanel-screenshots/applications/git-settings.png#gh-light-mode-only)
-![Settings row of a local repository with its clone URL, branch, deploy directory, deployment mode, deploy actions and the output of the last deploy](/img/openpanel-screenshots/applications/git-settings_dark.png#gh-dark-mode-only)
+![Settings row of a local repository with its clone URL, branch, deploy directory, deployment mode, deploy actions and the output of the last deploy](/img/davpanel-screenshots/applications/git-settings.png#gh-light-mode-only)
+![Settings row of a local repository with its clone URL, branch, deploy directory, deployment mode, deploy actions and the output of the last deploy](/img/davpanel-screenshots/applications/git-settings_dark.png#gh-dark-mode-only)
 
 The settings show the **Clone URL** (local repositories) or **Webhook URL** (remote repositories) with a copy button, and let you change the branch, deploy directory, deployment mode, deploy actions and, for private HTTPS repositories, the username and access token. Leave the token empty to keep the saved one. Below the form you'll see the output of the last pull or deploy.
 
 ### Commit log
 
-![Commit log of a repository with each commit, its message, author and date, and the deployed commit marked](/img/openpanel-screenshots/applications/git-log.png#gh-light-mode-only)
-![Commit log of a repository with each commit, its message, author and date, and the deployed commit marked](/img/openpanel-screenshots/applications/git-log_dark.png#gh-dark-mode-only)
+![Commit log of a repository with each commit, its message, author and date, and the deployed commit marked](/img/davpanel-screenshots/applications/git-log.png#gh-light-mode-only)
+![Commit log of a repository with each commit, its message, author and date, and the deployed commit marked](/img/davpanel-screenshots/applications/git-log_dark.png#gh-dark-mode-only)
 
 The commit log lists the last 100 commits of the selected branch with their author and date, and marks the commit that is currently deployed. Use the search box to find a commit by its hash, message or author.
 
 ### Bulk actions
 
-![Repositories selected with the bulk actions bar showing Pull Updates, Deploy, Change deployment mode and Remove](/img/openpanel-screenshots/applications/git-bulk.png#gh-light-mode-only)
-![Repositories selected with the bulk actions bar showing Pull Updates, Deploy, Change deployment mode and Remove](/img/openpanel-screenshots/applications/git-bulk_dark.png#gh-dark-mode-only)
+![Repositories selected with the bulk actions bar showing Pull Updates, Deploy, Change deployment mode and Remove](/img/davpanel-screenshots/applications/git-bulk.png#gh-light-mode-only)
+![Repositories selected with the bulk actions bar showing Pull Updates, Deploy, Change deployment mode and Remove](/img/davpanel-screenshots/applications/git-bulk_dark.png#gh-dark-mode-only)
 
 Select repositories with the checkboxes to **Pull Updates**, **Deploy**, **Change deployment mode** or **Remove** them all at once. Repositories that don't support an action (pulling a local repository, deploying one with *No deployment*) are skipped.
 
 ### Remove
 
-![Remove confirmation under a repository row with Cancel and Remove buttons](/img/openpanel-screenshots/applications/git-remove.png#gh-light-mode-only)
-![Remove confirmation under a repository row with Cancel and Remove buttons](/img/openpanel-screenshots/applications/git-remove_dark.png#gh-dark-mode-only)
+![Remove confirmation under a repository row with Cancel and Remove buttons](/img/davpanel-screenshots/applications/git-remove.png#gh-light-mode-only)
+![Remove confirmation under a repository row with Cancel and Remove buttons](/img/davpanel-screenshots/applications/git-remove_dark.png#gh-dark-mode-only)
 
 Removing a repository deletes it and its history from the server. Files that were already deployed to the website stay in place.
 
 ## Git tab in the Site Manager
 
-![Git tab in the Site Manager with a theme repository and a remote repository, their deploy buttons, clone URL and webhook URL](/img/openpanel-screenshots/applications/git-tab.png#gh-light-mode-only)
-![Git tab in the Site Manager with a theme repository and a remote repository, their deploy buttons, clone URL and webhook URL](/img/openpanel-screenshots/applications/git-tab_dark.png#gh-dark-mode-only)
+![Git tab in the Site Manager with a theme repository and a remote repository, their deploy buttons, clone URL and webhook URL](/img/davpanel-screenshots/applications/git-tab.png#gh-light-mode-only)
+![Git tab in the Site Manager with a theme repository and a remote repository, their deploy buttons, clone URL and webhook URL](/img/davpanel-screenshots/applications/git-tab_dark.png#gh-dark-mode-only)
 
 Every website in the [Site Manager](/docs/panel/applications/sites) has a **Git** tab that lists the repositories deploying to its domain. From there you can add a repository with the website's folder already filled in, pull, deploy and copy the clone or webhook URL.
 

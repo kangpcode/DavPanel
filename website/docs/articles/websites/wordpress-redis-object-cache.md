@@ -1,13 +1,13 @@
 ---
 sidebar_label: "Redis Object Cache for WordPress"
-description: "How to enable Redis object caching for WordPress in OpenPanel: start the Redis service, install the Redis Object Cache plugin, configure wp-config.php, verify it works, and run several sites on one Redis."
+description: "How to enable Redis object caching for WordPress in DavPanel: start the Redis service, install the Redis Object Cache plugin, configure wp-config.php, verify it works, and run several sites on one Redis."
 ---
 
 # How to Enable Redis Object Cache for WordPress
 
 A **Redis object cache** stores the results of WordPress database queries in memory, so repeated page loads don't hit MySQL again. It makes the WordPress admin, WooCommerce stores, membership sites and any logged-in pages noticeably faster.
 
-OpenPanel includes a Redis service that each account can start on its own, as long as the **Redis** feature is enabled for the account's hosting plan (see [Feature Manager](/docs/admin/plans/feature-manager/)). This guide covers the whole setup: start Redis, install the plugin, connect it, and check that it works.
+DavPanel includes a Redis service that each account can start on its own, as long as the **Redis** feature is enabled for the account's hosting plan (see [Feature Manager](/docs/admin/plans/feature-manager/)). This guide covers the whole setup: start Redis, install the plugin, connect it, and check that it works.
 
 :::tip Redis vs. page cache
 Redis caches **database queries** (object cache). A page cache (like Varnish or a caching plugin) caches **whole pages** for visitors who aren't logged in. They work well together.
@@ -17,19 +17,19 @@ Redis caches **database queries** (object cache). A page cache (like Varnish or 
 
 ## Step 1: Start the Redis Service
 
-1. Go to **OpenPanel → Cache → Redis**.
+1. Go to **DavPanel → Cache → Redis**.
 2. Click **Click to Enable**.
 
-![Redis Status row with the Click to Enable or Click to Disable button](/img/openpanel-screenshots/caching/redis-status.png#gh-light-mode-only)
-![Redis Status row with the Click to Enable or Click to Disable button](/img/openpanel-screenshots/caching/redis-status_dark.png#gh-dark-mode-only)
+![Redis Status row with the Click to Enable or Click to Disable button](/img/davpanel-screenshots/caching/redis-status.png#gh-light-mode-only)
+![Redis Status row with the Click to Enable or Click to Disable button](/img/davpanel-screenshots/caching/redis-status_dark.png#gh-dark-mode-only)
 
 Redis starts in its own container and is reachable from your websites at:
 
 - **Host**: `redis` - not `127.0.0.1` or `localhost`
 - **Port**: `6379`
 
-![Redis page with the service status, TCP server and port, container resource usage and logs](/img/openpanel-screenshots/caching/redis-page.png#gh-light-mode-only)
-![Redis page with the service status, TCP server and port, container resource usage and logs](/img/openpanel-screenshots/caching/redis-page_dark.png#gh-dark-mode-only)
+![Redis page with the service status, TCP server and port, container resource usage and logs](/img/davpanel-screenshots/caching/redis-page.png#gh-light-mode-only)
+![Redis page with the service status, TCP server and port, container resource usage and logs](/img/davpanel-screenshots/caching/redis-page_dark.png#gh-dark-mode-only)
 
 Optionally click **Edit limits** to give Redis more memory - 128-256 MB is plenty for most sites. See [Redis](/docs/panel/caching/Redis/).
 
@@ -82,7 +82,7 @@ The plugin creates `wp-content/object-cache.php`, which makes WordPress use Redi
 ## Step 4: Check That It Works
 
 - In WordPress, **Settings → Redis** should show **Status: Connected**, with the host `redis`.
-- In OpenPanel, open the site in **WordPress (WP Manager)** - the **Cache** card shows the current cache type, which should now be **Redis**.
+- In DavPanel, open the site in **WordPress (WP Manager)** - the **Cache** card shows the current cache type, which should now be **Redis**.
 - With WP-CLI: `wp redis status --allow-root` and `wp cache type --allow-root`.
 
 Browse the site and the admin for a minute, then check **Settings → Redis → Diagnostics** - the hit ratio should climb above 80-90%.
@@ -95,8 +95,8 @@ Browse the site and the admin for a minute, then check **Settings → Redis → 
 - Or in WordPress: **Settings → Redis → Flush Cache**.
 - Or: `wp cache flush --allow-root`.
 
-![Cache card with the cache type and the Clear Cache button](/img/openpanel-screenshots/applications/wordpress-cache.png#gh-light-mode-only)
-![Cache card with the cache type and the Clear Cache button](/img/openpanel-screenshots/applications/wordpress-cache_dark.png#gh-dark-mode-only)
+![Cache card with the cache type and the Clear Cache button](/img/davpanel-screenshots/applications/wordpress-cache.png#gh-light-mode-only)
+![Cache card with the cache type and the Clear Cache button](/img/davpanel-screenshots/applications/wordpress-cache_dark.png#gh-dark-mode-only)
 
 Flush the cache after migrating or restoring a site, or when changes don't show up.
 

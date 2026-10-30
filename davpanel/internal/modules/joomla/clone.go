@@ -3,7 +3,7 @@ package joomla
 import (
 	"regexp"
 
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 // mirrors wordpress/manage.go's handleCloneWordPress in shape (site-limit check, file copy, DB create+dump-pipe, config rewrite, sites-table insert) via internal/core/cmsclone, but differs from WordPress in that Joomla's configuration.php has no hardcoded site URL (derived from the request at runtime), so there's no wp-cli search-replace step - hardcoded URLs in article/module content still point at the source domain after cloning, same as a manual domain move on a stock Joomla site

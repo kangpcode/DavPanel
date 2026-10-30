@@ -1,6 +1,6 @@
 # Benchmark Methodology & Raw Results
 
-The numbers behind the [Resource Calculator](/calculator/) aren't guesses - they come from an actual DavPanel 2.0 (Podman) install, pushed to real user counts and measured with `opencli`. This page documents exactly how the test was run and what came back, so you can verify the assumptions yourself.
+The numbers behind the [Resource Calculator](/calculator/) aren't guesses - they come from an actual DavPanel 2.0 (Podman) install, pushed to real user counts and measured with `davcli`. This page documents exactly how the test was run and what came back, so you can verify the assumptions yourself.
 
 ## Test environment
 
@@ -16,8 +16,8 @@ The numbers behind the [Resource Calculator](/calculator/) aren't guesses - they
    - Enables **5 services per account**: MariaDB, Apache, PHP 8.5, Cron, Memcached.
    - **Waits for every service in the account to report started** before moving on to create the next account - so accounts are never created faster than the server can actually bring them up.
 3. Left the server running **idle for 1 hour** after the last account was created (no synthetic traffic).
-4. Ran `opencli docker-collect_stats --all` to capture actual, per-user resource usage.
-5. Cross-checked against `podman image ls`, `du -sh`, `free -mh`, `df -h`, `uptime`, and `opencli user-list`.
+4. Ran `davcli docker-collect_stats --all` to capture actual, per-user resource usage.
+5. Cross-checked against `podman image ls`, `du -sh`, `free -mh`, `df -h`, `uptime`, and `davcli user-list`.
 
 ## Run it yourself
 
@@ -40,13 +40,13 @@ chmod +x max_users.sh
 Let the server sit idle for about an hour, then collect real per-user usage:
 
 ```bash
-opencli docker-collect_stats --all
+davcli docker-collect_stats --all
 ```
 
 And cross-check with the system-level commands used for this test:
 
 ```bash
-opencli user-list
+davcli user-list
 podman image ls
 du -sh /var/lib/containers/
 du -sh /home
@@ -79,9 +79,9 @@ These aren't services a user selects - they're the always-on containers every in
 
 | Service | Image | Size |
 |---|---|---|
-| DavPanel UI | `openpanel/openpanel-ui` | 2.41 GB (includes Playwright) |
+| DavPanel UI | `davpanel/davpanel-ui` | 2.41 GB (includes Playwright) |
 | phpMyAdmin | `phpmyadmin` | 589 MB |
-| Caddy | `openpanel/caddy-coraza` | 116 MB |
+| Caddy | `davpanel/caddy-coraza` | 116 MB |
 | DNS | `ubuntu/bind9` | 99 MB |
 
 ## Disk usage
@@ -97,7 +97,7 @@ With 15 users running the 5 services above:
 
 **Bare/idle account** (no services or domain yet): ~15MB RAM.
 
-**Real account, 5 services running, 1 hour idle** (from `opencli docker-collect_stats --all`, sampled across the test accounts):
+**Real account, 5 services running, 1 hour idle** (from `davcli docker-collect_stats --all`, sampled across the test accounts):
 
 ```text
 user: testhdcw6lom   memory used: 182.8M   cpu: 0.1 cores (pct: 5)

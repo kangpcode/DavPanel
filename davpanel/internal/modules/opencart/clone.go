@@ -4,9 +4,9 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/modules/mysql"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/mysql"
 )
 
 // mirrors wordpress/manage.go's handleCloneWordPress in shape (file copy, DB create+dump, config rewrite, sites insert), sharing everything but docroot copy and config rewrite with every other CMS via internal/core/cmsclone; OpenCart hardcodes its URL and filesystem path in two files, config.php and admin/config.php, so only HTTP_SERVER/HTTP_CATALOG and DIR_OPENCART need rewriting since every other DIR_* constant derives from DIR_OPENCART, and oc_setting stores no url-related key so no DB-side fix is needed

@@ -4,20 +4,20 @@ sidebar_position: 23
 
 # Ruby
 
-Containerized [Ruby](https://www.ruby-lang.org/) applications can be created and managed in **OpenPanel Enterprise Edition**.
+Containerized [Ruby](https://www.ruby-lang.org/) applications can be created and managed in **DavPanel Enterprise Edition**.
 
 ---
 
 ## Create an Application
 
-To create a new Ruby application, navigate to **OpenPanel > AutoInstaller** and click **Setup Ruby Application**.
+To create a new Ruby application, navigate to **DavPanel > AutoInstaller** and click **Setup Ruby Application**.
 
-![Install Ruby Application form with the application details, domain, startup command and advanced options](/img/openpanel-screenshots/applications/ruby_install-form.png#gh-light-mode-only)
-![Install Ruby Application form with the application details, domain, startup command and advanced options](/img/openpanel-screenshots/applications/ruby_install-form_dark.png#gh-dark-mode-only)
+![Install Ruby Application form with the application details, domain, startup command and advanced options](/img/davpanel-screenshots/applications/ruby_install-form.png#gh-light-mode-only)
+![Install Ruby Application form with the application details, domain, startup command and advanced options](/img/davpanel-screenshots/applications/ruby_install-form_dark.png#gh-dark-mode-only)
 
 On the next page, you can configure the following settings:
 
-* **Name** – The name of the application and container as displayed in OpenPanel.
+* **Name** – The name of the application and container as displayed in DavPanel.
 * **Port** – Set a custom port if your app uses one. Otherwise, port 80 is used by default.
 * **Domain Name / Subfolder** – The domain (and optional subfolder) where the application will be publicly accessible.
 * **Startup File** – The file executed at startup with the `ruby` command. Defaults to `app.rb`.
@@ -62,7 +62,7 @@ Enable **Run Install** so `bundle install` runs before the app starts.
 
 ## Manage Applications
 
-Once your application is created, you can manage it from **OpenPanel > Site Manager**.
+Once your application is created, you can manage it from **DavPanel > Site Manager**.
 
 Click **Manage** next to the application name to open its management page.
 

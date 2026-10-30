@@ -4,8 +4,8 @@ sidebar_position: 1
 
 # Databases
 
-![MySQL Databases page listing databases with their assigned users and action buttons](/img/openpanel-screenshots/mysql/databases-list.png#gh-light-mode-only)
-![MySQL Databases page listing databases with their assigned users and action buttons](/img/openpanel-screenshots/mysql/databases-list_dark.png#gh-dark-mode-only)
+![MySQL Databases page listing databases with their assigned users and action buttons](/img/davpanel-screenshots/mysql/databases-list.png#gh-light-mode-only)
+![MySQL Databases page listing databases with their assigned users and action buttons](/img/davpanel-screenshots/mysql/databases-list_dark.png#gh-dark-mode-only)
 
 MySQL databases are used to store and manage your website's data, such as content, user information, and product details, making it accessible and organized for your web applications.
 
@@ -13,8 +13,8 @@ On the Databases page, you can view and manage your MySQL databases.
 
 The page provides a table containing your Databases, along with options related to them. By default, internal/system databases are hidden — enable **Show system databases** to display them. Sizes are not loaded by default either; enable **Show database sizes** to fetch and display each database's size, and pick the unit (B, KB, MB, or GB) from the dropdown next to it.
 
-![Databases table with Show database sizes enabled and the size unit dropdown set to MB](/img/openpanel-screenshots/mysql/databases-sizes.png#gh-light-mode-only)
-![Databases table with Show database sizes enabled and the size unit dropdown set to MB](/img/openpanel-screenshots/mysql/databases-sizes_dark.png#gh-dark-mode-only)
+![Databases table with Show database sizes enabled and the size unit dropdown set to MB](/img/davpanel-screenshots/mysql/databases-sizes.png#gh-light-mode-only)
+![Databases table with Show database sizes enabled and the size unit dropdown set to MB](/img/davpanel-screenshots/mysql/databases-sizes_dark.png#gh-dark-mode-only)
 
 Available options on the Databases page are:
 
@@ -34,14 +34,14 @@ When connecting to a database from **PHP** applications (for example in `wp-conf
 
 Non-PHP applications (Node.js, Python, Ruby, Java...) run in their own containers, so they connect with the service name, `mysql` or `mariadb`, on port `3306`. That also still works from PHP, and it's what accounts created before the socket was added need to use.
 
-Never use `127.0.0.1`. More examples: [Connecting to MySQL from applications](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-openpanel/).
+Never use `127.0.0.1`. More examples: [Connecting to MySQL from applications](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-davpanel/).
 
 ## Create a MySQL Database
 
 To create a new MySQL database, click on the "New Database" button and fill in the name of the new database:
 
-![Create Database form with the database name field and the Create Database button](/img/openpanel-screenshots/mysql/new_db-form.png#gh-light-mode-only)
-![Create Database form with the database name field and the Create Database button](/img/openpanel-screenshots/mysql/new_db-form_dark.png#gh-dark-mode-only)
+![Create Database form with the database name field and the Create Database button](/img/davpanel-screenshots/mysql/new_db-form.png#gh-light-mode-only)
+![Create Database form with the database name field and the Create Database button](/img/davpanel-screenshots/mysql/new_db-form_dark.png#gh-dark-mode-only)
 
 You can also use the [Database Wizard](/docs/panel/mysql/wizard/) to create a database, a user, and assign it in one step.
 
@@ -52,8 +52,8 @@ Each database row (except system databases) has a row of action buttons:
 - **Import** – Only shown if the Import feature is enabled for your account. Opens the [Import](/docs/panel/mysql/import/) page with this database pre-selected.
 - **Export** – Opens a small panel where you choose the export **Format** (`SQL` or `GZIP`) and **Destination** (download to your **Browser**, or save to a **Files** path under `/var/www/html/`), then click **Export**.
 
-  ![Export panel for a database with the SQL or GZIP format and Browser or Files destination options](/img/openpanel-screenshots/mysql/databases-export.png#gh-light-mode-only)
-  ![Export panel for a database with the SQL or GZIP format and Browser or Files destination options](/img/openpanel-screenshots/mysql/databases-export_dark.png#gh-dark-mode-only)
+  ![Export panel for a database with the SQL or GZIP format and Browser or Files destination options](/img/davpanel-screenshots/mysql/databases-export.png#gh-light-mode-only)
+  ![Export panel for a database with the SQL or GZIP format and Browser or Files destination options](/img/davpanel-screenshots/mysql/databases-export_dark.png#gh-dark-mode-only)
 
 - **Optimize** – Opens the [Optimize and Repair](#optimize-and-repair) dialog to rebuild the tables and free up unused space.
 - **Repair** – Opens the [Optimize and Repair](#optimize-and-repair) dialog to check and fix damaged tables.
@@ -82,8 +82,8 @@ Views are not listed, since they don't store any data.
 
 Tick the checkbox of one or more databases, or the checkbox in the table header to select every database shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two databases selected with the bulk actions bar offering Export, Optimize, Repair, Assign user, Remove user and Delete](/img/openpanel-screenshots/mysql/databases-bulk.png#gh-light-mode-only)
-![Two databases selected with the bulk actions bar offering Export, Optimize, Repair, Assign user, Remove user and Delete](/img/openpanel-screenshots/mysql/databases-bulk_dark.png#gh-dark-mode-only)
+![Two databases selected with the bulk actions bar offering Export, Optimize, Repair, Assign user, Remove user and Delete](/img/davpanel-screenshots/mysql/databases-bulk.png#gh-light-mode-only)
+![Two databases selected with the bulk actions bar offering Export, Optimize, Repair, Assign user, Remove user and Delete](/img/davpanel-screenshots/mysql/databases-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -104,8 +104,8 @@ To delete an existing MySQL database, click on the "Delete" button next to the d
 
 The button turns into **Confirm** with a 5-second countdown. Click it again before the countdown ends to delete the database; otherwise it reverts to **Delete**.
 
-![Delete button turned into a Confirm button with a countdown after the first click](/img/openpanel-screenshots/mysql/databases-delete.png#gh-light-mode-only)
-![Delete button turned into a Confirm button with a countdown after the first click](/img/openpanel-screenshots/mysql/databases-delete_dark.png#gh-dark-mode-only)
+![Delete button turned into a Confirm button with a countdown after the first click](/img/davpanel-screenshots/mysql/databases-delete.png#gh-light-mode-only)
+![Delete button turned into a Confirm button with a countdown after the first click](/img/davpanel-screenshots/mysql/databases-delete_dark.png#gh-dark-mode-only)
 
 :::danger
 ⚠️ Deleting a MySQL database will permanently delete all tables and data for that database.

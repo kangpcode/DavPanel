@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // envFixture points the account home, core/users dir and admin default at a temp dir and returns it

@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Process Manager
 
-The Process Manager allows you to view and manage running system processes directly from the OpenPanel interface. It's a powerful tool for monitoring system activity and taking quick action when needed.
+The Process Manager allows you to view and manage running system processes directly from the DavPanel interface. It's a powerful tool for monitoring system activity and taking quick action when needed.
 
 The process table includes the following details:
 

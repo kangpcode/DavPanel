@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // isSafeMember reports whether an extracted member resolves to somewhere inside destinationPath - a zip-slip/tar-slip guard, duplicated from filemanager/archive.go's isSafeMember since it's unexported there

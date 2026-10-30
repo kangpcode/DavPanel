@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // ftpServerConfPath optionally overrides the FTP server host/port shown on the /ftp page and baked into downloaded client configs - a missing file (the common case) just means "use the auto-detected defaults", a var (not const) so tests can point it at a temp file

@@ -17,7 +17,7 @@ import (
 	"time"
 	"unicode"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // only the end-user docs, admin/ and changelog/ are for server admins

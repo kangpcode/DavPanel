@@ -34,7 +34,7 @@ View current server specification and system usage.
 - MySQL Server
 - Web Server
 
-## OpenPanel Information
+## DavPanel Information
 
-- OpenPanel Version
+- DavPanel Version
 - Enabled Modules

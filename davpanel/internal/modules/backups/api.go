@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"net/url"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // RegisterAPI wires the /api/backups/* routes onto mux. Every handler below delegates to the existing UI handler rather than reimplementing its logic: a cloned request gets an "output=json" query param (so the handler's own branch returns JSON) and, where it reads a POST form, Form/PostForm pre-populated from the API's JSON body, so the same code path runs unchanged.

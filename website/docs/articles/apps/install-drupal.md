@@ -1,17 +1,17 @@
 ---
 sidebar_label: "Drupal"
-description: "How to install Drupal 10 or 11 with Composer and Drush on OpenPanel: one-click install, running Drush commands, cron, updates with Composer, and trusted host settings."
+description: "How to install Drupal 10 or 11 with Composer and Drush on DavPanel: one-click install, running Drush commands, cron, updates with Composer, and trusted host settings."
 ---
 
 # How to Install Drupal (with Composer and Drush)
 
-[Drupal](https://www.drupal.org/) is a powerful open-source CMS for complex websites. OpenPanel installs it the recommended, **Composer-based** way - with **Drush** included - so updates and modules are managed properly from day one.
+[Drupal](https://www.drupal.org/) is a powerful open-source CMS for complex websites. DavPanel installs it the recommended, **Composer-based** way - with **Drush** included - so updates and modules are managed properly from day one.
 
 ---
 
 ## Requirements
 
-- **OpenPanel Enterprise** - the **Drupal** module must be enabled for your hosting plan.
+- **DavPanel Enterprise** - the **Drupal** module must be enabled for your hosting plan.
 - A domain pointed to the server.
 - PHP 8.3 for Drupal 11 (PHP 8.1+ for Drupal 10).
 
@@ -19,8 +19,8 @@ description: "How to install Drupal 10 or 11 with Composer and Drush on OpenPane
 
 ## Install Drupal
 
-1. Add the domain in **OpenPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
-2. Go to **OpenPanel → Websites → Install App** and click **Install Drupal**.
+1. Add the domain in **DavPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
+2. Go to **DavPanel → Websites → Install App** and click **Install Drupal**.
 3. Fill in:
    - **Domain** (and optional subfolder),
    - **Site name**,
@@ -28,10 +28,10 @@ description: "How to install Drupal 10 or 11 with Composer and Drush on OpenPane
    - **Admin username, password and email**.
 4. Start the installation.
 
-![Install Drupal form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/drupal-form.png#gh-light-mode-only)
-![Install Drupal form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/drupal-form_dark.png#gh-dark-mode-only)
+![Install Drupal form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/drupal-form.png#gh-light-mode-only)
+![Install Drupal form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/drupal-form_dark.png#gh-dark-mode-only)
 
-Behind the scenes, OpenPanel runs `composer create-project drupal/recommended-project`, adds `drush/drush`, creates a MySQL/MariaDB database and runs `drush site:install`.
+Behind the scenes, DavPanel runs `composer create-project drupal/recommended-project`, adds `drush/drush`, creates a MySQL/MariaDB database and runs `drush site:install`.
 
 Log in at `https://example.com/user/login`.
 
@@ -39,7 +39,7 @@ Log in at `https://example.com/user/login`.
 
 ## Running Drush and Composer
 
-Open **OpenPanel → Containers → Terminal**, select the domain's PHP container (e.g. `php-fpm-8.3`) and go to the project folder:
+Open **DavPanel → Containers → Terminal**, select the domain's PHP container (e.g. `php-fpm-8.3`) and go to the project folder:
 
 ```bash
 cd /var/www/html/example.com
@@ -57,7 +57,7 @@ The web terminal is an **Enterprise** feature and must be enabled for your plan 
 
 ## Cron
 
-Drupal runs cron on page visits by default (*Automated Cron*). For reliable scheduled tasks, disable the **Automated Cron** module and add a job in **OpenPanel → Cron Jobs**:
+Drupal runs cron on page visits by default (*Automated Cron*). For reliable scheduled tasks, disable the **Automated Cron** module and add a job in **DavPanel → Cron Jobs**:
 
 - **Container**: `php-fpm-8.3`
 - **Schedule**: **Hourly**
@@ -95,9 +95,9 @@ $settings['trusted_host_patterns'] = [
 
 ## Managing Drupal
 
-Drupal appears in **OpenPanel → Websites → Sites**, showing the document root, installed version (from `composer.lock`) and database details. **Remove** uninstalls the site including its database.
+Drupal appears in **DavPanel → Websites → Sites**, showing the document root, installed version (from `composer.lock`) and database details. **Remove** uninstalls the site including its database.
 
-More: [Drupal in OpenPanel](/docs/panel/applications/drupal/).
+More: [Drupal in DavPanel](/docs/panel/applications/drupal/).
 
 ---
 

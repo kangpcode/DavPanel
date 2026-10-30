@@ -8,7 +8,7 @@ The Email Settings section allows you to configure various parameters for the Ma
 
 
 :::info
-Emails are only available on [OpenPanel Enterprise edition](/enterprise)
+Emails are only available on [DavPanel Enterprise edition](/enterprise)
 :::
 
 
@@ -16,18 +16,18 @@ Emails are only available on [OpenPanel Enterprise edition](/enterprise)
 
 The status of the Mail Server service is displayed at the top of the page, where administrators can start, stop, or restart the service as needed.
 
-If the mail server is running but the Emails module is disabled, a warning links to [Modules](/docs/admin/settings/modules), since users can't manage email in OpenPanel until it's enabled.
+If the mail server is running but the Emails module is disabled, a warning links to [Modules](/docs/admin/settings/modules), since users can't manage email in DavPanel until it's enabled.
 
-![MailServer Status section with the running status and the Start, Restart and Stop buttons](/img/openadmin-screenshots/emails/settings-status.png#gh-light-mode-only)
-![MailServer Status section with the running status and the Start, Restart and Stop buttons](/img/openadmin-screenshots/emails/settings-status_dark.png#gh-dark-mode-only)
+![MailServer Status section with the running status and the Start, Restart and Stop buttons](/img/davadmin-screenshots/emails/settings-status.png#gh-light-mode-only)
+![MailServer Status section with the running status and the Start, Restart and Stop buttons](/img/davadmin-screenshots/emails/settings-status_dark.png#gh-dark-mode-only)
 
 
 ## Accounts
 
 Displays the total number of email accounts currently active on the server. This includes all accounts across all domains configured on the system.
 
-![Accounts section with the total number of email accounts on the server](/img/openadmin-screenshots/emails/settings-accounts.png#gh-light-mode-only)
-![Accounts section with the total number of email accounts on the server](/img/openadmin-screenshots/emails/settings-accounts_dark.png#gh-dark-mode-only)
+![Accounts section with the total number of email accounts on the server](/img/davadmin-screenshots/emails/settings-accounts.png#gh-light-mode-only)
+![Accounts section with the total number of email accounts on the server](/img/davadmin-screenshots/emails/settings-accounts_dark.png#gh-dark-mode-only)
 
 ## Webmail
 
@@ -38,8 +38,8 @@ Displays the total number of email accounts currently active on the server. This
 
 If webmail isn't running but email accounts exist, a warning links to [Service Status](/docs/admin/services/status) to start it, since users can't read their mail in the browser until then.
 
-![Webmail section with the webmail status, client dropdown and webmail domain](/img/openadmin-screenshots/emails/settings-webmail.png#gh-light-mode-only)
-![Webmail section with the webmail status, client dropdown and webmail domain](/img/openadmin-screenshots/emails/settings-webmail_dark.png#gh-dark-mode-only)
+![Webmail section with the webmail status, client dropdown and webmail domain](/img/davadmin-screenshots/emails/settings-webmail.png#gh-light-mode-only)
+![Webmail section with the webmail status, client dropdown and webmail domain](/img/davadmin-screenshots/emails/settings-webmail_dark.png#gh-dark-mode-only)
 
 ## Storage
 
@@ -52,15 +52,15 @@ Configure where email data (mailboxes) is stored on disk.
 
 The storage location is locked (cannot be changed) once email accounts already exist. Click **Save Storage** to apply the change.
 
-![Storage section with the email storage location](/img/openadmin-screenshots/emails/settings-storage.png#gh-light-mode-only)
-![Storage section with the email storage location](/img/openadmin-screenshots/emails/settings-storage_dark.png#gh-dark-mode-only)
+![Storage section with the email storage location](/img/davadmin-screenshots/emails/settings-storage.png#gh-light-mode-only)
+![Storage section with the email storage location](/img/davadmin-screenshots/emails/settings-storage_dark.png#gh-dark-mode-only)
 
 ## Enable Services
 
 Administrators can set and configure different services based on their needs.
 
-![Enable Services section with toggles for the mail server services](/img/openadmin-screenshots/emails/settings-services.png#gh-light-mode-only)
-![Enable Services section with toggles for the mail server services](/img/openadmin-screenshots/emails/settings-services_dark.png#gh-dark-mode-only)
+![Enable Services section with toggles for the mail server services](/img/davadmin-screenshots/emails/settings-services.png#gh-light-mode-only)
+![Enable Services section with toggles for the mail server services](/img/davadmin-screenshots/emails/settings-services_dark.png#gh-dark-mode-only)
 
 Configure services for the MailServer stack:
 
@@ -94,8 +94,8 @@ A warning is shown as you toggle the services:
 
 The **Relay Hosts** feature allows you to configure an SMTP relay service (also known as a relay host or smarthost) for relaying (forwarding) outbound email on behalf of third parties. This service does not manage mail domains but helps in routing emails through an external SMTP server.
 
-![Relay Hosts section for sending mail through an external relay](/img/openadmin-screenshots/emails/settings-relay.png#gh-light-mode-only)
-![Relay Hosts section for sending mail through an external relay](/img/openadmin-screenshots/emails/settings-relay_dark.png#gh-dark-mode-only)
+![Relay Hosts section for sending mail through an external relay](/img/davadmin-screenshots/emails/settings-relay.png#gh-light-mode-only)
+![Relay Hosts section for sending mail through an external relay](/img/davadmin-screenshots/emails/settings-relay_dark.png#gh-dark-mode-only)
 
 This feature is useful for organizations that need to route their outgoing email traffic through a trusted third-party service or SMTP server for better deliverability and security.
 

@@ -82,7 +82,7 @@ const Patches: React.FC = () => {
 
                     <h2 className="mt-10 mb-4">Usage</h2>
                     <pre className="bg-gray-900 text-white rounded-xl p-4 w-full overflow-x-auto">
-                        opencli patch &lt;PATCH_NAME&gt;
+                        davcli patch &lt;PATCH_NAME&gt;
                     </pre>
 
                     <h2 className="mt-10 mb-6">Available Patches</h2>

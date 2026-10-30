@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 // the documented /api/inodes used to redirect to /api/inodes/, which clients that don't follow redirects never get past

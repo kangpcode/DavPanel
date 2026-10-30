@@ -128,7 +128,7 @@ This option allows you to set the default PHP version that will be used for newl
 You can also view current default version setting.
 
 :::info
-phpMyAdmin runs by default on the version that you set here, but due to phpMyAdmin's minimum requirements, if the PHP version is older than 8.0, then the [default PHP version defined by the administrator](/docs/admin/settings/openpanel) will be used for phpMyAdmin.
+phpMyAdmin runs by default on the version that you set here, but due to phpMyAdmin's minimum requirements, if the PHP version is older than 8.0, then the [default PHP version defined by the administrator](/docs/admin/settings/davpanel) will be used for phpMyAdmin.
 :::
 
 ### Install PHP version
@@ -169,7 +169,7 @@ Listed values:
 
 To modify any of these values simply click on the 'Edit PHP.INI' link for that version.
 
-Default values for these settings on all PHP versions installed via OpenPanel interface are:
+Default values for these settings on all PHP versions installed via DavPanel interface are:
 
 - max_execution_time = 600
 - max_input_time = 600
@@ -241,7 +241,7 @@ This includes:
 - Average load
 - Uptime
 - IP Address
-- OpenPanel version
+- DavPanel version
 - Operating System
 - Release and Version numbers
 - Processor architecture

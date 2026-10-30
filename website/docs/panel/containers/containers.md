@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Containers
 
-The **Containers** page in OpenPanel allows you to manage Docker services defined via Docker Compose files by your Administrator.
+The **Containers** page in DavPanel allows you to manage Docker services defined via Docker Compose files by your Administrator.
 
 This section provides a clear overview of your containerized services and their resource usage.
 
@@ -28,8 +28,8 @@ You can allocate portions of these total resources to individual services.
 
 Use the **Show Columns** dropdown above the table to show or hide columns. Name, CPU Usage, Memory Usage, PIDs, Status and Actions are shown by default, Block I/O and Net I/O are hidden.
 
-![Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status](/img/openpanel-screenshots/containers/containers-list.png#gh-light-mode-only)
-![Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status](/img/openpanel-screenshots/containers/containers-list_dark.png#gh-dark-mode-only)
+![Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status](/img/davpanel-screenshots/containers/containers-list.png#gh-light-mode-only)
+![Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status](/img/davpanel-screenshots/containers/containers-list_dark.png#gh-dark-mode-only)
 
 Each row in the table represents a containerized service and displays:
 
@@ -65,15 +65,15 @@ To change the limit of several services at once, use [bulk actions](#bulk-action
 
 All limits of a service (CPU, memory and PIDs), along with its image, environment variables, volumes and networks, can also be changed from its **Edit** page:
 
-![Edit service form with the image, resource limits, networks, storage and environment variables](/img/openpanel-screenshots/containers/edit-form.png#gh-light-mode-only)
-![Edit service form with the image, resource limits, networks, storage and environment variables](/img/openpanel-screenshots/containers/edit-form_dark.png#gh-dark-mode-only)
+![Edit service form with the image, resource limits, networks, storage and environment variables](/img/davpanel-screenshots/containers/edit-form.png#gh-light-mode-only)
+![Edit service form with the image, resource limits, networks, storage and environment variables](/img/davpanel-screenshots/containers/edit-form_dark.png#gh-dark-mode-only)
 
 ## Bulk Actions
 
 Tick the checkbox of one or more services, or the checkbox in the table header to select every service shown by the current search. A bar appears at the bottom of the page with the number of selected services, a **Clear** link and these actions:
 
-![Three containers selected with the bulk actions bar at the bottom offering Start, Stop, Restart, Edit CPU, Edit RAM, Edit PIDs and Delete](/img/openpanel-screenshots/containers/containers-bulk.png#gh-light-mode-only)
-![Three containers selected with the bulk actions bar at the bottom offering Start, Stop, Restart, Edit CPU, Edit RAM, Edit PIDs and Delete](/img/openpanel-screenshots/containers/containers-bulk_dark.png#gh-dark-mode-only)
+![Three containers selected with the bulk actions bar at the bottom offering Start, Stop, Restart, Edit CPU, Edit RAM, Edit PIDs and Delete](/img/davpanel-screenshots/containers/containers-bulk.png#gh-light-mode-only)
+![Three containers selected with the bulk actions bar at the bottom offering Start, Stop, Restart, Edit CPU, Edit RAM, Edit PIDs and Delete](/img/davpanel-screenshots/containers/containers-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -87,13 +87,13 @@ Tick the checkbox of one or more services, or the checkbox in the table header t
 
 Clicking an action asks you to confirm it first. **Edit CPU**, **Edit RAM** and **Edit PIDs** also ask for the new value, `0` works the same as in [Editing Resources](#editing-resources), and CPU and memory can't be set higher than your hosting plan allows.
 
-![Bulk actions bar asking for the new CPU limit of the three selected containers, with Cancel and Confirm buttons](/img/openpanel-screenshots/containers/containers-bulk-cpu.png#gh-light-mode-only)
-![Bulk actions bar asking for the new CPU limit of the three selected containers, with Cancel and Confirm buttons](/img/openpanel-screenshots/containers/containers-bulk-cpu_dark.png#gh-dark-mode-only)
+![Bulk actions bar asking for the new CPU limit of the three selected containers, with Cancel and Confirm buttons](/img/davpanel-screenshots/containers/containers-bulk-cpu.png#gh-light-mode-only)
+![Bulk actions bar asking for the new CPU limit of the three selected containers, with Cancel and Confirm buttons](/img/davpanel-screenshots/containers/containers-bulk-cpu_dark.png#gh-dark-mode-only)
 
 If some of the selected services don't support the action, for example core services with **Delete**, the confirmation says how many will be skipped and the action runs only on the rest.
 
-![Bulk delete confirmation in red for one custom container, noting that the selected built-in container will be skipped](/img/openpanel-screenshots/containers/containers-bulk-delete.png#gh-light-mode-only)
-![Bulk delete confirmation in red for one custom container, noting that the selected built-in container will be skipped](/img/openpanel-screenshots/containers/containers-bulk-delete_dark.png#gh-dark-mode-only)
+![Bulk delete confirmation in red for one custom container, noting that the selected built-in container will be skipped](/img/davpanel-screenshots/containers/containers-bulk-delete.png#gh-light-mode-only)
+![Bulk delete confirmation in red for one custom container, noting that the selected built-in container will be skipped](/img/davpanel-screenshots/containers/containers-bulk-delete_dark.png#gh-dark-mode-only)
 
 Click **Confirm** and the action runs on the services one after another. When it's done the page reloads with a notice saying whether it succeeded for all of them, or which services failed and why.
 
@@ -101,8 +101,8 @@ Click **Confirm** and the action runs on the services one after another. When it
 
 Click **New Service** on the Containers page to run any Docker image next to your websites, for example a Redis cache, a queue worker or your own app. The form is split into numbered steps:
 
-![Add a container form with the image and name, resource presets, networks, storage and environment variables](/img/openpanel-screenshots/containers/new-form.png#gh-light-mode-only)
-![Add a container form with the image and name, resource presets, networks, storage and environment variables](/img/openpanel-screenshots/containers/new-form_dark.png#gh-dark-mode-only)
+![Add a container form with the image and name, resource presets, networks, storage and environment variables](/img/davpanel-screenshots/containers/new-form.png#gh-light-mode-only)
+![Add a container form with the image and name, resource presets, networks, storage and environment variables](/img/davpanel-screenshots/containers/new-form_dark.png#gh-dark-mode-only)
 
 1. **Image and name**
    - **Docker image** – An image from Docker Hub such as `redis:7-alpine`, or a full address like `ghcr.io/owner/app:1.0`. Popular images are suggested as you type. Add a tag to pin the version.
@@ -160,7 +160,7 @@ Each service gets an **uppercase prefix** for its environment variable keys, and
 
 ## Pointing a Domain to a Container
 
-When a domain is chosen in the **Domain** step of the form, OpenPanel wires it up for you:
+When a domain is chosen in the **Domain** step of the form, DavPanel wires it up for you:
 
 - The container joins the `www` network, so the web server can reach it by its name.
 - A reverse proxy from the domain to `name:port` is added to the domain's Apache, Nginx, OpenResty or OpenLiteSpeed configuration, with WebSocket support, and the web server is restarted.

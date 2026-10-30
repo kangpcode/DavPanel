@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"regexp"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // highPerformanceKeys are the ALTERs the Index WP MySQL For Speed plugin (1.5.x, Barracuda/DYNAMIC rows) runs on a fresh install's standard keys, unique keys come before the primary key swap so the auto-increment column always stays indexed

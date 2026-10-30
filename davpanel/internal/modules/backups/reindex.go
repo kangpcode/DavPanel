@@ -17,7 +17,7 @@ import (
 	"sync"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // readBackupEnv returns the full backup.env key/value map (commented lines excluded, quotes stripped), with SSH_IDENTITY_FILE rewritten from its /var/www/html/ docroot-relative form to the real host path - it's absent entirely for any non-SSH destination, and a Go map just returns "" for a missing key so the "ok" check below handles that without special-casing

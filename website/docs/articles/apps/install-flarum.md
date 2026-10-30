@@ -1,17 +1,17 @@
 ---
 sidebar_label: "Flarum"
-description: "How to install Flarum, a modern open-source forum, with OpenPanel: one-click Composer install, installing extensions, email, the queue, updates and cache."
+description: "How to install Flarum, a modern open-source forum, with DavPanel: one-click Composer install, installing extensions, email, the queue, updates and cache."
 ---
 
 # How to Install Flarum (Modern Forum Software)
 
-[Flarum](https://flarum.org/) is a fast, modern and mobile-friendly forum - a lightweight alternative to phpBB and Discourse. OpenPanel installs it with Composer in one click and can update it for you.
+[Flarum](https://flarum.org/) is a fast, modern and mobile-friendly forum - a lightweight alternative to phpBB and Discourse. DavPanel installs it with Composer in one click and can update it for you.
 
 ---
 
 ## Requirements
 
-- **OpenPanel Enterprise** - the **Flarum** module must be enabled for your hosting plan.
+- **DavPanel Enterprise** - the **Flarum** module must be enabled for your hosting plan.
 - A domain or subdomain, e.g. `community.example.com`.
 - PHP 8.1 or newer for the domain.
 
@@ -19,15 +19,15 @@ description: "How to install Flarum, a modern open-source forum, with OpenPanel:
 
 ## Install Flarum
 
-1. Add the domain in **OpenPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
-2. Go to **OpenPanel → Websites → Install App** and click **Install Flarum**.
+1. Add the domain in **DavPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
+2. Go to **DavPanel → Websites → Install App** and click **Install Flarum**.
 3. Fill in the **domain**, **Flarum version** (*Latest* stable), **forum title**, and **admin username, password and email**.
 4. Start the installation.
 
-![Install Flarum form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/flarum-form.png#gh-light-mode-only)
-![Install Flarum form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/flarum-form_dark.png#gh-dark-mode-only)
+![Install Flarum form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/flarum-form.png#gh-light-mode-only)
+![Install Flarum form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/flarum-form_dark.png#gh-dark-mode-only)
 
-OpenPanel runs `composer create-project flarum/flarum`, creates a MySQL/MariaDB database, runs Flarum's installer and links the domain's document root to Flarum's `public/` folder, so the rest of the code isn't reachable from the web.
+DavPanel runs `composer create-project flarum/flarum`, creates a MySQL/MariaDB database, runs Flarum's installer and links the domain's document root to Flarum's `public/` folder, so the rest of the code isn't reachable from the web.
 
 Open `https://community.example.com` and log in with the admin account. The admin dashboard is at `/admin`.
 
@@ -35,7 +35,7 @@ Open `https://community.example.com` and log in with the admin account. The admi
 
 ## Install Extensions
 
-Flarum extensions are installed with Composer. Open **OpenPanel → Containers → Terminal**, select the domain's PHP container (e.g. `php-fpm-8.3`) and run:
+Flarum extensions are installed with Composer. Open **DavPanel → Containers → Terminal**, select the domain's PHP container (e.g. `php-fpm-8.3`) and run:
 
 ```bash
 cd /var/www/html/community.example.com
@@ -55,7 +55,7 @@ Flarum sends email confirmations and notifications. In **Admin → Email**, choo
 
 ## Scheduler
 
-Some extensions (digests, cleanups) use Flarum's scheduler. Add a job in **OpenPanel → Cron Jobs**:
+Some extensions (digests, cleanups) use Flarum's scheduler. Add a job in **DavPanel → Cron Jobs**:
 
 - **Container**: `php-fpm-8.3`
 - **Schedule**: **Every Minute**
@@ -65,7 +65,7 @@ Some extensions (digests, cleanups) use Flarum's scheduler. Add a job in **OpenP
 
 ## Managing the Forum
 
-The forum's manage page in **OpenPanel → Websites → Sites** has:
+The forum's manage page in **DavPanel → Websites → Sites** has:
 
 - **Update** - updates `flarum/core` with Composer, runs migrations and clears the cache.
 - **Cache** - runs `php flarum cache:clear`.
@@ -74,7 +74,7 @@ The forum's manage page in **OpenPanel → Websites → Sites** has:
 
 Take an account [backup](/docs/panel/backups/backups/) before updating or installing extensions.
 
-More: [Flarum in OpenPanel](/docs/panel/applications/flarum/).
+More: [Flarum in DavPanel](/docs/panel/applications/flarum/).
 
 ---
 

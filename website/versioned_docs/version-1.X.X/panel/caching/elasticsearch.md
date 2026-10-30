@@ -10,7 +10,7 @@ sidebar_position: 4
 - Log analytics  
 - Real-time data exploration  
 
-Use **OpenPanel > Caching > Elasticsearch** to manage the Elasticsearch service, enabling fast and scalable search functionality across your applications and systems.
+Use **DavPanel > Caching > Elasticsearch** to manage the Elasticsearch service, enabling fast and scalable search functionality across your applications and systems.
 
 ---
 

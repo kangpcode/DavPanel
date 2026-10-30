@@ -10,10 +10,10 @@ Install and manage [Moodle](https://moodle.org/) — an open-source learning man
 
 ## Install Moodle
 
-Navigate to **OpenPanel > AutoInstaller** and click **Install Moodle**.
+Navigate to **DavPanel > AutoInstaller** and click **Install Moodle**.
 
-![Install Moodle form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/moodle-form.png#gh-light-mode-only)
-![Install Moodle form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/moodle-form_dark.png#gh-dark-mode-only)
+![Install Moodle form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/moodle-form.png#gh-light-mode-only)
+![Install Moodle form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/moodle-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -22,7 +22,7 @@ On the install page, configure:
 * **Moodle version** – Latest, or pin to a specific release, fetched live from [Moodle's GitHub tags](https://github.com/moodle/moodle/tags).
 * **Admin username / password / email** – The initial administrator account Moodle creates during install. Leave the password blank to generate one.
 
-Behind the scenes, this downloads the matching packaged tarball from `download.moodle.org`, and extracts it into a sibling "app root" directory next to the domain's docroot rather than the docroot itself — Moodle 5.x ships its web-served files under a `public/` subdirectory, with `config.php` and the rest of the codebase one level above it (outside the web root, by design). OpenPanel replaces the (empty) docroot with a symlink to `<approot>/public`, so the panel/webserver ends up serving exactly Moodle's own `public/` folder. It then creates a dedicated MySQL/MariaDB database and runs Moodle's own `admin/cli/install.php` non-interactively with the details you provided. Finally, it registers a per-minute cron job running `admin/cli/cron.php` — Moodle does nothing (no mail, no enrolments, no scheduled tasks) without it. Progress is streamed live as each step completes.
+Behind the scenes, this downloads the matching packaged tarball from `download.moodle.org`, and extracts it into a sibling "app root" directory next to the domain's docroot rather than the docroot itself — Moodle 5.x ships its web-served files under a `public/` subdirectory, with `config.php` and the rest of the codebase one level above it (outside the web root, by design). DavPanel replaces the (empty) docroot with a symlink to `<approot>/public`, so the panel/webserver ends up serving exactly Moodle's own `public/` folder. It then creates a dedicated MySQL/MariaDB database and runs Moodle's own `admin/cli/install.php` non-interactively with the details you provided. Finally, it registers a per-minute cron job running `admin/cli/cron.php` — Moodle does nothing (no mail, no enrolments, no scheduled tasks) without it. Progress is streamed live as each step completes.
 
 ## Manage a Moodle site
 
@@ -54,7 +54,7 @@ Moodle sites get a dedicated backup system, separate from the account-level Back
 
 ### Clone
 
-The **Clone** action copies a Moodle site to a new domain (or subfolder). It copies both the app root and `moodledata` directories, creates a new database from a dump of the source database, rewrites the database name/user/password/`wwwroot`/`dataroot` inside the copy's `config.php`, symlinks the destination docroot to the copy's `public/` directory, registers the copy's own cron job, and runs a generic URL search-replace across the cloned database — Moodle's CLI has no built-in equivalent of WP-CLI's `search-replace`, so OpenPanel handles it itself.
+The **Clone** action copies a Moodle site to a new domain (or subfolder). It copies both the app root and `moodledata` directories, creates a new database from a dump of the source database, rewrites the database name/user/password/`wwwroot`/`dataroot` inside the copy's `config.php`, symlinks the destination docroot to the copy's `public/` directory, registers the copy's own cron job, and runs a generic URL search-replace across the cloned database — Moodle's CLI has no built-in equivalent of WP-CLI's `search-replace`, so DavPanel handles it itself.
 
 ### Update
 

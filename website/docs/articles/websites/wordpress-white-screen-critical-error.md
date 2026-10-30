@@ -1,6 +1,6 @@
 ---
 sidebar_label: "WordPress White Screen / Critical Error"
-description: "How to fix the WordPress white screen of death and 'There has been a critical error on this website' in OpenPanel: enable debugging, read the error log, disable plugins and themes, raise PHP memory, and restore a backup."
+description: "How to fix the WordPress white screen of death and 'There has been a critical error on this website' in DavPanel: enable debugging, read the error log, disable plugins and themes, raise PHP memory, and restore a backup."
 ---
 
 # How to Fix the WordPress White Screen or "Critical Error"
@@ -10,7 +10,7 @@ Two of the most common WordPress problems look like this:
 - a completely **blank white page** (the "white screen of death"), or
 - **"There has been a critical error on this website."**
 
-Both mean PHP hit a fatal error - almost always caused by a **plugin**, a **theme**, **PHP memory** running out, or a **PHP version** the code doesn't support. This guide shows how to find the cause and fix it in OpenPanel, even when you can't log in to wp-admin.
+Both mean PHP hit a fatal error - almost always caused by a **plugin**, a **theme**, **PHP memory** running out, or a **PHP version** the code doesn't support. This guide shows how to find the cause and fix it in DavPanel, even when you can't log in to wp-admin.
 
 ---
 
@@ -24,7 +24,7 @@ If you got the email, follow the link, deactivate or update the named plugin, an
 
 ## Step 2: Turn On Debugging and Read the Error
 
-1. Open **OpenPanel → WordPress** and click **Manage** on the site.
+1. Open **DavPanel → WordPress** and click **Manage** on the site.
 2. Go to the **Debugging** tab and enable **WP_DEBUG** and **WP_DEBUG_LOG** (leave **WP_DEBUG_DISPLAY** off on a live site, so visitors don't see errors).
 3. Reload the broken page.
 4. Open `wp-content/debug.log` in the [File Manager](/docs/panel/files/files/) and scroll to the bottom.

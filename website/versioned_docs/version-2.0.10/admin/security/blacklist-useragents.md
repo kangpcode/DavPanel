@@ -6,10 +6,10 @@ sidebar_position: 10
 
 Block visitors whose HTTP `User-Agent` header matches an entry on a blacklist — useful for keeping out known bad bots and scrapers.
 
-Use **OpenAdmin > Security > Blacklist UA** to manage it.
+Use **DavAdmin > Security > Blacklist UA** to manage it.
 
-![Blacklist user agents page with the Enable dropdown and the list of blocked user agents](/img/openadmin-screenshots/security/blacklist-useragents-page.png#gh-light-mode-only)
-![Blacklist user agents page with the Enable dropdown and the list of blocked user agents](/img/openadmin-screenshots/security/blacklist-useragents-page_dark.png#gh-dark-mode-only)
+![Blacklist user agents page with the Enable dropdown and the list of blocked user agents](/img/davadmin-screenshots/security/blacklist-useragents-page.png#gh-light-mode-only)
+![Blacklist user agents page with the Enable dropdown and the list of blocked user agents](/img/davadmin-screenshots/security/blacklist-useragents-page_dark.png#gh-dark-mode-only)
 
 ## Enable
 
@@ -19,4 +19,4 @@ Set **Enable** to **Yes** and click **Save settings** to turn user-agent blockin
 
 Edit the list of blocked user-agent strings (one per line) in the text area, then click **Save settings**.
 
-The list is stored at `/etc/openpanel/openpanel/conf/blacklist_useragents.txt` on the server.
+The list is stored at `/etc/davpanel/davpanel/conf/blacklist_useragents.txt` on the server.

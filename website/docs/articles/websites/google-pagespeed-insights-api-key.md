@@ -1,12 +1,12 @@
 # Google PageSpeed Insights API Key
 
-OpenPanel's **Site Manager** automatically checks Google PageSpeed for your websites daily. However, if you’re running this check on a shared hosting server with 100+ websites, Google may block access due to API request limits. If this happens, no PageSpeed data will be shown, and you may see an error like this in the network tab of Site Manager:
+DavPanel's **Site Manager** automatically checks Google PageSpeed for your websites daily. However, if you’re running this check on a shared hosting server with 100+ websites, Google may block access due to API request limits. If this happens, no PageSpeed data will be shown, and you may see an error like this in the network tab of Site Manager:
 
 ```
 API Error: Quota exceeded for quota metric ‘Queries’ and limit ‘Queries per day’ of service ‘pagespeedonline.googleapis.com’ for consumer ‘project_number:583797351490’. Aborting due to API error.
 ```
 
-To prevent this, OpenPanel users can generate a **free Google PageSpeed Insights API key** and configure it for their websites.
+To prevent this, DavPanel users can generate a **free Google PageSpeed Insights API key** and configure it for their websites.
 
 ---
 
@@ -19,9 +19,9 @@ To prevent this, OpenPanel users can generate a **free Google PageSpeed Insights
 
 ---
 
-## Adding the API Key in OpenPanel
+## Adding the API Key in DavPanel
 
-1. Go to **OpenPanel > Websites > Sites > [Select a website]**.
+1. Go to **DavPanel > Websites > Sites > [Select a website]**.
 2. Click on **"Click to add PageSpeed Insights API key"** below the PageSpeed data section.
    ![add api key](/img/panel/v2/add_api_key.png)
 3. Paste the API key you copied and click **Save**.
@@ -31,11 +31,11 @@ To prevent this, OpenPanel users can generate a **free Google PageSpeed Insights
 
 ---
 
-## Adding a Global API Key in OpenAdmin
+## Adding a Global API Key in DavAdmin
 
 Administrators can configure a global API key that will apply to all users who haven’t set their own key.
 
-1. Go to **OpenAdmin > Settings > Custom Code**.
+1. Go to **DavAdmin > Settings > Custom Code**.
 2. Paste your API key in the **PageSpeed API Key** field.
 3. Click **Save**.
 

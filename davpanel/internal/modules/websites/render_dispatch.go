@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // pageData is embedded by every /website dispatcher page's data struct so the shared partials (temp_link, screenshot, visitors, waf_panel, pagespeed_panel) can rely on a consistent field set regardless of which CMS type is being rendered.

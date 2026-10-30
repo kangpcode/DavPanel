@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # WAF
 
-The WAF section allows you to manage CorazaWAF, a powerful Web Application Firewall integrated into OpenPanel.
+The WAF section allows you to manage CorazaWAF, a powerful Web Application Firewall integrated into DavPanel.
 
 Use this interface to enhance security by enabling protection against common web threats such as SQL injection, XSS, and other malicious behavior.
 
@@ -13,11 +13,11 @@ Toggle the Web Application Firewall (WAF) on or off.
 
 When enabled, CorazaWAF inspects incoming requests in real time and blocks suspicious activity according to the configured rules.
 
-- **Enabled**: Executes the command `opencli waf enable`, activating [the WAF module](/docs/admin/settings/modules/#waf). This makes WAF manageable by users and automatically enables it for any new domains.
-- **Disabled**: Executes the command `opencli waf disable -y`, deactivating [the WAF module](/docs/admin/settings/modules/#waf). This disables WAF management for users and turns off WAF for all existing and new domains.
+- **Enabled**: Executes the command `davcli waf enable`, activating [the WAF module](/docs/admin/settings/modules/#waf). This makes WAF manageable by users and automatically enables it for any new domains.
+- **Disabled**: Executes the command `davcli waf disable -y`, deactivating [the WAF module](/docs/admin/settings/modules/#waf). This disables WAF management for users and turns off WAF for all existing and new domains.
 
-![WAF page with the CorazaWAF Enable dropdown and the number of active rule sets](/img/openadmin-screenshots/security/waf-page.png#gh-light-mode-only)
-![WAF page with the CorazaWAF Enable dropdown and the number of active rule sets](/img/openadmin-screenshots/security/waf-page_dark.png#gh-dark-mode-only)
+![WAF page with the CorazaWAF Enable dropdown and the number of active rule sets](/img/davadmin-screenshots/security/waf-page.png#gh-light-mode-only)
+![WAF page with the CorazaWAF Enable dropdown and the number of active rule sets](/img/davadmin-screenshots/security/waf-page_dark.png#gh-dark-mode-only)
 
 ## Rule Sets
 Manage the rule sets that CorazaWAF uses to protect your applications.
@@ -36,8 +36,8 @@ The rule set table includes the following columns:
 
 - **Actions** – **View** to inspect the rule set's contents, and a toggle button whose label switches between **Enable** and **Disable** depending on the rule set's current status.
 
-![WAF rule sets page listing each rule set with its number of rules, status and the View and Disable actions](/img/openadmin-screenshots/security/waf-rules.png#gh-light-mode-only)
-![WAF rule sets page listing each rule set with its number of rules, status and the View and Disable actions](/img/openadmin-screenshots/security/waf-rules_dark.png#gh-dark-mode-only)
+![WAF rule sets page listing each rule set with its number of rules, status and the View and Disable actions](/img/davadmin-screenshots/security/waf-rules.png#gh-light-mode-only)
+![WAF rule sets page listing each rule set with its number of rules, status and the View and Disable actions](/img/davadmin-screenshots/security/waf-rules_dark.png#gh-dark-mode-only)
 
 Properly configuring WAF rules helps maintain a balance between strong protection and minimizing false positives.
 

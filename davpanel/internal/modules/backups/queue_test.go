@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 func testQueue(t *testing.T) *accountQueue {

@@ -14,7 +14,7 @@ import (
 
 	"github.com/leonelquinteros/gotext"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/cache"
 )
 
 const (

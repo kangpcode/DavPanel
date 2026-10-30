@@ -29,7 +29,7 @@ Suppose you want to check the disk usage of a specific directory. Follow these s
 
 ## Lowering Disk Usage
 
-Managing disk usage is essential to maintain the performance and stability of your hosting environment. Here are some tips and best practices for reducing disk usage within OpenPanel:
+Managing disk usage is essential to maintain the performance and stability of your hosting environment. Here are some tips and best practices for reducing disk usage within DavPanel:
 
 ### Regularly Clean Up Unused Files
 - Remove Temporary Files: Periodically delete temporary files, such as log files, cache files, and old backups. These files can accumulate and consume valuable disk space over time.

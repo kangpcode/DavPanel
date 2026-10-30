@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // sslBaseDir is where davcli domains-ssl keeps both acme and custom certs

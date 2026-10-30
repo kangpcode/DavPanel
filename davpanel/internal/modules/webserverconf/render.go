@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 var webserverConfPage = web.LoadPage("system/apache_nginx_conf_editor.html")

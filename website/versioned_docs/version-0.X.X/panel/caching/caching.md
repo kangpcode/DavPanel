@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Caching
 
-Utilizing the array of out-of-the-box features provided by OpenPanel can significantly enhance your website's performance and security. Features such as PHP-FPM, Redis, Memcached, and Opcache have the potential to dramatically boost your website's speed and efficiency.
+Utilizing the array of out-of-the-box features provided by DavPanel can significantly enhance your website's performance and security. Features such as PHP-FPM, Redis, Memcached, and Opcache have the potential to dramatically boost your website's speed and efficiency.
 
 ## REDIS
 
@@ -22,7 +22,7 @@ We don't recommend using it in conjunction with other caches like Redis. However
 
 ## Elasticsearch
 
-Enhance your website's search capabilities and overall performance with Elasticsearch. OpenPanel provides seamless integration with Elasticsearch, a powerful search engine that allows for efficient and quick retrieval of information.
+Enhance your website's search capabilities and overall performance with Elasticsearch. DavPanel provides seamless integration with Elasticsearch, a powerful search engine that allows for efficient and quick retrieval of information.
 
 Configure and optimize Elasticsearch settings to tailor it to your website's needs. Learn about the various features and functionalities offered by Elasticsearch to make the most out of this robust search engine.
 

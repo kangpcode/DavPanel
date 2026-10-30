@@ -6,11 +6,12 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"regexp"
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/sysinfo"
+	"github.com/kangpcode/davpanel/internal/core/sysinfo"
 )
 
 // licenseTagRegex matches <tag>value</tag> pairs in the license server's response - Go's RE2 has no backreferences, so the closing tag is checked manually in parseLicenseResponse
@@ -27,10 +28,16 @@ func parseLicenseResponse(body string) map[string]string {
 	return result
 }
 
-// checkLicenseStartup does one remote license check at boot; network/parse failures just count as "not valid"
+// checkLicenseStartup does one remote license check at boot; network/parse failures just count as "not valid".
+// DAVPANEL_LICENSE_API can point the check at a self-hosted license server; the validation flow itself is unchanged.
 func (a *App) checkLicenseStartup(ctx context.Context) bool {
 	if a.LicenseKey == "" {
 		return false
+	}
+
+	licenseAPI := strings.TrimSpace(os.Getenv("DAVPANEL_LICENSE_API"))
+	if licenseAPI == "" {
+		licenseAPI = "https://api.davpanel.com/enterprise/index.php"
 	}
 
 	dynamicIP := sysinfo.FetchPublicIP(ctx, a.Cache)
@@ -38,7 +45,7 @@ func (a *App) checkLicenseStartup(ctx context.Context) bool {
 
 	form := url.Values{"licensekey": {a.LicenseKey}, "ip": {dynamicIP}}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,
-		"https://api.davpanel.com/enterprise/index.php", strings.NewReader(form.Encode()))
+		licenseAPI, strings.NewReader(form.Encode()))
 	if err != nil {
 		log.Printf("BOOTSTRAP - license validation failed: %v", err)
 		return false

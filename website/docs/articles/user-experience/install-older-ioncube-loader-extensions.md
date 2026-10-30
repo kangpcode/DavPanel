@@ -1,10 +1,10 @@
 ---
-sidebar_label: "How to Install Custom or Older IonCube Loader Versions in OpenPanel"
+sidebar_label: "How to Install Custom or Older IonCube Loader Versions in DavPanel"
 ---
 
 # How to Install a Custom or Older ionCube Loader Version
 
-Starting with **OpenPanel version 1.7.2**, IonCube Loader is automatically available for all PHP versions that support it on new installations.
+Starting with **DavPanel version 1.7.2**, IonCube Loader is automatically available for all PHP versions that support it on new installations.
 
 ## Older Versions
 
@@ -13,7 +13,7 @@ If you want to downgrade to an older ionCube Loader bundle (or use a custom bund
 After placing the files on your server:
 
 * **For a single user:** Edit their `docker-compose.yml` file and update the volume mount points for the **php-fpm-*** services so they reference your custom files.
-* **For all new users:** Edit the template file located at `/etc/openpanel/docker/compose/1.0/docker-compose.yml`.
+* **For all new users:** Edit the template file located at `/etc/davpanel/docker/compose/1.0/docker-compose.yml`.
 
 ## Check if enabled
 

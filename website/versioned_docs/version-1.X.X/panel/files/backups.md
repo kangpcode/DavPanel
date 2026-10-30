@@ -4,7 +4,7 @@ sidebar_position: 6
 
 # Backups
 
-In OpenPanel, backups are configurable directly **by the panel users**, unlike other panels where backups are managed by the admin.
+In DavPanel, backups are configurable directly **by the panel users**, unlike other panels where backups are managed by the admin.
 
 This empowers users to define their own backup schedules, choose exactly what to back up, and select from a wide range of supported destinations.
 As a result, administrators have fewer tasks to manage, and users gain greater control and flexibility.
@@ -13,7 +13,7 @@ As a result, administrators have fewer tasks to manage, and users gain greater c
 
 ## Destinations
 
-OpenPanel supports the following destinations:
+DavPanel supports the following destinations:
 
 - [**S3 storage**](#s3) - AWS S3, Filebase, MinIO, etc.
 - [**WebDAV**](#webdav) - Remote backups using WebDAV.

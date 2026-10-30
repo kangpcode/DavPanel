@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Resellers
 
-The **Resellers** feature allows administrators to create and manage Reseller users within OpenPanel. Resellers can act as sub-administrators, managing their own set of user accounts within the limits defined by the root administrator.
+The **Resellers** feature allows administrators to create and manage Reseller users within DavPanel. Resellers can act as sub-administrators, managing their own set of user accounts within the limits defined by the root administrator.
 
 This feature is useful for hosting providers who want to delegate control to third-party resellers, while still maintaining overall control and isolation.
 

@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/apidocs"
+	"github.com/kangpcode/davpanel/internal/core/apidocs"
 )
 
 // what the assistant may do: off answers only, read looks things up, all can also make changes

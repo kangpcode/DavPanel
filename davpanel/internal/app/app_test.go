@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 func TestParseEnabledModules(t *testing.T) {

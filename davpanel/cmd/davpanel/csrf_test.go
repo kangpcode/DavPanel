@@ -13,11 +13,11 @@ import (
 
 	"github.com/gorilla/csrf"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
-	"gist.github.com/kangpcode/davpanel/internal/modules"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/session"
+	"github.com/kangpcode/davpanel/internal/modules"
 )
 
 // regression test: gorilla/csrf defaults to field name "gorilla.csrf.Token" but our templates render "csrf_token", so every POST got rejected without csrf.FieldName("csrf_token") set - simulates a real browser via GET /login then POST back

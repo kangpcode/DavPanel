@@ -5,8 +5,8 @@ import (
 	"errors"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
 )
 
 // custom containers from /containers/new reuse the same reverse proxy the app installers write

@@ -1,10 +1,10 @@
 ---
 title: "How to Use mysqldumpslow for Slow Query Analysis"
-description: "Turn on the MySQL or MariaDB slow query log, summarize it with mysqldumpslow, and find the queries that slow your website down. Includes sorting, filtering and reading the output, plus how to do it from OpenPanel without SSH."
+description: "Turn on the MySQL or MariaDB slow query log, summarize it with mysqldumpslow, and find the queries that slow your website down. Includes sorting, filtering and reading the output, plus how to do it from DavPanel without SSH."
 slug: mysqldumpslow-slow-query-analysis
-authors: stefanpejcic
+authors: kangpcode
 tags: [MySQL, MariaDB, Performance, Slow Query Log, mysqldumpslow, Tutorial]
-image: https://openpanel.com/img/blog/mysqldumpslow_cover.png
+image: https://davpanel.com/img/blog/mysqldumpslow_cover.png
 hide_table_of_contents: false
 ---
 
@@ -63,15 +63,15 @@ Settings changed with `SET GLOBAL` are lost on restart, so add them to `my.cnf` 
 The default `long_query_time` is **10 seconds**. A page that runs twenty 0.5 second queries feels very slow, but none of those queries would ever reach the log. Start with `1` and lower it if the log stays empty.
 :::
 
-### In OpenPanel
+### In DavPanel
 
-In [OpenPanel](/) each user has their own MySQL or MariaDB service, so you can turn on the slow query log for your own databases without root access or SSH:
+In [DavPanel](/) each user has their own MySQL or MariaDB service, so you can turn on the slow query log for your own databases without root access or SSH:
 
 1. Go to **MySQL > Configuration**.
 2. Set `slow_query_log` to `ON` and `long_query_time` to `1`.
 3. Click **Save Changes**. The settings are written to your `custom.cnf` and the database service is restarted.
 
-![MySQL Configuration page in OpenPanel filtered by "query", with long_query_time set to 1 and slow_query_log set to ON](/img/blog/mysqldumpslow_enable_slow_query_log.png)
+![MySQL Configuration page in DavPanel filtered by "query", with long_query_time set to 1 and slow_query_log set to ON](/img/blog/mysqldumpslow_enable_slow_query_log.png)
 
 The [Optimize Database](/docs/panel/mysql/configuration/#optimize-database) check on the same page also helps here: it tells you how many queries were slower than `long_query_time` since the last restart, suggests turning the log on if it's off, and suggests lowering `long_query_time` if it's set so high that most slow queries are never logged.
 
@@ -97,11 +97,11 @@ Not sure where the log is? Ask the server:
 SHOW VARIABLES LIKE 'slow_query_log_file';
 ```
 
-In OpenPanel, open **MySQL** and use the **Terminal** tab to get a shell inside your database service, then run the command there. The log file is in `/var/lib/mysql/` and is named after the service, `mysql-slow.log` or `mariadb-slow.log`.
+In DavPanel, open **MySQL** and use the **Terminal** tab to get a shell inside your database service, then run the command there. The log file is in `/var/lib/mysql/` and is named after the service, `mysql-slow.log` or `mariadb-slow.log`.
 
-Here is `mariadb-dumpslow` running in the OpenPanel terminal, on a WooCommerce-style `wp_postmeta` table with 4 million rows:
+Here is `mariadb-dumpslow` running in the DavPanel terminal, on a WooCommerce-style `wp_postmeta` table with 4 million rows:
 
-![mariadb-dumpslow output in the OpenPanel MySQL terminal, listing four slow queries sorted by total time](/img/blog/mysqldumpslow_terminal_output.png)
+![mariadb-dumpslow output in the DavPanel MySQL terminal, listing four slow queries sorted by total time](/img/blog/mysqldumpslow_terminal_output.png)
 
 ## Step 3: Read the output
 
@@ -192,7 +192,7 @@ The most common causes and fixes: The most common causes and fixes:
 - **Lock time**: high `Lock` values often point to MyISAM tables, which lock the whole table on every write. Convert them with `ALTER TABLE name ENGINE=InnoDB`.
 - **WordPress**: slow queries on `wp_options` usually mean too many autoloaded options, and slow `wp_postmeta` queries usually come from a plugin. Try disabling plugins to find which one runs the query.
 
-OpenPanel's Optimize Database check points out several of these for you, including MyISAM tables, tables without a primary key, large WordPress autoloaded options and joins that don't use an index.
+DavPanel's Optimize Database check points out several of these for you, including MyISAM tables, tables without a primary key, large WordPress autoloaded options and joins that don't use an index.
 
 ## Step 6: Clean up
 
@@ -228,4 +228,4 @@ mysql -e "EXPLAIN SELECT ..."
 
 The slow query log tells you *that* queries are slow, and `mysqldumpslow` tells you *which ones matter*. Sort by total time, fix the top few queries, and check again.
 
-With [OpenPanel](/), every user has their own isolated MySQL or MariaDB service with a [Configuration page](/docs/panel/mysql/configuration/) to turn on the slow query log, a [process list](/docs/panel/mysql/processlist/) to see and kill running queries, and a terminal to run `mysqldumpslow`, no SSH or root access needed.
+With [DavPanel](/), every user has their own isolated MySQL or MariaDB service with a [Configuration page](/docs/panel/mysql/configuration/) to turn on the slow query log, a [process list](/docs/panel/mysql/processlist/) to see and kill running queries, and a terminal to run `mysqldumpslow`, no SSH or root access needed.

@@ -1,13 +1,13 @@
 ---
 sidebar_label: "Reseller Hosting"
-description: "How to offer reseller hosting with OpenPanel: create reseller accounts, set account and disk limits, choose which plans they can sell, reseller branding, billing automation and pricing tips."
+description: "How to offer reseller hosting with DavPanel: create reseller accounts, set account and disk limits, choose which plans they can sell, reseller branding, billing automation and pricing tips."
 ---
 
-# How to Offer Reseller Hosting with OpenPanel
+# How to Offer Reseller Hosting with DavPanel
 
 **Reseller hosting** lets your customers - web designers, agencies, small hosting companies - create and manage hosting accounts for *their own* clients on your server. You sell them a block of resources; they resell it under their name. It's one of the most profitable hosting products, because one reseller brings many accounts.
 
-OpenPanel has reseller accounts built in (**Enterprise**). Resellers log in to OpenAdmin with their own account and see only the users and plans you allow.
+DavPanel has reseller accounts built in (**Enterprise**). Resellers log in to DavAdmin with their own account and see only the users and plans you allow.
 
 ---
 
@@ -23,7 +23,7 @@ You (Super Admin)
 
 - **You** create the hosting plans and decide which ones each reseller may use.
 - **The reseller** creates, suspends and deletes accounts for their clients - within their limits.
-- **Each client** gets a normal OpenPanel account, fully isolated from other clients.
+- **Each client** gets a normal DavPanel account, fully isolated from other clients.
 
 ---
 
@@ -37,7 +37,7 @@ Tip: give reseller plans a clear name prefix (e.g. `R-Starter`, `R-Business`) so
 
 ## Step 2: Create Reseller Packages
 
-Go to **OpenAdmin → Hosting Plans → Reseller Packages** and create one package per reseller tier you sell (see [Pricing Reseller Hosting](#pricing-reseller-hosting) below), each with:
+Go to **DavAdmin → Hosting Plans → Reseller Packages** and create one package per reseller tier you sell (see [Pricing Reseller Hosting](#pricing-reseller-hosting) below), each with:
 
 - **Max Accounts** - how many client accounts resellers on it can create,
 - **Max Disk Usage** - their total disk allowance across all clients,
@@ -49,26 +49,26 @@ See [Reseller Packages](/docs/admin/plans/reseller_packages/).
 
 ## Step 3: Create a Reseller
 
-1. Go to **OpenAdmin → Accounts → Resellers**.
+1. Go to **DavAdmin → Accounts → Resellers**.
 2. Click **Create New**, enter a username and password, pick a **Reseller Package** and click **Create**.
 
 To give one reseller different limits, open their menu → **Edit Plans & Limits** and change them there. See [Resellers](/docs/admin/accounts/resellers/).
 
-The reseller logs in at your OpenAdmin address (e.g. `https://panel.yourhost.com:2087`) and manages their users from **Accounts → Users**.
+The reseller logs in at your DavAdmin address (e.g. `https://panel.yourhost.com:2087`) and manages their users from **Accounts → Users**.
 
 ---
 
 ## Step 4: Reseller Branding
 
-Resellers can set their own **logo** from their **Reseller Account** page - it's shown instead of your logo in their clients' OpenPanel. Combined with custom nameservers on their own domain, their clients see the reseller's brand.
+Resellers can set their own **logo** from their **Reseller Account** page - it's shown instead of your logo in their clients' DavPanel. Combined with custom nameservers on their own domain, their clients see the reseller's brand.
 
-For your own company branding, see [White-label OpenPanel](/docs/articles/hosting-business/white-label-openpanel/).
+For your own company branding, see [White-label DavPanel](/docs/articles/hosting-business/white-label-davpanel/).
 
 ---
 
 ## Step 5: Automate It with Billing
 
-Sell reseller packages through your billing system, so resellers are created and suspended automatically when they pay (or don't). The [OpenAdmin API](/docs/articles/dev-experience/openadmin-api/#resellers) creates a reseller on a package with `{"action":"create", ..., "plan":"<package>"}` and upgrades or downgrades it with `change_plan`. OpenPanel integrates with [WHMCS](/docs/articles/extensions/openpanel-and-whmcs/), [FOSSBilling](/docs/articles/extensions/openpanel-and-fossbilling/), [Blesta](/docs/articles/extensions/openpanel-and-blesta/), [ClientExec](/docs/articles/extensions/openpanel-and-clientexec/) and [WISECP](/docs/articles/extensions/openpanel-and-wisecp/).
+Sell reseller packages through your billing system, so resellers are created and suspended automatically when they pay (or don't). The [DavAdmin API](/docs/articles/dev-experience/davadmin-api/#resellers) creates a reseller on a package with `{"action":"create", ..., "plan":"<package>"}` and upgrades or downgrades it with `change_plan`. DavPanel integrates with [WHMCS](/docs/articles/extensions/davpanel-and-whmcs/), [FOSSBilling](/docs/articles/extensions/davpanel-and-fossbilling/), [Blesta](/docs/articles/extensions/davpanel-and-blesta/), [ClientExec](/docs/articles/extensions/davpanel-and-clientexec/) and [WISECP](/docs/articles/extensions/davpanel-and-wisecp/).
 
 Resellers who run their own billing system can use the same modules to automate *their* client accounts.
 
@@ -99,12 +99,12 @@ Typical reseller packages are sold by **number of accounts and total disk**:
 
 - Price per account should still be lower than your retail price, so the reseller has margin.
 - Because each client account has its own CPU/RAM limits from its plan, one reseller's busy client can't slow down the whole server.
-- OpenPanel Enterprise is licensed **per server**, not per account - reseller accounts don't increase your license cost.
+- DavPanel Enterprise is licensed **per server**, not per account - reseller accounts don't increase your license cost.
 
 ---
 
 ## Related
 
-- [Start a web hosting business with OpenPanel](/docs/articles/hosting-business/start-web-hosting-business/)
+- [Start a web hosting business with DavPanel](/docs/articles/hosting-business/start-web-hosting-business/)
 - [Suggested hosting plan limits](/docs/articles/hosting-business/hosting-plan-templates/)
-- [Resellers (OpenAdmin reference)](/docs/admin/accounts/resellers/)
+- [Resellers (DavAdmin reference)](/docs/admin/accounts/resellers/)

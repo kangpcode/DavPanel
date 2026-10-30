@@ -13,11 +13,11 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // HandleDockerTags proxies endoflife.date's release feed for the "version" dropdown on the nodejs/python install forms (cached 24h). For ruby it queries Docker Hub's own tag list directly instead, reshaped into the same [{"latest": "X.Y.Z"}, ...] shape so the frontend doesn't need a ruby-specific branch.

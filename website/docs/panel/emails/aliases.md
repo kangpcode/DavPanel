@@ -6,14 +6,14 @@ sidebar_position: 3
 
 An alias forwards mail from a non-existing address to one or more destinations. Recipients can be local or external.
 
-![Aliases page listing alias addresses and the addresses they deliver to](/img/openpanel-screenshots/emails/aliases-list.png#gh-light-mode-only)
-![Aliases page listing alias addresses and the addresses they deliver to](/img/openpanel-screenshots/emails/aliases-list_dark.png#gh-dark-mode-only)
+![Aliases page listing alias addresses and the addresses they deliver to](/img/davpanel-screenshots/emails/aliases-list.png#gh-light-mode-only)
+![Aliases page listing alias addresses and the addresses they deliver to](/img/davpanel-screenshots/emails/aliases-list_dark.png#gh-dark-mode-only)
 
 Aliases are managed via Postfix. Each alias has one source address and one or more destination addresses. Mail sent to the alias is forwarded to all configured destinations: the alias itself does not store any mail.
 
 ## Creating an Alias
 
-1. Go to **OpenPanel > Email > Aliases**.
+1. Go to **DavPanel > Email > Aliases**.
 2. Click **New Alias**.
 3. Fill in the form:
 
@@ -25,8 +25,8 @@ Aliases are managed via Postfix. Each alias has one source address and one or mo
 
 4. Click **Create Alias**.
 
-![Create an Alias form with the domain, alias address and destination address fields](/img/openpanel-screenshots/emails/aliases_new-form.png#gh-light-mode-only)
-![Create an Alias form with the domain, alias address and destination address fields](/img/openpanel-screenshots/emails/aliases_new-form_dark.png#gh-dark-mode-only)
+![Create an Alias form with the domain, alias address and destination address fields](/img/davpanel-screenshots/emails/aliases_new-form.png#gh-light-mode-only)
+![Create an Alias form with the domain, alias address and destination address fields](/img/davpanel-screenshots/emails/aliases_new-form_dark.png#gh-dark-mode-only)
 
 The destination can be any valid email address, either on this server or external.
 
@@ -38,15 +38,15 @@ Click **Manage** next to any alias to open its detail page. From there you can:
 - **Remove a destination**: click **Remove** next to any destination. If all destinations are removed the alias stops delivering mail.
 - **Delete the alias**: permanently removes the alias address and all its destinations. This cannot be undone.
 
-![Manage alias page listing its destination addresses with Remove buttons and a field to add a destination](/img/openpanel-screenshots/emails/aliases_manage-page.png#gh-light-mode-only)
-![Manage alias page listing its destination addresses with Remove buttons and a field to add a destination](/img/openpanel-screenshots/emails/aliases_manage-page_dark.png#gh-dark-mode-only)
+![Manage alias page listing its destination addresses with Remove buttons and a field to add a destination](/img/davpanel-screenshots/emails/aliases_manage-page.png#gh-light-mode-only)
+![Manage alias page listing its destination addresses with Remove buttons and a field to add a destination](/img/davpanel-screenshots/emails/aliases_manage-page_dark.png#gh-dark-mode-only)
 
 ## Bulk Actions
 
 Tick the checkbox of one or more aliases, or the checkbox in the table header to select every alias shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two aliases selected with the bulk actions bar offering Add destination and Delete](/img/openpanel-screenshots/emails/aliases-bulk.png#gh-light-mode-only)
-![Two aliases selected with the bulk actions bar offering Add destination and Delete](/img/openpanel-screenshots/emails/aliases-bulk_dark.png#gh-dark-mode-only)
+![Two aliases selected with the bulk actions bar offering Add destination and Delete](/img/davpanel-screenshots/emails/aliases-bulk.png#gh-light-mode-only)
+![Two aliases selected with the bulk actions bar offering Add destination and Delete](/img/davpanel-screenshots/emails/aliases-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|

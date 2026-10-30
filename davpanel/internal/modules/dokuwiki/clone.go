@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 // cloneDokuwikiTitleRE matches the $conf['title'] line writeDokuwikiConfig writes, the only place a source domain ends up in conf/local.php

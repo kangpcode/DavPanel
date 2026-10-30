@@ -4,8 +4,8 @@ sidebar_position: 1
 
 # Databases
 
-![MongoDB Databases page listing databases with their size and the Delete button](/img/openpanel-screenshots/mongodb/databases-list.png#gh-light-mode-only)
-![MongoDB Databases page listing databases with their size and the Delete button](/img/openpanel-screenshots/mongodb/databases-list_dark.png#gh-dark-mode-only)
+![MongoDB Databases page listing databases with their size and the Delete button](/img/davpanel-screenshots/mongodb/databases-list.png#gh-light-mode-only)
+![MongoDB Databases page listing databases with their size and the Delete button](/img/davpanel-screenshots/mongodb/databases-list_dark.png#gh-dark-mode-only)
 
 MongoDB databases are used to store and manage your application's document-based data, making it accessible and organized for your applications and services.
 
@@ -22,14 +22,14 @@ Available options on the Databases page are:
 - **Import or export a database**
 - **Delete a MongoDB Database**
 
-System databases (`admin`, `local`, `config`) are never shown in the table and cannot be created, imported into, or deleted through OpenPanel.
+System databases (`admin`, `local`, `config`) are never shown in the table and cannot be created, imported into, or deleted through DavPanel.
 
 ## Create a MongoDB Database
 
 To create a new MongoDB database, click on the "New Database" button and fill in the name of the new database.
 
-![Create a MongoDB Database form with the database name field](/img/openpanel-screenshots/mongodb/new_db-form.png#gh-light-mode-only)
-![Create a MongoDB Database form with the database name field](/img/openpanel-screenshots/mongodb/new_db-form_dark.png#gh-dark-mode-only)
+![Create a MongoDB Database form with the database name field](/img/davpanel-screenshots/mongodb/new_db-form.png#gh-light-mode-only)
+![Create a MongoDB Database form with the database name field](/img/davpanel-screenshots/mongodb/new_db-form_dark.png#gh-dark-mode-only)
 
 MongoDB has no explicit "create database" operation - the database is created as soon as it holds data, so a placeholder collection is created for you automatically.
 
@@ -45,8 +45,8 @@ Each database row has these actions:
 
 Tick the checkbox of one or more databases, or the checkbox in the table header to select every database shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![A MongoDB database selected with the bulk actions bar offering Export, Assign user, Remove user and Delete](/img/openpanel-screenshots/mongodb/databases-bulk.png#gh-light-mode-only)
-![A MongoDB database selected with the bulk actions bar offering Export, Assign user, Remove user and Delete](/img/openpanel-screenshots/mongodb/databases-bulk_dark.png#gh-dark-mode-only)
+![A MongoDB database selected with the bulk actions bar offering Export, Assign user, Remove user and Delete](/img/davpanel-screenshots/mongodb/databases-bulk.png#gh-light-mode-only)
+![A MongoDB database selected with the bulk actions bar offering Export, Assign user, Remove user and Delete](/img/davpanel-screenshots/mongodb/databases-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -65,8 +65,8 @@ To delete an existing MongoDB database, click on the "Delete" button next to the
 
 The button turns into **Confirm** with a 5-second countdown. Click it again before the countdown ends to delete the database; otherwise it reverts to **Delete**.
 
-![Delete button of a MongoDB database turned into a Confirm button with a countdown after the first click](/img/openpanel-screenshots/mongodb/databases-delete.png#gh-light-mode-only)
-![Delete button of a MongoDB database turned into a Confirm button with a countdown after the first click](/img/openpanel-screenshots/mongodb/databases-delete_dark.png#gh-dark-mode-only)
+![Delete button of a MongoDB database turned into a Confirm button with a countdown after the first click](/img/davpanel-screenshots/mongodb/databases-delete.png#gh-light-mode-only)
+![Delete button of a MongoDB database turned into a Confirm button with a countdown after the first click](/img/davpanel-screenshots/mongodb/databases-delete_dark.png#gh-dark-mode-only)
 
 :::danger
 ⚠️ Deleting a MongoDB database will permanently delete all collections and data for that database.

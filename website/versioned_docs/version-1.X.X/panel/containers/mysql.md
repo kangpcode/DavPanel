@@ -27,7 +27,7 @@ Before switching the database type, please ensure the following:
 
 ### Steps to Switch
 
-1. In the OpenPanel menu, navigate to **Docker > Switch MySQL Type**.
+1. In the DavPanel menu, navigate to **Docker > Switch MySQL Type**.
 2. From the dropdown menu, select the new type you want to use.
 3. Click the **Switch** button to initiate the process.
 

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 const activityLogDir = "/etc/davpanel/davpanel/core/users"

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // adminManagedMarkerPath is the per-account switch that hands backup destination/settings management to the admin - the account can still list and restore backups but can't view or change where/how they're stored. Lives under core/users like krompir.lock and every other per-account marker, not /home, since it's provisioned via DavAdmin's /etc/davpanel/skeleton/ template (copied into core/users/<username>/ by davcli's user-add) rather than backup.env's direct /home copy

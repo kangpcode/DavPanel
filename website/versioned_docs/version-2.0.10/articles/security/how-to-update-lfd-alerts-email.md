@@ -4,21 +4,21 @@ How to Set the Email Address for CSF/LFD Alerts
 
 ---
 
-Updating the notification email through **OpenAdmin** will also update the email used by **CSF/LFD** for alerts.
+Updating the notification email through **DavAdmin** will also update the email used by **CSF/LFD** for alerts.
 
 To do this via command line, simply run:
 
 ```bash
-opencli config update email youremail@yourdomain.com
+davcli config update email youremail@yourdomain.com
 ```
 
-This updates both the OpenAdmin notifications and the `LF_ALERT_TO` setting for CSF/LFD.
+This updates both the DavAdmin notifications and the `LF_ALERT_TO` setting for CSF/LFD.
 
 ---
 
 ## Using a Different Email for CSF/LFD
 
-If you want **CSF/LFD** to send alerts to a different address than the one set in OpenAdmin:
+If you want **CSF/LFD** to send alerts to a different address than the one set in DavAdmin:
 
 1. Open the CSF configuration file in your preferred text editor:
 
@@ -48,6 +48,6 @@ That's it! CSF/LFD will now send notifications to your specified email address.
 
 ---
 
-> **Note:** CSF/LFD is third-party software not developed or maintained by OpenPanel.
+> **Note:** CSF/LFD is third-party software not developed or maintained by DavPanel.
 > For support, please contact Sentinel Firewall directly:
 > [https://sentinelfirewall.org/](https://sentinelfirewall.org/)

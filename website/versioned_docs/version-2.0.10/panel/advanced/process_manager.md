@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Process Manager
 
-The **Process Manager** interface allows you to monitor all currently running processes on your server. You can search, view detailed command information, and terminate (kill) individual processes directly from the OpenPanel interface.
+The **Process Manager** interface allows you to monitor all currently running processes on your server. You can search, view detailed command information, and terminate (kill) individual processes directly from the DavPanel interface.
 
 Processes are listed sorted by PID by default, and every column (including CPU %) can be sorted by clicking its header - making it easy to identify and act on resource-intensive tasks.
 
@@ -29,13 +29,13 @@ Processes are listed sorted by PID by default, and every column (including CPU %
 
 ## How to Use
 
-1. **Go to** `Advanced > Process Manager` in the OpenPanel sidebar.
+1. **Go to** `Advanced > Process Manager` in the DavPanel sidebar.
 2. Use the **search box** to find a specific process by PID, command, or container name.
 3. Click **"View full command"** to expand long-running command strings.
 4. Click the **Terminate** button to immediately kill the process.
 
-![Process Manager listing processes per container with their user, PID, CPU, time and command](/img/openpanel-screenshots/advanced/process_manager-list.png#gh-light-mode-only)
-![Process Manager listing processes per container with their user, PID, CPU, time and command](/img/openpanel-screenshots/advanced/process_manager-list_dark.png#gh-dark-mode-only)
+![Process Manager listing processes per container with their user, PID, CPU, time and command](/img/davpanel-screenshots/advanced/process_manager-list.png#gh-light-mode-only)
+![Process Manager listing processes per container with their user, PID, CPU, time and command](/img/davpanel-screenshots/advanced/process_manager-list_dark.png#gh-dark-mode-only)
 
 ## Interface Details
 

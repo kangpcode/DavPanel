@@ -10,7 +10,7 @@ The Two-Factor Authentication is a recommended security feature that allows you 
 
 To enable 2FA for your account click on the 'Enable 2FA' button.
 
-![2fa enable on openpanel](/img/panel/v2/openpanel_enable_2fa.gif)
+![2fa enable on davpanel](/img/panel/v2/davpanel_enable_2fa.gif)
 
 A QR code will be displayed that you can scan with your phone using a selected application such as Google Authenticator or DuoMobile. Alternatively, you can click on the 'Display OTP code' link to show a code that you can manually type in or copy into the application.
 

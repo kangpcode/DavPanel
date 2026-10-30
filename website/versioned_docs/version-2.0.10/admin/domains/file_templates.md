@@ -19,8 +19,8 @@ This interface allows you to edit the VirtualHosts templates and default landing
 
 This is the HTML page shown on new domains that do **not** have `index.html` or `index.php` in their document root.
 
-![Default Page template editor with a live preview of the page shown on new domains](/img/openadmin-screenshots/domains/file_templates-default.png#gh-light-mode-only)
-![Default Page template editor with a live preview of the page shown on new domains](/img/openadmin-screenshots/domains/file_templates-default_dark.png#gh-dark-mode-only)
+![Default Page template editor with a live preview of the page shown on new domains](/img/davadmin-screenshots/domains/file_templates-default.png#gh-light-mode-only)
+![Default Page template editor with a live preview of the page shown on new domains](/img/davadmin-screenshots/domains/file_templates-default_dark.png#gh-dark-mode-only)
 
 ```html
 <!DOCTYPE html>
@@ -54,8 +54,8 @@ To revert to the original template:
 
 This is the HTML page shown on all domains that users suspend **manually**.
 
-![Suspended Website template editor with a live preview](/img/openadmin-screenshots/domains/file_templates-suspended-website.png#gh-light-mode-only)
-![Suspended Website template editor with a live preview](/img/openadmin-screenshots/domains/file_templates-suspended-website_dark.png#gh-dark-mode-only)
+![Suspended Website template editor with a live preview](/img/davadmin-screenshots/domains/file_templates-suspended-website.png#gh-light-mode-only)
+![Suspended Website template editor with a live preview](/img/davadmin-screenshots/domains/file_templates-suspended-website_dark.png#gh-dark-mode-only)
 
 ```html
 <!DOCTYPE html>
@@ -91,8 +91,8 @@ To revert to the original template:
 
 This is the HTML page shown on all domains owned by the user when their account is suspended **by the Administrator**.
 
-![Suspended User template editor with a live preview](/img/openadmin-screenshots/domains/file_templates-suspended-user.png#gh-light-mode-only)
-![Suspended User template editor with a live preview](/img/openadmin-screenshots/domains/file_templates-suspended-user_dark.png#gh-dark-mode-only)
+![Suspended User template editor with a live preview](/img/davadmin-screenshots/domains/file_templates-suspended-user.png#gh-light-mode-only)
+![Suspended User template editor with a live preview](/img/davadmin-screenshots/domains/file_templates-suspended-user_dark.png#gh-dark-mode-only)
 
 ```html
 <!DOCTYPE html>
@@ -127,8 +127,8 @@ To revert to the original template:
 
 This is the template used for creating VirtualHosts of domains added by users **when using the Apache webserver**.
 
-![Apache VirtualHost template editor](/img/openadmin-screenshots/domains/file_templates-apache.png#gh-light-mode-only)
-![Apache VirtualHost template editor](/img/openadmin-screenshots/domains/file_templates-apache_dark.png#gh-dark-mode-only)
+![Apache VirtualHost template editor](/img/davadmin-screenshots/domains/file_templates-apache.png#gh-light-mode-only)
+![Apache VirtualHost template editor](/img/davadmin-screenshots/domains/file_templates-apache_dark.png#gh-dark-mode-only)
 
 ```bash
 <VirtualHost *:80>
@@ -206,8 +206,8 @@ To revert to the original Apache template:
 
 This is the template used for creating VirtualHosts of domains added by users **when using the Nginx webserver**.
 
-![Nginx VirtualHost template editor](/img/openadmin-screenshots/domains/file_templates-nginx.png#gh-light-mode-only)
-![Nginx VirtualHost template editor](/img/openadmin-screenshots/domains/file_templates-nginx_dark.png#gh-dark-mode-only)
+![Nginx VirtualHost template editor](/img/davadmin-screenshots/domains/file_templates-nginx.png#gh-light-mode-only)
+![Nginx VirtualHost template editor](/img/davadmin-screenshots/domains/file_templates-nginx_dark.png#gh-dark-mode-only)
 
 ```bash
 # content
@@ -331,8 +331,8 @@ To revert to the original Nginx template:
 
 This is the template used for creating VirtualHosts of domains added by users **when using the OpenResty webserver**.
 
-![OpenResty VirtualHost template editor](/img/openadmin-screenshots/domains/file_templates-openresty.png#gh-light-mode-only)
-![OpenResty VirtualHost template editor](/img/openadmin-screenshots/domains/file_templates-openresty_dark.png#gh-dark-mode-only)
+![OpenResty VirtualHost template editor](/img/davadmin-screenshots/domains/file_templates-openresty.png#gh-light-mode-only)
+![OpenResty VirtualHost template editor](/img/davadmin-screenshots/domains/file_templates-openresty_dark.png#gh-dark-mode-only)
 
 ```bash
 # content
@@ -467,8 +467,8 @@ To revert to the original OpenResty template:
 
 This is the template used for creating `default.vcl` file for users **when using the Varnish Caching**.
 
-![Varnish template editor](/img/openadmin-screenshots/domains/file_templates-varnish.png#gh-light-mode-only)
-![Varnish template editor](/img/openadmin-screenshots/domains/file_templates-varnish_dark.png#gh-dark-mode-only)
+![Varnish template editor](/img/davadmin-screenshots/domains/file_templates-varnish.png#gh-light-mode-only)
+![Varnish template editor](/img/davadmin-screenshots/domains/file_templates-varnish_dark.png#gh-dark-mode-only)
 
 The placeholder `VARNISH_BACKEND_HOST` is automatically replaced with the user's actual web server - Nginx, Apache, or OpenResty. 
 
@@ -715,7 +715,7 @@ To revert to the original Varnish template:
 
 This is the template applied to **all** newly added domains for the front-facing Caddy webserver (Caddy handles TLS termination and reverse-proxies traffic to the domain's Apache/Nginx/OpenResty container, and enforces Coraza WAF when enabled).
 
-The variables `<DOMAIN_NAME>`, `<SSL_PORT>`, and `<NON_SSL_PORT>` are automatically replaced by OpenPanel during domain creation. Do not modify the comments in the file, as they are used as markers for Dedicated IP and Varnish Caching.
+The variables `<DOMAIN_NAME>`, `<SSL_PORT>`, and `<NON_SSL_PORT>` are automatically replaced by DavPanel during domain creation. Do not modify the comments in the file, as they are used as markers for Dedicated IP and Varnish Caching.
 
 ```bash
 # HTTP block (port 80) - Handles HTTP traffic
@@ -730,15 +730,15 @@ http://<DOMAIN_NAME>, http://www.<DOMAIN_NAME> {
   route {
 
     # redirects
-    import /etc/openpanel/caddy/redirects.conf
+    import /etc/davpanel/caddy/redirects.conf
 
     # modsecurity
     coraza_waf {
         load_owasp_crs
         directives `
-            Include /etc/openpanel/caddy/coraza_rules.conf
-            Include /etc/openpanel/caddy/coreruleset/crs-setup.conf.example
-            Include /etc/openpanel/caddy/coreruleset/rules/*.conf
+            Include /etc/davpanel/caddy/coraza_rules.conf
+            Include /etc/davpanel/caddy/coreruleset/crs-setup.conf.example
+            Include /etc/davpanel/caddy/coreruleset/rules/*.conf
             SecRuleEngine Off
             SecAuditEngine RelevantOnly
             SecRuleRemoveById 007
@@ -769,15 +769,15 @@ https://<DOMAIN_NAME>, https://www.<DOMAIN_NAME> {
   route {
 
     # redirects
-    import /etc/openpanel/caddy/redirects.conf
+    import /etc/davpanel/caddy/redirects.conf
 
     # modsecurity
     coraza_waf {
         load_owasp_crs
         directives `
-            Include /etc/openpanel/caddy/coraza_rules.conf
-            Include /etc/openpanel/caddy/coreruleset/crs-setup.conf.example
-            Include /etc/openpanel/caddy/coreruleset/rules/*.conf
+            Include /etc/davpanel/caddy/coraza_rules.conf
+            Include /etc/davpanel/caddy/coreruleset/crs-setup.conf.example
+            Include /etc/davpanel/caddy/coreruleset/rules/*.conf
             SecRuleEngine Off
             SecAuditEngine RelevantOnly
             SecRuleRemoveById 007

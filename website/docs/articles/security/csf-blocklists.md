@@ -6,11 +6,11 @@ sidebar_label: "CSF Blocklists"
 
 CSF/LFD supports downloading and applying blocklists of IPs and CIDRs from public sources. 
 
-OpenPanel does **not** enable any IP blocklists by default upon installation.
+DavPanel does **not** enable any IP blocklists by default upon installation.
 
-## from OpenAdmin
+## from DavAdmin
 
-To enable a blocklist from OpenAdmin interface, navigate to **Security > Firewall** then scroll down and click on the 'LFD Blocklists':
+To enable a blocklist from DavAdmin interface, navigate to **Security > Firewall** then scroll down and click on the 'LFD Blocklists':
 
 [![2025-07-22-17-06.png](/img/docs-content/LsdV3g1b-2025-07-22-17-06.png)](/img/docs-content/LsdV3g1b-2025-07-22-17-06.png)
 
@@ -90,4 +90,4 @@ To enable a specific blocklist:
 
 
 
-**NOTE: These lists are not under the control of OpenPanel and could have false positives.**
+**NOTE: These lists are not under the control of DavPanel and could have false positives.**

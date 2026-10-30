@@ -1,6 +1,6 @@
 ---
 sidebar_label: "TinyPhotoGallery"
-description: "How to create a simple photo gallery website with TinyPhotoGallery and OpenPanel: one-click install, uploading photos by File Manager or FTP, and backups."
+description: "How to create a simple photo gallery website with TinyPhotoGallery and DavPanel: one-click install, uploading photos by File Manager or FTP, and backups."
 ---
 
 # How to Create a Simple Photo Gallery Website
@@ -11,14 +11,14 @@ description: "How to create a simple photo gallery website with TinyPhotoGallery
 
 ## Install TinyPhotoGallery
 
-1. Add a domain or subdomain in **OpenPanel → Domains**, e.g. `photos.example.com`.
-2. Go to **OpenPanel → Websites → Install App** and click **Install TinyPhotoGallery**.
+1. Add a domain or subdomain in **DavPanel → Domains**, e.g. `photos.example.com`.
+2. Go to **DavPanel → Websites → Install App** and click **Install TinyPhotoGallery**.
 3. Select the **domain** (and optional subfolder) and start the installation.
 
-![Install TinyPhotoGallery form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/tinyphotogallery-form.png#gh-light-mode-only)
-![Install TinyPhotoGallery form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/tinyphotogallery-form_dark.png#gh-dark-mode-only)
+![Install TinyPhotoGallery form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/tinyphotogallery-form.png#gh-light-mode-only)
+![Install TinyPhotoGallery form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/tinyphotogallery-form_dark.png#gh-dark-mode-only)
 
-OpenPanel downloads the gallery's `index.php` and creates an empty `photos/` folder.
+DavPanel downloads the gallery's `index.php` and creates an empty `photos/` folder.
 
 ---
 
@@ -41,9 +41,9 @@ To make the gallery private, [password-protect the directory](/docs/articles/web
 
 ## Managing the Gallery
 
-The manage page in **OpenPanel → Websites → Sites** has **Backups** (files-only, including your photos) and **Remove**, which deletes the gallery and the `photos/` folder.
+The manage page in **DavPanel → Websites → Sites** has **Backups** (files-only, including your photos) and **Remove**, which deletes the gallery and the `photos/` folder.
 
-More: [TinyPhotoGallery in OpenPanel](/docs/panel/applications/tinyphotogallery/).
+More: [TinyPhotoGallery in DavPanel](/docs/panel/applications/tinyphotogallery/).
 
 ---
 

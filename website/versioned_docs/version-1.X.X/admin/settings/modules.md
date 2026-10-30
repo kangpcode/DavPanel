@@ -4,9 +4,9 @@ sidebar_position: 4
 
 # Modules
 
-Modules extend the OpenPanel UI by adding new features and pages. To make a feature available to a user or plan, it must first be activated as a module.
+Modules extend the DavPanel UI by adding new features and pages. To make a feature available to a user or plan, it must first be activated as a module.
 
-- Modules are **core features** that are already available on installation and are developed by OpenPanel.
+- Modules are **core features** that are already available on installation and are developed by DavPanel.
 - Plugins are custom features that need to be installed and are developed by third-party developers.
 
 Available Modules:
@@ -17,15 +17,15 @@ The **`notifications`** module is required to send email notifications to users.
 
 When enabled:
 * Emails are sent according to each user’s notification preferences.
-* Users can manage their preferences through the OpenPanel UI at: [**Accounts > Email Notifications**](/docs/panel/account/notifications/).
+* Users can manage their preferences through the DavPanel UI at: [**Accounts > Email Notifications**](/docs/panel/account/notifications/).
 
 When disabled:
 * No emails will be sent, regardless of user preferences.
 
 Customize email notifications:
-* To **set default preferences for new users** edit the [`/etc/openpanel/skeleton/notifications.yaml`](https://github.com/stefanpejcic/openpanel-configuration/blob/main/skeleton/notifications.yaml) file.
-* To **customize email templates** refer to [Customizing OpenPanel Email Templates](https://community.openpanel.org/d/214-customizing-openpanel-email-templates).
-* To **configure custom SMTP** use [OpenAdmin > Settings > Notifications page](/docs/admin/settings/notifications/).
+* To **set default preferences for new users** edit the [`/etc/davpanel/skeleton/notifications.yaml`](https://github.com/stefanpejcic/openpanel-configuration/blob/main/skeleton/notifications.yaml) file.
+* To **customize email templates** refer to [Customizing DavPanel Email Templates](https://community.davpanel.org/d/214-customizing-davpanel-email-templates).
+* To **configure custom SMTP** use [DavAdmin > Settings > Notifications page](/docs/admin/settings/notifications/).
 
 
 
@@ -34,14 +34,14 @@ Customize email notifications:
 The **`account`** module is required for users to change their email, password or username.
 
 When enabled:
-* Users can change their email, password and username through the OpenPanel UI at: [**Accounts > Settings**](/docs/panel/account/).
+* Users can change their email, password and username through the DavPanel UI at: [**Accounts > Settings**](/docs/panel/account/).
 
 When disabled:
-* Users can not change their passwords from OpenPanel UI, only from 'Password Reset' on login form, if this option is enabled.
+* Users can not change their passwords from DavPanel UI, only from 'Password Reset' on login form, if this option is enabled.
 
 Customize password and username changes:
-* To **enable or disable password reset on login forms** edit 'Enable password reset on login' setting from [OpenAdmin > Settings > OpenPanel](/docs/admin/settings/openpanel/).
-* To **prevent users from changing their username** edit 'Allow users to change username' setting from  [OpenAdmin > Settings > OpenPanel](/docs/admin/settings/openpanel/).
+* To **enable or disable password reset on login forms** edit 'Enable password reset on login' setting from [DavAdmin > Settings > DavPanel](/docs/admin/settings/davpanel/).
+* To **prevent users from changing their username** edit 'Allow users to change username' setting from  [DavAdmin > Settings > DavPanel](/docs/admin/settings/davpanel/).
 
 
 ## Sessions
@@ -49,29 +49,29 @@ Customize password and username changes:
 The **`sessions`** module allows users to view and manage their active sessions.
 
 When enabled:
-* Users can view all their active sessions, logs and terminate any session through the OpenPanel UI at: [**Accounts > Active Sessions**](/docs/panel/account/active_sessions/).
+* Users can view all their active sessions, logs and terminate any session through the DavPanel UI at: [**Accounts > Active Sessions**](/docs/panel/account/active_sessions/).
 
 When disabled:
 * Users can not access the *Accounts > Active Sessions* page.
 
 Customize sessions duration:
-* To **control session duration** edit 'Session duration' setting from [OpenAdmin > Settings > OpenPanel](/docs/admin/settings/openpanel/#Statistics).
-* To **control session lifetime** edit 'Session lifetime' setting from [OpenAdmin > Settings > OpenPanel](/docs/admin/settings/openpanel/#Statistics).
+* To **control session duration** edit 'Session duration' setting from [DavAdmin > Settings > DavPanel](/docs/admin/settings/davpanel/#Statistics).
+* To **control session lifetime** edit 'Session lifetime' setting from [DavAdmin > Settings > DavPanel](/docs/admin/settings/davpanel/#Statistics).
 
 ## Locale
 
 The **`locale`** (Languages) module allows users to change panel language.
 
 When enabled:
-* Users can change their preferred language for OpenPanel UI from the login page and [**Accounts > Change Language** page](/docs/panel/account/language/).
+* Users can change their preferred language for DavPanel UI from the login page and [**Accounts > Change Language** page](/docs/panel/account/language/).
 
 When disabled:
 * Users can not access the *Accounts > Change Language* page to change their locale.
 * Users are forced to the Admin defined default locale.
 
 Customize locales:
-* To **set the default locale** use [OpenAdmin > Settings > Locales](/docs/articles/accounts/default-user-locales/).
-* To **install new locales for users** use the [OpenAdmin > Settings > Locales](/docs/admin/settings/locales/#install-locale).
+* To **set the default locale** use [DavAdmin > Settings > Locales](/docs/articles/accounts/default-user-locales/).
+* To **install new locales for users** use the [DavAdmin > Settings > Locales](/docs/admin/settings/locales/#install-locale).
 * To **create a new translation** please see [How to Create a New Locale](/docs/admin/settings/locales/#edit-locale)
 
 
@@ -90,8 +90,8 @@ When disabled:
 * Users are not see favorites in the sidebar nor the ⭐ icon in top-right corner of pages.
 
 Customize favorites:
-* To **control the total number of favorites for user** (default is 10) use [`favorites-items` config](https://dev.openpanel.com/cli/config.html#favorites-items).
-* To **edit user's favorites from terminal** edit their: `/etc/openpanel/openpanel/core/users/{current_username}/favorites.json` file.
+* To **control the total number of favorites for user** (default is 10) use [`favorites-items` config](https://dev.davpanel.com/cli/config.html#favorites-items).
+* To **edit user's favorites from terminal** edit their: `/etc/davpanel/davpanel/core/users/{current_username}/favorites.json` file.
 
 
 ## Varnish
@@ -110,12 +110,12 @@ When disabled:
 * Varnish is used only if Administrator enabled it for user when creating the account. 
 
 Customize options:
-* To **enable/disable Varnish for all new users** use [*OpenAdmin > Settings > User Defaults* page and *Enable Varnish Proxy* option](/docs/admin/settings/defaults/).
-* To **enable/disable Varnish for a single user** when creating their account use the [**Enable Varnish Cache** option](/docs/articles/docker/how-to-set-nginx-apache-varnish-per-user-in-openpanel/).
-* To **change default CPU/RAM for service** use the [*OpenAdmin > Settings > User Defaults* page](/docs/admin/settings/defaults/).
-* To **edit the default.vcl file for Varnish** use the [*OpenAdmin > Domains > Edit Domain Templates* page](/docs/admin/settings/defaults/) or edit file: [`/etc/openpanel/varnish/default.vcl`](https://github.com/stefanpejcic/openpanel-configuration/blob/main/varnish/default.vcl).
+* To **enable/disable Varnish for all new users** use [*DavAdmin > Settings > User Defaults* page and *Enable Varnish Proxy* option](/docs/admin/settings/defaults/).
+* To **enable/disable Varnish for a single user** when creating their account use the [**Enable Varnish Cache** option](/docs/articles/docker/how-to-set-nginx-apache-varnish-per-user-in-davpanel/).
+* To **change default CPU/RAM for service** use the [*DavAdmin > Settings > User Defaults* page](/docs/admin/settings/defaults/).
+* To **edit the default.vcl file for Varnish** use the [*DavAdmin > Domains > Edit Domain Templates* page](/docs/admin/settings/defaults/) or edit file: [`/etc/davpanel/varnish/default.vcl`](https://github.com/stefanpejcic/openpanel-configuration/blob/main/varnish/default.vcl).
 * To **purge Varnish cache** refer to [How-to Guides > Purging Varnish Cache](/docs/articles/websites/purge-varnish-cache-from-terminal/)
-* To **check if Varnish is enabled for domain** refer to [How to check if Varnish Caching is enabled for a domain in OpenPanel?](https://community.openpanel.org/d/207-how-to-check-if-varnish-caching-is-enabled-for-a-domain-in-openpanel)
+* To **check if Varnish is enabled for domain** refer to [How to check if Varnish Caching is enabled for a domain in DavPanel?](https://community.davpanel.org/d/207-how-to-check-if-varnish-caching-is-enabled-for-a-domain-in-davpanel)
 
 
 ## Docker
@@ -136,7 +136,7 @@ When disabled:
 * Users can not access any of the *Docker* pages.
 
 Customize options:
-* [Disable the Terminal](/docs/articles/dev-experience/disable-openpanel-web-terminal/)
+* [Disable the Terminal](/docs/articles/dev-experience/disable-davpanel-web-terminal/)
 
 
 ## Fix Permissions
@@ -161,9 +161,9 @@ When disabled:
 * Users can not create and manage FTP accounts.
 
 Customize options:
-* To **configure FTP server** refer to [*How-to Guides > Setup FTP](/docs/articles/user-experience/how-to-setup-ftp-in-openpanel/).
-* To **edit VSFTPD configuration** edit the [`/etc/openpanel/ftp/vsftpd.conf` file](https://github.com/stefanpejcic/openpanel-configuration/blob/main/ftp/vsftpd.conf).
-* To **view all ftp accounts on a server** use the [*OpenAdmin > Services > FTP* page](/docs/admin/services/ftp/).
+* To **configure FTP server** refer to [*How-to Guides > Setup FTP](/docs/articles/user-experience/how-to-setup-ftp-in-davpanel/).
+* To **edit VSFTPD configuration** edit the [`/etc/davpanel/ftp/vsftpd.conf` file](https://github.com/stefanpejcic/openpanel-configuration/blob/main/ftp/vsftpd.conf).
+* To **view all ftp accounts on a server** use the [*DavAdmin > Services > FTP* page](/docs/admin/services/ftp/).
 * To **limit number of ftp accounts per user** edit the ftp accounts limit when creating/editing hosting packages.
 
 ## Emails
@@ -177,10 +177,10 @@ When disabled:
 * Users can not create and manage Email accounts.
 
 Customize options:
-* To **configure email server** refer to [*How-to Guides > Configure Email Server*](/docs/articles/user-experience/how-to-setup-email-in-openpanel/).
+* To **configure email server** refer to [*How-to Guides > Configure Email Server*](/docs/articles/user-experience/how-to-setup-email-in-davpanel/).
 * To **configure email client** refer to [*How-to Guides > How to setup your email client*](/docs/articles/email/how-to-setup-your-email-client/).
-* To **view all email accounts on a server** use the [*OpenAdmin > Emails > Email Accounts* page](/docs/admin/emails/).
-* To **set up fail2ban** refer to [*How-to Guides > Setup Fail2ban](/docs/articles/email/how-to-setup-fail2ban-mailserver-openpanel/).
+* To **view all email accounts on a server** use the [*DavAdmin > Emails > Email Accounts* page](/docs/admin/emails/).
+* To **set up fail2ban** refer to [*How-to Guides > Setup Fail2ban](/docs/articles/email/how-to-setup-fail2ban-mailserver-davpanel/).
 * To **set up Rspamd** refer to [*How-to Guides > RSPAMD GUI](/docs/articles/email/rspamd-gui-port-11334/).
 * To **set up DKIM for a domain** refer to [*How-to Guides > Setup DKIM](/docs/articles/email/how-to-setup-dkim-for-mailserver/).
 * To **limit number of email accounts per user** edit the email accounts limit when creating/editing hosting packages.
@@ -197,7 +197,7 @@ When disabled:
 * Users can not auto-login to webmail.
 
 Customize options:
-* To **set webmail domain or relay hosts** use the [*OpenAdmin > Emails > Email Settings* page](/docs/admin/emails/settings/).
+* To **set webmail domain or relay hosts** use the [*DavAdmin > Emails > Email Settings* page](/docs/admin/emails/settings/).
 
 
 ## Email Filters
@@ -288,16 +288,16 @@ When disabled:
 * Users do not have access to the *MySQL* section.
 
 Customize options:
-* To **set mysql or mariadb for all new users** use [*OpenAdmin > Settings > User Defaults* page and *MySQL type* option](/docs/admin/settings/defaults/).
-* To **set mysql, percona or mariadb for a single user** when creating their account use the [**MySQL Type** option](/docs/articles/docker/how-to-set-mysql-mariadb-per-user-in-openpanel/).
-* To **change default CPU/RAM for service** use the [*OpenAdmin > Settings > User Defaults* page](/docs/admin/settings/defaults/).
-* To **restrict access to system users** edit the [`mysql_restricted_usernames`](https://dev.openpanel.com/cli/config.html#mysql-restricted-usernames) setting.
-* To **restrict access to system databases** edit the [`mysql_restricted_databases`](https://dev.openpanel.com/cli/config.html#mysql-restricted-databases) setting.
-* To **increase the startup time allowed for waiting MySQL to initalize** increase [`mysql_startup_time`](https://dev.openpanel.com/cli/config.html#mysql-startup-time).
+* To **set mysql or mariadb for all new users** use [*DavAdmin > Settings > User Defaults* page and *MySQL type* option](/docs/admin/settings/defaults/).
+* To **set mysql, percona or mariadb for a single user** when creating their account use the [**MySQL Type** option](/docs/articles/docker/how-to-set-mysql-mariadb-per-user-in-davpanel/).
+* To **change default CPU/RAM for service** use the [*DavAdmin > Settings > User Defaults* page](/docs/admin/settings/defaults/).
+* To **restrict access to system users** edit the [`mysql_restricted_usernames`](https://dev.davpanel.com/cli/config.html#mysql-restricted-usernames) setting.
+* To **restrict access to system databases** edit the [`mysql_restricted_databases`](https://dev.davpanel.com/cli/config.html#mysql-restricted-databases) setting.
+* To **increase the startup time allowed for waiting MySQL to initalize** increase [`mysql_startup_time`](https://dev.davpanel.com/cli/config.html#mysql-startup-time).
 
 
 How-to guides:
-* To **connect to a database** refer to [*How-to Guides > Connecting to MySQL Server from Applications in OpenPanel](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-openpanel/).
+* To **connect to a database** refer to [*How-to Guides > Connecting to MySQL Server from Applications in DavPanel](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-davpanel/).
 * To **troubleshoot errors** refer to [*How-to Guides > How to troubleshoot: Error establishing a database connection](/docs/articles/databases/how-to-troubleshoot-error-establishing-a-database-connection/).
 
 
@@ -353,7 +353,7 @@ When disabled:
 * Users do not have access to the *phpMyAdmin* service.
 
 Customize options:
-* To **change CPU/RAM for phpMyAdmin service** or values: **php_max_execution_time, php_memory_limit, php_upload_limit** use [*OpenAdmin > Services > Service Limits](/docs/admin/services/limits/).
+* To **change CPU/RAM for phpMyAdmin service** or values: **php_max_execution_time, php_memory_limit, php_upload_limit** use [*DavAdmin > Services > Service Limits](/docs/admin/services/limits/).
 
 How-to guides:
 * To **import tables into a database** refer to [**the Documentation**](/docs/panel/mysql/phpmyadmin/#import-sql-files).
@@ -369,7 +369,7 @@ When disabled:
 * Users can not access the *MySQL > Import Database* page.
 
 Customize options:
-* To **set the max file size allowed for import** increase [`mysql_import_max_size_gb`](https://dev.openpanel.com/cli/config.html#mysql-import-max-size-gb) value.
+* To **set the max file size allowed for import** increase [`mysql_import_max_size_gb`](https://dev.davpanel.com/cli/config.html#mysql-import-max-size-gb) value.
 
 How-to guides:
 * To **import into a database** refer to [*How-to Guides > Importing a Database](/docs/articles/docker/import-database/).
@@ -386,9 +386,9 @@ When disabled:
 * Users can not access the *MySQL > Edit Configuration* page.
 
 Customize options:
-* To **set available options for configuration** edit file: [`/etc/openpanel/mysql/keys.txt`](https://github.com/stefanpejcic/openpanel-configuration/blob/main/mysql/keys.txt).
+* To **set available options for configuration** edit file: [`/etc/davpanel/mysql/keys.txt`](https://github.com/stefanpejcic/openpanel-configuration/blob/main/mysql/keys.txt).
 * To **edit the mysql.cnf file for a single user** edit file: `/home/${username}/custom.cnf`.
-* To **edit the mysql.cnf file for all new users** edit file: [`/etc/openpanel/mysql/user.cnf`](https://github.com/stefanpejcic/openpanel-configuration/blob/main/mysql/user.cnf).
+* To **edit the mysql.cnf file for all new users** edit file: [`/etc/davpanel/mysql/user.cnf`](https://github.com/stefanpejcic/openpanel-configuration/blob/main/mysql/user.cnf).
 
 
 
@@ -467,8 +467,8 @@ When disabled:
 * Users can not access the *Advanced > Cron Jobs* page nor modify crons.
 
 Customize options:
-* To **pre-set cronjobs for new users** edit the `/etc/openpanel/ofelia/users.ini` file.
-* To **set max file size for the cron file to be editable via OpenPanel UI** set the [`cron_max_file_size_kb`](https://dev.openpanel.com/cli/config.html#cron-max-file-size-kb) value.
+* To **pre-set cronjobs for new users** edit the `/etc/davpanel/ofelia/users.ini` file.
+* To **set max file size for the cron file to be editable via DavPanel UI** set the [`cron_max_file_size_kb`](https://dev.davpanel.com/cli/config.html#cron-max-file-size-kb) value.
 
 
 
@@ -488,7 +488,7 @@ Customize options:
 
 ## Server Info
 
-The **`info`** module allows users to view server information, hosting plan information and OpenPanel information.
+The **`info`** module allows users to view server information, hosting plan information and DavPanel information.
 
 When enabled:
 * Users can access the [**Advanced > Server Information** page](/docs/panel/advanced/server_info/).
@@ -513,7 +513,7 @@ When disabled:
 
 Customize options:
 * To **self-host a proxy service** - refer to [How-to Guides > Temporary Links API](/docs/articles/dev-experience/selfhosted-temporary-links-api/).
-* To **configure a custom domain** - update the [`temporary_links` option](https://dev.openpanel.com/cli/config.html#temporary-links).
+* To **configure a custom domain** - update the [`temporary_links` option](https://dev.davpanel.com/cli/config.html#temporary-links).
 
 ## Login History
 
@@ -526,7 +526,7 @@ When disabled:
 * Users can not access the *Account > Login History* page.
 
 Customize options:
-* To **control number of logins stored per user** edit 'Login records to keep per user' setting from [OpenAdmin > Settings > OpenPanel](/docs/admin/settings/openpanel/#Statistics).
+* To **control number of logins stored per user** edit 'Login records to keep per user' setting from [DavAdmin > Settings > DavPanel](/docs/admin/settings/davpanel/#Statistics).
 
 
 ## 2FA
@@ -541,9 +541,9 @@ When disabled:
 * Users can not access the *Advanced > Two-Factor Authentication* page nor manage 2FA.
 
 Customize options:
-* To **enable 2FA widget** use [*OpenAdmin > Settings > OpenPanel* page and *Display 2FA widget* option](/docs/admin/settings/openpanel/).
-* To **enforce 2FA for all users** use [*OpenAdmin > Settings > OpenPanel* page and *Enforce 2FA* option](/docs/admin/settings/openpanel/).
-* To **check 2FA status for a user** refer to [How to check if 2FA is active for OpenPanel user account?](https://community.openpanel.org/d/220-how-to-check-if-2fa-is-active-for-openpanel-user-account).
+* To **enable 2FA widget** use [*DavAdmin > Settings > DavPanel* page and *Display 2FA widget* option](/docs/admin/settings/davpanel/).
+* To **enforce 2FA for all users** use [*DavAdmin > Settings > DavPanel* page and *Enforce 2FA* option](/docs/admin/settings/davpanel/).
+* To **check 2FA status for a user** refer to [How to check if 2FA is active for DavPanel user account?](https://community.davpanel.org/d/220-how-to-check-if-2fa-is-active-for-davpanel-user-account).
 
 ## Passkeys
 
@@ -569,10 +569,10 @@ When disabled:
 * Users can not access the *Account > Activity Log* page.
 
 Customize options:
-* To **edit activity log from terminal** open file: `/etc/openpanel/openpanel/core/users/{username}/activity.log`.
+* To **edit activity log from terminal** open file: `/etc/davpanel/davpanel/core/users/{username}/activity.log`.
 * To **set total number of lines per user** edit `activity_lines_retention` setting.
 * To **set total size of log per user** edit `activity_max_size_bytes` setting.
-* To **log actions from 3rd-party plugin** refer to: [*How to log actions from Custom Plugins in user Activity Log*](https://community.openpanel.org/d/218-how-to-log-actions-from-custom-plugins-in-user-activity-log)
+* To **log actions from 3rd-party plugin** refer to: [*How to log actions from Custom Plugins in user Activity Log*](https://community.davpanel.org/d/218-how-to-log-actions-from-custom-plugins-in-user-activity-log)
 
 
 ## Backups
@@ -732,14 +732,14 @@ When enabled:
 When disabled:
 * Users can not access the *Websites > WP Manager* page.
 * WordPress is not available in Autoinstaller.
-* WordPress websites can not be managed via Openpanel.
+* WordPress websites can not be managed via Davpanel.
 
 Customize options:
-* To **auto install themes or plugins on new installations** refer to: [*WordPress Themes and Plugins Sets*](/docs/articles/websites/wordpress-plugins-themes-sets-in-openpanel/)
+* To **auto install themes or plugins on new installations** refer to: [*WordPress Themes and Plugins Sets*](/docs/articles/websites/wordpress-plugins-themes-sets-in-davpanel/)
 * To **add a custom Google PageSpeed Insights API Key** refer to: [*How-to Guides > Google PageSpeed Insights API Key*](/docs/articles/websites/google-pagespeed-insights-api-key/)
-* To **setup a mu-plugin on all new websites** edit `/etc/openpanel/wordpress/mu-plugin.php` file.
-* To **set a custom WP-CLI for all websites** replace the `/etc/openpanel/wordpress/wp-cli.phar` file.
-* To **customize .htaccess files used for new websites** edit files in `/etc/openpanel/wordpress/htaccess/` folder.
+* To **setup a mu-plugin on all new websites** edit `/etc/davpanel/wordpress/mu-plugin.php` file.
+* To **set a custom WP-CLI for all websites** replace the `/etc/davpanel/wordpress/wp-cli.phar` file.
+* To **customize .htaccess files used for new websites** edit files in `/etc/davpanel/wordpress/htaccess/` folder.
 
 ## Website Builder
 
@@ -754,18 +754,18 @@ When enabled:
 When disabled:
 * Users can not access the *Websites > Website Builder* page.
 * Website Builder is not available in Autoinstaller.
-* Static websites can not be managed via Openpanel.
+* Static websites can not be managed via Davpanel.
 
 ## Mautic
 
-The **`mautic`** module allows users to install and manage Mautic from OpenPanel. 
+The **`mautic`** module allows users to install and manage Mautic from DavPanel. 
 
 > **NOTE:** This module is no longer actively maintained and should not be used in production (*BETA* tag).
 
 When enabled:
 * Users can [manage Mautic websites using Site Manager](/docs/panel/applications/).
 * Mautic is available on the AutoInstaller page.
-* Users can [install Mautic using the AutoInstaller](/docs/articles/websites/how-to-install-mautic-with-openpanel/).
+* Users can [install Mautic using the AutoInstaller](/docs/articles/websites/how-to-install-mautic-with-davpanel/).
 
 When disabled:
 * Mautic is not available in Autoinstaller.
@@ -785,7 +785,7 @@ When disabled:
 * ClamAV service is not started on the server.
 
 Customize options:
-* To **customize the cpu/memory limits for the ClamAV service** refer to: [*OpenAdmin > Services > Service Limits*](/docs/admin/services/limits/).
+* To **customize the cpu/memory limits for the ClamAV service** refer to: [*DavAdmin > Services > Service Limits*](/docs/admin/services/limits/).
 
 
 
@@ -828,8 +828,8 @@ When disabled:
 * Users can not manage domains.
 
 Customize options:
-* To **enable HSTS for a domain** refer to:  [*How-to Guides > How to Enable HSTS on a Domain in OpenPanel*](/docs/articles/domains/how-to-enable-hsts-on-a-domain-in-openpanel/)
-* To **customize default pages** refer to: [*OpenAdmin > Domains > Edit Domain Templates*](/docs/admin/domains/file_templates/)
+* To **enable HSTS for a domain** refer to:  [*How-to Guides > How to Enable HSTS on a Domain in DavPanel*](/docs/articles/domains/how-to-enable-hsts-on-a-domain-in-davpanel/)
+* To **customize default pages** refer to: [*DavAdmin > Domains > Edit Domain Templates*](/docs/admin/domains/file_templates/)
 
 
 ## Suspend Domains
@@ -844,7 +844,7 @@ When disabled:
 * Users can not suspend/unsuspend domains.
 
 Customize options:
-* To **customize the suspended domain template** use:  [*OpenAdmin > Domains > Edit Domain Templates*](/docs/admin/domains/file_templates/#suspended-website)
+* To **customize the suspended domain template** use:  [*DavAdmin > Domains > Edit Domain Templates*](/docs/admin/domains/file_templates/#suspended-website)
 
 ## Raw Access Logs
 
@@ -860,7 +860,7 @@ When disabled:
 
 ## GoAccess
 
-The **`goaccess`** module runs the GoAccess service on a scheduled basis to process raw domain logs and produce HTML reports accessible through the OpenPanel UI.
+The **`goaccess`** module runs the GoAccess service on a scheduled basis to process raw domain logs and produce HTML reports accessible through the DavPanel UI.
 
 When enabled:
 * GoAccess service is run on the server.
@@ -870,10 +870,10 @@ When disabled:
 * Users can not access the *Domains > GoAccess* page.
 
 Customize options:
-* To **disable GoACcess report generation** update the: [*`goaccess_enable` value*](https://dev.openpanel.com/cli/config.html#goaccess-enable)
-* To **change how often the reports are generated (default = @daily)** edit the schedule for `domains-stats` cron and the [`goaccess_schedule` value](https://dev.openpanel.com/cli/config.html#goaccess-schedule).
+* To **disable GoACcess report generation** update the: [*`goaccess_enable` value*](https://dev.davpanel.com/cli/config.html#goaccess-enable)
+* To **change how often the reports are generated (default = @daily)** edit the schedule for `domains-stats` cron and the [`goaccess_schedule` value](https://dev.davpanel.com/cli/config.html#goaccess-schedule).
 * To **generate the data manually** execute `domains-stats` cron.
-* To **force regeneration of the reports* refer to: [*OpenCLI Documentation > Parse domain access logs*](https://dev.openpanel.com/cli/domains.html#Parse-domain-access-logs).
+* To **force regeneration of the reports* refer to: [*DavCLI Documentation > Parse domain access logs*](https://dev.davpanel.com/cli/domains.html#Parse-domain-access-logs).
 
 
 ## Docroot
@@ -901,7 +901,7 @@ When disabled:
 
 ## Capitalize Domains
 
-The **`capitalize_domains`** module allows users to set a capitalized version fo the domain for dispaly in the OpenPanel.
+The **`capitalize_domains`** module allows users to set a capitalized version fo the domain for dispaly in the DavPanel.
 
 When enabled:
 * Users can access the [**Domains > Capitalize Domains** page](/docs/panel/domains/capitalize/).
@@ -921,7 +921,7 @@ When disabled:
 * Users can not access the *Domains > Edit VHosts File* page.
 
 Customize options:
-* To **customize the vhost files for Apache/Nginx/OpenLiteSpeed** refer to: [*OpenAdmin > Domains > Edit Domain Templates*](/docs/admin/domains/file_templates/#apache-virtualhost)
+* To **customize the vhost files for Apache/Nginx/OpenLiteSpeed** refer to: [*DavAdmin > Domains > Edit Domain Templates*](/docs/admin/domains/file_templates/#apache-virtualhost)
 
 
 ## Webserver
@@ -938,10 +938,10 @@ When disabled:
 * Users can not access the *Advanced > WebServer Settings* page.
 
 Customize options:
-* To **customize the default `httpd.conf` file for Apache** edit `/etc/openpanel/apache/httpd.conf` file.
-* To **customize the default `nginx.conf` file for Nginx** edit `/etc/openpanel/nginx/nginx.conf` file.
-* To **customize the default `openlitespeed.conf` file for OpenLiteSpeed** edit `/etc/openpanel/openlitespeed/httpd_config.conf` file.
-* To **customize the default `nginx.conf` file for OpenResty** edit `/etc/openpanel/openresty/nginx.conf` file.
+* To **customize the default `httpd.conf` file for Apache** edit `/etc/davpanel/apache/httpd.conf` file.
+* To **customize the default `nginx.conf` file for Nginx** edit `/etc/davpanel/nginx/nginx.conf` file.
+* To **customize the default `openlitespeed.conf` file for OpenLiteSpeed** edit `/etc/davpanel/openlitespeed/httpd_config.conf` file.
+* To **customize the default `nginx.conf` file for OpenResty** edit `/etc/davpanel/openresty/nginx.conf` file.
 
 ## DNS
 
@@ -952,19 +952,19 @@ When enabled:
 * Users can access the [**Domains > DNS Zone Editor** page](/docs/panel/domains/dns/).
 * DNS zone files are created for new domains.
 * Users can manage DNS records.
-* 'Edit Zone' links are available for domains under the *OpenPanel > Domains* page.
-* Administrators can access the [**OpenAdmin > Domains > DNS Cluster** page](/docs/admin/domains/dns-cluster/).
-* Administrators can access the [**OpenAdmin > Domains > Edit Zone Templates** page](/docs/admin/domains/dns_templates/).
-* Administrators can access the [**OpenAdmin > Domains > DNS Zone Editor** page](/docs/admin/domains/dns/).
+* 'Edit Zone' links are available for domains under the *DavPanel > Domains* page.
+* Administrators can access the [**DavAdmin > Domains > DNS Cluster** page](/docs/admin/domains/dns-cluster/).
+* Administrators can access the [**DavAdmin > Domains > Edit Zone Templates** page](/docs/admin/domains/dns_templates/).
+* Administrators can access the [**DavAdmin > Domains > DNS Zone Editor** page](/docs/admin/domains/dns/).
 
 When disabled:
 * Users can not access the *Domains > DNS Zone Editor* page.
-* Administrators can not access the *DNS Zone Editor*, *Edit Zone Templates*, and *DNS Cluster* pages in OpenAdmin.
+* Administrators can not access the *DNS Zone Editor*, *Edit Zone Templates*, and *DNS Cluster* pages in DavAdmin.
 
 Customize options:
-* To **configure nameservers** refer to: [*How-to Guides > Configure Nameservers*](/docs/articles/domains/how-to-configure-nameservers-in-openpanel/)
-* To **customize DNS zone templates** refer to: [OpenAdmin > Domains > Edit Zone Templates](/docs/admin/domains/dns_templates/)
-* To **configure a DNS cluster** refer to:  [*How-to Guides > DNS Clustering*](/docs/articles/domains/how-to-setup-dns-cluster-in-openpanel/)
+* To **configure nameservers** refer to: [*How-to Guides > Configure Nameservers*](/docs/articles/domains/how-to-configure-nameservers-in-davpanel/)
+* To **customize DNS zone templates** refer to: [DavAdmin > Domains > Edit Zone Templates](/docs/admin/domains/dns_templates/)
+* To **configure a DNS cluster** refer to:  [*How-to Guides > DNS Clustering*](/docs/articles/domains/how-to-setup-dns-cluster-in-davpanel/)
 
 
 ## Dynamic DNS
@@ -1006,7 +1006,7 @@ When disabled:
 * 'Firewall' widget is not displayed in Site Manager.
 
 Customize options:
-* [**WAF commmands**](https://dev.openpanel.com/cli/waf.html#CorazaWAF)
+* [**WAF commmands**](https://dev.davpanel.com/cli/waf.html#CorazaWAF)
 
 ## PHP
 
@@ -1023,12 +1023,12 @@ When disabled:
 * Users can not set PHP version per domain, set default version for new domains, edit options and view installed extensions.
 
 Customize options:
-* To **set the default PHP version to be used for new users** refer to: [*OpenAdmin > Settings > Edit User Defaults > Default PHP version*](/docs/panel/php/options/#available-options)
-* To **set default cpu/memory limits for PHP versions and additional PHP options** refer to: [*OpenAdmin > Settings > Edit User Defaults > Services*](/docs/panel/php/options/#available-options)
-* To **install a PHP extension** refer to: [*How-to Guides > How to install a PHP extension in OpenPanel*](/docs/articles/websites/how-to-install-php-extensions-in-openpanel/).
+* To **set the default PHP version to be used for new users** refer to: [*DavAdmin > Settings > Edit User Defaults > Default PHP version*](/docs/panel/php/options/#available-options)
+* To **set default cpu/memory limits for PHP versions and additional PHP options** refer to: [*DavAdmin > Settings > Edit User Defaults > Services*](/docs/panel/php/options/#available-options)
+* To **install a PHP extension** refer to: [*How-to Guides > How to install a PHP extension in DavPanel*](/docs/articles/websites/how-to-install-php-extensions-in-davpanel/).
 * To **increase PHP INI memory_limit** refer to: [*How-to Guides > How to set or increase PHP INI memory_limit or other values?*](/docs/articles/websites/how-to-set-or-increase-PHP-INI-memory-limit-or-other-values/).
 * To **set PHP settings per website** refer to: [*How-to Guides > PHP settings per website (folder)*](/docs/articles/websites/php-user-ini-files/).
-* To **edit default .INI files** refer to: **OpenAdmin > Settings > PHP Settings > Default PHP.INI Files** or edit files in `/etc/openpanel/php/ini` folder.
+* To **edit default .INI files** refer to: **DavAdmin > Settings > PHP Settings > Default PHP.INI Files** or edit files in `/etc/davpanel/php/ini` folder.
 
 ## PHP Options
 
@@ -1041,7 +1041,7 @@ When disabled:
 * Users can not access the *PHP Options* page.
 
 Customize options:
-* To **customize PHP options available to users** refer to: **OpenAdmin > Settings > PHP Settings > Available Options** or edit */etc/openpanel/php/options.txt* file.
+* To **customize PHP options available to users** refer to: **DavAdmin > Settings > PHP Settings > Available Options** or edit */etc/davpanel/php/options.txt* file.
 
 
 
@@ -1057,12 +1057,12 @@ When enabled:
 
 When disabled:
 * NodeJS and Python are not available on the Autoinstaller page.
-* NodeJS and Python applications can not be managed via Openpanel.
+* NodeJS and Python applications can not be managed via Davpanel.
 
 Customize options:
-* To **customize docker service template for new Python applications** edit `/etc/openpanel/docker/compose/python.yml` file.
-* To **customize docker service template for new Node.JS applications** edit `/etc/openpanel/docker/compose/nodejs.yml` file.
-* To **customize headers for Nginx proxy of new python/node application** edit `/etc/openpanel/nginx/vhosts/1.1/nginx_proxy_headers.txt` file.
+* To **customize docker service template for new Python applications** edit `/etc/davpanel/docker/compose/python.yml` file.
+* To **customize docker service template for new Node.JS applications** edit `/etc/davpanel/docker/compose/nodejs.yml` file.
+* To **customize headers for Nginx proxy of new python/node application** edit `/etc/davpanel/nginx/vhosts/1.1/nginx_proxy_headers.txt` file.
 * To **add a custom Google PageSpeed Insights API Key** refer to: [*How-to Guides > Google PageSpeed Insights API Key*](/docs/articles/websites/google-pagespeed-insights-api-key/)
 
 
@@ -1082,20 +1082,20 @@ When disabled:
 * Users can not access the *Advanced > Resource Usage* page.
 
 Customize options:
-* To **edit page settings** refer to: [**OpenAdmin > Settings > OpenPanel > Statistics** page](/docs/admin/settings/openpanel/#statistics).
+* To **edit page settings** refer to: [**DavAdmin > Settings > DavPanel > Statistics** page](/docs/admin/settings/davpanel/#statistics).
 * To **change how often the stats are collected (default = @hourly)** edit the schedule for `docker-collect_stats --all` cron.
-* To **display one combined or separate charts for cpu/ram** edit [`resource_usage_charts_mode` value](https://dev.openpanel.com/cli/config.html#resource-usage-charts-mode).
-* To **change the number of items per page** edit [`resource_usage_items_per_page` value](https://dev.openpanel.com/cli/config.html#resource-usage-items-per-page).
-* To **rotate the** edit [`resource_usage_retention` value](https://dev.openpanel.com/cli/config.html#resource-usage-retention).
+* To **display one combined or separate charts for cpu/ram** edit [`resource_usage_charts_mode` value](https://dev.davpanel.com/cli/config.html#resource-usage-charts-mode).
+* To **change the number of items per page** edit [`resource_usage_items_per_page` value](https://dev.davpanel.com/cli/config.html#resource-usage-items-per-page).
+* To **rotate the** edit [`resource_usage_retention` value](https://dev.davpanel.com/cli/config.html#resource-usage-retention).
 
 
 ## API
 
-The **`api`** module allows users to access the OpenPanel API using JWT tokens.
+The **`api`** module allows users to access the DavPanel API using JWT tokens.
 
 When enabled:
 * Users can access the [*Account > API Reference* page](/docs/panel/account/api/).
-* Users can use the [OpenPanel API](/docs/panel/api/).
+* Users can use the [DavPanel API](/docs/panel/api/).
 
 When disabled:
-* Users can not use the OpenPanel API.
+* Users can not use the DavPanel API.

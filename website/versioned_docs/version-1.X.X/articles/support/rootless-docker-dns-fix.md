@@ -1,4 +1,4 @@
-# Fixing Outbound DNS/Internet Access in Rootless Docker (OpenPanel)
+# Fixing Outbound DNS/Internet Access in Rootless Docker (DavPanel)
 
 ## Symptom
 
@@ -86,7 +86,7 @@ Both commands should now return valid output instead of timing out.
 Collect and review the following before escalating to platform support:
 
 ```bash
-opencli report --public
+davcli report --public
 docker info
 docker --context=<user> network inspect <network-name>
 ```

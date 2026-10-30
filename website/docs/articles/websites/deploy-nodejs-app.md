@@ -1,14 +1,14 @@
 ---
 sidebar_label: "Deploy a Node.js / Next.js App"
-description: "How to deploy a Node.js app (Express, Next.js, Nuxt, NestJS) on OpenPanel: startup command, port, npm install, deploying from Git, environment variables, databases and troubleshooting."
+description: "How to deploy a Node.js app (Express, Next.js, Nuxt, NestJS) on DavPanel: startup command, port, npm install, deploying from Git, environment variables, databases and troubleshooting."
 ---
 
 # How to Deploy a Node.js App (Express, Next.js and More)
 
-This guide shows how to host a **Node.js** application on OpenPanel - an Express API, a Next.js or Nuxt site, NestJS, or any other Node server. The app runs in its own Node.js container, and OpenPanel's web server forwards your domain to it with free SSL.
+This guide shows how to host a **Node.js** application on DavPanel - an Express API, a Next.js or Nuxt site, NestJS, or any other Node server. The app runs in its own Node.js container, and DavPanel's web server forwards your domain to it with free SSL.
 
 :::info
-Node.js applications are available in **OpenPanel Enterprise**, and the feature must be enabled for your hosting plan.
+Node.js applications are available in **DavPanel Enterprise**, and the feature must be enabled for your hosting plan.
 :::
 
 ---
@@ -16,7 +16,7 @@ Node.js applications are available in **OpenPanel Enterprise**, and the feature 
 ## How It Works
 
 - Your code lives in the domain folder, e.g. `/var/www/html/example.com/`.
-- OpenPanel runs an official `node` container with that folder as the working directory.
+- DavPanel runs an official `node` container with that folder as the working directory.
 - On every start it can run `npm install`, then your **startup command**.
 - The web server proxies `https://example.com` to the **port** your app listens on. WebSockets are supported.
 
@@ -26,14 +26,14 @@ Your app must listen on `0.0.0.0` (all interfaces), not `127.0.0.1`.
 
 ## Step 1: Add the Domain and Upload the Code
 
-1. Add the domain in **OpenPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
+1. Add the domain in **DavPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
 2. Upload the project to the domain folder with the [File Manager](/docs/panel/files/files/) or [FTP](/docs/panel/files/FTP/) - without `node_modules/`. Or deploy it from Git (below).
 
 ---
 
 ## Step 2: Create the Application
 
-Go to **OpenPanel → Websites → Install App → Setup Node.js Application** and fill in:
+Go to **DavPanel → Websites → Install App → Setup Node.js Application** and fill in:
 
 | Field | Express example | Next.js example |
 |---|---|---|
@@ -47,8 +47,8 @@ Go to **OpenPanel → Websites → Install App → Setup Node.js Application** a
 | **Git repository** | optional | optional |
 | **CPU / Memory** | `0.5` / `0.5` GB | `1` / `2` GB (builds need memory) |
 
-![Install Node.js Application form with the application details, domain, startup file and the Small, Medium and Large resource presets](/img/openpanel-screenshots/applications/nodejs_install-form.png#gh-light-mode-only)
-![Install Node.js Application form with the application details, domain, startup file and the Small, Medium and Large resource presets](/img/openpanel-screenshots/applications/nodejs_install-form_dark.png#gh-dark-mode-only)
+![Install Node.js Application form with the application details, domain, startup file and the Small, Medium and Large resource presets](/img/davpanel-screenshots/applications/nodejs_install-form.png#gh-light-mode-only)
+![Install Node.js Application form with the application details, domain, startup file and the Small, Medium and Large resource presets](/img/davpanel-screenshots/applications/nodejs_install-form_dark.png#gh-dark-mode-only)
 
 Click **Start Installation**, then open your domain.
 
@@ -60,7 +60,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get("/", (req, res) => res.send("Hello from Node.js on OpenPanel!"));
+app.get("/", (req, res) => res.send("Hello from Node.js on DavPanel!"));
 
 app.listen(port, "0.0.0.0", () => console.log(`Listening on ${port}`));
 ```
@@ -73,7 +73,7 @@ app.listen(port, "0.0.0.0", () => console.log(`Listening on ${port}`));
 | **Nuxt 3** | `npm run build && node .output/server/index.mjs` (set `PORT=3000`, `HOST=0.0.0.0` in `.env`) |
 | **NestJS** | `npm run build && node dist/main.js` |
 | **Remix / React Router** | `npm run build && npm start` |
-| **Static React / Vue / Vite build** | No Node app needed - build locally and upload `dist/` as a [static site](/docs/articles/websites/hosting-a-static-website-with-openpanel/) |
+| **Static React / Vue / Vite build** | No Node app needed - build locally and upload `dist/` as a [static site](/docs/articles/websites/hosting-a-static-website-with-davpanel/) |
 
 :::tip Faster restarts
 Building on every start makes restarts slow. For large apps, build locally or in CI, upload the built output, and use only the start command (e.g. `npx next start -H 0.0.0.0 -p 3000`).
@@ -104,7 +104,7 @@ Restart the app after changing `.env`. Don't commit it to Git.
 
 ## Databases and Redis
 
-Inside OpenPanel, services are reached by name - never `localhost`:
+Inside DavPanel, services are reached by name - never `localhost`:
 
 | Service | Host | Port |
 |---|---|---|
@@ -113,16 +113,16 @@ Inside OpenPanel, services are reached by name - never `localhost`:
 | MongoDB | `mongodb` | `27017` |
 | Redis | `redis` | `6379` |
 
-See [connecting to MySQL from applications](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-openpanel/).
+See [connecting to MySQL from applications](/docs/articles/databases/how-to-connect-to-mysql-from-php-applications-in-davpanel/).
 
 ---
 
 ## Managing the App
 
-In **OpenPanel → Websites → Sites**, click **Manage** next to the app to **start, stop or restart** it, view **Logs** (`console.log` output and errors), edit `package.json` and run npm under **Install Packages**, and change the Node version, startup command and CPU/memory limits under **Overview**.
+In **DavPanel → Websites → Sites**, click **Manage** next to the app to **start, stop or restart** it, view **Logs** (`console.log` output and errors), edit `package.json` and run npm under **Install Packages**, and change the Node version, startup command and CPU/memory limits under **Overview**.
 
-![Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions](/img/openpanel-screenshots/applications/nodejs-site.png#gh-light-mode-only)
-![Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions](/img/openpanel-screenshots/applications/nodejs-site_dark.png#gh-dark-mode-only)
+![Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions](/img/davpanel-screenshots/applications/nodejs-site.png#gh-light-mode-only)
+![Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions](/img/davpanel-screenshots/applications/nodejs-site_dark.png#gh-dark-mode-only)
 
 More: [Node.js applications](/docs/panel/applications/nodejs/).
 

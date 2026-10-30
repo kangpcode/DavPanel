@@ -4,43 +4,43 @@ sidebar_position: 1
 
 # Users
 
-OpenPanel has a single user role named **User** that can only manage their docker container and inherits settings specified by the Admin user.
+DavPanel has a single user role named **User** that can only manage their docker container and inherits settings specified by the Admin user.
 
 
 ## List Users
 
 
 <Tabs>
-  <TabItem value="openadmin-users" label="OpenAdmin" default>
+  <TabItem value="davadmin-users" label="DavAdmin" default>
   
-  To access all OpenPanel users, navigate to  Users.
+  To access all DavPanel users, navigate to  Users.
   
   The Users page displays a table with user information and buttons to manage it.
   
-  ![openadmin users page](/img/admin/openadmin_users_list.gif)
+  ![davadmin users page](/img/admin/davadmin_users_list.gif)
   
   Additional Columns can be displayed using the 'Show Columns' button.
 
   Suspended users are highlighted in red, and no actions can be performed on a suspended user.
 
   </TabItem>
-  <TabItem value="CLI-users" label="OpenCLI">
+  <TabItem value="CLI-users" label="DavCLI">
 
 To list all users, use the following command:
 
 ```bash
-opencli user-list
+davcli user-list
 ```
 
 Example output:
 ```bash
-opencli user-list
+davcli user-list
 +----+----------------------------------+----------------------+----------------+------------------+-------+---------------------+
 | id | username                         | email                | plan_name      | server           | owner | registered_date     |
 +----+----------------------------------+----------------------+----------------+------------------+-------+---------------------+
-|  3 | forums                           | stefan@openpanel.com | Standard plan  | forums           | NULL  | 2025-05-08 19:25:47 |
-|  7 | pcx3                             | stefan@pejcic.rs     | Developer Plus | pcx3             | NULL  | 2025-05-09 12:26:20 |
-|  9 | openpanelwebsite                 | info@openpanel.com   | Standard plan  | openpanelwebsite | NULL  | 2025-05-09 14:47:27 |
+|  3 | forums                           | stefan@davpanel.com | Standard plan  | forums           | NULL  | 2025-05-08 19:25:47 |
+|  7 | pcx3                             | kangpcode@users.noreply.github.com     | Developer Plus | pcx3             | NULL  | 2025-05-09 12:26:20 |
+|  9 | davpanelwebsite                 | info@davpanel.com   | Standard plan  | davpanelwebsite | NULL  | 2025-05-09 14:47:27 |
 | 19 | SUSPENDED_20250529173435_radovan | radovan@jecmenica.rs | Standard plan  | radovan          | NULL  | 2025-05-29 07:47:15 |
 +----+----------------------------------+----------------------+----------------+------------------+-------+---------------------+
 ```
@@ -48,7 +48,7 @@ opencli user-list
 You can also format the data as JSON:
 
 ```bash
-opencli user-list --json
+davcli user-list --json
 ```
   </TabItem>
   <TabItem value="API-users" label="API">
@@ -67,23 +67,23 @@ curl -X GET http://PANEL:2087/api/users -H "Authorization: Bearer JWT_TOKEN_HERE
 
 
 <Tabs>
-  <TabItem value="openadmin-users-new" label="OpenAdmin" default>
+  <TabItem value="davadmin-users-new" label="DavAdmin" default>
 
 To create a new user, click on the 'New User' button on the Users page. A new section will be displayed with a form where you can set the email address, username, generate a strong password, and assign a hosting plan for the user.
 
-![add new user openadmin](/img/admin/2025-06-09_08-20.png)
+![add new user davadmin](/img/admin/2025-06-09_08-20.png)
 
   </TabItem>
-  <TabItem value="CLI-users-new" label="OpenCLI">
+  <TabItem value="CLI-users-new" label="DavCLI">
 
 To create a new user run the following command:
 
 ```bash
-opencli user-add <USERNAME> <PASSWORD> <EMAIL> <PLAN_NAME>
+davcli user-add <USERNAME> <PASSWORD> <EMAIL> <PLAN_NAME>
 ```
 Example: 
 ```bash
-opencli user-add filip password1234 filip@openadmin.com default_plan_apache
+davcli user-add filip password1234 filip@davadmin.com default_plan_apache
 ```
 
 :::tip
@@ -100,7 +100,7 @@ curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer JWT_T
 
 Example:
 ```bash
-curl -X POST "http://PANEL:2087/api/users" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGcBns" -H "Content-Type: application/json" -d '{"username":"stefan","password":"strongishpassword1234","email":"stefan@pejcic.rs","plan_name":"default_plan_nginx"}'
+curl -X POST "http://PANEL:2087/api/users" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGcBns" -H "Content-Type: application/json" -d '{"username":"stefan","password":"strongishpassword1234","email":"kangpcode@users.noreply.github.com","plan_name":"default_plan_nginx"}'
 ```
 
 Example response:
@@ -117,8 +117,8 @@ Example response:
   </TabItem>
 </Tabs>
 
-- The OpenPanel username must be 3 to 16 characters long and can only contain letters and numbers.
-- The OpenPanel password must be 6 to 30 characters long and can include any characters except for single quotes (`'`) and double quotes (`"`).
+- The DavPanel username must be 3 to 16 characters long and can only contain letters and numbers.
+- The DavPanel password must be 6 to 30 characters long and can include any characters except for single quotes (`'`) and double quotes (`"`).
 
 
 ## Single User
@@ -212,26 +212,26 @@ From the Edit tab, Administrators can edit user information:
 ### Suspend
 
 <Tabs>
-  <TabItem value="openadmin-user-suspend" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-suspend" label="With DavAdmin" default>
 
-Suspending an account will immediately disable the user's access to the OpenPanel. This action involves pausing the user's Docker container and revoking access to their email, website, and other associated services. Please be aware of the immediate impact before proceeding.
+Suspending an account will immediately disable the user's access to the DavPanel. This action involves pausing the user's Docker container and revoking access to their email, website, and other associated services. Please be aware of the immediate impact before proceeding.
 
 To suspend a user click on the Suspend link on that user page and type the username to confirm, then click on 'Suspend account' button.
 
-![suspend user](/img/admin/openadmin_suspend_user.gif)
+![suspend user](/img/admin/davadmin_suspend_user.gif)
 
   </TabItem>
-  <TabItem value="CLI-user-suspend" label="With OpenCLI">
+  <TabItem value="CLI-user-suspend" label="With DavCLI">
 
 To suspend (temporary disable access) to user, run the following command:
 
 ```bash
-opencli user-suspend <USERNAME>
+davcli user-suspend <USERNAME>
 ```
 Example:
 
 ```bash
-opencli user-suspend filip
+davcli user-suspend filip
 ```
 
 
@@ -241,22 +241,22 @@ opencli user-suspend filip
 ### Unsuspend
 
 <Tabs>
-  <TabItem value="openadmin-user-unsuspend" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-unsuspend" label="With DavAdmin" default>
 
 To unsuspend a user click on the Unsuspend button for that user.
 
   </TabItem>
-  <TabItem value="CLI-user-unsuspend" label="With OpenCLI">
+  <TabItem value="CLI-user-unsuspend" label="With DavCLI">
     
 To unsuspend (enable access) to user, run the following command:
 
 ```bash
-opencli user-unsuspend <USERNAME>
+davcli user-unsuspend <USERNAME>
 ```
 
 Example:
 ```bash
-opencli user-unsuspend filip
+davcli user-unsuspend filip
 ```
 
   </TabItem>
@@ -266,20 +266,20 @@ opencli user-unsuspend filip
 ### Reset Password
 
 <Tabs>
-  <TabItem value="openadmin-users-reset" label="OpenAdmin" default>
+  <TabItem value="davadmin-users-reset" label="DavAdmin" default>
 
 To reset password for a user, click on "Edit" tab and set the new password in the Password field then click Save.
 
-![add new user openadmin](/img/admin/reset_password.png)
+![add new user davadmin](/img/admin/reset_password.png)
 
 
   </TabItem>
-  <TabItem value="CLI-users-reset" label="OpenCLI">
+  <TabItem value="CLI-users-reset" label="DavCLI">
 
-To reset the password for a OpenPanel user, you can use the `user-password` command:
+To reset the password for a DavPanel user, you can use the `user-password` command:
 
 ```bash
-opencli user-password <USERNAME> <NEW_PASSWORD>
+davcli user-password <USERNAME> <NEW_PASSWORD>
 ```
 
 Use the `--ssh` flag to also change the password for the SSH user in the container.
@@ -287,13 +287,13 @@ Use the `--ssh` flag to also change the password for the SSH user in the contain
 Example:
 
 ```bash
-opencli user-password filip Ty7_K8_M2 --ssh
+davcli user-password filip Ty7_K8_M2 --ssh
 ```
 
   </TabItem>
   <TabItem value="API-users-reset" label="API">
 
-To reset password for an OpenPanel user, use the following api call:
+To reset password for an DavPanel user, use the following api call:
 
 ```bash
 curl -X PATCH http://PANEL:2087/api/users/USERNAME_HERE -H "Content-Type: application/json" -H "Authorization: Bearer JWT_TOKEN_HERE" -d '{"password": "NEW_PASSWORD_HERE"}'
@@ -306,24 +306,24 @@ curl -X PATCH http://PANEL:2087/api/users/USERNAME_HERE -H "Content-Type: applic
 ### Rename
 
 <Tabs>
-  <TabItem value="openadmin-user-username" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-username" label="With DavAdmin" default>
 
 To Rename a user, click on the 'Edit Information' link for the user, then change the address in 'Username' field and click on 'Save changes'.
 
 
   </TabItem>
-  <TabItem value="CLI-user-email" label="With OpenCLI">
+  <TabItem value="CLI-user-email" label="With DavCLI">
 
 To change username for a user run the following command:
 
 ```bash
-opencli user-rename <old_username> <new_username>
+davcli user-rename <old_username> <new_username>
 ```
 
 Example:
 
 ```bash
-#opencli user-rename stefan pejcic
+#davcli user-rename stefan pejcic
 User 'stefan' successfully renamed to 'pejcic'.
 ```
   </TabItem>
@@ -333,17 +333,17 @@ User 'stefan' successfully renamed to 'pejcic'.
 ### Change Package
 
 <Tabs>
-  <TabItem value="openadmin-user-plan" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-plan" label="With DavAdmin" default>
 
 To change a package for a user, click on the 'Edit' link for the user, then select the new package and click on 'Save changes'.
 
   </TabItem>
-  <TabItem value="CLI-user-plan" label="With OpenCLI">
+  <TabItem value="CLI-user-plan" label="With DavCLI">
 
 To change a package for a user run the following command:
 
 ```bash
-opencli user-change_plan <USERNAME> '<NEW_PLAN_NAME>'
+davcli user-change_plan <USERNAME> '<NEW_PLAN_NAME>'
 ```
   </TabItem>
 </Tabs>
@@ -352,58 +352,58 @@ opencli user-change_plan <USERNAME> '<NEW_PLAN_NAME>'
 ### Change Email
 
 <Tabs>
-  <TabItem value="openadmin-user-email" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-email" label="With DavAdmin" default>
 
 To change email address for a user, click on the 'Edit Information' link for the user, then change the address in 'Email address' field and click on 'Save changes'.
 
   </TabItem>
-  <TabItem value="CLI-user-email" label="With OpenCLI">
+  <TabItem value="CLI-user-email" label="With DavCLI">
 
 To change email address for a user run the following command:
 
 ```bash
-opencli user-email <USERNAME> <NEW_EMAIL>
+davcli user-email <USERNAME> <NEW_EMAIL>
 ```
 
 Example:
 
 ```bash
-#opencli user-email stefan stefan@pejcic.rs
-Email for user stefan updated to stefan@pejcic.rs.
+#davcli user-email stefan kangpcode@users.noreply.github.com
+Email for user stefan updated to kangpcode@users.noreply.github.com.
 ```
   </TabItem>
 </Tabs>
 
 
 
-### Login to OpenPanel
+### Login to DavPanel
 
-To auto-login to a OpenPanel account, click on the **OpenPanel** button in top-right corner of the page.
+To auto-login to a DavPanel account, click on the **DavPanel** button in top-right corner of the page.
  
 
 ### Delete User
 
 
 <Tabs>
-  <TabItem value="openadmin-user-delete" label="With OpenAdmin" default>
+  <TabItem value="davadmin-user-delete" label="With DavAdmin" default>
 
 To delete a user click on the delete button for that user, then type 'delete' in the confirmation modal and finally click on the 'Terminate' button.
 
 
   </TabItem>
-  <TabItem value="CLI-user-delete" label="With OpenCLI">
+  <TabItem value="CLI-user-delete" label="With DavCLI">
     
 To delete a user and all his data run the following command:
 
 ```bash
-opencli user-delete <USERNAME>
+davcli user-delete <USERNAME>
 ```
 
 add `-y` flag to disable prompt.
 
 Example:
 ```bash
-opencli user-delete filip -y
+davcli user-delete filip -y
 ```
 
   </TabItem>

@@ -1,21 +1,21 @@
 ---
 sidebar_label: "WordPress Staging Site"
-description: "How to create a WordPress staging site in OpenPanel with one click: clone your live site to a subdomain, hide it from search engines and visitors, test changes, and push them live safely."
+description: "How to create a WordPress staging site in DavPanel with one click: clone your live site to a subdomain, hide it from search engines and visitors, test changes, and push them live safely."
 ---
 
 # How to Create a WordPress Staging Site
 
-A **staging site** is a private copy of your live WordPress site where you can test plugin updates, a new theme or code changes without risking the real site. OpenPanel's WP Manager can clone a site in one click - files, database and URLs included.
+A **staging site** is a private copy of your live WordPress site where you can test plugin updates, a new theme or code changes without risking the real site. DavPanel's WP Manager can clone a site in one click - files, database and URLs included.
 
 ---
 
 ## Step 1: Add a Staging Subdomain
 
-1. Go to **OpenPanel → Domains → Add Domain**.
+1. Go to **DavPanel → Domains → Add Domain**.
 2. Enter a subdomain such as `staging.example.com` and click **Add Domain**.
 
-![New Domain form with the domain name and document root fields](/img/openpanel-screenshots/domains/new-form.png#gh-light-mode-only)
-![New Domain form with the domain name and document root fields](/img/openpanel-screenshots/domains/new-form_dark.png#gh-dark-mode-only)
+![New Domain form with the domain name and document root fields](/img/davpanel-screenshots/domains/new-form.png#gh-light-mode-only)
+![New Domain form with the domain name and document root fields](/img/davpanel-screenshots/domains/new-form_dark.png#gh-dark-mode-only)
 
 If `example.com` is already in your account, the DNS record is created automatically and the subdomain doesn't count toward your domain limit. See [Add a subdomain](/docs/articles/domains/subdomain-addon-parked-domain/).
 
@@ -23,15 +23,15 @@ If `example.com` is already in your account, the DNS record is created automatic
 
 ## Step 2: Clone the Live Site
 
-1. Open **OpenPanel → WordPress**, and click **Manage** on the live site.
+1. Open **DavPanel → WordPress**, and click **Manage** on the live site.
 2. Go to the **Clone** tab.
 3. Under **Target**, select `staging.example.com`. Optionally choose the **Database** name for the copy.
 4. Click **Clone Website**.
 
-![Clone tab with the destination location and database for the copy](/img/openpanel-screenshots/applications/wordpress-clone.png#gh-light-mode-only)
-![Clone tab with the destination location and database for the copy](/img/openpanel-screenshots/applications/wordpress-clone_dark.png#gh-dark-mode-only)
+![Clone tab with the destination location and database for the copy](/img/davpanel-screenshots/applications/wordpress-clone.png#gh-light-mode-only)
+![Clone tab with the destination location and database for the copy](/img/davpanel-screenshots/applications/wordpress-clone_dark.png#gh-dark-mode-only)
 
-OpenPanel copies all files and database tables, replaces `https://example.com` with `https://staging.example.com` in the database, and flushes the cache and rewrite rules. The staging site appears in WP Manager as a separate site, with its own **Auto Login**, backups and settings.
+DavPanel copies all files and database tables, replaces `https://example.com` with `https://staging.example.com` in the database, and flushes the cache and rewrite rules. The staging site appears in WP Manager as a separate site, with its own **Auto Login**, backups and settings.
 
 More: [WP Manager - Clone](/docs/panel/applications/wordpress/#clone).
 

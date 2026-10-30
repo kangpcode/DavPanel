@@ -1,10 +1,10 @@
 ---
-sidebar_label: "OpenPanel Installation on DigitalOcean"
+sidebar_label: "DavPanel Installation on DigitalOcean"
 ---
 
 # How to Install a Hosting Control Panel on DigitalOcean
 
-This guide will walk you through deploying **OpenPanel** on a DigitalOcean Droplet with Ubuntu.
+This guide will walk you through deploying **DavPanel** on a DigitalOcean Droplet with Ubuntu.
 
 ---
 
@@ -39,22 +39,22 @@ ssh root@yourDropletIpAddress
 
 > Replace `yourDropletIpAddress` with the static IP you assigned to your Droplet.
 
-![Terminal showing the first SSH connection as root: confirming the server's host key fingerprint, the Ubuntu 24.04 welcome message, and the root prompt](/img/openpanel-screenshots/install/ssh-digitalocean.png#screenshot)
+![Terminal showing the first SSH connection as root: confirming the server's host key fingerprint, the Ubuntu 24.04 welcome message, and the root prompt](/img/davpanel-screenshots/install/ssh-digitalocean.png#screenshot)
 
 ---
 
-## Step 3: Run the OpenPanel Installer
+## Step 3: Run the DavPanel Installer
 
 Once logged in, run the installer script:
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
-![OpenPanel installer output in a terminal: the OpenPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the OpenAdmin URL with the generated username and password at the end](/img/openpanel-screenshots/install/installer-output-generic.png#screenshot)
+![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-generic.png#screenshot)
 
 ---
 
-## Step 4: Access OpenPanel
+## Step 4: Access DavPanel
 
 1. Open your browser and navigate to:
 
@@ -68,10 +68,10 @@ https://yourDropletIpAddress:2087
 
 ## Notes
 
-* Ensure your Droplet meets [OpenPanel minimum requirements](https://openpanel.com/docs/admin/intro/#requirements).
+* Ensure your Droplet meets [DavPanel minimum requirements](https://davpanel.com/docs/admin/intro/#requirements).
 * For production, restrict firewall access to limit exposure after installation.
-* Use the [OpenPanel Install Command Generator](https://openpanel.com/install) for advanced configuration options.
+* Use the [DavPanel Install Command Generator](https://davpanel.com/install) for advanced configuration options.
 
 ---
 
-**Congratulations!** You have successfully installed OpenPanel on DigitalOcean.
+**Congratulations!** You have successfully installed DavPanel on DigitalOcean.

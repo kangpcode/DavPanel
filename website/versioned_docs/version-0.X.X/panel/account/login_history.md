@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Login History
 
-By default, OpenPanel records your IP address when you log in and displays the last login IP address on the Dashboard page.
+By default, DavPanel records your IP address when you log in and displays the last login IP address on the Dashboard page.
 
 The Login History page displays a list of up to the last 20 logins in a table format. It includes the IP address, the time of the successful login, a two-letter country code representing the country of the IP address, and a flag icon to visualize the country.
 

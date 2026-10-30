@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/cache"
 )
 
 func testCache(t *testing.T) *cache.Cache {

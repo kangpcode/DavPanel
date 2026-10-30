@@ -4,8 +4,8 @@ sidebar_position: 10
 
 # Show Processes
 
-![PostgreSQL Processes table listing the active backend processes](/img/openpanel-screenshots/postgresql/processlist-list.png#gh-light-mode-only)
-![PostgreSQL Processes table listing the active backend processes](/img/openpanel-screenshots/postgresql/processlist-list_dark.png#gh-dark-mode-only)
+![PostgreSQL Processes table listing the active backend processes](/img/davpanel-screenshots/postgresql/processlist-list.png#gh-light-mode-only)
+![PostgreSQL Processes table listing the active backend processes](/img/davpanel-screenshots/postgresql/processlist-list_dark.png#gh-dark-mode-only)
 
 This interface displays all currently active PostgreSQL queries (connections) from `pg_stat_activity`.
 
@@ -27,8 +27,8 @@ Every killed query is recorded in the account's activity log.
 
 Tick the checkbox of one or more queries, or the checkbox in the table header to select every query shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two running queries selected with the bulk actions bar offering Kill](/img/openpanel-screenshots/postgresql/processlist-bulk.png#gh-light-mode-only)
-![Two running queries selected with the bulk actions bar offering Kill](/img/openpanel-screenshots/postgresql/processlist-bulk_dark.png#gh-dark-mode-only)
+![Two running queries selected with the bulk actions bar offering Kill](/img/davpanel-screenshots/postgresql/processlist-bulk.png#gh-light-mode-only)
+![Two running queries selected with the bulk actions bar offering Kill](/img/davpanel-screenshots/postgresql/processlist-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|

@@ -247,14 +247,12 @@ set_panel_version() {
 
 print_header() {
     line
-    echo -e "   ____                         _____                      _  "
-    echo -e "  / __ \                       |  __ \                    | | "
-    echo -e " | |  | | _ __    ___  _ __    | |__) | __ _  _ __    ___ | | "
-    echo -e " | |  | || '_ \  / _ \| '_ \   |  ___/ / _\" || '_ \ / _  \| | "
-    echo -e " | |__| || |_) ||  __/| | | |  | |    | (_| || | | ||  __/| | "
-    echo -e "  \____/ | .__/  \___||_| |_|  |_|     \__,_||_| |_| \___||_| "
-    echo -e "         | |                                                  "
-    echo -e "         |_|                                   version: ${GREEN}$PANEL_VERSION${RESET} "
+    echo -e "  ____               ____                   _ "
+    echo -e " |  _ \\  __ ___   _|  _ \\ __ _ _ __   ___| |"
+    echo -e " | | | |/ _` \\ \\ / / |_) / _` | '_ \\ / _ \\ |"
+    echo -e " | |_| | (_| |\\ V /|  __/ (_| | | | |  __/ |"
+    echo -e " |____/ \\__,_| \\_/ |_|   \\__,_|_| |_|\\___|_|"
+    echo -e "                                  version: ${GREEN}$PANEL_VERSION${RESET} "
     line
     echo -e "  OS: ${GREEN}${OS_NAME^^} ${OS_VERSION_ID}${RESET}  |  Arch: ${GREEN}${architecture^^}${RESET}  |  IP: ${GREEN}${SERVER_IPV4_ADDRESS}${RESET}  |  Engine: ${GREEN}${CONTAINER_ENGINE^^}${RESET}  |  Pkg: ${GREEN}${PACKAGE_MANAGER^^}${RESET}"
     line
@@ -441,7 +439,7 @@ check_kernel_modules_reboot() {
 download_files() {
     echo "Downloading DavPanel project repositories from Github..."
 
-    [[ "$REPAIR" == true ]] && rm -rf "$ETC_DIR" /usr/local/davcli /usr/local/davcli /usr/local/davadmin/
+    [[ "$REPAIR" == true ]] && rm -rf "$ETC_DIR" /usr/local/davcli /usr/local/davadmin/
 
     local branch="110"
     [[ "$architecture" == "aarch64" ]] && branch="armcpu"
@@ -1213,9 +1211,8 @@ support_message() {
 🎉 Thank you for choosing DavPanel!
 
   Getting started:  https://davpanel.com/docs/admin/intro/#post-install-steps
-  Report issues:    https://github.com/stefanpejcic/OpenPanel/issues/new/choose
-  Discord:          https://discord.davpanel.com/
-  Discussions:      https://github.com/stefanpejcic/OpenPanel/discussions
+  Report issues:    https://github.com/kangpcode/DavPanel/issues/new/choose
+  Community:        https://github.com/kangpcode/DavPanel/discussions
 MSG
     line
 }

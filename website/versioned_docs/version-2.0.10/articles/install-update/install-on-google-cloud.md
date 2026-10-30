@@ -1,6 +1,6 @@
-# OpenPanel Installation on Google Cloud
+# DavPanel Installation on Google Cloud
 
-This guide will walk you through deploying **OpenPanel** on a Google Cloud VM instance with Ubuntu.
+This guide will walk you through deploying **DavPanel** on a Google Cloud VM instance with Ubuntu.
 
 ---
 
@@ -19,7 +19,7 @@ This guide will walk you through deploying **OpenPanel** on a Google Cloud VM in
    - Ubuntu 24.04
 4. Select a **machine type** meeting the minimum requirements:
    - **1 CPU, 2 GB RAM** (recommended: `e2-small` or equivalent)
-5. Add a **network tag** (e.g., `OPENPANEL`) for firewall rules.
+5. Add a **network tag** (e.g., `DAVPANEL`) for firewall rules.
 6. In **Network interfaces**, assign a **static external IP**.
 7. Click **Create** to launch the VM.
 
@@ -29,12 +29,12 @@ This guide will walk you through deploying **OpenPanel** on a Google Cloud VM in
 
 1. Navigate to **VPC Network → Firewall rules → Create Firewall Rule**.
 2. Configure the rule:
-   - **Targets:** Specified target tags → `OPENPANEL`
+   - **Targets:** Specified target tags → `DAVPANEL`
    - **Source IP ranges:** `0.0.0.0/0`
    - **Protocols and ports:** `tcp:2087` (admin panel port)
 3. Save the firewall rule.
 
-> OpenPanel manages its own internal firewall; the above rule allows external access to the admin panel.
+> DavPanel manages its own internal firewall; the above rule allows external access to the admin panel.
 
 ---
 
@@ -50,19 +50,19 @@ ssh username@yourStaticIpAddress
 
 ---
 
-## Step 4: Run the OpenPanel Installer
+## Step 4: Run the DavPanel Installer
 
 Once connected, run the installer script:
 
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
 > Follow the prompts to select your preferred database engine and complete installation.
 
 ---
 
-## Step 5: Access OpenPanel
+## Step 5: Access DavPanel
 
 1. Open your browser and navigate to:
 
@@ -76,10 +76,10 @@ https://yourStaticIpAddress:2087
 
 ## Notes
 
-* Ensure your VM meets [OpenPanel minimum requirements](https://openpanel.com/docs/admin/intro/#requirements).
+* Ensure your VM meets [DavPanel minimum requirements](https://davpanel.com/docs/admin/intro/#requirements).
 * After installation, consider restricting firewall access for better security.
-* Use the [OpenPanel Install Command Generator](https://openpanel.com/install) for advanced configuration options.
+* Use the [DavPanel Install Command Generator](https://davpanel.com/install) for advanced configuration options.
 
 ---
 
-**Congratulations!** You have successfully installed OpenPanel on Google Cloud.
+**Congratulations!** You have successfully installed DavPanel on Google Cloud.

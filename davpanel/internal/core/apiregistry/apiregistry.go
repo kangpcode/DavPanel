@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
 )
 
 // Endpoint is one entry of the /api/endpoints introspection response.

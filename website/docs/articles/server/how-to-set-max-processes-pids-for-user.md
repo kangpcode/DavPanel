@@ -27,16 +27,16 @@ This file, when present, always takes priority over the autocalculated value for
 Creating or editing the `TasksMax` file does not take effect on its own — the plan must be (re)applied to the user for the new ceiling to be written to their `user-<uid>.slice`. Run:
 
 ```bash
-opencli plan-apply <PLAN_ID> <USERNAME>
+davcli plan-apply <PLAN_ID> <USERNAME>
 ```
 
 Using the user's current plan ID re-applies all of the plan's limits, including the new PID ceiling.
 
 ## Removing the override
 
-Delete the `TasksMax` file and re-run `opencli plan-apply` for the user to fall back to the autocalculated value derived from their plan's RAM:
+Delete the `TasksMax` file and re-run `davcli plan-apply` for the user to fall back to the autocalculated value derived from their plan's RAM:
 
 ```bash
 rm /home/<USERNAME>/TasksMax
-opencli plan-apply <PLAN_ID> <USERNAME>
+davcli plan-apply <PLAN_ID> <USERNAME>
 ```

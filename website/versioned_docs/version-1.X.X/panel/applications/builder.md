@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Website Builder
 
-[GrapeJS](https://grapesjs.com/) is a drag & drop website builder integrated into OpenPanel that you can use to create static HTML websites with [tailwindcss](https://tailwindcss.com/).
+[GrapeJS](https://grapesjs.com/) is a drag & drop website builder integrated into DavPanel that you can use to create static HTML websites with [tailwindcss](https://tailwindcss.com/).
 
 ---
 
@@ -20,7 +20,7 @@ When you're done click on the "Open Website Builder" button to finish setup and 
 
 ## Edit Website
 
-You can access the website builder to edit your websites at any time through **Site Manager** page on your OpenPanel account.
+You can access the website builder to edit your websites at any time through **Site Manager** page on your DavPanel account.
 
 Click **Open Editor** to launch the GrapeJS editor interface.
 
@@ -32,7 +32,7 @@ For additional information on how the GrapeJS website builder works we recommend
 
 ## Backup & Restore
 
-To back up a static website created with OpenPanel's Website Builder, simply archive the directory in **File Manager**, making sure to include the `index.html` and `style.css` files.
+To back up a static website created with DavPanel's Website Builder, simply archive the directory in **File Manager**, making sure to include the `index.html` and `style.css` files.
 
 To restore the website, extract the archived files back into the same directory using **File Manager**, replacing any existing files if necessary.
 

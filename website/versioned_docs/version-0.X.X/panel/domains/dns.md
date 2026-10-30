@@ -37,18 +37,18 @@ To remove an existing DNS record, click the delete button next to it. The button
 ## Export Zone
 To export a DNS zone, click on the 'Export Zone' button. The button text will change to 'Confirm', and on the second click, the zone will be exported.
 
-![openpanel_export_dns_zone.png](/img/panel/v1/domains/openpanel_export_dns_zone.png)
+![davpanel_export_dns_zone.png](/img/panel/v1/domains/davpanel_export_dns_zone.png)
 
 
 ## Reset Zone
 
 Resetting the zone will delete all existing records and create a default DNS zone, as if the domain had just been added again.
 
-![openpanel_reset_dns_zone.gif](/img/panel/v1/domains/openpanel_reset_dns_zone.gif)
+![davpanel_reset_dns_zone.gif](/img/panel/v1/domains/davpanel_reset_dns_zone.gif)
 
 
 ## Advanced Editor
 
 The Advanced Editor allows direct editing of the DNS zone file, including adding custom records or comments. It can also be used to import a DNS zone by pasting content from another server.
 
-![openpanel_advanced_dns_zone.png](/img/panel/v1/domains/openpanel_advanced_dns_zone.png)
+![davpanel_advanced_dns_zone.png](/img/panel/v1/domains/davpanel_advanced_dns_zone.png)

@@ -7,8 +7,8 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // baseLayout builds a representative web.LayoutData shared by every render test below - the same app-shell fields BuildLayoutData would produce, without needing a live *appctx.App/http.Request

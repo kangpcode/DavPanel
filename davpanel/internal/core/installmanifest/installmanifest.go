@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
 )
 
 // Name is the hidden marker file dropped in the install directory listing every top-level entry the

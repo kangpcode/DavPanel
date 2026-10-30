@@ -3,8 +3,8 @@ package wordpress
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
 )
 
 // Register wires the WordPress list + install routes onto mux - backups, clone/remove/detach/reload/scan and wp-cli passthrough are added to this same Register separately.

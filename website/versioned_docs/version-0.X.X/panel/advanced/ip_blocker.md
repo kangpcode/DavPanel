@@ -6,7 +6,7 @@ sidebar_position: 6
 
 The IP Blocker feature enables you to block specific IP addresses for each domain.
 
-![ip_blocker_openpanel.png](/img/panel/v1/advanced/ip_blocker_openpanel.png)
+![ip_blocker_davpanel.png](/img/panel/v1/advanced/ip_blocker_davpanel.png)
 
 You can add IP addresses individually on separate lines or as a comma-separated list.
 

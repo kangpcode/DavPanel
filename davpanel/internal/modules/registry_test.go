@@ -7,11 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/session"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // testApp builds a minimal *appctx.App good enough to exercise route wiring and any handler paths that don't touch the DB (e.g. the login page's GET request) - a lightweight substitute for appctx.New(), which requires reading real files under /etc/davpanel that aren't writable in a sandboxed test environment

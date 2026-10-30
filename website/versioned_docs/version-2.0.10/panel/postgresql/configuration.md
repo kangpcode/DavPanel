@@ -4,14 +4,14 @@ sidebar_position: 12
 
 # Configuration
 
-![PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button](/img/openpanel-screenshots/postgresql/configuration-page.png#gh-light-mode-only)
-![PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button](/img/openpanel-screenshots/postgresql/configuration-page_dark.png#gh-dark-mode-only)
+![PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button](/img/davpanel-screenshots/postgresql/configuration-page.png#gh-light-mode-only)
+![PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button](/img/davpanel-screenshots/postgresql/configuration-page_dark.png#gh-dark-mode-only)
 
 The PostgreSQL Configuration page lets you edit low-level `postgresql.conf` settings for your database service, without needing terminal access.
 
 ## How to Change Configuration
 
-1. Open **OpenPanel** and navigate to **PostgreSQL > Configuration**.
+1. Open **DavPanel** and navigate to **PostgreSQL > Configuration**.
 2. Modify the values you want to change.
 3. Click **Save** to apply changes.
 
@@ -44,4 +44,4 @@ The list of configurable keys is determined by the system administrator. By defa
 
 **Customizing Available Options**
 
-Administrators can change which keys are exposed here by editing `/etc/openpanel/postgres/keys.txt` (one key per line). If that file doesn't exist, the default list above is used.
+Administrators can change which keys are exposed here by editing `/etc/davpanel/postgres/keys.txt` (one key per line). If that file doesn't exist, the default list above is used.

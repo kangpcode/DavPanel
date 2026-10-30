@@ -4,10 +4,10 @@ sidebar_position: 1
 
 # Basic Auth
 
-Enable [Basic Access Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) as an additional security layer for the OpenAdmin interface.
+Enable [Basic Access Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication) as an additional security layer for the DavAdmin interface.
 
-![Basic Authentication page with the Enable dropdown and the username and password fields](/img/openadmin-screenshots/security/basic_auth-page.png#gh-light-mode-only)
-![Basic Authentication page with the Enable dropdown and the username and password fields](/img/openadmin-screenshots/security/basic_auth-page_dark.png#gh-dark-mode-only)
+![Basic Authentication page with the Enable dropdown and the username and password fields](/img/davadmin-screenshots/security/basic_auth-page.png#gh-light-mode-only)
+![Basic Authentication page with the Enable dropdown and the username and password fields](/img/davadmin-screenshots/security/basic_auth-page_dark.png#gh-dark-mode-only)
 
 ## Enable
 

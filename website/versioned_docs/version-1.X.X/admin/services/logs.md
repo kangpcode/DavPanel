@@ -4,9 +4,9 @@ sidebar_position: 3
 
 # View Log Files
 
-The *OpenAdmin > Services > View Log Files* feature enables Administrators to access and monitor logs for both OpenPanel and system services.
+The *DavAdmin > Services > View Log Files* feature enables Administrators to access and monitor logs for both DavPanel and system services.
 
-![log viewer page](/img/admin/openadmin_services_logs.png)
+![log viewer page](/img/admin/davadmin_services_logs.png)
 
 ## How to View Log Files
 

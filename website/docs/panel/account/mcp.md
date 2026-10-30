@@ -4,14 +4,14 @@ sidebar_position: 6
 
 # MCP
 
-OpenPanel exposes an [MCP](https://modelcontextprotocol.io) server at `/mcp`. Once connected, Claude (or any other MCP client) can manage your account directly: list and create databases, manage domains, DNS records, cron jobs, email accounts, and everything else available under `/api/`.
+DavPanel exposes an [MCP](https://modelcontextprotocol.io) server at `/mcp`. Once connected, Claude (or any other MCP client) can manage your account directly: list and create databases, manage domains, DNS records, cron jobs, email accounts, and everything else available under `/api/`.
 
 On **Account > AI Assistant (MCP)** page in the UI, you can generate and manage tokens to be used with Claude (MCP).
 
-![MCP page with the token generator and connection snippets for Claude Code and Claude Desktop](/img/openpanel-screenshots/account/mcp-page.png#gh-light-mode-only)
-![MCP page with the token generator and connection snippets for Claude Code and Claude Desktop](/img/openpanel-screenshots/account/mcp-page_dark.png#gh-dark-mode-only)
+![MCP page with the token generator and connection snippets for Claude Code and Claude Desktop](/img/davpanel-screenshots/account/mcp-page.png#gh-light-mode-only)
+![MCP page with the token generator and connection snippets for Claude Code and Claude Desktop](/img/davpanel-screenshots/account/mcp-page_dark.png#gh-dark-mode-only)
 
-[OpenPanel API documentation](/docs/panel/api/)
+[DavPanel API documentation](/docs/panel/api/)
 
 
 ## Requirements
@@ -39,7 +39,7 @@ The panel's MCP endpoint is `https://<your-panel-domain>:<port>/mcp` (also shown
 ### Claude Code (CLI)
 
 ```
-claude mcp add --transport http openpanel https://<your-panel-domain>/mcp \
+claude mcp add --transport http davpanel https://<your-panel-domain>/mcp \
   --header "Authorization: Bearer <your-token>"
 ```
 
@@ -50,7 +50,7 @@ Add this to `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "openpanel": {
+    "davpanel": {
       "url": "https://<your-panel-domain>:<port>/mcp",
       "headers": { "Authorization": "Bearer <your-token>" }
     }
@@ -58,7 +58,7 @@ Add this to `claude_desktop_config.json`:
 }
 ```
 
-Restart Claude Desktop after saving. OpenPanel's tools should now show up in the tool picker.
+Restart Claude Desktop after saving. DavPanel's tools should now show up in the tool picker.
 
 ## 3. Using it
 
@@ -76,8 +76,8 @@ Every action Claude takes runs through the exact same `/api/` endpoints and perm
 
 Tick the checkbox of one or more tokens, or the checkbox in the table header to select every token shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two MCP tokens selected with the bulk actions bar offering Revoke](/img/openpanel-screenshots/account/mcp-bulk.png#gh-light-mode-only)
-![Two MCP tokens selected with the bulk actions bar offering Revoke](/img/openpanel-screenshots/account/mcp-bulk_dark.png#gh-dark-mode-only)
+![Two MCP tokens selected with the bulk actions bar offering Revoke](/img/davpanel-screenshots/account/mcp-bulk.png#gh-light-mode-only)
+![Two MCP tokens selected with the bulk actions bar offering Revoke](/img/davpanel-screenshots/account/mcp-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|

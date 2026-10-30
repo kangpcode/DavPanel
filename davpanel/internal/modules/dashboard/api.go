@@ -3,8 +3,8 @@ package dashboard
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
 )
 
 // RegisterAPI wires /api/ equivalents of the two dashboard JSON widgets onto mux, reusing handleResourceUsage/handleDiskInodes as-is since both are already pure JSON handlers. Always available, matching Register's unconditional wiring (dashboard is always in EnabledModules).

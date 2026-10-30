@@ -6,12 +6,12 @@ import (
 	"os/exec"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // RegisterAPI wires the FTP module's API routes onto mux - PATCH .../password and .../path share a username prefix with a literal suffix, so since Go's ServeMux requires a "{...}" wildcard to be the final segment, both are merged into one "{rest...}" catch-all and apiFTPPatchDispatch strips the known suffix by hand to recover the username, while apiregistry.Add still records each logical route separately for /api/endpoints

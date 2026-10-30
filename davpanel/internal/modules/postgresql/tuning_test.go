@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/dbtuning"
+	"github.com/kangpcode/davpanel/internal/core/dbtuning"
 )
 
 // basePgStats is a healthy PostgreSQL 17 with a 1GB container and default settings adjusted to fit it

@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
 )
 
 // relayPHP pipes stdin/stdout to the tcp address in argv[1], half-closing the socket when stdin ends

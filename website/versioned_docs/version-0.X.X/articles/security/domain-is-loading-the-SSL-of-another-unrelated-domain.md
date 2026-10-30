@@ -18,7 +18,7 @@ On 'Advanced' you can see that the SSL and domain name does not match:
 
 ### Workaround
 
-If you have a domain name set for accessing OpenPanel, then you can set that domain ssl to be used for websites that have no SSL, and if accepted it will die:
+If you have a domain name set for accessing DavPanel, then you can set that domain ssl to be used for websites that have no SSL, and if accepted it will die:
 
 ```
 nano /etc/nginx/sites-enabled/default

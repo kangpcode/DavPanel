@@ -4,16 +4,16 @@ sidebar_position: 2
 
 # Notifications
 
-Notifications are accessible via the 'Notifications' menu item in OpenAdmin.
+Notifications are accessible via the 'Notifications' menu item in DavAdmin.
 
-![Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons](/img/openadmin-screenshots/002_notifications-list.png#gh-light-mode-only)
-![Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons](/img/openadmin-screenshots/002_notifications-list_dark.png#gh-dark-mode-only)
+![Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons](/img/davadmin-screenshots/002_notifications-list.png#gh-light-mode-only)
+![Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons](/img/davadmin-screenshots/002_notifications-list_dark.png#gh-dark-mode-only)
 
-OpenPanel tracks and notifies you of these events, grouped into categories:
+DavPanel tracks and notifies you of these events, grouped into categories:
 
-* **Services**: OpenPanel, OpenAdmin, Caddy, MySQL, Podman, BIND9, or Sentinel Firewall becoming unresponsive
+* **Services**: DavPanel, DavAdmin, Caddy, MySQL, Podman, BIND9, or Sentinel Firewall becoming unresponsive
 * **Resource Usage**: Load average, CPU, Memory, Disk, and SWAP usage exceeding a set threshold
-* **Server actions**: Server reboot, unusual traffic or SYN flood, Out of Memory (OOM) errors, DNS issues (misconfigured/unresolving domain or nameservers), OpenAdmin login from a new IP address, SSH login from a new IP address, and new version available
+* **Server actions**: Server reboot, unusual traffic or SYN flood, Out of Memory (OOM) errors, DNS issues (misconfigured/unresolving domain or nameservers), DavAdmin login from a new IP address, SSH login from a new IP address, and new version available
 * **Website traffic**: Total connections or connections per IP exceeding a set threshold
 * **User actions**: account and domain changes, such as admin/reseller/user accounts being created, suspended, renamed, or having their password changed; domains being added, removed, suspended, or having SSL/HSTS toggled; FTP accounts being created or deleted; and WAF being enabled or disabled
 
@@ -25,9 +25,9 @@ Use the filters next to the search box to show only unread or resolved notificat
 
 Notifications are shown 100 per page, newest first, with **Previous** and **Next** below the table.
 
-Notifications that need attention are shown as unread. When Sentinel detects the same issue again while it's still unread, the notification shows how many times it was detected and when it was last seen, instead of adding a new one. Once the issue is gone, Sentinel marks it as read and shows a **Resolved after …** badge. Things Sentinel fixed on its own, like restarting a stopped container, are added as already-read Info entries for history and are not emailed. See [opencli sentinel](/docs/articles/opencli/sentinel) for details.
+Notifications that need attention are shown as unread. When Sentinel detects the same issue again while it's still unread, the notification shows how many times it was detected and when it was last seen, instead of adding a new one. Once the issue is gone, Sentinel marks it as read and shows a **Resolved after …** badge. Things Sentinel fixed on its own, like restarting a stopped container, are added as already-read Info entries for history and are not emailed. See [davcli sentinel](/docs/articles/davcli/sentinel) for details.
 
-Under the page title, **Last check** shows when [`opencli sentinel`](/docs/articles/opencli/sentinel) last completed its checks (it runs from cron every 5 minutes). The line turns amber if Sentinel hasn't run in over 15 minutes, which usually means its cron job is disabled or failing.
+Under the page title, **Last check** shows when [`davcli sentinel`](/docs/articles/davcli/sentinel) last completed its checks (it runs from cron every 5 minutes). The line turns amber if Sentinel hasn't run in over 15 minutes, which usually means its cron job is disabled or failing.
 
 Click the bell icon next to the search box to pause email/webhook alerts for a set time (10 min up to 1 day) — see [Pause Notifications](/docs/admin/settings/notifications#pause-notifications).
 
@@ -37,8 +37,8 @@ To manage notification settings, click the **Edit Settings** button on the Notif
 
 Tick the checkbox of one or more notifications, or the checkbox in the table header to select all notifications on the current page. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two notifications selected with the bulk actions bar offering Mark as read and Delete](/img/openadmin-screenshots/002_notifications-bulk.png#gh-light-mode-only)
-![Two notifications selected with the bulk actions bar offering Mark as read and Delete](/img/openadmin-screenshots/002_notifications-bulk_dark.png#gh-dark-mode-only)
+![Two notifications selected with the bulk actions bar offering Mark as read and Delete](/img/davadmin-screenshots/002_notifications-bulk.png#gh-light-mode-only)
+![Two notifications selected with the bulk actions bar offering Mark as read and Delete](/img/davadmin-screenshots/002_notifications-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|

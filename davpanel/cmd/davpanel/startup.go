@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/cache"
 )
 
 // startup side effects live here: log dirs, dev_mode logging, restart flag, custom startup script, GOMAXPROCS sizing, Redis flush, and direct TLS termination when Caddy isn't already on it
@@ -22,8 +22,8 @@ const (
 	restartFlagPath     = "/root/davpanel_restart_needed"
 	customStartupScript = "/root/davpanel_run_on_startup"
 
-	errorLogPath   = "/var/log/davpanel/user/error.log"
-	accessLogPath  = "/var/log/davpanel/user/access.log"
+	errorLogPath  = "/var/log/davpanel/user/error.log"
+	accessLogPath = "/var/log/davpanel/user/access.log"
 	davcliLogPath = "/var/log/davpanel/admin/davcli.log"
 )
 

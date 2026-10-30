@@ -6,10 +6,10 @@ import (
 
 	"golang.org/x/net/publicsuffix"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // DomainZoneRow represents a user's domain plus whether it has a zone file on disk. DomainName is populated from the domain's docroot - odd, but that's what the JSON output actually contains; nothing in dns.html ever reads it.

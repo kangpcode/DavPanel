@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/githubapi"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/core/githubapi"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 var moodleVersionRE = regexp.MustCompile(`^v\d+\.\d+\.\d+$`)

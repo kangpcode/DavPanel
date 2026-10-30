@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # SSH Access
 
-*OpenAdmin > Server >  SSH Access* allows Administrators to view and modify current server SSH configuration.
+*DavAdmin > Server >  SSH Access* allows Administrators to view and modify current server SSH configuration.
 
 ### Basic SSH Settings
 

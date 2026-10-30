@@ -9,7 +9,7 @@ import BenchmarkContent from "@site/src/pages/calculator/benchmark/benchmark.md"
 const CalculatorBenchmark: React.FC = () => {
     return (
         <CommonLayout
-            description="How we benchmarked DavPanel 2.0 (Podman) resource usage: test setup, the account-creation script used, and the raw opencli docker-collect_stats results."
+            description="How we benchmarked DavPanel 2.0 (Podman) resource usage: test setup, the account-creation script used, and the raw davcli docker-collect_stats results."
             image="/img/og/calculator/benchmark.png"
         >
             <Head>

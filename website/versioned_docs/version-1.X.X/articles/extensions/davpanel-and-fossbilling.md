@@ -1,0 +1,101 @@
+# FOSSBilling
+
+DavPanel Enterprise edition has billing integrations with [WHMCS](/docs/articles/extensions/davpanel-and-whmcs/) and FOSSBilling.
+
+## DavPanel
+
+### Whitelist FOSSBilling
+
+Before you can setup the DavPanel server manager in FOSSBilling, you need to first whitelist your FOSSBilling server's IP address inside of DavAdmin interface, and enable API access. 
+
+To enable access to the FOSSBilling server's IP, first check the ip address on that server, from terminal you can run:
+
+```bash
+curl ip.davpanel.com
+```
+
+Login to DavAdmin and under **Settings > Firewall** add the FOSSBilling server's IP under **Allow IP address**:
+
+![whitelist ip](/img/docs-content/433M6LBr-2024-08-04-16-10.png)
+
+### Enable API access
+
+To enable API access on DavPanel, navigate to **Settings > API Access** from the DavAdmin interface and click on 'Enable API access' button:
+
+![enable api](/img/docs-content/VsthWbWL-2024-08-04-16-14.png)
+
+## FOSSBilling
+
+### Download DavPanel Server Manager
+
+On the FOSSBilling server navigate to the directory where FOSSBilling is installed and run this command to download the latest DavPanel Server Manager:
+
+```bash
+wget -O library/Server/Manager/DavPanel.php https://raw.githubusercontent.com/stefanpejcic/FOSSBilling-OpenPanel/main/OpenPanel.php
+```
+
+### Add DavPanel Server
+
+Login to your FOSSBilling admin panel and go to **System -> Hosting plans and servers** from within the navigation bar, then click on 'New server':
+
+![new server](/img/docs-content/bYV8DngC-2024-08-04-15-19.png)
+
+in the new form we need to set:
+
+![add davpanel server](/img/docs-content/jKcjYwHJ-2024-08-04-15-21.png)
+
+
+4. Name: anything that you want to identify the server
+5. Hostname: if you are using domain to access DavPanel, add it here, otherwise add the IP address.
+6. IP: set the IP address of the DavPanel server.
+7. Assigned IP addresses: set IP addresses that are added on DavPanel server.
+8. Nameserver 1: Set nameserver to use for domains
+9. Nameserver 2: Set nameserver to use for domains
+10. Server manages: **Select DavPanel**
+11. Username: Set DavAdmin panel username
+12. Password: Set DavAdmin panel password
+13. Connection port: Set to `2087`
+14. Use secure connection: *Yes* fi you are using domain name for panel access, otherwise *No*
+
+and click on the 'Add server' button.
+
+### Add Hosting Plan for DavPanel
+
+From your FOSSBilling admin panel go to **System -> Hosting plans and servers** from within the navigation bar, then click on 'New hosting plan'.
+
+Set the name for the plan **same as on DavPanel hosting plan** and click on 'Create hosting plan'.
+
+![add plan](/img/docs-content/02LsZqL7-2024-08-04-15-23.png)
+
+
+You can also set mysql type and webserver as additional parameters:
+
+| Parameter    | Values |
+| -------- | ------- |
+| `mysql_type`  | `apache` `nginx` `openresty` `varnish+apache`  `varnish+nginx` `varnish+openresty`  |
+| `webserver` | `mysql` `mariadb`     |
+
+![additional parameters](/img/docs-content/S4DGnS4S-2025-05-01-10-33.png)
+
+
+### Assign DavPanel Server to product
+
+From your FOSSBilling admin panel go to **Products -> Products & Services** from within the navigation bar, then click on the edit icon for the plan:
+
+![edit plan](/img/docs-content/N0twqkGM-2024-08-04-15-24.png)
+
+Click on 'Configuration' and for Server select the DavPanel server and for hosting plan set it to match the plan name on DavPanel server:
+
+![important](/img/docs-content/GmG155CV-2024-08-04-15-26.png)
+
+### Test connection
+
+Create a new client and order the product that is configured to create DavPanel account.
+
+User should be able to login to their DavPanel account:
+
+![login](/img/docs-content/x882pjf3-2024-08-04-15-17.png)
+
+and to reset the password:
+
+![reset password](/img/docs-content/PJ7kgGNs-2024-08-04-15-17-1.png)

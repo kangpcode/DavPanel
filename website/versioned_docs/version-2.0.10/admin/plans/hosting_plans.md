@@ -9,10 +9,10 @@ Hosting plans set limits for users.
 ## List hosting plans
 
 <Tabs>
-  <TabItem value="openadmin-plan-list" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-list" label="With DavAdmin" default>
 
 
-To list existing plans navigate to **OpenAdmin > Hosting Plans > User Packages**:
+To list existing plans navigate to **DavAdmin > Hosting Plans > User Packages**:
 
 
 | Field              | Description                                                               |
@@ -31,26 +31,26 @@ To list existing plans navigate to **OpenAdmin > Hosting Plans > User Packages**
 | **Mailbox quota** | Max mailbox size for email accounts that user can set on this plan.              |
 | **Max hourly emails** | Max number of emails that all addresses under this account can send within one hour.              |
 | **FTP accounts** | Total number of ftp accounts that user can create on the plan.             |
-| **Feature Set** | [Feature Sets](/docs/admin/plans/feature-manager) determine which pages users can access from the OpenPanel interface.               |
+| **Feature Set** | [Feature Sets](/docs/admin/plans/feature-manager) determine which pages users can access from the DavPanel interface.               |
 | **Used by** | Number of users currently on this plan. Click the number to view those users. |
 
-![User Packages page listing hosting plans with their memory, CPU, disk, inodes, port speed and other limits](/img/openadmin-screenshots/plans/hosting_plans-list.png#gh-light-mode-only)
-![User Packages page listing hosting plans with their memory, CPU, disk, inodes, port speed and other limits](/img/openadmin-screenshots/plans/hosting_plans-list_dark.png#gh-dark-mode-only)
+![User Packages page listing hosting plans with their memory, CPU, disk, inodes, port speed and other limits](/img/davadmin-screenshots/plans/hosting_plans-list.png#gh-light-mode-only)
+![User Packages page listing hosting plans with their memory, CPU, disk, inodes, port speed and other limits](/img/davadmin-screenshots/plans/hosting_plans-list_dark.png#gh-dark-mode-only)
 
 
 
   </TabItem>
-  <TabItem value="CLI-plan-list" label="With OpenCLI">
+  <TabItem value="CLI-plan-list" label="With DavCLI">
 
 To list all current hosting packages (plans) run:
 
 ```bash
-opencli plan-list
+davcli plan-list
 ```
 
 Example output:
 ```bash
-[root@fajlovi ~]# opencli plan-list
+[root@fajlovi ~]# davcli plan-list
 +----+----------------+------------------------+---------------+----------------+-------------+-----------+------------+--------------+----------+------+------+-----------+-------------+-----------------+------------------+
 | id | name           | description            | domains_limit | websites_limit | email_limit | ftp_limit | disk_limit | inodes_limit | db_limit | cpu  | ram  | bandwidth | feature_set | max_email_quota | max_hourly_email |
 +----+----------------+------------------------+---------------+----------------+-------------+-----------+------------+--------------+----------+------+------+-----------+-------------+-----------------+------------------+
@@ -63,7 +63,7 @@ Example output:
 You can also format the data as JSON:
 
 ```bash
-opencli plan-list --json
+davcli plan-list --json
 ```
 
   </TabItem>
@@ -72,7 +72,7 @@ opencli plan-list --json
 ## Create a plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-new" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-new" label="With DavAdmin" default>
 
 To create a new hosting package, click the **'Create New'** button and configure the desired limits:
 
@@ -93,11 +93,11 @@ To create a new hosting package, click the **'Create New'** button and configure
 * **FTP Accounts** – Max number of FTP accounts the user can create and manage on this plan. Use `0` for unlimited.
 * **Feature set** – Feature set that determines which features users on this plan have access to.
 
-![New Package form with name, description, disk, inodes, CPU, memory, port speed, domains, websites, databases, email, FTP and feature set fields](/img/openadmin-screenshots/plans/hosting_plans-new.png#gh-light-mode-only)
-![New Package form with name, description, disk, inodes, CPU, memory, port speed, domains, websites, databases, email, FTP and feature set fields](/img/openadmin-screenshots/plans/hosting_plans-new_dark.png#gh-dark-mode-only)
+![New Package form with name, description, disk, inodes, CPU, memory, port speed, domains, websites, databases, email, FTP and feature set fields](/img/davadmin-screenshots/plans/hosting_plans-new.png#gh-light-mode-only)
+![New Package form with name, description, disk, inodes, CPU, memory, port speed, domains, websites, databases, email, FTP and feature set fields](/img/davadmin-screenshots/plans/hosting_plans-new_dark.png#gh-dark-mode-only)
 
 </TabItem>
-<TabItem value="CLI-plan-new" label="With OpenCLI">
+<TabItem value="CLI-plan-new" label="With DavCLI">
     
 To create a new plan run the following command:
 
@@ -107,7 +107,7 @@ pencli plan-create name"<TEXT>" description="<TEXT>" emails=<COUNT> ftp=<COUNT> 
 
 Example:
 ```bash
-opencli plan-create name="New Plan" description="This is a new plan" emails=100 ftp=50 domains=20 websites=30 disk=100 inodes=100000 databases=10 cpu=4 ram=8 bandwidth=100 feature_set=default max_email_quota=2G max_hourly_email=1000
+davcli plan-create name="New Plan" description="This is a new plan" emails=100 ftp=50 domains=20 websites=30 disk=100 inodes=100000 databases=10 cpu=4 ram=8 bandwidth=100 feature_set=default max_email_quota=2G max_hourly_email=1000
 ```
 
   </TabItem>
@@ -116,13 +116,13 @@ opencli plan-create name="New Plan" description="This is a new plan" emails=100 
 
 ## Modify plan
 
-To change plan limits, go to **OpenAdmin > Hosting Plans > User Packages**, click the **...** (kebab) menu at the end of the plan's row, choose **Edit**, and set the new limits.
+To change plan limits, go to **DavAdmin > Hosting Plans > User Packages**, click the **...** (kebab) menu at the end of the plan's row, choose **Edit**, and set the new limits.
 
-![Row menu of a hosting plan that is in use, with the Edit option](/img/openadmin-screenshots/plans/hosting_plans-menu.png#gh-light-mode-only)
-![Row menu of a hosting plan that is in use, with the Edit option](/img/openadmin-screenshots/plans/hosting_plans-menu_dark.png#gh-dark-mode-only)
+![Row menu of a hosting plan that is in use, with the Edit option](/img/davadmin-screenshots/plans/hosting_plans-menu.png#gh-light-mode-only)
+![Row menu of a hosting plan that is in use, with the Edit option](/img/davadmin-screenshots/plans/hosting_plans-menu_dark.png#gh-dark-mode-only)
 
-![Edit plan page with the limits of an existing hosting package](/img/openadmin-screenshots/plans/hosting_plans-edit.png#gh-light-mode-only)
-![Edit plan page with the limits of an existing hosting package](/img/openadmin-screenshots/plans/hosting_plans-edit_dark.png#gh-dark-mode-only)
+![Edit plan page with the limits of an existing hosting package](/img/davadmin-screenshots/plans/hosting_plans-edit.png#gh-light-mode-only)
+![Edit plan page with the limits of an existing hosting package](/img/davadmin-screenshots/plans/hosting_plans-edit_dark.png#gh-dark-mode-only)
 
 
 The new limits will be applied immediately to all accounts using the package.
@@ -130,30 +130,30 @@ The new limits will be applied immediately to all accounts using the package.
 ## List Users on Plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-usage" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-usage" label="With DavAdmin" default>
 
 To view all users that are currently using a hosting package, click the number shown in the **Used by** column for that plan on the User Packages page - this opens the Users list already filtered to that package. Alternatively, on the Users page, sort the table by the **Package** column, or type the package name in the search field.
 
 
-![Users page filtered to the users on one hosting plan](/img/openadmin-screenshots/plans/hosting_plans-usage.png#gh-light-mode-only)
-![Users page filtered to the users on one hosting plan](/img/openadmin-screenshots/plans/hosting_plans-usage_dark.png#gh-dark-mode-only)
+![Users page filtered to the users on one hosting plan](/img/davadmin-screenshots/plans/hosting_plans-usage.png#gh-light-mode-only)
+![Users page filtered to the users on one hosting plan](/img/davadmin-screenshots/plans/hosting_plans-usage_dark.png#gh-dark-mode-only)
 
   </TabItem>
-  <TabItem value="CLI-plan-usage" label="With OpenCLI">
+  <TabItem value="CLI-plan-usage" label="With DavCLI">
     
 List all users that are currently using a plan:
 
 ```bash
-opencli plan-usage
+davcli plan-usage
 ```
 
 Example:
 ```bash
-[root@fajlovi ~]# opencli plan-usage 'Standard plan'
+[root@fajlovi ~]# davcli plan-usage 'Standard plan'
 +----+----------------------------------+----------------------+---------------+---------------------+
 | id | username                         | email                | plan_name     | registered_date     |
 +----+----------------------------------+----------------------+---------------+---------------------+
-|  3 | forums                           | stefan@openpanel.com | Standard plan | 2025-05-08 19:25:47 |
+|  3 | forums                           | stefan@davpanel.com | Standard plan | 2025-05-08 19:25:47 |
 | 19 | radovan                          | radovan@jecmenica.rs | Standard plan | 2025-05-29 07:47:15 |
 +----+----------------------------------+----------------------+---------------+---------------------+
 ```
@@ -161,7 +161,7 @@ Example:
 You can also format the data as JSON:
 
 ```bash
-opencli plan-usage --json
+davcli plan-usage --json
 ```
   </TabItem>
 </Tabs>
@@ -169,26 +169,26 @@ opencli plan-usage --json
 ## Delete Plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-delete" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-delete" label="With DavAdmin" default>
     
 To delete a hosting package, click the **...** (kebab) menu at the end of the package's row and choose **Delete**. The **Delete** option only appears in the menu when the package has no users assigned to it.
 
-![Row menu of a hosting plan that is in use, with the Edit option](/img/openadmin-screenshots/plans/hosting_plans-menu.png#gh-light-mode-only)
-![Row menu of a hosting plan that is in use, with the Edit option](/img/openadmin-screenshots/plans/hosting_plans-menu_dark.png#gh-dark-mode-only)
+![Row menu of a hosting plan that is in use, with the Edit option](/img/davadmin-screenshots/plans/hosting_plans-menu.png#gh-light-mode-only)
+![Row menu of a hosting plan that is in use, with the Edit option](/img/davadmin-screenshots/plans/hosting_plans-menu_dark.png#gh-dark-mode-only)
 
 
   </TabItem>
-  <TabItem value="CLI-plan-delete" label="With OpenCLI">
+  <TabItem value="CLI-plan-delete" label="With DavCLI">
 
 To delete a hosting plan: 
 
 ```bash
-opencli plan-delete <PLAN_NAME> 
+davcli plan-delete <PLAN_NAME> 
 ```
 
 Example:
 ```bash
-opencli plan-delete 'Standard plan'
+davcli plan-delete 'Standard plan'
 ```
   </TabItem>
 </Tabs>

@@ -8,8 +8,8 @@ import { ArrowLeftLongIcon } from "./icons/arrow-left-long";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const EnterpriseTable = ({ className }: { className?: string }) => {
-    const [activeTab, setActiveTab] = useState<"cyberpanel" | "openpanel">(
-        "openpanel",
+    const [activeTab, setActiveTab] = useState<"cyberpanel" | "davpanel">(
+        "davpanel",
     );
 
     return (
@@ -61,7 +61,7 @@ export const EnterpriseTable = ({ className }: { className?: string }) => {
                     >
                         <TableStickyHeader
                             activeTab={activeTab}
-                            setActiveTab={(tab: "cyberpanel" | "openpanel") => {
+                            setActiveTab={(tab: "cyberpanel" | "davpanel") => {
                                 setActiveTab(tab);
                             }}
                         />
@@ -97,8 +97,8 @@ const TableItemHeading = ({ children }) => {
         <div
             className={clsx(
                 "pl-4 landing-sm:pl-10 pb-4 pt-4 pr-4",
-                "bg-refine-openpanel-table-alt",
-                "dark:bg-refine-openpanel-table-alt-dark",
+                "bg-refine-davpanel-table-alt",
+                "dark:bg-refine-davpanel-table-alt-dark",
                 "border-b",
                 "border-gray-200",
                 "dark:border-gray-700",
@@ -161,7 +161,7 @@ const TableItemDescription = ({ children, isLast }) => {
 
 const TableItemContentGroup = ({
     cyberpanel,
-    openpanel,
+    davpanel,
     activeTab,
     isLast,
     valueType,
@@ -209,11 +209,11 @@ const TableItemContentGroup = ({
                     activeTab={activeTab}
                     valueType={valueType}
                     className={clsx(
-                        activeTab !== "openpanel" && "hidden landing-md:flex",
-                        activeTab === "openpanel" && "flex",
+                        activeTab !== "davpanel" && "hidden landing-md:flex",
+                        activeTab === "davpanel" && "flex",
                     )}
                 >
-                    {openpanel}
+                    {davpanel}
                 </TableItemContent>
             </div>
         </div>
@@ -223,7 +223,7 @@ const TableItemContentGroup = ({
 const TableItem = ({
     description,
     cyberpanel,
-    openpanel,
+    davpanel,
     activeTab,
     isLast,
     valueType,
@@ -253,7 +253,7 @@ const TableItem = ({
                     {description}
                 </TableItemDescription>
                 <TableItemContentGroup
-                    {...{ cyberpanel, openpanel, activeTab, isLast, valueType }}
+                    {...{ cyberpanel, davpanel, activeTab, isLast, valueType }}
                 />
             </div>
         </div>
@@ -300,7 +300,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                 type="button"
                 onClick={() => {
                     setActiveTab((prev) => {
-                        if (prev === "cyberpanel") return "openpanel";
+                        if (prev === "cyberpanel") return "davpanel";
                         return "cyberpanel";
                     });
                 }}
@@ -315,7 +315,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                     "rounded-full",
                     "w-12 h-6",
                     "items-center justify-center",
-                    activeTab === "openpanel" &&
+                    activeTab === "davpanel" &&
                         "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500",
                     activeTab === "cyberpanel" &&
                         "bg-refine-blue dark:bg-refine-cyan-alt text-gray-0 dark:text-gray-900",
@@ -325,7 +325,7 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                     className={clsx(
                         "transition-transform duration-200 ease-in-out",
                         activeTab === "cyberpanel" && "rotate-360",
-                        activeTab === "openpanel" && "rotate-180",
+                        activeTab === "davpanel" && "rotate-180",
                     )}
                 />
             </button>
@@ -380,8 +380,8 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                         "landing-md:w-[296px]",
                         "landing-lg:w-[396px]",
                         "p-4 landing-md:p-6",
-                        activeTab !== "openpanel" && "hidden landing-md:flex",
-                        activeTab === "openpanel" && "flex",
+                        activeTab !== "davpanel" && "hidden landing-md:flex",
+                        activeTab === "davpanel" && "flex",
                         "items-center",
                         "justify-start",
                         "text-center",
@@ -393,8 +393,8 @@ const TableTabs = ({ activeTab, setActiveTab }) => {
                         className={clsx(
                             "font-semibold",
                             "whitespace-nowrap",
-                            activeTab === "openpanel" && "opacity-100",
-                            activeTab !== "openpanel" &&
+                            activeTab === "davpanel" && "opacity-100",
+                            activeTab !== "davpanel" &&
                                 "opacity-0 landing-md:opacity-100",
                             "transition-opacity",
                             "ease-in-out",
@@ -493,19 +493,19 @@ const tableData = [
             {
                 description: "Monthly Pricing",
                 cyberpanel: <TableText>0 - 97$/ month</TableText>,
-                openpanel: <TableText>14.95€ / month</TableText>,
+                davpanel: <TableText>14.95€ / month</TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Pricing model",
                 cyberpanel: <TableText>Free (LSWS license optional)</TableText>,
-                openpanel: <TableText>Per server</TableText>,
+                davpanel: <TableText>Per server</TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
         ],
@@ -516,46 +516,46 @@ const tableData = [
             {
                 description: "Supported OS",
                 cyberpanel: <TableText><a href="https://cyberpanel.net/KnowledgeBase/" target="_blank">Ubuntu, AlmaLinux, Rocky, CloudLinux, openEuler</a></TableText>,
-                openpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
+                davpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Support for ARM CPUs (Aarch64)",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "User Isolation",
                 cyberpanel: <TableText>No LVE by default (Cloudlinux optional)</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Service Isolation",
                 cyberpanel: <TableText>Shared services (PHP, MySQL..)</TableText>,
-                openpanel: <TableText>Service per user</TableText>,
+                davpanel: <TableText>Service per user</TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Kernel Updates",
                 cyberpanel: <TableText>Only with KernelCare</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -566,37 +566,37 @@ const tableData = [
             {
                 description: "Apache",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Nginx",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "OpenLitespeed",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "OpenResty",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -607,37 +607,37 @@ const tableData = [
             {
                 description: "Varnish Caching",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Valkey / Redis",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Memcached",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "OpenSearch / ElasticSearch",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -648,46 +648,46 @@ const tableData = [
             {
                 description: "Supported versions",
                 cyberpanel: <TableText>5.6 - 8.3</TableText>,
-                openpanel: <TableText>5.6 - 8.5</TableText>,
+                davpanel: <TableText>5.6 - 8.5</TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "PHP Selector",
                 cyberpanel: <TableText>Native selector</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PHP.INI Editor",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PHP service per user",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PHP version per domain",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -698,19 +698,19 @@ const tableData = [
             {
                 description: "Users can manage Containers",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Users can add Containers",
                 cyberpanel: <TableText>Admin-granted access</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -721,55 +721,55 @@ const tableData = [
             {
                 description: "API for every UI action",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Native MCP server for AI agents",
                 cyberpanel: <TableText>Community project (unofficial)</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Process Manager",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Web Terminal",
                 cyberpanel: <CrossIcon />,
-                openpanel: <TableText>Per service</TableText>,
+                davpanel: <TableText>Per service</TableText>,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Edit webserver settings",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "View Resource Usage",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -780,46 +780,46 @@ const tableData = [
             {
                 description: "Format",
                 cyberpanel: <TableText>Unix</TableText>,
-                openpanel: <TableText>GO</TableText>,
+                davpanel: <TableText>GO</TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Min Schedule",
                 cyberpanel: <TableText>Minute</TableText>,
-                openpanel: <TableText>Seconds</TableText>,
+                davpanel: <TableText>Seconds</TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "No overlap",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit cron file",
                 cyberpanel: <TableText>Form-based only</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Logs",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -830,91 +830,91 @@ const tableData = [
             {
                 description: "File Manager",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Upload multiple files",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Drag & Drop Upload",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "File Editor",
                 cyberpanel: <TableText>Basic code editor</TableText>,
-                openpanel: <TableText>Monaco (VS Code), Ace, CodeMirror</TableText>,
+                davpanel: <TableText>Monaco (VS Code), Ace, CodeMirror</TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "FTP",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Malware Scanner",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Download from URL",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Disk Usage Explorer",
                 cyberpanel: <TableText>Overall usage only</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Inodes Explorer",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Fix Permissions",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -925,100 +925,100 @@ const tableData = [
             {
                 description: "MySQL",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "MariaDB",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Percona",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "phpMyAdmin",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "PostgreSQL",
                 cyberpanel: <TableText>Manual/CLI setup only</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Import Databases",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Optimize Tables",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Root Privileges",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit MySQL Configuration",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Manage Processes",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Switch MySQL to MariaDB",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1029,100 +1029,100 @@ const tableData = [
             {
                 description: "Account limit",
                 cyberpanel: <TableText>Tied to LSWS license tier</TableText>,
-                openpanel: <CrossIcon />,
+                davpanel: <CrossIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Multiple Administrator Accounts",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "User can change username",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Features per user",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Detailed Activity Log",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Detailed Login Log",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Add pages to favorites",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Dark Mode",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Custom message per user",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Private notes for Administrators",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Customize email templates",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1133,109 +1133,109 @@ const tableData = [
             {
                 description: "Automatic SSL ",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit VirtualHosts file",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Change docroot",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "GoAccess",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "DNS Zone Editor",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Dynamic DNS",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit zone file",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "TLSA records",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Export/Import zone",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "User can reset zone",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Comments for DNS records",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Suspend Domains",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1246,55 +1246,55 @@ const tableData = [
             {
                 description: "HTML Website Builder",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "WP Manager",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Temporary Domains",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Google PageSpeed monitoring",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Google Safe Browsing monitoring",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Node / Python Environment",
                 cyberpanel: <TableText>venv</TableText>,
-                openpanel: <TableText>Containerized</TableText>,
+                davpanel: <TableText>Containerized</TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
         ],
@@ -1305,46 +1305,46 @@ const tableData = [
             {
                 description: "Postfix",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Autologin to Webmail",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Sieve (RFC 5228) filtering",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Fail2ban",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Export Addresses",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1355,136 +1355,136 @@ const tableData = [
             {
                 description: "CVE Vulnerabilities",
                 cyberpanel: <TableText><a href="https://www.cve.org/CVERecord/SearchResults?query=cyberpanel" target="_blank">10+</a></TableText>,
-                openpanel: <TableText><a href="https://www.cve.org/CVERecord/SearchResults?query=openpanel">3 before 1.0 release</a></TableText>,
+                davpanel: <TableText><a href="https://www.cve.org/CVERecord/SearchResults?query=davpanel">3 before 1.0 release</a></TableText>,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
                 description: "Granular per-user permissions",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "2FA",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Enforce 2FA for users",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Passkeys",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "IP Blocker",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Coraza WAF",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Edit WAF rules per domain",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "View WAF logs per domain",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Sentinel Firewall (CSF)",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Custom ports",
                 cyberpanel: <CheckIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Containerization",
                 cyberpanel: <TableText>Partial (cgroups only)</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Disable admin panel",
                 cyberpanel: <TableText>Via port/firewall only</TableText>,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Rate-limit logins",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Manage Sessions",
                 cyberpanel: <CrossIcon />,
-                openpanel: <CheckIcon />,
+                davpanel: <CheckIcon />,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
         ],
@@ -1495,19 +1495,19 @@ const tableData = [
             {
                 description: "Price Increase (3yr)",
                 cyberpanel: <TableText>No documented history</TableText>,
-                openpanel: <CrossIcon />,
+                davpanel: <CrossIcon />,
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "icon",
+                    davpanel: "icon",
                 },
             },
             {
                 description: "Forever free tier",
                 cyberpanel: <CheckIcon />,
-                openpanel: <TableText><a href="/community">Community Edition</a></TableText>,
+                davpanel: <TableText><a href="/community">Community Edition</a></TableText>,
                 valueType: {
                     cyberpanel: "icon",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
             {
@@ -1517,7 +1517,7 @@ const tableData = [
                         <TableText>0 - 1164$ / year</TableText>
                     </div>
                 ),
-                openpanel: (
+                davpanel: (
                     <div className={clsx("flex flex-col", "gap-6", "w-full")}>
                         <TableText>149.50€ / year (17% OFF)</TableText>
                         <EnterpriseGetInTouchButton
@@ -1528,7 +1528,7 @@ const tableData = [
                 ),
                 valueType: {
                     cyberpanel: "text",
-                    openpanel: "text",
+                    davpanel: "text",
                 },
             },
         ],

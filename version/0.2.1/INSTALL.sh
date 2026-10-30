@@ -570,7 +570,7 @@ docker_compose_check_health(){
 
 
 docker_compose_up(){
-    echo "Setting Openpanel and MySQL docker containers.."
+    echo "Setting Davpanel and MySQL docker containers.."
     echo ""
     # install docker compose
     DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}

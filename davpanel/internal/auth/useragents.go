@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 // BlacklistUseragentsPath is the list DavAdmin > Security > Blocked User Agents edits, one user-agent fragment per line

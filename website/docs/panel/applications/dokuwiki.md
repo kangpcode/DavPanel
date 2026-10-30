@@ -10,10 +10,10 @@ Install and manage [DokuWiki](https://www.dokuwiki.org/) wikis in an existing do
 
 ## Install DokuWiki
 
-Navigate to **OpenPanel > Websites > Install App** and click **Install DokuWiki**.
+Navigate to **DavPanel > Websites > Install App** and click **Install DokuWiki**.
 
-![Install DokuWiki form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/dokuwiki-form.png#gh-light-mode-only)
-![Install DokuWiki form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/dokuwiki-form_dark.png#gh-dark-mode-only)
+![Install DokuWiki form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/dokuwiki-form.png#gh-light-mode-only)
+![Install DokuWiki form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/dokuwiki-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -21,7 +21,7 @@ On the install page, configure:
 * **Site title** – The wiki's display name.
 * **Admin username / password / full name / email** – The initial administrator account. Leave the password blank to generate one.
 
-There is no version picker — DokuWiki has no versioned releases API to pick from, so install always downloads whatever [download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz](https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz) currently resolves to (DokuWiki's own "always current stable" link) and records the dated release codename it extracts (e.g. `2026-07-14b`) as the installed version. DokuWiki ships no CLI installer, so instead of running one, OpenPanel writes `conf/local.php`, `conf/users.auth.php`, and `conf/acl.auth.php` directly — byte-for-byte what DokuWiki's own browser install wizard would have written for a single-admin, ACL-enabled site — and deletes `install.php` afterward, since DokuWiki's own docs recommend removing it once a site is configured. The domain's PHP version must be 7.4 or newer. Progress is streamed live as each step completes.
+There is no version picker — DokuWiki has no versioned releases API to pick from, so install always downloads whatever [download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz](https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz) currently resolves to (DokuWiki's own "always current stable" link) and records the dated release codename it extracts (e.g. `2026-07-14b`) as the installed version. DokuWiki ships no CLI installer, so instead of running one, DavPanel writes `conf/local.php`, `conf/users.auth.php`, and `conf/acl.auth.php` directly — byte-for-byte what DokuWiki's own browser install wizard would have written for a single-admin, ACL-enabled site — and deletes `install.php` afterward, since DokuWiki's own docs recommend removing it once a site is configured. The domain's PHP version must be 7.4 or newer. Progress is streamed live as each step completes.
 
 ## Manage a wiki
 

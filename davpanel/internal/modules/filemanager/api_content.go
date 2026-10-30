@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // apiGetFileContent is handleEditFile's GET branch (editor.go), reused via forceJSONOutput so it already returns the raw content as a bare JSON string (matching the web editor's own "?output=json" AJAX contract) - same allowlist/binary-sniff/size-limit checks apply

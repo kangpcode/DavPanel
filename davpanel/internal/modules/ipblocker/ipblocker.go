@@ -6,7 +6,7 @@ import (
 	"net/netip"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // normalizeIP: a "/" means CIDR (host bits are zeroed out to the network address), otherwise a plain address - returns ok=false for anything that fails to parse, which callers treat as silently skippable

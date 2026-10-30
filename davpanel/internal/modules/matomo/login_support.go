@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // generateSecretToken returns a long random hex string used as the login-helper's shared secret (see login_php.go)

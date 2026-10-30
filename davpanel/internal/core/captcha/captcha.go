@@ -13,7 +13,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 // Widget is what the login page needs to render the active provider's widget - Provider is "" when none is configured, which the caller treats as "don't show a captcha".

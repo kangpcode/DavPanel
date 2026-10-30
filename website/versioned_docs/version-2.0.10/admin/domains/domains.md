@@ -10,13 +10,13 @@ Domains page displays all domains currently hosted on server.
 ## List domains
 
 <Tabs>
-  <TabItem value="openadmin-domains-list" label="With OpenAdmin" default>
+  <TabItem value="davadmin-domains-list" label="With DavAdmin" default>
 
 
 To list all current domains navigate to Domains page. 
 
-![Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner](/img/openadmin-screenshots/domains/domains-list.png#gh-light-mode-only)
-![Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner](/img/openadmin-screenshots/domains/domains-list_dark.png#gh-dark-mode-only)
+![Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner](/img/davadmin-screenshots/domains/domains-list.png#gh-light-mode-only)
+![Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner](/img/davadmin-screenshots/domains/domains-list_dark.png#gh-dark-mode-only)
 
 The table shows these columns by default:
 
@@ -28,7 +28,7 @@ The table shows these columns by default:
 | **Webserver**   | The webserver of the account that owns the domain (Apache, Nginx, OpenResty or OpenLiteSpeed). |
 | **SSL**         | Whether the domain has an SSL certificate.                                  |
 | **WAF**         | Toggle to enable or disable Coraza WAF for the domain.                      |
-| **Owner**       | The OpenPanel user who owns the domain.                                     |
+| **Owner**       | The DavPanel user who owns the domain.                                     |
 | **Actions**     | Menu with the [domain actions](#domain-actions).                            |
 
 Click **Show Columns** to show or hide columns. These optional columns are hidden by default:
@@ -44,24 +44,24 @@ Any default column except Actions can be hidden the same way. Column visibility 
 Use the search box (**Search by user/domain...**) to filter the list by domain name or owning username.
 
   </TabItem>
-  <TabItem value="CLI-domains-list" label="With OpenCLI">
+  <TabItem value="CLI-domains-list" label="With DavCLI">
 
 To list all current domains  run:
 
 ```bash
-opencli domains-all
+davcli domains-all
 ```
 
 Example output:
 ```bash
-root@server:~# opencli domains-all
-openpanel.com
-openpanel.org
-community.openpanel.org
-api.openpanel.com
-support.openpanel.org
-ip.openpanel.com
-my.openpanel.com
+root@server:~# davcli domains-all
+davpanel.com
+davpanel.org
+community.davpanel.org
+api.davpanel.com
+support.davpanel.org
+ip.davpanel.com
+my.davpanel.com
 ```
 
   </TabItem>
@@ -71,26 +71,26 @@ my.openpanel.com
 
 
 <Tabs>
-  <TabItem value="openadmin-domain-new" label="With OpenAdmin" default>
+  <TabItem value="davadmin-domain-new" label="With DavAdmin" default>
 
   Click on 'Add Domain' button, insert the domain and select the user to add it, then click on 'Add Domain'.
 
-![Add Domain form with the domain name and the user to add it to](/img/openadmin-screenshots/domains/domains-add.png#gh-light-mode-only)
-![Add Domain form with the domain name and the user to add it to](/img/openadmin-screenshots/domains/domains-add_dark.png#gh-dark-mode-only)
+![Add Domain form with the domain name and the user to add it to](/img/davadmin-screenshots/domains/domains-add.png#gh-light-mode-only)
+![Add Domain form with the domain name and the user to add it to](/img/davadmin-screenshots/domains/domains-add_dark.png#gh-dark-mode-only)
 
 
   </TabItem>
-  <TabItem value="CLI-domain-new" label="With OpenCLI">
+  <TabItem value="CLI-domain-new" label="With DavCLI">
     
 To create a new plan run the following command:
 
 ```bash
-opencli domains-add <DOMAIN_NAME> <USERNAME> [--debug]
+davcli domains-add <DOMAIN_NAME> <USERNAME> [--debug]
 ```
 
 Example:
 ```bash
-root@stefan:/usr/local/admin# opencli domains-add pejcci.rs wzs11p2i --debug
+root@stefan:/usr/local/admin# davcli domains-add pejcci.rs wzs11p2i --debug
 Checking if domain already exists on the server
 Adding pejcci.rs to the domains database
 Purging cached list of domains for the account
@@ -127,8 +127,8 @@ Each row in the Domains table has an actions menu (the `⋮` button) with the fo
 - **Edit Caddyfile** — opens the Caddy config editor for the domain.
 - **Delete domain** — permanently deletes the domain, see [Delete domain](#delete-domain) below.
 
-![Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain](/img/openadmin-screenshots/domains/domains-actions.png#gh-light-mode-only)
-![Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain](/img/openadmin-screenshots/domains/domains-actions_dark.png#gh-dark-mode-only)
+![Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain](/img/davadmin-screenshots/domains/domains-actions.png#gh-light-mode-only)
+![Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain](/img/davadmin-screenshots/domains/domains-actions_dark.png#gh-dark-mode-only)
 
 ## Move domain
 
@@ -136,13 +136,13 @@ This is currently not possible.
 
 ## Delete domain
 
-Domains can be deleted directly from OpenAdmin:
+Domains can be deleted directly from DavAdmin:
 
 1. Open the domain's actions menu (`⋮`) in the Domains table and click **Delete domain**.
 2. A confirmation dialog lists what will be removed: VHost configuration files, Caddyfile entries, SSL certificates, and email accounts & redirects. Website files and the docroot directory are **not** deleted.
 3. Type the domain name to confirm, then click **Delete Permanently**.
 
-![Delete domain confirmation asking to type the domain name before deleting it permanently](/img/openadmin-screenshots/domains/domains-delete.png#gh-light-mode-only)
-![Delete domain confirmation asking to type the domain name before deleting it permanently](/img/openadmin-screenshots/domains/domains-delete_dark.png#gh-dark-mode-only)
+![Delete domain confirmation asking to type the domain name before deleting it permanently](/img/davadmin-screenshots/domains/domains-delete.png#gh-light-mode-only)
+![Delete domain confirmation asking to type the domain name before deleting it permanently](/img/davadmin-screenshots/domains/domains-delete_dark.png#gh-dark-mode-only)
 
 > Domains with attached websites cannot be deleted — remove all websites from Site Manager first. If the domain is added again later, default configurations are recreated.

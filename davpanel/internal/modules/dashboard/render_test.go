@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // exercises the full base.html + partials + dashboard.html + includes template tree through html/template's real executor - the only way to catch a broken {{template}} wiring, a mismatched field name, or a nil-map access before a real request hits it. Covers a user with a broad, representative feature set so most conditional branches actually render.

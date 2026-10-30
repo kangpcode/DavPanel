@@ -1,13 +1,13 @@
 ---
 sidebar_label: "Hosting Plan Templates"
-description: "Suggested shared hosting plan limits for OpenPanel - Starter, Business, Pro, WordPress and reseller tiers - with CPU, RAM, disk, inodes, email and database limits, ready-to-run opencli commands, and how to size them for your server."
+description: "Suggested shared hosting plan limits for DavPanel - Starter, Business, Pro, WordPress and reseller tiers - with CPU, RAM, disk, inodes, email and database limits, ready-to-run davcli commands, and how to size them for your server."
 ---
 
 # Suggested Hosting Plan Limits (Templates for Shared Hosting Tiers)
 
-Choosing plan limits is one of the first decisions when you start selling hosting. The templates below are a practical starting point for typical shared hosting tiers on OpenPanel - copy them, then adjust to your server and market.
+Choosing plan limits is one of the first decisions when you start selling hosting. The templates below are a practical starting point for typical shared hosting tiers on DavPanel - copy them, then adjust to your server and market.
 
-In OpenPanel, every limit is **enforced per account**: CPU and RAM are real container limits, disk and inodes are quotas, and the number of domains, websites, databases, mailboxes and FTP accounts is checked by the panel. See [User Packages](/docs/admin/plans/hosting_plans/).
+In DavPanel, every limit is **enforced per account**: CPU and RAM are real container limits, disk and inodes are quotas, and the number of domains, websites, databases, mailboxes and FTP accounts is checked by the panel. See [User Packages](/docs/admin/plans/hosting_plans/).
 
 ---
 
@@ -43,16 +43,16 @@ Notes:
 Paste these commands to create all four plans at once (plan names without spaces):
 
 ```bash
-opencli plan-create name="Starter" description="1 website, 10 GB NVMe" emails=5 ftp=1 domains=1 websites=1 disk=10 inodes=150000 databases=2 cpu=1 ram=1 bandwidth=100 feature_set=basic max_email_quota=2G max_hourly_email=100
+davcli plan-create name="Starter" description="1 website, 10 GB NVMe" emails=5 ftp=1 domains=1 websites=1 disk=10 inodes=150000 databases=2 cpu=1 ram=1 bandwidth=100 feature_set=basic max_email_quota=2G max_hourly_email=100
 
-opencli plan-create name="Business" description="5 websites, 30 GB NVMe" emails=25 ftp=5 domains=5 websites=5 disk=30 inodes=400000 databases=10 cpu=2 ram=2 bandwidth=200 feature_set=default max_email_quota=5G max_hourly_email=300
+davcli plan-create name="Business" description="5 websites, 30 GB NVMe" emails=25 ftp=5 domains=5 websites=5 disk=30 inodes=400000 databases=10 cpu=2 ram=2 bandwidth=200 feature_set=default max_email_quota=5G max_hourly_email=300
 
-opencli plan-create name="Pro" description="20 websites, 75 GB NVMe" emails=100 ftp=20 domains=20 websites=20 disk=75 inodes=1000000 databases=50 cpu=4 ram=4 bandwidth=500 feature_set=default max_email_quota=10G max_hourly_email=500
+davcli plan-create name="Pro" description="20 websites, 75 GB NVMe" emails=100 ftp=20 domains=20 websites=20 disk=75 inodes=1000000 databases=50 cpu=4 ram=4 bandwidth=500 feature_set=default max_email_quota=10G max_hourly_email=500
 
-opencli plan-create name="WordPressPro" description="Managed WordPress, 3 sites" emails=10 ftp=3 domains=3 websites=3 disk=40 inodes=500000 databases=5 cpu=2 ram=3 bandwidth=200 feature_set=default max_email_quota=5G max_hourly_email=200
+davcli plan-create name="WordPressPro" description="Managed WordPress, 3 sites" emails=10 ftp=3 domains=3 websites=3 disk=40 inodes=500000 databases=5 cpu=2 ram=3 bandwidth=200 feature_set=default max_email_quota=5G max_hourly_email=200
 ```
 
-Or create them in **OpenAdmin → Hosting Plans → User Packages → Create New**. See [opencli plan](/docs/articles/opencli/plan/).
+Or create them in **DavAdmin → Hosting Plans → User Packages → Create New**. See [davcli plan](/docs/articles/davcli/plan/).
 
 Use a [Feature Set](/docs/admin/plans/feature-manager/) that matches the tier - for example hide advanced features like the web terminal, containers or PHP.INI editor on the Starter plan, and enable them on Pro.
 
@@ -68,7 +68,7 @@ CPU and RAM limits are **maximums**, not reservations. Most sites are idle most 
 
 Example: a server with **8 cores, 32 GB RAM and 500 GB NVMe** could comfortably host around **60-80 Starter** accounts, or **30-40 Business** accounts, depending on how busy the sites are.
 
-Use the [resource calculator](/calculator) to model your mix, and watch real usage in **OpenAdmin → Server → Resource Usage** as you grow. See [System requirements and sizing](/docs/articles/install-update/system-requirements/).
+Use the [resource calculator](/calculator) to model your mix, and watch real usage in **DavAdmin → Server → Resource Usage** as you grow. See [System requirements and sizing](/docs/articles/install-update/system-requirements/).
 
 ---
 
@@ -77,21 +77,21 @@ Use the [resource calculator](/calculator) to model your mix, and watch real usa
 - Price by **value (sites, storage, email)** - customers compare those, not CPU cores.
 - Offer **annual billing** with a discount; it improves cash flow and retention.
 - Keep **3-4 tiers**; more options slow down buying decisions.
-- Include **daily backups** and **free SSL** in every tier - both come built into OpenPanel.
-- Since OpenPanel Enterprise is priced **per server, not per account**, your panel cost per customer drops as you add accounts.
+- Include **daily backups** and **free SSL** in every tier - both come built into DavPanel.
+- Since DavPanel Enterprise is priced **per server, not per account**, your panel cost per customer drops as you add accounts.
 
 ---
 
 ## Change Plans Later
 
 - Edit a plan to change limits for **all** its users at once.
-- Move a single customer to another plan (upgrade/downgrade) from **OpenAdmin → Users → Edit**, or with `opencli user-change_plan`.
-- With a [billing integration](/docs/articles/extensions/openpanel-and-whmcs/), upgrades and downgrades happen automatically when the customer changes their package.
+- Move a single customer to another plan (upgrade/downgrade) from **DavAdmin → Users → Edit**, or with `davcli user-change_plan`.
+- With a [billing integration](/docs/articles/extensions/davpanel-and-whmcs/), upgrades and downgrades happen automatically when the customer changes their package.
 
 ---
 
 ## Related
 
-- [Start a web hosting business with OpenPanel](/docs/articles/hosting-business/start-web-hosting-business/)
+- [Start a web hosting business with DavPanel](/docs/articles/hosting-business/start-web-hosting-business/)
 - [Set up reseller accounts](/docs/articles/hosting-business/reseller-hosting/)
 - [Are plan limits hard or soft limits?](/docs/articles/containers/are-plan-limits-hard-or-soft-limits/)

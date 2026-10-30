@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
 )
 
 // RegisterContainerManageAPI wires up create/edit/delete for a compose service, split out from RegisterAPI (api.go) since it covers a different slice of routes (new/edit/delete) rather than status/start/stop/logs, though it's gated on the same "docker" flag - the MySQL/webserver-swap and change-image-tag twins are registered separately below, each behind its own feature flag instead of "docker".

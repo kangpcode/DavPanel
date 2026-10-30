@@ -3,8 +3,8 @@ package mysql
 import (
 	"context"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // DatabaseLimitReached checks the current user's plan db_limit against their actual database count (same source getDatabaseCount/dbLimit checks already use for /mysql/new and the setup wizard), exported so an app installer (any CMS module's install.go, about to CREATE DATABASE + CREATE USER on the user's behalf) can refuse up front instead of letting a database-limit failure surface later, mid-install, as a raw SQL error

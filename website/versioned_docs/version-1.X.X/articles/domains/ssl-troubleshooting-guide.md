@@ -105,11 +105,11 @@ ModSecurity rules do not affect SSL generation: Caddy automatically tries to gen
 
 However, you can temporarily disable all rules - or disable the WAF completely by simply:
 
-- Disabling 'waf' module in OpenAdmin > Settings > Modules 
-- Changing image tag from openpanel/caddy-coraza to caddy:latest in OpenAdmin > Services > Services Limits > CADDY image.
-- Stop & Start the Web Server from OpenAdmin > Services > Services Status.
+- Disabling 'waf' module in DavAdmin > Settings > Modules 
+- Changing image tag from davpanel/caddy-coraza to caddy:latest in DavAdmin > Services > Services Limits > CADDY image.
+- Stop & Start the Web Server from DavAdmin > Services > Services Status.
 
-Or use opencli command: ```opencli waf disable```
+Or use davcli command: ```davcli waf disable```
 
 Note that you need to remove existing domains as well, or edit their files to not have any # modsecurity parts: https://github.com/stefanpejcic/openpanel-configuration/blob/main/caddy/templates/domain.conf_with_modsec#L17-L33
 

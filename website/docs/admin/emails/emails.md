@@ -4,12 +4,12 @@ sidebar_position: 1
 
 # Email Accounts
 
-The Emails > Accounts page provides an overview of all email accounts managed through OpenPanel.
+The Emails > Accounts page provides an overview of all email accounts managed through DavPanel.
 
 Use this interface to review usage, access webmail, and manage individual or multiple email accounts.
 
-![Emails page listing email accounts with their quota usage, webmail button and actions menu](/img/openadmin-screenshots/emails/emails-list.png#gh-light-mode-only)
-![Emails page listing email accounts with their quota usage, webmail button and actions menu](/img/openadmin-screenshots/emails/emails-list_dark.png#gh-dark-mode-only)
+![Emails page listing email accounts with their quota usage, webmail button and actions menu](/img/davadmin-screenshots/emails/emails-list.png#gh-light-mode-only)
+![Emails page listing email accounts with their quota usage, webmail button and actions menu](/img/davadmin-screenshots/emails/emails-list_dark.png#gh-dark-mode-only)
 
 The table includes the following information:
 
@@ -22,8 +22,8 @@ The table includes the following information:
   - **Restrictions** – restrict the account from sending and/or receiving mail.
   - **Delete Account** – permanently remove the mailbox.
 
-![Actions menu of an email account with Change Password, Set Quota, Restrictions and Delete Account](/img/openadmin-screenshots/emails/emails-menu.png#gh-light-mode-only)
-![Actions menu of an email account with Change Password, Set Quota, Restrictions and Delete Account](/img/openadmin-screenshots/emails/emails-menu_dark.png#gh-dark-mode-only)
+![Actions menu of an email account with Change Password, Set Quota, Restrictions and Delete Account](/img/davadmin-screenshots/emails/emails-menu.png#gh-light-mode-only)
+![Actions menu of an email account with Change Password, Set Quota, Restrictions and Delete Account](/img/davadmin-screenshots/emails/emails-menu_dark.png#gh-dark-mode-only)
 
 A search box is also available to filter the list by email address.
 
@@ -36,17 +36,17 @@ Click **Add Email** in the top right to open the form:
 - **Storage quota**: the mailbox size in KiB, MiB, GiB or TiB, 0 for unlimited.
 - **Send welcome email**: sends the new mailbox a welcome message.
 
-![Add Email form with the username, a domain picked from the existing domains, its owner, the password with Generate and Show, the storage quota and Send welcome email](/img/openadmin-screenshots/emails/emails-add.png#gh-light-mode-only)
-![Add Email form with the username, a domain picked from the existing domains, its owner, the password with Generate and Show, the storage quota and Send welcome email](/img/openadmin-screenshots/emails/emails-add_dark.png#gh-dark-mode-only)
+![Add Email form with the username, a domain picked from the existing domains, its owner, the password with Generate and Show, the storage quota and Send welcome email](/img/davadmin-screenshots/emails/emails-add.png#gh-light-mode-only)
+![Add Email form with the username, a domain picked from the existing domains, its owner, the password with Generate and Show, the storage quota and Send welcome email](/img/davadmin-screenshots/emails/emails-add_dark.png#gh-dark-mode-only)
 
-Click **Add Email** to create it. The account is created the same way as when the user adds it in OpenPanel, with `opencli email-setup email add`, and the quota is set right after. The mail server has to be running.
+Click **Add Email** to create it. The account is created the same way as when the user adds it in DavPanel, with `davcli email-setup email add`, and the quota is set right after. The mail server has to be running.
 
 ## Bulk Actions
 
 Tick the checkbox of one or more email accounts, or the checkbox in the table header to select all email accounts shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two email accounts selected with the bulk actions bar offering Change password, Set quota, Remove quota, Restrict sending, Restrict receiving, Allow sending, Allow receiving and Delete](/img/openadmin-screenshots/emails/emails-bulk.png#gh-light-mode-only)
-![Two email accounts selected with the bulk actions bar offering Change password, Set quota, Remove quota, Restrict sending, Restrict receiving, Allow sending, Allow receiving and Delete](/img/openadmin-screenshots/emails/emails-bulk_dark.png#gh-dark-mode-only)
+![Two email accounts selected with the bulk actions bar offering Change password, Set quota, Remove quota, Restrict sending, Restrict receiving, Allow sending, Allow receiving and Delete](/img/davadmin-screenshots/emails/emails-bulk.png#gh-light-mode-only)
+![Two email accounts selected with the bulk actions bar offering Change password, Set quota, Remove quota, Restrict sending, Restrict receiving, Allow sending, Allow receiving and Delete](/img/davadmin-screenshots/emails/emails-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -66,5 +66,5 @@ This section is useful for monitoring email resource usage and offering users ea
 Outgoing/incoming mail that is queued but not yet delivered can be reviewed separately on the **Queue** page (*Emails > Queue*), where messages can be retried or deleted individually, in bulk, or all at once.
 
 :::info
-Emails are only available on [OpenPanel Enterprise edition](/enterprise)
+Emails are only available on [DavPanel Enterprise edition](/enterprise)
 :::

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"syscall"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
 )
 
 func injected(a *appctx.App, r *http.Request) (data map[string]any, err error) {

@@ -3,7 +3,7 @@ package phpapp
 import (
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 func TestIsValidSubdirectory(t *testing.T) {

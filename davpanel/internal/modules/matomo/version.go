@@ -8,8 +8,8 @@ import (
 	"sort"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/githubapi"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/core/githubapi"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 var matomoVersionRE = regexp.MustCompile(`^\d+\.\d+\.\d+$`)

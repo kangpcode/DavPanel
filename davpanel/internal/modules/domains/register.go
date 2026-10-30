@@ -4,9 +4,9 @@ package domains
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // Register wires all domain management routes onto mux - "domains" gates the base list/add/delete flow, the satellite pages are individually gated to match the sidebar's own feature-conditional links

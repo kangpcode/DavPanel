@@ -1,6 +1,6 @@
 # How to Set Up Email on Outlook 365 (Desktop App)
 
-This guide explains how to set up your **OpenPanel-created email account** in the Microsoft Outlook 365 desktop app.
+This guide explains how to set up your **DavPanel-created email account** in the Microsoft Outlook 365 desktop app.
 
 > **Note:** If you are setting up email on a different device or service, see the main guide:
 > [How to setup your email client](/docs/articles/email/how-to-setup-your-email-client)
@@ -47,4 +47,4 @@ Once all details are entered, click **Add Account**.
 
 ----
 
-Your OpenPanel email account is now set up in Outlook 365.  
+Your DavPanel email account is now set up in Outlook 365.  

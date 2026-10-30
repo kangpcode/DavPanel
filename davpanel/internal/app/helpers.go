@@ -12,9 +12,9 @@ import (
 
 	"golang.org/x/net/idna"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/sysinfo"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"github.com/kangpcode/davpanel/internal/core/sysinfo"
 )
 
 // shared lookup helpers used across modules live here. The podman/docker-CLI dependent ones live in internal/modules/docker instead, to avoid an import cycle.

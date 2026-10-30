@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/paths"
+	"github.com/kangpcode/davpanel/internal/core/paths"
 )
 
 // withUserRoot gives a temp HOME volume for "alice" and an open root on it

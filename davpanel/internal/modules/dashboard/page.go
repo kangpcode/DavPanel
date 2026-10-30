@@ -4,8 +4,8 @@ import (
 	"html/template"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // HowToTopic mirrors one entry of how_to_topics.

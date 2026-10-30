@@ -9,8 +9,8 @@ import { DavPanelLogoIcon } from "@site/src/refine-theme/icons/davpanel-logo";
 import { MobileFaq } from "@site/src/refine-theme/mobile-faq";
 
 const DOWNLOAD_URL =
-    "https://github.com/stefanpejcic/openpanel-mobile-app/releases/latest/download/DavPanel.apk";
-const REPO_URL = "https://github.com/stefanpejcic/openpanel-mobile-app";
+    "https://github.com/kangpcode/davpanel-mobile-app/releases/latest/download/DavPanel.apk";
+const REPO_URL = "https://github.com/kangpcode/davpanel-mobile-app";
 
 const screenshots = [
     "/img/mobile/screenshot-empty-list.jpg",

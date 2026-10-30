@@ -10,7 +10,7 @@ Domains page displays all domains currently hosted on server.
 ## List domains
 
 <Tabs>
-  <TabItem value="openadmin-domains-list" label="With OpenAdmin" default>
+  <TabItem value="davadmin-domains-list" label="With DavAdmin" default>
 
 
 To list all current domains navigate to Domains page:
@@ -28,18 +28,18 @@ To list all current domains navigate to Domains page:
 
 
   </TabItem>
-  <TabItem value="CLI-domains-list" label="With OpenCLI">
+  <TabItem value="CLI-domains-list" label="With DavCLI">
 
 To list all current domains  run:
 
 ```bash
-opencli domains-all
+davcli domains-all
 ```
 
 Example output:
 ```bash
-opencli domains-all
-stefan.openpanel.org
+davcli domains-all
+stefan.davpanel.org
 pejcic.rs
 nesto.com
 ```
@@ -51,22 +51,22 @@ nesto.com
 
 
 <Tabs>
-  <TabItem value="openadmin-domain-new" label="With OpenAdmin" default>
+  <TabItem value="davadmin-domain-new" label="With DavAdmin" default>
 
   Click on 'Add Domain' button, insert the domain and select the user to add it, then click on 'Add Domain'.
 
   </TabItem>
-  <TabItem value="CLI-domain-new" label="With OpenCLI">
+  <TabItem value="CLI-domain-new" label="With DavCLI">
     
 To create a new plan run the following command:
 
 ```bash
-opencli domains-add <DOMAIN_NAME> <USERNAME> [--debug]
+davcli domains-add <DOMAIN_NAME> <USERNAME> [--debug]
 ```
 
 Example:
 ```bash
-root@stefan:/usr/local/admin# opencli domains-add pejcci.rs wzs11p2i --debug
+root@stefan:/usr/local/admin# davcli domains-add pejcci.rs wzs11p2i --debug
 Checking if domain already exists on the server
 Adding pejcci.rs to the domains database
 Purging cached list of domains for the account

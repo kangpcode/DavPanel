@@ -4,8 +4,8 @@ sidebar_position: 2
 
 # Edit VHosts File
 
-![VirtualHosts file editor showing the domain configuration with the Save Changes button](/img/openpanel-screenshots/domains/vhosts-editor.png#gh-light-mode-only)
-![VirtualHosts file editor showing the domain configuration with the Save Changes button](/img/openpanel-screenshots/domains/vhosts-editor_dark.png#gh-dark-mode-only)
+![VirtualHosts file editor showing the domain configuration with the Save Changes button](/img/davpanel-screenshots/domains/vhosts-editor.png#gh-light-mode-only)
+![VirtualHosts file editor showing the domain configuration with the Save Changes button](/img/davpanel-screenshots/domains/vhosts-editor_dark.png#gh-dark-mode-only)
 
 A *Virtual Host* (or *vhost*) is a domain-specific configuration file used by the web server.
 
@@ -27,6 +27,6 @@ Depending on your web server -**Nginx**, **OpenResty**, **OpenLiteSpeed**, or **
 
 :::info
 ⚠️ **Important:** Always create a backup of the configuration file before making any changes.
-While OpenPanel performs basic validation on save (including syntax checks and automatic rollback on failure), you should not rely solely on this safeguard. Maintaining your own backups ensures you can manually restore the configuration if needed.
+While DavPanel performs basic validation on save (including syntax checks and automatic rollback on failure), you should not rely solely on this safeguard. Maintaining your own backups ensures you can manually restore the configuration if needed.
 :::
 

@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/modules/docker"
 )
 
 // AddJob appends a new [job-exec "<comment>"] block to userContext's crons.ini and (re)starts the cron container - the same effect as handleSaveCronjob's non-interactive path, exported for other modules (like an app installer registering its own periodic task) to use directly instead of going through the HTTP form. comment must be unique within the user's crons.ini - callers that might install more than once per user should pick a comment that encodes the site (e.g. "moodle-" + domain) and pair this with RemoveJobByComment at uninstall.

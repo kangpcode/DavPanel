@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/mongomanager"
+	"github.com/kangpcode/davpanel/internal/core/mongomanager"
 )
 
 // restrictedUsers is the set of built-in/system Mongo user names that users are never allowed to create, edit, or delete

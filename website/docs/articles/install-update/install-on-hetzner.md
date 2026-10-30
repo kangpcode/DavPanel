@@ -1,13 +1,13 @@
 ---
-sidebar_label: "OpenPanel Installation on Hetzner"
-description: "Step-by-step guide to installing the OpenPanel hosting control panel on a Hetzner Cloud or dedicated server, including firewall, reverse DNS and port 25 settings."
+sidebar_label: "DavPanel Installation on Hetzner"
+description: "Step-by-step guide to installing the DavPanel hosting control panel on a Hetzner Cloud or dedicated server, including firewall, reverse DNS and port 25 settings."
 ---
 
 # How to Install a Hosting Control Panel on Hetzner
 
-This guide walks you through installing **OpenPanel** on a [Hetzner](https://www.hetzner.com/) Cloud server. The same steps work for Hetzner dedicated (Robot) servers.
+This guide walks you through installing **DavPanel** on a [Hetzner](https://www.hetzner.com/) Cloud server. The same steps work for Hetzner dedicated (Robot) servers.
 
-Hetzner is a popular choice for OpenPanel: servers are inexpensive, have fast NVMe storage, and both x86 and ARM64 (Ampere) servers are supported.
+Hetzner is a popular choice for DavPanel: servers are inexpensive, have fast NVMe storage, and both x86 and ARM64 (Ampere) servers are supported.
 
 ---
 
@@ -26,14 +26,14 @@ Hetzner is a popular choice for OpenPanel: servers are inexpensive, have fast NV
 3. Choose a **location** close to your visitors.
 4. Select the **image**: **Ubuntu 24.04** (recommended). Debian 12/13, AlmaLinux and Rocky Linux also work.
 5. Choose a **type**:
-   - **x86 (Intel/AMD)** or **Arm64 (Ampere)** - OpenPanel runs on both.
+   - **x86 (Intel/AMD)** or **Arm64 (Ampere)** - DavPanel runs on both.
    - At least **2 GB RAM**; **4 GB RAM or more** is recommended for production. Use the [resource calculator](/calculator) to size the server for the number of websites you plan to host.
-6. Make sure **Public IPv4** is enabled - OpenPanel requires an IPv4 address.
+6. Make sure **Public IPv4** is enabled - DavPanel requires an IPv4 address.
 7. Add your **SSH key**.
 8. Click **Create & Buy now**.
 
 :::tip
-Leave **Cloud config** empty, or paste the install command there to install OpenPanel automatically on first boot - see [Install OpenPanel with Cloud-Init](/docs/articles/install-update/install-using-cloudinit/).
+Leave **Cloud config** empty, or paste the install command there to install DavPanel automatically on first boot - see [Install DavPanel with Cloud-Init](/docs/articles/install-update/install-using-cloudinit/).
 :::
 
 ---
@@ -46,25 +46,25 @@ ssh root@your-server-ip
 
 Replace `your-server-ip` with the IPv4 address shown in the Cloud Console.
 
-![Terminal showing the first SSH connection as root: confirming the server's host key fingerprint, the Ubuntu 24.04 welcome message, and the root prompt](/img/openpanel-screenshots/install/ssh-hetzner.png#screenshot)
+![Terminal showing the first SSH connection as root: confirming the server's host key fingerprint, the Ubuntu 24.04 welcome message, and the root prompt](/img/davpanel-screenshots/install/ssh-hetzner.png#screenshot)
 
 ---
 
-## Step 3: Run the OpenPanel Installer
+## Step 3: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
 The installer takes about 5 minutes. To set a domain, admin username, or other options up front, use the [install command generator](/install).
 
-When it finishes, the installer prints the **OpenAdmin URL**, **username**, and **password**.
+When it finishes, the installer prints the **DavAdmin URL**, **username**, and **password**.
 
-![OpenPanel installer output in a terminal: the OpenPanel banner with version, OS, IP and Podman engine, each installation step marked OK including the Hetzner DNS resolvers fix, and the OpenAdmin URL with the generated username and password at the end](/img/openpanel-screenshots/install/installer-output.png#screenshot)
+![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK including the Hetzner DNS resolvers fix, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output.png#screenshot)
 
 ---
 
-## Step 4: Log in to OpenAdmin
+## Step 4: Log in to DavAdmin
 
 Open the URL printed by the installer in your browser:
 
@@ -74,8 +74,8 @@ https://your-server-ip:2087
 
 Log in with the credentials from the previous step. Then follow the [post-install steps](/docs/admin/intro/#post-install-steps).
 
-![OpenAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to OpenPanel button](/img/openadmin-screenshots/000_intro-login.png#gh-light-mode-only)
-![OpenAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to OpenPanel button](/img/openadmin-screenshots/000_intro-login_dark.png#gh-dark-mode-only)
+![DavAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to DavPanel button](/img/davadmin-screenshots/000_intro-login.png#gh-light-mode-only)
+![DavAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to DavPanel button](/img/davadmin-screenshots/000_intro-login_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -85,7 +85,7 @@ Log in with the credentials from the previous step. Then follow the [post-instal
 
 Hetzner servers use Hetzner's own DNS resolvers by default, which can cause problems pulling container images (for example [issue #471](https://github.com/stefanpejcic/OpenPanel/issues/471)). We recommend using Cloudflare's public resolvers instead.
 
-The OpenPanel installer does this automatically when it detects a Hetzner image (`/etc/hetzner-build`) - you'll see `Hetzner detected — adding Cloudflare DNS resolvers...` in the install output.
+The DavPanel installer does this automatically when it detects a Hetzner image (`/etc/hetzner-build`) - you'll see `Hetzner detected — adding Cloudflare DNS resolvers...` in the install output.
 
 If your server wasn't detected (for example a custom image or a dedicated Robot server), or image downloads fail during installation, set the resolvers manually:
 
@@ -98,12 +98,12 @@ Google's resolvers (`8.8.8.8` and `8.8.4.4`) work too. To undo the change, resto
 
 ### Hetzner Cloud Firewall
 
-OpenPanel installs its own firewall ([Sentinel Firewall / CSF](/docs/admin/security/firewall/)), so a Hetzner Cloud Firewall is optional. If you attach one, allow these **inbound** ports:
+DavPanel installs its own firewall ([Sentinel Firewall / CSF](/docs/admin/security/firewall/)), so a Hetzner Cloud Firewall is optional. If you attach one, allow these **inbound** ports:
 
 | Service | Ports |
 |---|---|
 | Websites | `80`, `443` (TCP and UDP for HTTP/3) |
-| OpenPanel / OpenAdmin | `2083`, `2087` |
+| DavPanel / DavAdmin | `2083`, `2087` |
 | DNS | `53` (TCP and UDP) |
 | Email (Enterprise) | `25`, `143`, `465`, `587`, `993` |
 | FTP (Enterprise) | `21`, `21000-21010` |
@@ -133,6 +133,6 @@ More details: [How to Set Up Reverse DNS (PTR)](/docs/articles/email/reverse-dns
 ## Next Steps
 
 - [Set a domain and SSL for the panel](/docs/admin/settings/general/#domain)
-- [Configure custom nameservers](/docs/articles/domains/how-to-configure-nameservers-in-openpanel/)
+- [Configure custom nameservers](/docs/articles/domains/how-to-configure-nameservers-in-davpanel/)
 - [Create hosting plans](/docs/admin/plans/hosting_plans/)
-- [Secure the server for production](/docs/articles/security/securing-openpanel/)
+- [Secure the server for production](/docs/articles/security/securing-davpanel/)

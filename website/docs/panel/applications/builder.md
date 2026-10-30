@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Website Builder
 
-[GrapeJS](https://grapesjs.com/) is a drag & drop website builder integrated into OpenPanel that you can use to create static HTML websites with [tailwindcss](https://tailwindcss.com/).
+[GrapeJS](https://grapesjs.com/) is a drag & drop website builder integrated into DavPanel that you can use to create static HTML websites with [tailwindcss](https://tailwindcss.com/).
 
 ---
 
@@ -12,8 +12,8 @@ sidebar_position: 5
 
 To create a new website using [GrapeJS](https://grapesjs.com/) open **Websites > Install App** and under **Website Builder** click on the "Create website" button.
 
-![Website Builder page with the domain and folder to create the website in](/img/openpanel-screenshots/applications/builder-form.png#gh-light-mode-only)
-![Website Builder page with the domain and folder to create the website in](/img/openpanel-screenshots/applications/builder-form_dark.png#gh-dark-mode-only)
+![Website Builder page with the domain and folder to create the website in](/img/davpanel-screenshots/applications/builder-form.png#gh-light-mode-only)
+![Website Builder page with the domain and folder to create the website in](/img/davpanel-screenshots/applications/builder-form_dark.png#gh-dark-mode-only)
 
 The first step is choosing a domain and optionally a subdirectory where your new website will be installed.
 
@@ -23,7 +23,7 @@ When you're done click on the "Open Website Builder" button to finish setup and 
 
 ## Edit Website
 
-You can access the website builder to edit your websites at any time through **Site Manager** page on your OpenPanel account.
+You can access the website builder to edit your websites at any time through **Site Manager** page on your DavPanel account.
 
 Click **Open Editor** to launch the GrapeJS editor interface.
 

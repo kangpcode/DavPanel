@@ -4,17 +4,17 @@
 
 ![rspamd gui](/img/docs-content/wHkc2j15-2025-08-11-17-56-1.png)
 
-[OpenPanel Enterprise edition](https://openpanel.com/enterprise/#compare) includes RSPAMD by default.
+[DavPanel Enterprise edition](https://davpanel.com/enterprise/#compare) includes RSPAMD by default.
 
 ## How to enable Rspamd
 
 To enable RSPAMD:
 
-1. Go to **OpenAdmin > Emails > Settings**.
+1. Go to **DavAdmin > Emails > Settings**.
 2. Enable the 'RSPAMD' option.
-  ![rspamd enable openadmin](/img/docs-content/M6gTbRyZ-2025-08-11-18-04.png)
+  ![rspamd enable davadmin](/img/docs-content/M6gTbRyZ-2025-08-11-18-04.png)
 3. Save changes and restart the email server.
-  ![rspamd restart openadmin](/img/docs-content/6KPyXsDs-2025-08-11-18-05.png)
+  ![rspamd restart davadmin](/img/docs-content/6KPyXsDs-2025-08-11-18-05.png)
 
 > **NOTE**: If Rspamd is enabled, you should disable the following services (as they provide overlapping functionality): *Amavis, SpamAssassin, OpenDKIM, OpenDMARC*.
 
@@ -25,7 +25,7 @@ You must set a controller password before logging in.
 1. Open a terminal and run:
 
    ```bash
-   docker exec -it openadmin_mailserver rspamadm pw
+   docker exec -it davadmin_mailserver rspamadm pw
    ```
 
    * Enter your new password.
@@ -38,7 +38,7 @@ You must set a controller password before logging in.
 2. Enter the mailserver container:
 
    ```bash
-   docker exec -it openadmin_mailserver sh
+   docker exec -it davadmin_mailserver sh
    ```
 
 3. Add the hashed password to the configuration:
@@ -51,7 +51,7 @@ You must set a controller password before logging in.
 
    ```bash
    exit
-   docker restart openadmin_mailserver
+   docker restart davadmin_mailserver
    ```
 
 ## How to access the RSPAMD GUI

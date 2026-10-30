@@ -9,17 +9,17 @@ Hosting plans set limits for users.
 ## List hosting plans
 
 <Tabs>
-  <TabItem value="openadmin-plan-list" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-list" label="With DavAdmin" default>
 
 
 To list existing plans navigate to Plans page:
 
-![openadmin plans](/img/admin/tremor/plans_list.png)
+![davadmin plans](/img/admin/tremor/plans_list.png)
 
 
 | Field              | Description                                                               |
 | ------------------ | ------------------------------------------------------------------------- |
-| **Plan Name**      | Display name that users will see in their OpenPanel dashboards.            |
+| **Plan Name**      | Display name that users will see in their DavPanel dashboards.            |
 | **Memory**            | Physical Memory (RAM) in GB allocated to the user on this hosting plan.     |
 | **CPU**            | Number of CPU cores dedicated to the user on this hosting plan.             |
 | **Disk**     | Disk space in GB allocated for all user files.           |
@@ -32,22 +32,22 @@ To list existing plans navigate to Plans page:
 | **Mailbox quota** | Max mailbox size for email accounts that user can set on this plan.              |
 | **Max hourly emails** | Max number of emails that all addresses under this account can send within one hour.              |
 | **FTP accounts** | Total number of ftp accounts that user can create on the plan.             |
-| **Feature Set** | [Feature Sets](/docs/admin/settings/openpanel/#enable-features) determine which pages users can access from the OpenPanel interface.               |
+| **Feature Set** | [Feature Sets](/docs/admin/settings/davpanel/#enable-features) determine which pages users can access from the DavPanel interface.               |
 
 
 
   </TabItem>
-  <TabItem value="CLI-plan-list" label="With OpenCLI">
+  <TabItem value="CLI-plan-list" label="With DavCLI">
 
 To list all current hosting packages (plans) run:
 
 ```bash
-opencli plan-list
+davcli plan-list
 ```
 
 Example output:
 ```bash
-[root@fajlovi ~]# opencli plan-list
+[root@fajlovi ~]# davcli plan-list
 +----+----------------+------------------------+---------------+----------------+-------------+-----------+------------+--------------+----------+------+------+-----------+-------------+-----------------+------------------+
 | id | name           | description            | domains_limit | websites_limit | email_limit | ftp_limit | disk_limit | inodes_limit | db_limit | cpu  | ram  | bandwidth | feature_set | max_email_quota | max_hourly_email |
 +----+----------------+------------------------+---------------+----------------+-------------+-----------+------------+--------------+----------+------+------+-----------+-------------+-----------------+------------------+
@@ -60,7 +60,7 @@ Example output:
 You can also format the data as JSON:
 
 ```bash
-opencli plan-list --json
+davcli plan-list --json
 ```
 
   </TabItem>
@@ -69,15 +69,15 @@ opencli plan-list --json
 ## Create a plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-new" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-new" label="With DavAdmin" default>
 
 To create a new hosting package, click the **'Create New'** button and configure the desired limits:
 
-![openadmin plans create](/img/admin/tremor/plans_create.png)
+![davadmin plans create](/img/admin/tremor/plans_create.png)
 
 
 * **Name** – Can include any characters.
-* **Description** – Internal note for admins, visible only in OpenAdmin.
+* **Description** – Internal note for admins, visible only in DavAdmin.
 * **Disk** – Storage in GB. Use `0` for unlimited.
 * **Inodes** – Number of inodes. Use `0` for unlimited.
 * **CPU** – Number of CPU cores allocated across all user services. Set to `0` for unlimited. Cannot exceed total server cores.
@@ -89,10 +89,10 @@ To create a new hosting package, click the **'Create New'** button and configure
 * **Email accounts** – Max number of email sub-accounts. Use `0` for unlimited.
 * **Max hourly emails** – Max number of emails that can be sent within one hour. Use `0` for unlimited.
 * **Mailbox quota** – Max mailbox size for email accounts that user can set on this plan.
-* **Feature Set** – Name of the feature set that defines available services in the OpenPanel UI.
+* **Feature Set** – Name of the feature set that defines available services in the DavPanel UI.
 
 </TabItem>
-<TabItem value="CLI-plan-new" label="With OpenCLI">
+<TabItem value="CLI-plan-new" label="With DavCLI">
     
 To create a new plan run the following command:
 
@@ -102,7 +102,7 @@ pencli plan-create name"<TEXT>" description="<TEXT>" emails=<COUNT> ftp=<COUNT> 
 
 Example:
 ```bash
-opencli plan-create name="New Plan" description="This is a new plan" emails=100 ftp=50 domains=20 websites=30 disk=100 inodes=100000 databases=10 cpu=4 ram=8 bandwidth=100 feature_set=default max_email_quota=2G max_hourly_email=1000
+davcli plan-create name="New Plan" description="This is a new plan" emails=100 ftp=50 domains=20 websites=30 disk=100 inodes=100000 databases=10 cpu=4 ram=8 bandwidth=100 feature_set=default max_email_quota=2G max_hourly_email=1000
 ```
 
   </TabItem>
@@ -111,11 +111,11 @@ opencli plan-create name="New Plan" description="This is a new plan" emails=100 
 
 ## Modify plan
 
-To change plan limits click on the **Edit** button for the plan in **OpenAdmin > User Packages** and set the new limits.
+To change plan limits click on the **Edit** button for the plan in **DavAdmin > User Packages** and set the new limits.
 
-![openadmin plans edit](/img/admin/tremor/plans_edit_1.png)
+![davadmin plans edit](/img/admin/tremor/plans_edit_1.png)
 
-![openadmin plans edit limits](/img/admin/tremor/plans_edit_2.png)
+![davadmin plans edit limits](/img/admin/tremor/plans_edit_2.png)
 
 
 The new limits will be applied immediately to all accounts using the package.
@@ -123,30 +123,30 @@ The new limits will be applied immediately to all accounts using the package.
 ## List Users on Plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-usage" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-usage" label="With DavAdmin" default>
 
 To view all users that are currently using a hosting package, simply sort the users table by that package name, or in the search field type the package name.
 
-![openadmin plans usage](/img/admin/tremor/plans_usage_1.png)
+![davadmin plans usage](/img/admin/tremor/plans_usage_1.png)
 
-![openadmin plans usage](/img/admin/tremor/plans_usage_2.png)
+![davadmin plans usage](/img/admin/tremor/plans_usage_2.png)
 
   </TabItem>
-  <TabItem value="CLI-plan-usage" label="With OpenCLI">
+  <TabItem value="CLI-plan-usage" label="With DavCLI">
     
 List all users that are currently using a plan:
 
 ```bash
-opencli plan-usage
+davcli plan-usage
 ```
 
 Example:
 ```bash
-[root@fajlovi ~]# opencli plan-usage 'Standard plan'
+[root@fajlovi ~]# davcli plan-usage 'Standard plan'
 +----+----------------------------------+----------------------+---------------+---------------------+
 | id | username                         | email                | plan_name     | registered_date     |
 +----+----------------------------------+----------------------+---------------+---------------------+
-|  3 | forums                           | stefan@openpanel.com | Standard plan | 2025-05-08 19:25:47 |
+|  3 | forums                           | stefan@davpanel.com | Standard plan | 2025-05-08 19:25:47 |
 | 19 | radovan                          | radovan@jecmenica.rs | Standard plan | 2025-05-29 07:47:15 |
 +----+----------------------------------+----------------------+---------------+---------------------+
 ```
@@ -154,7 +154,7 @@ Example:
 You can also format the data as JSON:
 
 ```bash
-opencli plan-usage --json
+davcli plan-usage --json
 ```
   </TabItem>
 </Tabs>
@@ -162,25 +162,25 @@ opencli plan-usage --json
 ## Delete Plan
 
 <Tabs>
-  <TabItem value="openadmin-plan-delete" label="With OpenAdmin" default>
+  <TabItem value="davadmin-plan-delete" label="With DavAdmin" default>
     
 To delete a hosting package click on the **Delete** link for the desired package.
 
-![openadmin plans delete](/img/admin/tremor/plans_delete.png)
+![davadmin plans delete](/img/admin/tremor/plans_delete.png)
 
 
   </TabItem>
-  <TabItem value="CLI-plan-delete" label="With OpenCLI">
+  <TabItem value="CLI-plan-delete" label="With DavCLI">
 
 To delete a hosting plan: 
 
 ```bash
-opencli plan-delete <PLAN_NAME> 
+davcli plan-delete <PLAN_NAME> 
 ```
 
 Example:
 ```bash
-opencli plan-delete 'Standard plan'
+davcli plan-delete 'Standard plan'
 ```
   </TabItem>
 </Tabs>

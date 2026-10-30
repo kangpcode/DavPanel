@@ -8,11 +8,11 @@ The **Address Importer** page allows you to create multiple email accounts at on
 
 ### How to Import Email Addresses
 
-1. Navigate to **OpenPanel > Email > Import**.
+1. Navigate to **DavPanel > Email > Import**.
 2. Select the `.xls`, `.xlsx` or `.csv` file from your device and click **Upload**.
 
-![Import Emails form with the file picker for a CSV, XLSX or XLS file and the Upload button](/img/openpanel-screenshots/emails/import-form.png#gh-light-mode-only)
-![Import Emails form with the file picker for a CSV, XLSX or XLS file and the Upload button](/img/openpanel-screenshots/emails/import-form_dark.png#gh-dark-mode-only)
+![Import Emails form with the file picker for a CSV, XLSX or XLS file and the Upload button](/img/davpanel-screenshots/emails/import-form.png#gh-light-mode-only)
+![Import Emails form with the file picker for a CSV, XLSX or XLS file and the Upload button](/img/davpanel-screenshots/emails/import-form_dark.png#gh-dark-mode-only)
 
 ### File Format Requirements
 

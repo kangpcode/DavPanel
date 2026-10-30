@@ -1,6 +1,6 @@
 # Building a Custom Docker image: pre-install IonCube Loader
 
-Docker images are a base for every OpenPanel plan, and they define what Technology Stack is pre-installed for the user.
+Docker images are a base for every DavPanel plan, and they define what Technology Stack is pre-installed for the user.
 
 If you need something pre-installed or configured for all users on a plan, like the ionCube loader extension for the installed PHP version, follow these recommended steps:
 
@@ -18,7 +18,7 @@ For Nginx:
 ```bash
 git clone -n --depth=1 --filter=tree:0 \
 https://github.com/stefanpejcic/OpenPanel/tree/main/docker/nginx
-cd OpenPanel
+cd DavPanel
 git sparse-checkout set --no-cone docker/nginx
 git checkout
 ```
@@ -27,7 +27,7 @@ For Apache:
 ```bash
 git clone -n --depth=1 --filter=tree:0 \
 https://github.com/stefanpejcic/OpenPanel/tree/main/docker/apache
-cd OpenPanel
+cd DavPanel
 git sparse-checkout set --no-cone docker/apache
 git checkout
 ```
@@ -35,9 +35,9 @@ git checkout
 
 After downloading the source files, there should be:
 - **Dockerfile**: This file defines the software stack of the image and is used only to build the image.
-- **entrypoint.sh**: Used by OpenPanel to monitor users' services status and versions, such as tracking the random IP of users' Docker containers, status of Redis/Memcached services, PHP versions installed, etc. This file is essential and should not be modified. It is executed on every restart of the user container.
+- **entrypoint.sh**: Used by DavPanel to monitor users' services status and versions, such as tracking the random IP of users' Docker containers, status of Redis/Memcached services, PHP versions installed, etc. This file is essential and should not be modified. It is executed on every restart of the user container.
 - **my.cnf**: A MySQL service configuration file for customizing MySQL limits and settings.
-- **pma.php**: A configuration file for phpMyAdmin to enable passwordless login from OpenPanel to phpMyAdmin.
+- **pma.php**: A configuration file for phpMyAdmin to enable passwordless login from DavPanel to phpMyAdmin.
 
 ### Edit Dockerfile
 
@@ -82,11 +82,11 @@ Depending on the downloaded example, replace `nginx` or `apache` in this command
 docker build . -t my_custom_nginx_image
 ```
 
-Make sure that the name contains either `nginx` or `apache`, as this is used by OpenPanel to determine the features to display to the user on their interface.
+Make sure that the name contains either `nginx` or `apache`, as this is used by DavPanel to determine the features to display to the user on their interface.
 
 If the build fails, there will be an error message indicating which exact line caused the error. That line needs to be edited and the build repeated.
 
-After successfully building the image, the next step is to create a new OpenPanel hosting plan to use it.
+After successfully building the image, the next step is to create a new DavPanel hosting plan to use it.
 
 ### Create Hosting Plan
 
@@ -94,26 +94,26 @@ Currently, new hosting plans with custom images can only be added from the termi
 To create a new plan, run the following command:
 
 ```bash
-opencli plan-create <NAME> <DESCRIPTION> <DOMAINS_LIMIT> <WEBSITES_LIMIT> <DISK_LIMIT> <INODES_LIMITS> <DATABASES_LIMIT> <CPU_LIMIT> <RAM_LIMIT> <DOCKER_IMAGE> <PORT_SPEED_LIMIT>
+davcli plan-create <NAME> <DESCRIPTION> <DOMAINS_LIMIT> <WEBSITES_LIMIT> <DISK_LIMIT> <INODES_LIMITS> <DATABASES_LIMIT> <CPU_LIMIT> <RAM_LIMIT> <DOCKER_IMAGE> <PORT_SPEED_LIMIT>
 ```
 
 Example:
 
 ```bash
-opencli plan-create cloud_8 "Custom plan with 8GB of RAM&CPU" 0 0 15 500000 0 8 8 my_custom_nginx_image 200
+davcli plan-create cloud_8 "Custom plan with 8GB of RAM&CPU" 0 0 15 500000 0 8 8 my_custom_nginx_image 200
 ```
 
 ### Create new user
 After creating a plan that uses our newly built Docker image, the final step is to create a new user on the plan to test that the ionCube loader is indeed enabled.
 
-Create a new user from the OpenAdmin interface or via terminal:
+Create a new user from the DavAdmin interface or via terminal:
 ```bash
-opencli user-add <USERNAME> <PASSWORD> <EMAIL> <PLAN_NAME>
+davcli user-add <USERNAME> <PASSWORD> <EMAIL> <PLAN_NAME>
 ```
 
 Example:
 ```
-opencli user-add stefan strongpass123 stefan@pejcic.rs cloud_8
+davcli user-add stefan strongpass123 kangpcode@users.noreply.github.com cloud_8
 ```
 
-After creating the user, log in to their OpenPanel and confirm that the extension is enabled by opening the PHP.INI editor or by creating a php.info file and searching for the ionCube loader.
+After creating the user, log in to their DavPanel and confirm that the extension is enabled by opening the PHP.INI editor or by creating a php.info file and searching for the ionCube loader.

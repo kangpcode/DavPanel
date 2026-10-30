@@ -10,32 +10,32 @@ sidebar_position: 3
 
 ## Install
 
-Starting version 1.5.4 - ImunifyAV is included with OpenPanel by default.
+Starting version 1.5.4 - ImunifyAV is included with DavPanel by default.
 
 If you are using an older version, to install, run:
 
 ```bash
-opencli imunify install
+davcli imunify install
 ```
 
-This command installs the latest PHP version, the *imunify360-agent*, and configures access through OpenAdmin.
+This command installs the latest PHP version, the *imunify360-agent*, and configures access through DavAdmin.
 
-If ImunifyAV is not installed, opening the ImunifyAV page in OpenAdmin shows a **Not Configured** message with instructions to run this command.
+If ImunifyAV is not installed, opening the ImunifyAV page in DavAdmin shows a **Not Configured** message with instructions to run this command.
 
 ## Start
 
-OpenAdmin automatically attempts to start the ImunifyAV service the first time you open its page. If the service is still not running afterwards, a **Not Running** message is shown, prompting you to start it manually from the terminal:
+DavAdmin automatically attempts to start the ImunifyAV service the first time you open its page. If the service is still not running afterwards, a **Not Running** message is shown, prompting you to start it manually from the terminal:
 
 ```bash
-opencli imunify start
+davcli imunify start
 ```
 
-![ImunifyAV page telling that the GUI is not running yet, with the command to start it](/img/openadmin-screenshots/security/imunify-not-running.png#gh-light-mode-only)
-![ImunifyAV page telling that the GUI is not running yet, with the command to start it](/img/openadmin-screenshots/security/imunify-not-running_dark.png#gh-dark-mode-only)
+![ImunifyAV page telling that the GUI is not running yet, with the command to start it](/img/davadmin-screenshots/security/imunify-not-running.png#gh-light-mode-only)
+![ImunifyAV page telling that the GUI is not running yet, with the command to start it](/img/davadmin-screenshots/security/imunify-not-running_dark.png#gh-dark-mode-only)
 
 ## Login
 
-Access the ImunifyAV GUI from **OpenAdmin > Security > ImunifyAV**. OpenAdmin automatically logs you in using a generated token; if token generation fails, a warning is shown and you'll need to log in manually using the server's SSH username and password.
+Access the ImunifyAV GUI from **DavAdmin > Security > ImunifyAV**. DavAdmin automatically logs you in using a generated token; if token generation fails, a warning is shown and you'll need to log in manually using the server's SSH username and password.
 
 ## Manage
 

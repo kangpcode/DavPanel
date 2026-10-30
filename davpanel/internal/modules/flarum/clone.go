@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 // mirrors drupal/clone.go's shape (site-limit check, file copy, DB create+dump-pipe, config rewrite, sites-table insert) via internal/core/cmsclone - unlike Drupal's request-derived URL, Flarum's config.php stores its base URL explicitly, so a clone must also rewrite the 'url' key or the cloned forum keeps pointing at the source domain, handled below

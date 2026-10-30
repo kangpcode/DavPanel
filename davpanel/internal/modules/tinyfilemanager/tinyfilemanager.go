@@ -6,8 +6,8 @@ package tinyfilemanager
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 var cms = cmsapp.New(cmsapp.App{

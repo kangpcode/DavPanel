@@ -50,13 +50,13 @@ mysql -h <IP_ADDRESS> -P <PORT> -u <USERNAME> -p <DATABASE_NAME>
 
 ### PHP
 
-To establish a PHP-based connection from a remote server to a MySQL instance hosted on OpenPanel, here's an example code snippet:
+To establish a PHP-based connection from a remote server to a MySQL instance hosted on DavPanel, here's an example code snippet:
 
 ```php
 <?php
 // MySQL server details
 $hostname = 'IP_ADDRESS_HERE';
-$port = 'CUSTOM_PORT'; // Custom port from the OpenPanel interface
+$port = 'CUSTOM_PORT'; // Custom port from the DavPanel interface
 $username = 'YOUR_MYSQL_USERNAME';
 $password = 'YOUR_MYSQL_PASSWORD';
 $database = 'YOUR_MYSQL_DATABASE';
@@ -78,7 +78,7 @@ $conn->close();
 
 ### WordPress
 
-To connect to a MySQL instance on OpenPanel from a remote WordPress installation, you need to edit the wp-config.php file and change the database connection information.
+To connect to a MySQL instance on DavPanel from a remote WordPress installation, you need to edit the wp-config.php file and change the database connection information.
 
 ```php
 // ** MySQL settings - You can get this info from your web host **

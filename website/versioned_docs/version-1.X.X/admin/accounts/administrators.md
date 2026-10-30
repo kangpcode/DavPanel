@@ -13,8 +13,8 @@ The admin panel has three user roles:
 
 | Role              | Description                                                               |
 | ------------------ | ------------------------------------------------------------------------- |
-| **Super Admin**    | Has unrestricted privileges, created on OpenPanel installation. |
-| **Admin**          | Has restricted privileges, can not access all OpenAdmin UI pages and can not edit the SuperAdmin user. |
+| **Super Admin**    | Has unrestricted privileges, created on DavPanel installation. |
+| **Admin**          | Has restricted privileges, can not access all DavAdmin UI pages and can not edit the SuperAdmin user. |
 | **Reseller**       | Has restricted privileges. |
 
 
@@ -22,20 +22,20 @@ The admin panel has three user roles:
 
 
 <Tabs>
-  <TabItem value="openadmin-admin-users" label="With OpenAdmin" default>
+  <TabItem value="davadmin-admin-users" label="With DavAdmin" default>
   
-  Manage administrative users with access to the OpenAdmin interface via the **Administrators** page.
+  Manage administrative users with access to the DavAdmin interface via the **Administrators** page.
   
   For each admin user, you can view and manage the following details: Username, Status Role, Last Login IP, Last Login Time, Actions.
 
   </TabItem>
 
-  <TabItem value="CLI" label="With OpenCLI">
+  <TabItem value="CLI" label="With DavCLI">
 
 To list admin users use command:
 
 ```bash
-opencli admin list
+davcli admin list
 ```
 
   </TabItem>
@@ -45,22 +45,22 @@ opencli admin list
 
 
 <Tabs>
-  <TabItem value="openadmin-admin-reset" label="With OpenAdmin" default>
+  <TabItem value="davadmin-admin-reset" label="With DavAdmin" default>
 
 To reset admin password click on the Edit for that user from *Settings > Accounts > Administrators* page, then set the new password.
 
   </TabItem>
-  <TabItem value="cli-reset" label="With OpenCLI">
+  <TabItem value="cli-reset" label="With DavCLI">
 
 To reset the password for an admin user:
 
 ```bash
-opencli admin password <username> <new_password>
+davcli admin password <username> <new_password>
 ```
 
 Example, reset password for and Admin user:
 ```bash
-opencli admin password admin Pyl7_L2M1
+davcli admin password admin Pyl7_L2M1
 ```
 
   </TabItem>
@@ -70,23 +70,23 @@ opencli admin password admin Pyl7_L2M1
 ## Create new Admin
 
 <Tabs>
-  <TabItem value="openadmin-admin-new" label="With OpenAdmin" default>
+  <TabItem value="davadmin-admin-new" label="With DavAdmin" default>
 
 To create new admin user click on the 'Create New' button in *Settings > Accounts > Administrators* page, set the username and password and click on *Save*.
 
 
   </TabItem>
-  <TabItem value="cli-new" label="With OpenCLI">
+  <TabItem value="cli-new" label="With DavCLI">
 
 To create new admin accounts:
 
 ```bash
-opencli admin new <username> <password>
+davcli admin new <username> <password>
 ```
 
 Example:
 ```bash
-opencli admin new filip Pyl7_L2M1
+davcli admin new filip Pyl7_L2M1
 ```
 
   </TabItem>
@@ -99,25 +99,25 @@ opencli admin new filip Pyl7_L2M1
 ## Rename Admin user
 
 <Tabs>
-  <TabItem value="openadmin-admin-rename" label="With OpenAdmin" default>
+  <TabItem value="davadmin-admin-rename" label="With DavAdmin" default>
 
 To rename an Admin user, select it on **Settings > Accounts > Administrators** page and click on the Edit button and set new username.
 
-![openadmin admin rename](/img/admin/openadmin_admin_rename.png)
+![davadmin admin rename](/img/admin/davadmin_admin_rename.png)
 
 
   </TabItem>
-  <TabItem value="cli-rename" label="With OpenCLI">
+  <TabItem value="cli-rename" label="With DavCLI">
 
 To rename admin user:
 
 ```bash
-opencli admin rename <username> <new_username>
+davcli admin rename <username> <new_username>
 ```
 
 Example:
 ```bash
-opencli admin rename filip filip2
+davcli admin rename filip filip2
 ```
   </TabItem>
 </Tabs>
@@ -126,31 +126,31 @@ opencli admin rename filip filip2
 ## Suspend Admin user
 
 <Tabs>
-  <TabItem value="openadmin-admin-suspend" label="With OpenAdmin" default>
+  <TabItem value="davadmin-admin-suspend" label="With DavAdmin" default>
 
 To unsuspend an Admin user, select the user on **Settings > Accounts > Administrators** page and click on the Edit button, then **Unsuspend**.
 
   </TabItem>
-  <TabItem value="cli-suspend" label="With OpenCLI">
+  <TabItem value="cli-suspend" label="With DavCLI">
 
 ```bash
-opencli admin suspend <username>
+davcli admin suspend <username>
 ```
 
 Example:
 ```bash
-opencli admin suspend filip
+davcli admin suspend filip
 ```
 ---
 
 To unsuspend admin user:
 ```bash
-opencli admin unsuspend <username>
+davcli admin unsuspend <username>
 ```
 
 Example:
 ```bash
-opencli admin unsuspend filip
+davcli admin unsuspend filip
 ```
 
   </TabItem>
@@ -160,23 +160,23 @@ opencli admin unsuspend filip
 ## Delete Admin user
 
 <Tabs>
-  <TabItem value="openadmin-admin-delete" label="With OpenAdmin" default>
+  <TabItem value="davadmin-admin-delete" label="With DavAdmin" default>
 
 Select the user on **Settings > Accounts > Administrators** page and click on the delete button then confirm.
 
   </TabItem>
-  <TabItem value="cli-delete" label="With OpenCLI">
+  <TabItem value="cli-delete" label="With DavCLI">
 
 From the terminal:
 
 To delete admin user:
 ```bash
-opencli admin delete <username>
+davcli admin delete <username>
 ```
 
 Example:
 ```bash
-opencli admin delete filip
+davcli admin delete filip
 ```
 
   </TabItem>

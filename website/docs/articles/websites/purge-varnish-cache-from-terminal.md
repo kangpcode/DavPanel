@@ -4,7 +4,7 @@ sidebar_label: "Purging Varnish Cache"
 
 # How to Purge the Varnish Cache from the Terminal
 
-If Varnish is enabled for a website, cache can be purged from the terminal or directly through OpenPanel.
+If Varnish is enabled for a website, cache can be purged from the terminal or directly through DavPanel.
 
 ## Purge from Terminal
 
@@ -37,7 +37,7 @@ Alternatively, you can simply restart the Varnish service (see below).
 
 ## Purge from Crons
 
-To purge cache from a cronjob, simply use the above `curl` commands and make sure to use varnish/webserver or php for container when creating Crons on OpenPanel.
+To purge cache from a cronjob, simply use the above `curl` commands and make sure to use varnish/webserver or php for container when creating Crons on DavPanel.
 
 ## Purge from WordPress
 

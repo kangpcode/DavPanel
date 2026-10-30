@@ -1,11 +1,11 @@
 ---
-sidebar_label: "OpenPanel Installation on OVHcloud"
-description: "How to install the OpenPanel hosting control panel on an OVHcloud VPS or dedicated server, including the default ubuntu user, reverse DNS, the Edge Network Firewall and email."
+sidebar_label: "DavPanel Installation on OVHcloud"
+description: "How to install the DavPanel hosting control panel on an OVHcloud VPS or dedicated server, including the default ubuntu user, reverse DNS, the Edge Network Firewall and email."
 ---
 
 # How to Install a Hosting Control Panel on OVHcloud
 
-This guide shows how to install **OpenPanel** on an [OVHcloud](https://www.ovhcloud.com/) VPS or dedicated server (including Kimsufi and So you Start servers).
+This guide shows how to install **DavPanel** on an [OVHcloud](https://www.ovhcloud.com/) VPS or dedicated server (including Kimsufi and So you Start servers).
 
 ---
 
@@ -19,7 +19,7 @@ This guide shows how to install **OpenPanel** on an [OVHcloud](https://www.ovhcl
 
 ## Step 1: Install a Clean Operating System
 
-OpenPanel needs a clean server with no other control panel or web server installed.
+DavPanel needs a clean server with no other control panel or web server installed.
 
 1. Log in to the [OVHcloud Control Panel](https://www.ovh.com/manager/).
 2. Open **Bare Metal Cloud** and select your **VPS** or **dedicated server**.
@@ -50,25 +50,25 @@ Then switch to the root user - the installer must run as root:
 sudo -i
 ```
 
-![Terminal showing the first SSH connection as ubuntu and switching to root with sudo -i: confirming the server's host key fingerprint, the Ubuntu 24.04 welcome message, and the root prompt](/img/openpanel-screenshots/install/ssh-ovh.png#screenshot)
+![Terminal showing the first SSH connection as ubuntu and switching to root with sudo -i: confirming the server's host key fingerprint, the Ubuntu 24.04 welcome message, and the root prompt](/img/davpanel-screenshots/install/ssh-ovh.png#screenshot)
 
 ---
 
-## Step 3: Run the OpenPanel Installer
+## Step 3: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
 Installation takes about 5 minutes. For optional flags (domain, admin username, ports), use the [install command generator](/install).
 
-When it finishes, the installer prints the **OpenAdmin URL**, **username** and **password**.
+When it finishes, the installer prints the **DavAdmin URL**, **username** and **password**.
 
-![OpenPanel installer output in a terminal: the OpenPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the OpenAdmin URL with the generated username and password at the end](/img/openpanel-screenshots/install/installer-output-generic.png#screenshot)
+![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-generic.png#screenshot)
 
 ---
 
-## Step 4: Log in to OpenAdmin
+## Step 4: Log in to DavAdmin
 
 Open the printed URL in your browser:
 
@@ -78,8 +78,8 @@ https://your-server-ip:2087
 
 Log in with the printed credentials and continue with the [post-install steps](/docs/admin/intro/#post-install-steps).
 
-![OpenAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to OpenPanel button](/img/openadmin-screenshots/000_intro-login.png#gh-light-mode-only)
-![OpenAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to OpenPanel button](/img/openadmin-screenshots/000_intro-login_dark.png#gh-dark-mode-only)
+![DavAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to DavPanel button](/img/davadmin-screenshots/000_intro-login.png#gh-light-mode-only)
+![DavAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to DavPanel button](/img/davadmin-screenshots/000_intro-login_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -87,7 +87,7 @@ Log in with the printed credentials and continue with the [post-install steps](/
 
 ### Edge Network Firewall
 
-OpenPanel installs [Sentinel Firewall (CSF)](/docs/admin/security/firewall/) on the server. The OVHcloud **Edge Network Firewall** is disabled by default - if you enable it on the IP, allow at least ports `22`, `53`, `80`, `443`, `2083` and `2087` inbound. The full list is in the [requirements](/docs/admin/intro/#requirements).
+DavPanel installs [Sentinel Firewall (CSF)](/docs/admin/security/firewall/) on the server. The OVHcloud **Edge Network Firewall** is disabled by default - if you enable it on the IP, allow at least ports `22`, `53`, `80`, `443`, `2083` and `2087` inbound. The full list is in the [requirements](/docs/admin/intro/#requirements).
 
 ### Reverse DNS (PTR)
 
@@ -111,6 +111,6 @@ OVHcloud does not block port 25 by default, but its anti-spam system automatical
 ## Next Steps
 
 - [Set a domain and SSL for the panel](/docs/admin/settings/general/#domain)
-- [Configure custom nameservers](/docs/articles/domains/how-to-configure-nameservers-in-openpanel/)
+- [Configure custom nameservers](/docs/articles/domains/how-to-configure-nameservers-in-davpanel/)
 - [Create hosting plans](/docs/admin/plans/hosting_plans/)
-- [Secure the server for production](/docs/articles/security/securing-openpanel/)
+- [Secure the server for production](/docs/articles/security/securing-davpanel/)

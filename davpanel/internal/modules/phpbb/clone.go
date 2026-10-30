@@ -4,8 +4,8 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 // mirrors flarum/clone.go's shape (file copy, DB create+dump, config rewrite, sites insert) - config.php's dbname/dbuser/dbpasswd need rewriting, but phpBB derives its base URL from $_SERVER at runtime like Drupal rather than storing it, so only SearchReplaceDatabase handles that side, same limitation drupal/clone.go documents

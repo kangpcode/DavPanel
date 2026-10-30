@@ -121,7 +121,7 @@ const Install: React.FC = () => {
                                             key === "username" || key === "password"
                                                 ? "Only letters and numbers are allowed"
                                                 : key === "domain" || key === "panel-domain"
-                                                ? "Enter a valid domain, e.g. openpanel.server.com"
+                                                ? "Enter a valid domain, e.g. davpanel.example.com"
                                                 : key === "key"
                                                 ? "License key must start with 'enterprise-'"
                                                 : undefined

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/dbtuning"
+	"github.com/kangpcode/davpanel/internal/core/dbtuning"
 )
 
 const (

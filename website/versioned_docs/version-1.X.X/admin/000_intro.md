@@ -2,9 +2,9 @@
 sidebar_position: 1
 ---
 
-# Get Started with OpenAdmin
+# Get Started with DavAdmin
 
-The OpenAdmin offers an administrator-level interface where you can efficiently handle tasks such as creating and managing users, setting up hosting plans, enabling features, and editing OpenPanel settings.
+The DavAdmin offers an administrator-level interface where you can efficiently handle tasks such as creating and managing users, setting up hosting plans, enabling features, and editing DavPanel settings.
 
 ## Requirements
 
@@ -36,27 +36,27 @@ If you are using external firewall, the following ports should be opened:
 
 ## Installation
 
-OpenPanel can be installed on both VPS and bare-metal servers. 
+DavPanel can be installed on both VPS and bare-metal servers. 
 
-The installation process takes about 5 minutes. To install openpanel follow these steps: 
+The installation process takes about 5 minutes. To install davpanel follow these steps: 
 
 <Tabs>
-  <TabItem value="openpanel-install-on-dedicated" label="Install script" default>
+  <TabItem value="davpanel-install-on-dedicated" label="Install script" default>
 
 1. Log in to your new server;
 - as root via SSH or
 - as a user with sudo privileges and type "sudo -i"
-2. Copy and paste openpanel installation command into the terminal
+2. Copy and paste davpanel installation command into the terminal
 ```shell
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
-The installation script supports [optional flags](/install) that can be used to configure openpanel, skip certain installation steps or simply display debugging information.
+The installation script supports [optional flags](/install) that can be used to configure davpanel, skip certain installation steps or simply display debugging information.
 
-If you encountered any errors while running the installation script, please copy & paste the installation log file to [the community forums](https://community.openpanel.org).
+If you encountered any errors while running the installation script, please copy & paste the installation log file to [the community forums](https://community.davpanel.org).
 
   </TabItem>
-  <TabItem value="openpanel-install-on-cloud" label="Cloud">
+  <TabItem value="davpanel-install-on-cloud" label="Cloud">
 
 [Amazon Web Services (AWS)](/docs/articles/install-update/install-on-aws)
 
@@ -69,7 +69,7 @@ If you encountered any errors while running the installation script, please copy
 [Vultr](/docs/articles/install-update/install-on-vultr)
     
   </TabItem>
-  <TabItem value="openpanel-install-on-other" label="Other">
+  <TabItem value="davpanel-install-on-other" label="Other">
 
 [CloudInit](/docs/articles/install-update/install-using-cloudinit)
 
@@ -83,13 +83,13 @@ If you encountered any errors while running the installation script, please copy
 
 ## Post Install Steps
 
-Recommended steps after installing OpenPanel:
-- [Access the OpenAdmin panel](/docs/articles/dev-experience/how-to-access-openadmin)
-- [Configure Domain and SSL for OpenPanel](/docs/admin/settings/general/#set-domain-for-openpanel)
-- [Enable Modules (features) in OpenPanel UI](/docs/admin/settings/modules/)
-- [Configure Custom Nameservers](/docs/articles/domains/how-to-configure-nameservers-in-openpanel/)
+Recommended steps after installing DavPanel:
+- [Access the DavAdmin panel](/docs/articles/dev-experience/how-to-access-davadmin)
+- [Configure Domain and SSL for DavPanel](/docs/admin/settings/general/#set-domain-for-davpanel)
+- [Enable Modules (features) in DavPanel UI](/docs/admin/settings/modules/)
+- [Configure Custom Nameservers](/docs/articles/domains/how-to-configure-nameservers-in-davpanel/)
 - [Create Hosting Packages](/docs/admin/plans/hosting_plans#create-a-plan)
 - [Create New User Accounts](/docs/admin/accounts/users/#create-users)
 - [Set Email address to receive Alerts](/docs/admin/notifications/#email-alerts)
 - [Change Update Preferences](/docs/admin/settings/updates)
-- [Secure OpenPanel for Production Use](/docs/articles/security/securing-openpanel/)
+- [Secure DavPanel for Production Use](/docs/articles/security/securing-davpanel/)

@@ -7,7 +7,7 @@ import React from "react";
 const text = "Paying per account for your hosting panel?";
 const description =
     "DavPanel gives every user an isolated environment with its own resource limits, at one flat price per server with unlimited accounts. Click around the live demo, no signup needed.";
-const image = "/img/openpanel-screenshots/dashboard/dashboard-window_dark.png";
+const image = "/img/davpanel-screenshots/dashboard/dashboard-window_dark.png";
 
 export const BannerSidebar = ({ shouldShowBanner }) => {
     React.useEffect(() => {

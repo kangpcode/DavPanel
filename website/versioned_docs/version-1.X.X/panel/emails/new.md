@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Create New Account
 
-To create a new email account, go to **OpenPanel > Emails > Create an Email**.
+To create a new email account, go to **DavPanel > Emails > Create an Email**.
 
 Fill in the form:
 

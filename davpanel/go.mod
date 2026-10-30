@@ -1,4 +1,4 @@
-module gist.github.com/kangpcode/davpanel
+module github.com/kangpcode/davpanel
 
 go 1.26.0
 

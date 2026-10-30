@@ -12,7 +12,7 @@ export type Feature = {
 };
 
 const FEATURES_URL =
-    "https://raw.githubusercontent.com/stefanpejcic/openpanel-configuration/refs/heads/main/davadmin/config/features.json";
+    "https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davadmin/config/features.json";
 
 export const formatDescription = (description: string) => {
     const stripped = description.replace(/^if enabled,\s*/i, "");

@@ -6,7 +6,7 @@ import (
 	"sort"
 	"sync"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 var permMu sync.Mutex

@@ -20,7 +20,7 @@ export const menuItems = [
             },
             {
                 label: "Terminal commands",
-                href: "/docs/articles/opencli/",
+                href: "/docs/articles/davcli/",
             },    
             {
                 label: "DavPanel API",

@@ -162,7 +162,7 @@ const Enterprise: React.FC = () => {
                                         Join Discord
                                     </Link>
                                     <Link
-                                        to="https://github.com/stefanpejcic/openpanel"
+                                        to="https://github.com/kangpcode/DavPanel"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={clsx(

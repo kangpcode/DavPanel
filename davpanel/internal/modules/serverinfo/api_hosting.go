@@ -3,8 +3,8 @@ package serverinfo
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
 )
 
 // RegisterHostingAPI wires the /api/hosting/* JSON API routes onto mux - mirrors the /json/system/hosting/* handlers registered by RegisterHostingJSON exactly, just exposed under the API's flat /api/hosting/... naming convention

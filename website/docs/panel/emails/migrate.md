@@ -4,7 +4,7 @@ sidebar_position: 7.5
 
 # Migrate Emails
 
-The **Migrate Emails** page copies all folders and messages from an email account on another server (cPanel, Plesk, DirectAdmin, Gmail, Outlook or any other IMAP server) into one of your email accounts on OpenPanel.
+The **Migrate Emails** page copies all folders and messages from an email account on another server (cPanel, Plesk, DirectAdmin, Gmail, Outlook or any other IMAP server) into one of your email accounts on DavPanel.
 
 The migration runs in the background with [imapsync](https://imapsync.lamiral.info/), so you can close the page while it works. Nothing is deleted on the old server, and messages that were already copied are skipped, so you can run the same migration again, for example right before you switch the domain's MX records.
 
@@ -15,7 +15,7 @@ The migration runs in the background with [imapsync](https://imapsync.lamiral.in
 
 ## Starting a migration
 
-1. Go to **OpenPanel > Email > Migrate**.
+1. Go to **DavPanel > Email > Migrate**.
 2. Under **Source server**, enter the old server's details:
 
    | Field | Description |
@@ -31,8 +31,8 @@ The migration runs in the background with [imapsync](https://imapsync.lamiral.in
 5. Click **Test connection**. It logs in to both servers and shows whether each login worked, without copying anything.
 6. Click **Start migration**.
 
-![Migrate Emails form with the source server, security, port, username and password fields, the destination account and the Test connection and Start migration buttons](/img/openpanel-screenshots/emails/migrate-form.png#gh-light-mode-only)
-![Migrate Emails form with the source server, security, port, username and password fields, the destination account and the Test connection and Start migration buttons](/img/openpanel-screenshots/emails/migrate-form_dark.png#gh-dark-mode-only)
+![Migrate Emails form with the source server, security, port, username and password fields, the destination account and the Test connection and Start migration buttons](/img/davpanel-screenshots/emails/migrate-form.png#gh-light-mode-only)
+![Migrate Emails form with the source server, security, port, username and password fields, the destination account and the Test connection and Start migration buttons](/img/davpanel-screenshots/emails/migrate-form_dark.png#gh-dark-mode-only)
 
 :::info
 The source server can't be a private or reserved address (e.g. `192.168.x.x` or `10.x.x.x`). To migrate from a server on a private network, ask your hosting provider.
@@ -44,15 +44,15 @@ While a migration runs, the page shows its log as it is written, and the form is
 
 Click **Cancel** to stop it. Messages copied until then stay in the destination account, and running the migration again continues where it stopped.
 
-![Migration in progress with the live imapsync log and the Cancel button](/img/openpanel-screenshots/emails/migrate-running.png#gh-light-mode-only)
-![Migration in progress with the live imapsync log and the Cancel button](/img/openpanel-screenshots/emails/migrate-running_dark.png#gh-dark-mode-only)
+![Migration in progress with the live imapsync log and the Cancel button](/img/davpanel-screenshots/emails/migrate-running.png#gh-light-mode-only)
+![Migration in progress with the live imapsync log and the Cancel button](/img/davpanel-screenshots/emails/migrate-running_dark.png#gh-dark-mode-only)
 
 ## Recent migrations
 
 **Recent migrations** lists your last 10 migrations with the source and destination, and whether each one **Completed**, **Failed** or was **Cancelled**. Click **View log** to see the full log, for example to find which login failed or which messages couldn't be copied.
 
-![Recent migrations table with a completed migration and its log](/img/openpanel-screenshots/emails/migrate-history.png#gh-light-mode-only)
-![Recent migrations table with a completed migration and its log](/img/openpanel-screenshots/emails/migrate-history_dark.png#gh-dark-mode-only)
+![Recent migrations table with a completed migration and its log](/img/davpanel-screenshots/emails/migrate-history.png#gh-light-mode-only)
+![Recent migrations table with a completed migration and its log](/img/davpanel-screenshots/emails/migrate-history_dark.png#gh-dark-mode-only)
 
 Common reasons for a failed migration:
 
@@ -62,7 +62,7 @@ Common reasons for a failed migration:
 
 ## For administrators
 
-The page is available when the `email_migrate` module is enabled under **OpenAdmin > Settings > Modules** and is in the user's [feature set](/docs/admin/plans/feature-manager/). These optional `openpanel.config` settings change how migrations run:
+The page is available when the `email_migrate` module is enabled under **DavAdmin > Settings > Modules** and is in the user's [feature set](/docs/admin/plans/feature-manager/). These optional `davpanel.config` settings change how migrations run:
 
 * `imapsync_max_jobs` (default `10`): migrations running at once on the whole server.
 * `imapsync_timeout_hours` (default `24`): a migration is stopped after this many hours.

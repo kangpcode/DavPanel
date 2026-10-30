@@ -8,8 +8,8 @@ This interface displays all operations currently running on your MongoDB server,
 
 Checking the running operations is useful for finding slow queries, long aggregations or operations stuck waiting for a lock that slow down your application.
 
-![MongoDB Running Queries table listing the current operations with their user, namespace, running time and a Kill button](/img/openpanel-screenshots/mongodb/processlist-list.png#gh-light-mode-only)
-![MongoDB Running Queries table listing the current operations with their user, namespace, running time and a Kill button](/img/openpanel-screenshots/mongodb/processlist-list_dark.png#gh-dark-mode-only)
+![MongoDB Running Queries table listing the current operations with their user, namespace, running time and a Kill button](/img/davpanel-screenshots/mongodb/processlist-list.png#gh-light-mode-only)
+![MongoDB Running Queries table listing the current operations with their user, namespace, running time and a Kill button](/img/davpanel-screenshots/mongodb/processlist-list_dark.png#gh-dark-mode-only)
 
 Each row shows:
 
@@ -38,8 +38,8 @@ Every killed operation is recorded in the account's activity log.
 
 Tick the checkbox of one or more operations, or the checkbox in the table header to select every operation shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![A running operation selected with the bulk actions bar offering Kill](/img/openpanel-screenshots/mongodb/processlist-bulk.png#gh-light-mode-only)
-![A running operation selected with the bulk actions bar offering Kill](/img/openpanel-screenshots/mongodb/processlist-bulk_dark.png#gh-dark-mode-only)
+![A running operation selected with the bulk actions bar offering Kill](/img/davpanel-screenshots/mongodb/processlist-bulk.png#gh-light-mode-only)
+![A running operation selected with the bulk actions bar offering Kill](/img/davpanel-screenshots/mongodb/processlist-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|

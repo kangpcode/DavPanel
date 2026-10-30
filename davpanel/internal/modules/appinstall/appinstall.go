@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // Kind captures every point where the Python, NodeJS, and Ruby install flows diverge. The values themselves live in nodejs.go/python.go/ruby.go, one file per type; the rest of the package works the same regardless of which Kind it's handed.

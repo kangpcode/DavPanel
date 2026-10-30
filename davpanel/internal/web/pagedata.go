@@ -6,14 +6,14 @@ import (
 
 	"github.com/gorilla/csrf"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/flash"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
-	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
-	"gist.github.com/kangpcode/davpanel/internal/core/session"
-	"gist.github.com/kangpcode/davpanel/internal/core/validators"
-	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/flash"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
+	"github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"github.com/kangpcode/davpanel/internal/core/session"
+	"github.com/kangpcode/davpanel/internal/core/validators"
+	"github.com/kangpcode/davpanel/internal/core/webserver"
 )
 
 // DashboardIconViewCookie is the browser cookie storing the user's chosen dashboard icon-section layout ("icon" or "list"), set client-side by the sidebar's layout toggle and read server-side by ReadDashboardIconView so the dashboard renders the saved layout on first paint with no flicker.

@@ -3,7 +3,7 @@ sidebar_position: 1
 ---
 
 # Account
-OpenPanel offers a unique feature that allows you to change your username, unlike standard control panels that require hosting support for such modifications.  
+DavPanel offers a unique feature that allows you to change your username, unlike standard control panels that require hosting support for such modifications.  
 
 ![account.png](/img/panel/v2/account.png)
 

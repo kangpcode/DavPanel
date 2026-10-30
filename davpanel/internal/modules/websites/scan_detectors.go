@@ -7,8 +7,8 @@ import (
 	"regexp"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // this file holds the eight walkers handleSitesScan (scan.go) calls, one per CMS type - each mirrors wordpress/manage.go's walkForWPConfig + handleScanWordPress shape: walk the user's html_data volume for that type's marker config file, skip anything already tracked, extract the DB name/host, repair the host if it's empty/localhost/127.0.0.1 (localhost is kept when the user's PHP can reach the mysql socket), verify connectivity, then insert (see scan.go for why the host-repair step is needed here but not by WordPress's original wp-cli-mediated scan)

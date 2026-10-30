@@ -6,8 +6,8 @@ sidebar_position: 4
 
 The **Statistics > Daily Summary** page shows what happened on your account and websites each day. It starts with what needs fixing, each with a button that opens the page where you fix it, and ends with the day's numbers.
 
-![Daily Summary with the day in one sentence, requests, unique IPs, bandwidth, error pages and firewall blocks, the problems found with a button to fix each one, and the All good list](/img/openpanel-screenshots/statistics/daily_summary-page.png#gh-light-mode-only)
-![Daily Summary with the day in one sentence, requests, unique IPs, bandwidth, error pages and firewall blocks, the problems found with a button to fix each one, and the All good list](/img/openpanel-screenshots/statistics/daily_summary-page_dark.png#gh-dark-mode-only)
+![Daily Summary with the day in one sentence, requests, unique IPs, bandwidth, error pages and firewall blocks, the problems found with a button to fix each one, and the All good list](/img/davpanel-screenshots/statistics/daily_summary-page.png#gh-light-mode-only)
+![Daily Summary with the day in one sentence, requests, unique IPs, bandwidth, error pages and firewall blocks, the problems found with a button to fix each one, and the All good list](/img/davpanel-screenshots/statistics/daily_summary-page_dark.png#gh-dark-mode-only)
 
 :::info
 If you do not see the Daily Summary page, ask your provider to enable the [Daily Summary module](/docs/admin/settings/modules/#daily-summary) for your hosting plan.
@@ -41,8 +41,8 @@ Checks for features your plan doesn't include are left out. **All good** (**What
 
 ## Websites
 
-![Websites card listing each website by requests with its unique IPs, bandwidth, 404s and firewall blocks](/img/openpanel-screenshots/statistics/daily_summary-websites.png#gh-light-mode-only)
-![Websites card listing each website by requests with its unique IPs, bandwidth, 404s and firewall blocks](/img/openpanel-screenshots/statistics/daily_summary-websites_dark.png#gh-dark-mode-only)
+![Websites card listing each website by requests with its unique IPs, bandwidth, 404s and firewall blocks](/img/davpanel-screenshots/statistics/daily_summary-websites.png#gh-light-mode-only)
+![Websites card listing each website by requests with its unique IPs, bandwidth, 404s and firewall blocks](/img/davpanel-screenshots/statistics/daily_summary-websites_dark.png#gh-dark-mode-only)
 
 Every website with traffic that day, busiest first, with a bar for its share of the requests. Under each one are its unique IP addresses, bandwidth, 404 Not Found responses, requests blocked by the rate limit and attacks blocked by the web firewall, and a red badge when visitors got 5xx errors. Websites in subfolders, like `example.com/blog`, are listed on their own. The first 8 are shown, click **Show all** for the rest.
 
@@ -50,19 +50,19 @@ Unique IPs count every visitor's address, bots included, so they are higher than
 
 ## Resource usage, logins and changes
 
-![Resource Usage card with disk space, files and folders, CPU and memory at the busiest hour as bars, next to the panel logins with country flags, then the changes made to the account](/img/openpanel-screenshots/statistics/daily_summary-usage.png#gh-light-mode-only)
-![Resource Usage card with disk space, files and folders, CPU and memory at the busiest hour as bars, next to the panel logins with country flags, then the changes made to the account](/img/openpanel-screenshots/statistics/daily_summary-usage_dark.png#gh-dark-mode-only)
+![Resource Usage card with disk space, files and folders, CPU and memory at the busiest hour as bars, next to the panel logins with country flags, then the changes made to the account](/img/davpanel-screenshots/statistics/daily_summary-usage.png#gh-light-mode-only)
+![Resource Usage card with disk space, files and folders, CPU and memory at the busiest hour as bars, next to the panel logins with country flags, then the changes made to the account](/img/davpanel-screenshots/statistics/daily_summary-usage_dark.png#gh-dark-mode-only)
 
 * **Resource Usage**: disk space and files against your plan's limits, and the CPU and memory used in the busiest hour of the day, from the hourly checks also shown on the [Resource Usage](/docs/panel/statistics/resource_usage/) page.
-* **Panel logins**: each login to OpenPanel with its IP address and country. IPs not used in the 30 days before are marked **New IP**.
+* **Panel logins**: each login to DavPanel with its IP address and country. IPs not used in the 30 days before are marked **New IP**.
 * **Changes to your account**: the changes made that day, the same ones shown in the [Activity log](/docs/panel/security/account_activity/). Long lists show the first 10, click **Show all** for the rest.
 
 ## On the dashboard
 
 When yesterday's summary found something, the Dashboard shows a notice with the number of problems and a **View summary** button that opens that day. It shows once for each summary, and not while the setup wizard is open.
 
-![Dashboard toast saying yesterday's summary found something to check, with the number of items that need attention and worth a look and a View summary button](/img/openpanel-screenshots/statistics/daily_summary-toast.png#gh-light-mode-only)
-![Dashboard toast saying yesterday's summary found something to check, with the number of items that need attention and worth a look and a View summary button](/img/openpanel-screenshots/statistics/daily_summary-toast_dark.png#gh-dark-mode-only)
+![Dashboard toast saying yesterday's summary found something to check, with the number of items that need attention and worth a look and a View summary button](/img/davpanel-screenshots/statistics/daily_summary-toast.png#gh-light-mode-only)
+![Dashboard toast saying yesterday's summary found something to check, with the number of items that need attention and worth a look and a View summary button](/img/davpanel-screenshots/statistics/daily_summary-toast_dark.png#gh-dark-mode-only)
 
 ## Getting it by email
 

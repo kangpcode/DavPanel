@@ -1,6 +1,6 @@
 ---
 sidebar_label: "Password-Protect a Directory"
-description: "How to password-protect a website or folder with HTTP basic authentication (.htpasswd) in OpenPanel on Apache, Nginx, OpenResty and OpenLiteSpeed."
+description: "How to password-protect a website or folder with HTTP basic authentication (.htpasswd) in DavPanel on Apache, Nginx, OpenResty and OpenLiteSpeed."
 ---
 
 # How to Password-Protect a Directory (Basic Authentication)
@@ -15,7 +15,7 @@ How you set it up depends on the web server your account uses:
 | **Nginx** / **OpenResty** | Domain's VHost file |
 | **OpenLiteSpeed** | Domain's VHost file (a *realm*) |
 
-Not sure which one you use? Check **OpenPanel → Server Information**, or see [switching the web server](/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/).
+Not sure which one you use? Check **DavPanel → Server Information**, or see [switching the web server](/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/).
 
 ---
 
@@ -31,7 +31,7 @@ The password file contains one `username:encrypted-password` line per user. Stor
 
 ### Generate the password line
 
-Open **OpenPanel → Containers → Terminal** (Enterprise), select your **web server** or **PHP** container, and run one of these:
+Open **DavPanel → Containers → Terminal** (Enterprise), select your **web server** or **PHP** container, and run one of these:
 
 ```bash
 # Apache container - bcrypt
@@ -91,7 +91,7 @@ location ^~ /private/ {
 
 To protect the **whole website**, add the two `auth_basic` lines directly inside the existing `location / { ... }` blocks instead - and also inside the `location ~ \.php$` blocks, so PHP files are protected too.
 
-Save the file - OpenPanel reloads the web server.
+Save the file - DavPanel reloads the web server.
 
 ---
 
@@ -132,7 +132,7 @@ curl -I -u john:YourStrongPassword https://example.com/private/  # 200 OK
 
 ## Good to Know
 
-- **Always use HTTPS.** Basic auth sends the password with every request; SSL keeps it encrypted. OpenPanel issues SSL certificates automatically.
+- **Always use HTTPS.** Basic auth sends the password with every request; SSL keeps it encrypted. DavPanel issues SSL certificates automatically.
 - **Varnish**: requests with a login are never cached, so protected pages always come fresh from your site.
 - **WordPress**: protecting `/wp-admin/` with basic auth is a good extra layer against brute-force attacks. Exclude `/wp-admin/admin-ajax.php` if your theme or plugins use it on the front end.
 - **Remove protection** by deleting the `.htaccess` lines (Apache) or the added VHost blocks.

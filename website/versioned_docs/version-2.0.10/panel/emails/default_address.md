@@ -6,17 +6,17 @@ sidebar_position: 8
 
 A default (catch-all) address receives any email sent to an invalid or non-existent address at your domain.
 
-When a catch-all is configured, mail sent to `anything@yourdomain.com` that does not match an existing mailbox is forwarded to the destination you set. Without a catch-all, unmatched emails are rejected (this is the default in OpenPanel).
+When a catch-all is configured, mail sent to `anything@yourdomain.com` that does not match an existing mailbox is forwarded to the destination you set. Without a catch-all, unmatched emails are rejected (this is the default in DavPanel).
 
 ## Setting a Catch-all
 
-1. Go to **OpenPanel > Emails > Default Address**.
+1. Go to **DavPanel > Emails > Default Address**.
 2. Select the domain to configure.
 3. Enter the **Destination address**: any valid email address, local or external.
 4. Click **Save**.
 
-![Default Email Address page with the current catch-all configuration and the destination address field](/img/openpanel-screenshots/emails/default-form.png#gh-light-mode-only)
-![Default Email Address page with the current catch-all configuration and the destination address field](/img/openpanel-screenshots/emails/default-form_dark.png#gh-dark-mode-only)
+![Default Email Address page with the current catch-all configuration and the destination address field](/img/davpanel-screenshots/emails/default-form.png#gh-light-mode-only)
+![Default Email Address page with the current catch-all configuration and the destination address field](/img/davpanel-screenshots/emails/default-form_dark.png#gh-dark-mode-only)
 
 ## Removing a Catch-all
 

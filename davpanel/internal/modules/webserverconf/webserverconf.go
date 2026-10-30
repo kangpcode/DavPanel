@@ -1,7 +1,7 @@
 // Package webserverconf implements an in-browser editor for a user's main webserver configuration file, with a syntax-test-before-reload safety net and a restore-to-stock-defaults option.
 package webserverconf
 
-import "gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+import "github.com/kangpcode/davpanel/internal/core/tenantfs"
 
 // defaultConfTemplates lists the stock configuration files shipped in davpanel-configuration, used to restore a user's webserver conf file back to the default
 var defaultConfTemplates = map[string]string{

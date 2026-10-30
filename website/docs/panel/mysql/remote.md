@@ -4,8 +4,8 @@ sidebar_position: 10
 
 # Remote MySQL
 
-![Remote Access page showing remote access as Disabled with the Enable Remote Database Access button](/img/openpanel-screenshots/mysql/remote-page.png#gh-light-mode-only)
-![Remote Access page showing remote access as Disabled with the Enable Remote Database Access button](/img/openpanel-screenshots/mysql/remote-page_dark.png#gh-dark-mode-only)
+![Remote Access page showing remote access as Disabled with the Enable Remote Database Access button](/img/davpanel-screenshots/mysql/remote-page.png#gh-light-mode-only)
+![Remote Access page showing remote access as Disabled with the Enable Remote Database Access button](/img/davpanel-screenshots/mysql/remote-page_dark.png#gh-dark-mode-only)
 
 Remote MySQL access gives you the ability to connect to a MySQL database on this server from an another (remote) device or location over the internet.
 
@@ -31,8 +31,8 @@ Once enabled, the page shows two sets of connection details:
 - **Remote** - the server IP and port to use when connecting **from a remote server** over the internet.
 - **Local** - the internal hostname and default port (`3306`) to use when connecting **from a local server** inside the same account.
 
-![Remote and Local connection details with the server address and port for each](/img/openpanel-screenshots/mysql/remote-connection.png#gh-light-mode-only)
-![Remote and Local connection details with the server address and port for each](/img/openpanel-screenshots/mysql/remote-connection_dark.png#gh-dark-mode-only)
+![Remote and Local connection details with the server address and port for each](/img/davpanel-screenshots/mysql/remote-connection.png#gh-light-mode-only)
+![Remote and Local connection details with the server address and port for each](/img/davpanel-screenshots/mysql/remote-connection_dark.png#gh-dark-mode-only)
 
 :::info
 The remote port is unique to your MySQL instance. Avoid using the standard port `3306` for remote access, as it will not function.
@@ -55,13 +55,13 @@ mysql -h <IP_ADDRESS> -P <PORT> -u <USERNAME> -p <DATABASE_NAME>
 
 ### PHP
 
-To establish a PHP-based connection from a remote server to a MySQL instance hosted on OpenPanel, here's an example code snippet:
+To establish a PHP-based connection from a remote server to a MySQL instance hosted on DavPanel, here's an example code snippet:
 
 ```php
 <?php
 // MySQL server details
 $hostname = 'IP_ADDRESS_HERE';
-$port = 'CUSTOM_PORT'; // Custom port from the OpenPanel interface
+$port = 'CUSTOM_PORT'; // Custom port from the DavPanel interface
 $username = 'YOUR_MYSQL_USERNAME';
 $password = 'YOUR_MYSQL_PASSWORD';
 $database = 'YOUR_MYSQL_DATABASE';
@@ -83,7 +83,7 @@ $conn->close();
 
 ### WordPress
 
-To connect to a MySQL instance on OpenPanel from a remote WordPress installation, you need to edit the wp-config.php file and change the database connection information.
+To connect to a MySQL instance on DavPanel from a remote WordPress installation, you need to edit the wp-config.php file and change the database connection information.
 
 ```php
 // ** MySQL settings - You can get this info from your web host **
@@ -118,8 +118,8 @@ System usernames (e.g. `root`, `mysql`, `phpmyadmin`) cannot be added, edited, o
 
 Tick the checkbox of one or more hosts, or the checkbox in the table header to select every host shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two allowed hosts of a user selected in the remote access list with the bulk actions bar offering Remove access](/img/openpanel-screenshots/mysql/remote_access-bulk.png#gh-light-mode-only)
-![Two allowed hosts of a user selected in the remote access list with the bulk actions bar offering Remove access](/img/openpanel-screenshots/mysql/remote_access-bulk_dark.png#gh-dark-mode-only)
+![Two allowed hosts of a user selected in the remote access list with the bulk actions bar offering Remove access](/img/davpanel-screenshots/mysql/remote_access-bulk.png#gh-light-mode-only)
+![Two allowed hosts of a user selected in the remote access list with the bulk actions bar offering Remove access](/img/davpanel-screenshots/mysql/remote_access-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -133,5 +133,5 @@ Click an action, confirm it, and it runs on the selected hosts one after another
 
 If you wish to disable access, simply click on the "Disable Remote Database Access" button, and it will immediately deactivate remote access in your MySQL configuration. Please be aware that this action will also necessitate a MySQL service restart to apply the new setting.
 
-![Remote access Status row showing Disabled with the Click to Enable button](/img/openpanel-screenshots/mysql/remote-status.png#gh-light-mode-only)
-![Remote access Status row showing Disabled with the Click to Enable button](/img/openpanel-screenshots/mysql/remote-status_dark.png#gh-dark-mode-only)
+![Remote access Status row showing Disabled with the Click to Enable button](/img/davpanel-screenshots/mysql/remote-status.png#gh-light-mode-only)
+![Remote access Status row showing Disabled with the Click to Enable button](/img/davpanel-screenshots/mysql/remote-status_dark.png#gh-dark-mode-only)

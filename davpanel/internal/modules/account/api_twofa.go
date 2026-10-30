@@ -9,12 +9,12 @@ import (
 
 	"github.com/pquerna/otp/totp"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
-	"gist.github.com/kangpcode/davpanel/internal/core/sysinfo"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
+	"github.com/kangpcode/davpanel/internal/core/sysinfo"
 )
 
 // RegisterTwofaAPI wires the /api/account/2fa routes onto mux, gated behind "twofa". Setup is two calls, mirroring the web flow: .../setup stores a pending secret (2FA still off), then .../confirm validates a code and turns it on.

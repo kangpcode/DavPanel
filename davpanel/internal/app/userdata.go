@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/sysinfo"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/sysinfo"
 )
 
 // UserDetails holds the user/plan fields returned by GetUserDetailsWithPlan

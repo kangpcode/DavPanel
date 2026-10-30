@@ -6,8 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 // findAdminDir locates the single admin*/ directory under a PrestaShop install - install.go renames it to a random name right after install, but every later operation (login link generation, uninstall) still needs to resolve whatever that current name is, in case it was renamed again by hand

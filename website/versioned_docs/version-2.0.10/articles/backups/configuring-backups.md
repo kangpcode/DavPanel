@@ -1,6 +1,6 @@
-# Configuring OpenPanel Backups
+# Configuring DavPanel Backups
 
-OpenPanel has a unique feature where end-users can configure their remote backups. This provides users with more freedom and control over the schedule, what to backup and finally more privacy as Admin does not have access to their destination.
+DavPanel has a unique feature where end-users can configure their remote backups. This provides users with more freedom and control over the schedule, what to backup and finally more privacy as Admin does not have access to their destination.
 
 Backups can be configured either by the system administrator (admin-configured) or by end users (user-configured). Each mode has distinct setup and restore procedures.
 
@@ -27,10 +27,10 @@ In this mode, the **admin has full control** over backup scheduling, retention, 
 #### 1: Set the Central Schedule
 
 **Path:**
-`OpenAdmin > Backups > Users > Settings`
+`DavAdmin > Backups > Users > Settings`
 **Action:** Set the schedule dropdown to **Daily**, **Weekly**, or **Monthly** and save.
 
-This does two things: it schedules `opencli docker-backup` to run centrally for every user, and it locks the Backups **Destinations** and **Settings** pages in the panel for accounts created from then on (via an `admin.backups` marker - see [User Backups](/docs/admin/backups/user/) for details, including how to apply it to an existing account). Their **List Backups** and **Restore Logs** pages stay available, so users can still restore from the backups the admin is taking.
+This does two things: it schedules `davcli docker-backup` to run centrally for every user, and it locks the Backups **Destinations** and **Settings** pages in the panel for accounts created from then on (via an `admin.backups` marker - see [User Backups](/docs/admin/backups/user/) for details, including how to apply it to an existing account). Their **List Backups** and **Restore Logs** pages stay available, so users can still restore from the backups the admin is taking.
 
 ---
 
@@ -39,7 +39,7 @@ This does two things: it schedules `opencli docker-backup` to run centrally for 
 Modify the backup configuration template that applies to new accounts. This file defines default backup settings, such as remote storage destinations.
 
 **File path:**
-`/etc/openpanel/backups/backups.env`
+`/etc/davpanel/backups/backups.env`
 
 To enable and configure a remote SSH destination, uncomment and update the following variables:
 
@@ -76,12 +76,12 @@ SSH_PASSWORD="NotSoStrongP@ssword"
 To set the backup frequency, go to:
 
 **Path:**
-`OpenAdmin > Server > Scheduled Actions`
+`DavAdmin > Server > Scheduled Actions`
 
 Locate the cron job for the command:
 
 ```bash
-opencli docker-backup
+davcli docker-backup
 ```
 
 Adjust the schedule as needed. This command will trigger backups according to your defined schedule for **all active users** on the server.
@@ -94,7 +94,7 @@ In this mode, the **Backups module is enabled** to allow users to configure thei
 
 **Setup:**
 
-* The admin must **enable the Backups module** in OpenPanel.
+* The admin must **enable the Backups module** in DavPanel.
 * Backups feature must be enabled on all relevant feature sets tied to hosting plans to allow user access.
 * End users can set:
 
@@ -118,7 +118,7 @@ In this mode, the **Backups module is enabled** to allow users to configure thei
 ### Restore in Admin-Configured Backup Mode
 
 * Users restore their own backups the same way as in User-Configured mode: **Backups > List Backups** in the panel, which stays available even though Destinations/Settings are locked - see [Restore & Download](/docs/panel/files/backups/#restore--download).
-* The admin can also restore on a user's behalf manually, either via terminal commands or through the OpenPanel UI terminal:
+* The admin can also restore on a user's behalf manually, either via terminal commands or through the DavPanel UI terminal:
 
   * For databases: dropping the relevant tables and importing the database dump from backup files.
   * For files: using FileManager or command line to delete corrupted files and re-upload backup copies.

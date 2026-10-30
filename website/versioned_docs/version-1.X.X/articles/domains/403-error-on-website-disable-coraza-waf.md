@@ -46,7 +46,7 @@ Content management systems like **WordPress** use `.htaccess` files that may blo
 
    * Disable WordPress plugins temporarily.
    * Restore the default `.htaccess` file.
-   * Seek help on your CMS forums or [OpenPanel Community](https://community.openpanel.org/).
+   * Seek help on your CMS forums or [DavPanel Community](https://community.davpanel.org/).
 
 ---
 

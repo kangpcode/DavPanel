@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/postgresmanager"
+	"github.com/kangpcode/davpanel/internal/core/postgresmanager"
 )
 
 // restrictedUsers is the set of built-in/system PostgreSQL role names that users are never allowed to create, edit, or delete

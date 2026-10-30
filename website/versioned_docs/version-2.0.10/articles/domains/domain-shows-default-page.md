@@ -1,6 +1,6 @@
 # Domain Shows Default Page
 
-When you add a domain to **OpenPanel**, it will initially display the following message:
+When you add a domain to **DavPanel**, it will initially display the following message:
 
 > **Ready, set, internet 🎉**
 > This domain currently has no website. Please check back later.
@@ -26,7 +26,7 @@ This means that even after you upload your site, the cached default page could s
 
 **Disable Varnish for a specific domain:**
 
-1. Go to **OpenPanel > Caching > Varnish**
+1. Go to **DavPanel > Caching > Varnish**
 2. Disable Varnish for that domain
 
 ![Disable Varnish cache for domain](/img/docs-content/dwSGj2qk-2025-08-13-12-25.png)
@@ -42,8 +42,8 @@ Administrators can change the default page shown on domains without content.
 
 To customize:
 
-1. In **OpenAdmin**, go to **Domains > Edit Domain Templates**
+1. In **DavAdmin**, go to **Domains > Edit Domain Templates**
 2. Modify the HTML code for the default page
 
-![Edit default page in OpenAdmin](/img/docs-content/JRx0Qm3T-2025-08-13-12-28.png)
+![Edit default page in DavAdmin](/img/docs-content/JRx0Qm3T-2025-08-13-12-28.png)
 

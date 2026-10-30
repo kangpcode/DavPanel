@@ -133,7 +133,7 @@ const story = [
         icon: <WizardsIcon />,
         title: "The idea",
         description:
-            'DavPanel was born out of frustration with the premium hosting panels we relied on at UNLIMITED.RS to run shared hosting and managed VPS for our own clients. Prices kept climbing every year, but the flexibility never did. During one particularly rough migration, a colleague joked, "Even we could build something better." The comment stuck - and sent our co-founder and CEO, Stefan Pejčić, down the path of actually doing it.',
+            'DavPanel was born out of frustration with the premium hosting panels we relied on at UNLIMITED.RS to run shared hosting and managed VPS for our own clients. Prices kept climbing every year, but the flexibility never did. During one particularly rough migration, a colleague joked, "Even we could build something better." The comment stuck - and sent our co-founder and CEO, Dhafa Nazula Permadi, down the path of actually doing it.',
     },
     {
         icon: <FlagIcon />,
@@ -291,7 +291,7 @@ const About: React.FC = () => {
                             )}
                         >
                             <Link
-                                to="https://github.com/stefanpejcic/openpanel"
+                                to="https://github.com/kangpcode/DavPanel"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={clsx(
@@ -1005,7 +1005,7 @@ const About: React.FC = () => {
                                     Join Discord
                                 </Link>
                                 <Link
-                                    to="https://github.com/stefanpejcic/openpanel"
+                                    to="https://github.com/kangpcode/DavPanel"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={clsx(

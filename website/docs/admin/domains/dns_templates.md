@@ -4,15 +4,15 @@ sidebar_position: 5
 
 # Edit Zone Templates
 
-This interface allows you to edit the DNS zone file templates that OpenPanel uses when creating zones for new domains.  
+This interface allows you to edit the DNS zone file templates that DavPanel uses when creating zones for new domains.  
 It is useful if you require custom DNS configurations.
 
 :::info
 Edit Zone Templates is only shown in the **Domains** sidebar group when the **dns** module is enabled on the server.
 :::
 
-![Edit Zone Templates page with the IPv4 and IPv6 zone templates and the Restore Default and Save Files buttons](/img/openadmin-screenshots/domains/dns_templates-page.png#gh-light-mode-only)
-![Edit Zone Templates page with the IPv4 and IPv6 zone templates and the Restore Default and Save Files buttons](/img/openadmin-screenshots/domains/dns_templates-page_dark.png#gh-dark-mode-only)
+![Edit Zone Templates page with the IPv4 and IPv6 zone templates and the Restore Default and Save Files buttons](/img/davadmin-screenshots/domains/dns_templates-page.png#gh-light-mode-only)
+![Edit Zone Templates page with the IPv4 and IPv6 zone templates and the Restore Default and Save Files buttons](/img/davadmin-screenshots/domains/dns_templates-page_dark.png#gh-dark-mode-only)
 
 - **IPv4 Template** – Used for new domains assigned IPv4 addresses.
 - **IPv6 Template** – Used for new domains assigned IPv6 addresses.
@@ -31,7 +31,7 @@ You can include the following variables in your DNS zone templates:
 | `{ns3}`         | Hostname of the tertiary nameserver.                                       |
 | `{ns4}`         | Hostname of the quaternary nameserver.                                     |
 | `{server_ip}`   | IP address of the domain (either IPv4 or IPv6, depending on the template). |
-| `{rpemail}`     | Contact email address from OpenAdmin, or `root@domain`.                    |
+| `{rpemail}`     | Contact email address from DavAdmin, or `root@domain`.                    |
 
 > The nameservers used for `{ns1}`–`{ns4}` are configured under the panel's Nameservers/Branding settings. The default templates only reference `{ns1}` and `{ns2}`; `{ns3}`/`{ns4}` are available if your custom template needs additional NS records.
 

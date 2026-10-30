@@ -12,10 +12,10 @@ Step-by-step guide: [Deploy a Laravel app (Composer, scheduler and queue workers
 
 ## Install a PHP Application
 
-Navigate to **OpenPanel > Websites > Install App** and click **Install PHP Application**.
+Navigate to **DavPanel > Websites > Install App** and click **Install PHP Application**.
 
-![Install PHP Application form with the domain and folder, and an optional Composer project to create](/img/openpanel-screenshots/applications/php_install-form.png#gh-light-mode-only)
-![Install PHP Application form with the domain and folder, and an optional Composer project to create](/img/openpanel-screenshots/applications/php_install-form_dark.png#gh-dark-mode-only)
+![Install PHP Application form with the domain and folder, and an optional Composer project to create](/img/davpanel-screenshots/applications/php_install-form.png#gh-light-mode-only)
+![Install PHP Application form with the domain and folder, and an optional Composer project to create](/img/davpanel-screenshots/applications/php_install-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 

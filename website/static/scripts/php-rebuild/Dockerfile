@@ -9,7 +9,7 @@
 #     --build-arg PHP_NEW_SHA256=<sha256 of php-<version>.tar.xz> -t <tag> .
 #
 # php-rebuild.sh fills in the version and checksum. Guide:
-# https://openpanel.com/docs/articles/security/php2shell-patch-php-before-images-are-rebuilt
+# https://davpanel.com/docs/articles/security/php2shell-patch-php-before-images-are-rebuilt
 ARG BASE
 FROM ${BASE}
 ARG PHP_NEW

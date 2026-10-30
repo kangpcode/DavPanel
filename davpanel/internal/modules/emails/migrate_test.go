@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
-	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/config"
+	"github.com/kangpcode/davpanel/internal/core/i18n"
 )
 
 func validMigrateRequest() MigrateRequest {

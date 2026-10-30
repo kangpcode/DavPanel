@@ -3,9 +3,9 @@ package n8n
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/modules/appinstall"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/modules/appinstall"
 )
 
 // RegisterAPI wires POST /api/n8n/install onto mux, gated behind the "n8n" feature flag - reuses appinstall.HandleInstall as-is since it's already pure form-in/NDJSON-out with no session or flash usage

@@ -4,9 +4,9 @@ package websites
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // apiTemporaryLink is the /api/sites/{domain}/temporary-link equivalent of handleTemporaryLink, taking the domain from the path instead of a query param - GET, not POST, since the result is memoized/idempotent within its 800s cache window, same as GET /api/sites/{domain}/pagespeed.

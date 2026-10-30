@@ -3,7 +3,7 @@ import clsx from "clsx";
 import React, { FC, SVGProps } from "react";
 
 export const ENTERPRISE_PURCHASE_URL =
-    "https://my.davpanel.com/index.php?rp=/store/openpanel/enterprise-license";
+    "https://my.davpanel.com/index.php?rp=/store/davpanel/enterprise-license";
 export const ENTERPRISE_TRIAL_URL = "/trial";
 
 // Checkout happens off-site (my.davpanel.com), so there's no on-site

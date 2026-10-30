@@ -4,11 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // fetchLitespeedTags paginates the relevant litespeedtech Docker Hub repo's tags, extracts the lsphpXY suffix from each, and returns the distinct versions sorted desc
@@ -81,7 +83,15 @@ type VersionInfo struct {
 	IsNextVersion   bool   `json:"isNextVersion"`
 }
 
-// fetchPHPVersionsAPI maintains a 3-day disk cache of https://api.davpanel.com/php-versions/, used by settings.html to badge each installed version (latest/next/future/EOL/secure)
+// phpVersionsAPIURL is overridable via DAVPANEL_PHP_VERSIONS_API so a self-hosted fork can point at its own metadata service instead of the project's placeholder domain.
+func phpVersionsAPIURL() string {
+	if v := strings.TrimSpace(os.Getenv("DAVPANEL_PHP_VERSIONS_API")); v != "" {
+		return v
+	}
+	return "https://api.davpanel.com/php-versions/"
+}
+
+// fetchPHPVersionsAPI maintains a 3-day disk cache of the PHP versions metadata endpoint, used by settings.html to badge each installed version (latest/next/future/EOL/secure)
 func fetchPHPVersionsAPI(ctx context.Context) map[string]VersionInfo {
 	if info, err := tenantfs.Stat(phpAPIVersionsFile); err == nil {
 		if time.Since(info.ModTime()) < phpAPIVersionsTTL {
@@ -92,7 +102,7 @@ func fetchPHPVersionsAPI(ctx context.Context) map[string]VersionInfo {
 	}
 
 	client := &http.Client{Timeout: 3 * time.Second}
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://api.davpanel.com/php-versions/", nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, phpVersionsAPIURL(), nil)
 	if err != nil {
 		return map[string]VersionInfo{}
 	}

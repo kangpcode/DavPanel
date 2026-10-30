@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 func TestFavoritesMax(t *testing.T) {

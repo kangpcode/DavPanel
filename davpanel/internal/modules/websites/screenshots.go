@@ -11,13 +11,14 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 	"golang.org/x/net/idna"
 )
 
@@ -32,6 +33,9 @@ func screenshotAPIBase(a *appctx.App) string {
 	setting := strings.TrimSpace(a.Config.Get("screenshots", ""))
 	if setting != "" && setting != "local" {
 		return strings.TrimRight(setting, "/")
+	}
+	if v := strings.TrimSpace(os.Getenv("DAVPANEL_SCREENSHOTS_API")); v != "" {
+		return strings.TrimRight(v, "/")
 	}
 	return screenshotFallbackAPI
 }

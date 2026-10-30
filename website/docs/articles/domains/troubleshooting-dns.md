@@ -12,7 +12,7 @@ Make sure the DNS-server on the host server responds to requests for the domain 
 ## servers could not be reached
 Response message `servers could not be reached` indicates that the bind9 service is not running.
 
-Try to restart the service from **OpenAdmin > Services**
+Try to restart the service from **DavAdmin > Services**
 
 And if service restart failed check the service logs.
 
@@ -25,7 +25,7 @@ The usual culprit is an invalid DNS zone file for a domain, so edit the file men
 An empty response for the dig command  indicates that the DNS-server does not have information about the domain. Perhaps, it is not added to any account or its DNS zone file is missing.
 
 To check if domain is added to any account use the command:
-`opencli domains-whoowns <domain_name>`
+`davcli domains-whoowns <domain_name>`
 
 ---
 
@@ -52,6 +52,6 @@ named-checkzone <DOMAIN> /etc/bind/zones/<DOMAIN>.zone
 Example:
 ```bash
 # named-checkzone example.com /etc/bind/zones/example.com.zone
-zone example.com/IN: NS 'ns17.openpanel.example.com' has no address records (A or AAAA)
+zone example.com/IN: NS 'ns17.davpanel.example.com' has no address records (A or AAAA)
 zone example.com/IN: not loaded due to errors.
 ```

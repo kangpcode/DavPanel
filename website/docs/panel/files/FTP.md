@@ -4,24 +4,24 @@ sidebar_position: 5
 
 # FTP Accounts
 
-OpenPanel accounts can create FTP sub-users that share the FTP service with all other FTP users on the server. Connect using the server IP address and port `21`.
+DavPanel accounts can create FTP sub-users that share the FTP service with all other FTP users on the server. Connect using the server IP address and port `21`.
 
-![FTP Accounts page with the FTP server and port, and a table of accounts with their path, quota and configuration downloads](/img/openpanel-screenshots/files/ftp-list.png#gh-light-mode-only)
-![FTP Accounts page with the FTP server and port, and a table of accounts with their path, quota and configuration downloads](/img/openpanel-screenshots/files/ftp-list_dark.png#gh-dark-mode-only)
+![FTP Accounts page with the FTP server and port, and a table of accounts with their path, quota and configuration downloads](/img/davpanel-screenshots/files/ftp-list.png#gh-light-mode-only)
+![FTP Accounts page with the FTP server and port, and a table of accounts with their path, quota and configuration downloads](/img/davpanel-screenshots/files/ftp-list_dark.png#gh-dark-mode-only)
 
 :::info
-FTP is available in the [OpenPanel Enterprise](/enterprise/) edition. Administrator setup guide: [How to setup FTP in OpenPanel](/docs/articles/user-experience/how-to-setup-ftp-in-openpanel/)
+FTP is available in the [DavPanel Enterprise](/enterprise/) edition. Administrator setup guide: [How to setup FTP in DavPanel](/docs/articles/user-experience/how-to-setup-ftp-in-davpanel/)
 :::
 
 ---
 
 ## View Users
 
-Go to **OpenPanel > Files > FTP Accounts** to see all FTP accounts, the directory each account is restricted to, and connection details including the server IP.
+Go to **DavPanel > Files > FTP Accounts** to see all FTP accounts, the directory each account is restricted to, and connection details including the server IP.
 
 ## Create User
 
-1. Go to **OpenPanel > Files > FTP Accounts** and click **New Account**.
+1. Go to **DavPanel > Files > FTP Accounts** and click **New Account**.
 2. Fill in the form:
 
    | Field | Description |
@@ -34,8 +34,8 @@ Go to **OpenPanel > Files > FTP Accounts** to see all FTP accounts, the director
 
 3. Click **Create Account** to create the user.
 
-![New FTP Account form with the username, domain, password and path fields](/img/openpanel-screenshots/files/ftp_new-form.png#gh-light-mode-only)
-![New FTP Account form with the username, domain, password and path fields](/img/openpanel-screenshots/files/ftp_new-form_dark.png#gh-dark-mode-only)
+![New FTP Account form with the username, domain, password and path fields](/img/davpanel-screenshots/files/ftp_new-form.png#gh-light-mode-only)
+![New FTP Account form with the username, domain, password and path fields](/img/davpanel-screenshots/files/ftp_new-form_dark.png#gh-dark-mode-only)
 
 :::info
 FTP usernames may only contain letters, numbers, and the characters `-`, `_`, `@`, `.`. [FTP username requirements](/docs/articles/accounts/forbidden-usernames/#ftp)
@@ -43,11 +43,11 @@ FTP usernames may only contain letters, numbers, and the characters `-`, `_`, `@
 
 ## Change Password
 
-1. Go to **OpenPanel > Files > FTP Accounts** and click the key icon (**Change Password**) next to the account.
+1. Go to **DavPanel > Files > FTP Accounts** and click the key icon (**Change Password**) next to the account.
 2. Enter the new password, confirm it, and click **Update**.
 
-![Change FTP password form with a new password field](/img/openpanel-screenshots/files/ftp_password-form.png#gh-light-mode-only)
-![Change FTP password form with a new password field](/img/openpanel-screenshots/files/ftp_password-form_dark.png#gh-dark-mode-only)
+![Change FTP password form with a new password field](/img/davpanel-screenshots/files/ftp_password-form.png#gh-light-mode-only)
+![Change FTP password form with a new password field](/img/davpanel-screenshots/files/ftp_password-form_dark.png#gh-dark-mode-only)
 
 :::info
 FTP passwords must be 8-30 characters long and contain at least one uppercase letter (`A-Z`), lowercase letter (`a-z`), digit (`0-9`), and special character. [FTP password requirements](/docs/articles/accounts/forbidden-usernames/#ftp)
@@ -55,37 +55,37 @@ FTP passwords must be 8-30 characters long and contain at least one uppercase le
 
 ## Change Path
 
-1. Go to **OpenPanel > Files > FTP Accounts** and click the pencil icon (**Change Path**) next to the account.
+1. Go to **DavPanel > Files > FTP Accounts** and click the pencil icon (**Change Path**) next to the account.
 2. Enter the new directory path and click **Update**. The path must start with `/var/www/html/`.
 
-![Change FTP path form with the folder field](/img/openpanel-screenshots/files/ftp_path-form.png#gh-light-mode-only)
-![Change FTP path form with the folder field](/img/openpanel-screenshots/files/ftp_path-form_dark.png#gh-dark-mode-only)
+![Change FTP path form with the folder field](/img/davpanel-screenshots/files/ftp_path-form.png#gh-light-mode-only)
+![Change FTP path form with the folder field](/img/davpanel-screenshots/files/ftp_path-form_dark.png#gh-dark-mode-only)
 
 ## Change Quota
 
 A disk quota limits how big the account's folder can grow. The **Quota** column on the FTP accounts page shows the space used and the quota, or **Unlimited**.
 
-1. Go to **OpenPanel > Files > FTP Accounts** and click the disk icon (**Change Quota**) next to the account.
+1. Go to **DavPanel > Files > FTP Accounts** and click the disk icon (**Change Quota**) next to the account.
 2. Enter the quota, pick **MB** or **GB**, and click **Update**. Leave the field empty or enter `0` to remove the quota.
 
-![Change FTP quota form with the current quota and usage, and the quota field with a MB/GB unit](/img/openpanel-screenshots/files/ftp_quota-form.png#gh-light-mode-only)
-![Change FTP quota form with the current quota and usage, and the quota field with a MB/GB unit](/img/openpanel-screenshots/files/ftp_quota-form_dark.png#gh-dark-mode-only)
+![Change FTP quota form with the current quota and usage, and the quota field with a MB/GB unit](/img/davpanel-screenshots/files/ftp_quota-form.png#gh-light-mode-only)
+![Change FTP quota form with the current quota and usage, and the quota field with a MB/GB unit](/img/davpanel-screenshots/files/ftp_quota-form_dark.png#gh-dark-mode-only)
 
 The quota counts everything in the account's folder, also files added from the File Manager or by your website. Usage is checked every minute. Once the folder is over the quota the account is marked **Over quota**, uploads are refused and open FTP sessions of that account are closed. Downloading and deleting files still works, so the account can free up space, and uploads work again within a minute after the folder is back under the quota.
 
 ## Delete User
 
-Go to **OpenPanel > Files > FTP Accounts** and click the trash icon (**Delete**) next to the account. The icon turns into **Confirm** with a 5-second countdown; click it again before the countdown ends to delete the account.
+Go to **DavPanel > Files > FTP Accounts** and click the trash icon (**Delete**) next to the account. The icon turns into **Confirm** with a 5-second countdown; click it again before the countdown ends to delete the account.
 
-![Delete icon of an FTP account turned into a Confirm button with a countdown after the first click](/img/openpanel-screenshots/files/ftp_actions-delete.png#gh-light-mode-only)
-![Delete icon of an FTP account turned into a Confirm button with a countdown after the first click](/img/openpanel-screenshots/files/ftp_actions-delete_dark.png#gh-dark-mode-only)
+![Delete icon of an FTP account turned into a Confirm button with a countdown after the first click](/img/davpanel-screenshots/files/ftp_actions-delete.png#gh-light-mode-only)
+![Delete icon of an FTP account turned into a Confirm button with a countdown after the first click](/img/davpanel-screenshots/files/ftp_actions-delete_dark.png#gh-dark-mode-only)
 
 ## Bulk Actions
 
 Tick the checkbox of one or more accounts, or the checkbox in the table header to select every account shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two FTP accounts selected with the bulk actions bar offering Change password, Change path, Change quota, Remove quota and Delete](/img/openpanel-screenshots/files/ftp-bulk.png#gh-light-mode-only)
-![Two FTP accounts selected with the bulk actions bar offering Change password, Change path, Change quota, Remove quota and Delete](/img/openpanel-screenshots/files/ftp-bulk_dark.png#gh-dark-mode-only)
+![Two FTP accounts selected with the bulk actions bar offering Change password, Change path, Change quota, Remove quota and Delete](/img/davpanel-screenshots/files/ftp-bulk.png#gh-light-mode-only)
+![Two FTP accounts selected with the bulk actions bar offering Change password, Change path, Change quota, Remove quota and Delete](/img/davpanel-screenshots/files/ftp-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -106,12 +106,12 @@ On the FTP accounts page you can download a ready-to-import configuration file f
 
 Both files are pre-filled with the correct server IP, port, username, and remote directory.
 
-![FileZilla and Cyberduck buttons in the Configuration column of an FTP account](/img/openpanel-screenshots/files/ftp_actions-config.png#gh-light-mode-only)
-![FileZilla and Cyberduck buttons in the Configuration column of an FTP account](/img/openpanel-screenshots/files/ftp_actions-config_dark.png#gh-dark-mode-only)
+![FileZilla and Cyberduck buttons in the Configuration column of an FTP account](/img/davpanel-screenshots/files/ftp_actions-config.png#gh-light-mode-only)
+![FileZilla and Cyberduck buttons in the Configuration column of an FTP account](/img/davpanel-screenshots/files/ftp_actions-config_dark.png#gh-dark-mode-only)
 
 ## View Active Connections
 
-Go to **OpenPanel > Files > FTP Accounts** and click **View Connections** to see all currently active FTP sessions for your account.
+Go to **DavPanel > Files > FTP Accounts** and click **View Connections** to see all currently active FTP sessions for your account.
 
-![FTP Connections page listing current FTP sessions](/img/openpanel-screenshots/files/ftp_connections-list.png#gh-light-mode-only)
-![FTP Connections page listing current FTP sessions](/img/openpanel-screenshots/files/ftp_connections-list_dark.png#gh-dark-mode-only)
+![FTP Connections page listing current FTP sessions](/img/davpanel-screenshots/files/ftp_connections-list.png#gh-light-mode-only)
+![FTP Connections page listing current FTP sessions](/img/davpanel-screenshots/files/ftp_connections-list_dark.png#gh-dark-mode-only)

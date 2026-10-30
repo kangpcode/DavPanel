@@ -10,7 +10,7 @@ ImunifyAV regularly scans user files and alerts you if any malware is detected.
 
 To configure ImunifyAV via the control panel:
 
-1. Go to **OpenAdmin > Security > ImunifyAV**.
+1. Go to **DavAdmin > Security > ImunifyAV**.
 2. Click the **cog icon** to access settings.
 3. Adjust the resource limits for scans and set the scan schedule — by default, scans run monthly.
 

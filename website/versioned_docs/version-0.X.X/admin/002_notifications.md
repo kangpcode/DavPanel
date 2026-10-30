@@ -7,7 +7,7 @@ sidebar_position: 6
 Notifications are accessible from the notification icon in upper right corner. 
 
 
-OpenPanel records the following actions:
+DavPanel records the following actions:
 
 - server reboot
 - service is inactive
@@ -24,36 +24,36 @@ OpenPanel records the following actions:
 Each notification  type can be disabled and threshold limits can be set by the Admin user.
 
 <Tabs>
-  <TabItem value="openadmin-notifications-view" label="With OpenAdmin" default>
+  <TabItem value="davadmin-notifications-view" label="With DavAdmin" default>
 
 To view current notification settings, click on the bell icon in the top menu.
 You can view the current settings, and modify them.
 
   </TabItem>
-  <TabItem value="CLI-notifications-view" label="With OpenCLI">
+  <TabItem value="CLI-notifications-view" label="With DavCLI">
 
 To view current notification settings run:
 
 ```bash
-opencli admin notifications get <OPTION>
+davcli admin notifications get <OPTION>
 ```
 
 Example:
 
 ```bash
-# opencli admin notifications get reboot
+# davcli admin notifications get reboot
 yes
 ```
 
 To change the notification settings run:
 
 ```bash
-opencli admin notifications update <OPTION> <NEW-VALUE>
+davcli admin notifications update <OPTION> <NEW-VALUE>
 ```
 
 Example:
 ```bash
-opencli admin notifications update load 10
+davcli admin notifications update load 10
 Updated load to 10
 ```
 
@@ -67,7 +67,7 @@ To confirm receipt of a notification, select the checkmark icon located in front
 To receive email alerts, simply add your email address to the 'Email for notifications' field or leave it empty to disable email alerts.
 
 
-If enabled, by default OpenPanel will send email alerts from noreply@openpanel.co
+If enabled, by default DavPanel will send email alerts from noreply@davpanel.co
 
 To configure your own SMTP for email delivery, you need to update values:
 
@@ -79,28 +79,28 @@ To configure your own SMTP for email delivery, you need to update values:
 - mail_password - password for email address
 - mail_default_sender - email to display, defaults is same as mail_username
 
-Each value is configured using `opencli config update` option. examples:
+Each value is configured using `davcli config update` option. examples:
 
 ```bash
-opencli config update mail_server example.net
+davcli config update mail_server example.net
 ```
 ```bash
-opencli config update mail_port 465
+davcli config update mail_port 465
 ```
 ```bash
-opencli config update mail_use_tls False
+davcli config update mail_use_tls False
 ```
 ```bash
-opencli config update mail_use_ssl True
+davcli config update mail_use_ssl True
 ```
 ```bash
-opencli config update mail_username stefan@example.net
+davcli config update mail_username stefan@example.net
 ```
 ```bash
-opencli config update mail_password strongpass1231
+davcli config update mail_password strongpass1231
 ```
 ```bash
-opencli config update mail_default_sender stefan@example.net
+davcli config update mail_default_sender stefan@example.net
 ```
 
 

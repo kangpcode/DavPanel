@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/githubapi"
+	"github.com/kangpcode/davpanel/internal/core/githubapi"
 )
 
 var listPhpbbVersionsRE = regexp.MustCompile(`^release-(\d+\.\d+\.\d+)$`)

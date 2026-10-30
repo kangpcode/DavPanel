@@ -6,8 +6,8 @@ sidebar_position: 2
 
 The **Service Limits** section allows Administrators to view and adjust the allocated CPU and Memory resources for system services.
 
-![Service Limits page with CPU and memory limits for each system service](/img/openadmin-screenshots/services/limits-page.png#gh-light-mode-only)
-![Service Limits page with CPU and memory limits for each system service](/img/openadmin-screenshots/services/limits-page_dark.png#gh-dark-mode-only)
+![Service Limits page with CPU and memory limits for each system service](/img/davadmin-screenshots/services/limits-page.png#gh-light-mode-only)
+![Service Limits page with CPU and memory limits for each system service](/img/davadmin-screenshots/services/limits-page_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -17,7 +17,7 @@ To update limits, enter new values in the fields for the appropriate service.
 
 **Available Services** (by default):
 
-- openpanel
+- davpanel
 - caddy
 - mysql
 - clamav
@@ -34,9 +34,9 @@ Under each limit a recommendation is shown when the value is below the recommend
 
 | Service | Recommended |
 |---|---|
-| **openpanel** | at least 2 on servers with over 4 GB RAM, otherwise at least 1 |
+| **davpanel** | at least 2 on servers with over 4 GB RAM, otherwise at least 1 |
 | **caddy** | at least 1 per 20 domains so SSL certificates can be issued and renewed, or a third of the server's RAM/CPU on servers under 10 GB RAM. No more than 8 GB RAM and 6 CPU |
-| **mysql** | 0.5 per 10 users, no more than a third of the openpanel container's limit |
+| **mysql** | 0.5 per 10 users, no more than a third of the davpanel container's limit |
 | **bind9** | at least 0.1, only when the DNS module is enabled |
 | **clamav** | 4 (2 is the minimum), no more than 6, only when the malware scanner module is enabled |
 | **ftp** | 0.5 plus 0.1 per 10 users, no more than 3 GB RAM and 2 CPU, only when the FTP module is enabled |

@@ -47,7 +47,7 @@ you can also set a standard cron expression representing set of times, using **6
 | Day of week  | Yes        | 0-6 or SUN-SAT     | `*` `/` `,` `-` `?`       |
 
 :::info
-There are 6 fields instead of the usual 5 found in standard Unix cron. This is because OpenPanel cron jobs also support scheduling by seconds.
+There are 6 fields instead of the usual 5 found in standard Unix cron. This is because DavPanel cron jobs also support scheduling by seconds.
 :::
 
 For more information, check [CRON_Expression_Format](https://pkg.go.dev/github.com/robfig/cron#hdr-CRON_Expression_Format)
@@ -93,7 +93,7 @@ Example:
 [job-exec "example"]
 schedule = @daily
 container = nginx
-command = curl https://ip.openpanel.com
+command = curl https://ip.davpanel.com
 ```
 
 Another Example:

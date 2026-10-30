@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Onboarding
 
-To help new users get their account ready quickly, OpenPanel can show a guided setup wizard the first time you log in.
+To help new users get their account ready quickly, DavPanel can show a guided setup wizard the first time you log in.
 
 :::info
 The Onboarding wizard must be enabled by the Administrator. Steps for things you've already set up are left out: the Webserver step is skipped once you have a domain, Database once you have a database, Backups once a backup destination is configured, and the 2FA option once 2FA is enabled.
@@ -18,8 +18,8 @@ The wizard opens automatically on your first login, before you've added a domain
 
 The wizard only asks about what's actually available on your plan — each step below only appears if the matching feature is enabled for your account. Nothing here can be revisited from the wizard once you move past it, but every setting it touches can also be changed later from its regular page in the sidebar.
 
-![Onboarding wizard on its first step, choosing the webserver: Apache, Nginx, OpenLiteSpeed or OpenResty](/img/openpanel-screenshots/dashboard/onboarding-wizard.png#gh-light-mode-only)
-![Onboarding wizard on its first step, choosing the webserver: Apache, Nginx, OpenLiteSpeed or OpenResty](/img/openpanel-screenshots/dashboard/onboarding-wizard_dark.png#gh-dark-mode-only)
+![Onboarding wizard on its first step, choosing the webserver: Apache, Nginx, OpenLiteSpeed or OpenResty](/img/davpanel-screenshots/dashboard/onboarding-wizard.png#gh-light-mode-only)
+![Onboarding wizard on its first step, choosing the webserver: Apache, Nginx, OpenLiteSpeed or OpenResty](/img/davpanel-screenshots/dashboard/onboarding-wizard_dark.png#gh-dark-mode-only)
 
 | Step | Shown when... | What you can do |
 | --- | --- | --- |

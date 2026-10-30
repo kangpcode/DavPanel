@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Activity Log
 
-The Account Activity page provides a log record of all your actions performed on the OpenPanel, along with the timestamp and IP address from which the action was executed. The primary objective of this page is to offer insights into who carried out specific actions, such as deleting a file, adding domains, resetting WordPress admin passwords, and more.
+The Account Activity page provides a log record of all your actions performed on the DavPanel, along with the timestamp and IP address from which the action was executed. The primary objective of this page is to offer insights into who carried out specific actions, such as deleting a file, adding domains, resetting WordPress admin passwords, and more.
 
 ![account_activity_log.png](/img/panel/v1/analytics/account_activity_log.png)
 
@@ -22,5 +22,5 @@ You can search for these actions by IP, username, date, or specific action.
 By default only 25 actions will be shown per page, you can navigate pages using the pagination links or click on 'Show all activity' to display all actions.
 
 :::info
-The default configuration retains a log of the most recent 100 actions, but [the administrator can change this setting](/docs/admin/scripts/openpanel_config#activity_items_per_page).
+The default configuration retains a log of the most recent 100 actions, but [the administrator can change this setting](/docs/admin/scripts/davpanel_config#activity_items_per_page).
 :::

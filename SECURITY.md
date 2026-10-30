@@ -16,7 +16,8 @@ With that, good luck hacking us ;)
 
 | Version | Supported          |
 | ------- | ------------------ |
-| [Latest](https://davpanel.com/docs/changelog/intro/#latest)  | :white_check_mark: |
+| [Latest](https://github.com/kangpcode/DavPanel/releases) | :white_check_mark: |
+| Older releases | :x: |
 
 ## Qualifying Vulnerabilities
 

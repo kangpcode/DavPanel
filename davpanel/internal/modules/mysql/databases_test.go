@@ -3,7 +3,7 @@ package mysql
 import (
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 func TestZeroUserDatabasesToast(t *testing.T) {

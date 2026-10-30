@@ -7,9 +7,9 @@ import (
 	"strings"
 	"sync"
 
-	davpanel "gist.github.com/kangpcode/davpanel"
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	davpanel "github.com/kangpcode/davpanel"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 var tourStringRE = regexp.MustCompile(`(?m)^\s*(?:title|description):\s*'((?:[^'\\]|\\.)*)'`)

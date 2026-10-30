@@ -1,16 +1,33 @@
 # DavPanel - Web Hosting Control Panel
 
+> **DavPanel** is a rebranded fork of [OpenPanel](https://github.com/stefanpejcic/OpenPanel), maintained by **Dhafa Nazula Permadi ([kangpcode](https://github.com/kangpcode))**. Upstream code and notices remain the property of their original authors; see [NOTICE.md](NOTICE.md) and [LICENSE](LICENSE).
+
 **DavPanel** is a web hosting control panel built around containers. Every user gets a fully isolated environment: dedicated web server, dedicated database, private network, and scoped file storage - delivering VPS-grade security on shared hardware.
 
-![davpanel screenshot](https://davpanel.com/img/landing/davpanel-illustration-dark.svg)
+![davpanel screenshot](website/static/img/landing/davpanel-illustration-dark.svg)
 
 > Available as a free community edition and a fully-supported commercial version.
+
+## Project identity
+
+| Component | Name | Default port | Source |
+| --------- | ---- | ------------ | ------ |
+| User panel | **DavPanel** | 2083 | `davpanel/` |
+| Admin panel | **DavAdmin** | 2087 | `davadmin/` |
+| CLI | **DavCLI** | - | `davcli/` (binary: `davcli`) |
+
+Runtime identifiers were renamed as part of the fork: config lives in `/etc/davpanel/`, logs in `/var/log/davpanel/`, the CLI is `davcli`, the session cookie is `DAVPANEL`, and the panel binary is `/davpanel`.
+
+- Maintainer: **Dhafa Nazula Permadi** (`kangpcode`) <kangpcode@users.noreply.github.com>
+- Repository: <https://github.com/kangpcode/DavPanel>
+- Upstream: <https://github.com/stefanpejcic/OpenPanel>
 
 ## What is DavPanel?
 <!--start: description-->
 **DavPanel** is a web hosting control panel that uses containers to give every hosting user a completely isolated environment. Unlike traditional control panels that share a single Apache, MySQL, or PHP runtime across all users, DavPanel provisions a dedicated Podman context per user: each with their own web server container, database container, PHP-FPM containers, private network, and storage volume.
 The result: VPS-level isolation on shared hosting infrastructure, without the VPS price tag.
 <!--end: description-->
+
 
 ```
                    ╔════════════════════════════════════════════════════════════════╗
@@ -118,11 +135,11 @@ For full installation options and configuration flags: [https://davpanel.com/ins
 
 <table id='team'>
 <tr>
-<td id='stefanpejcic'>
-<a href='https://github.com/stefanpejcic'>
-<img src='https://github.com/stefanpejcic.png' width='140px;'>
+<td id='kangpcode'>
+<a href='https://github.com/kangpcode'>
+<img src='https://github.com/kangpcode.png' width='140px;'>
 </a>
-<h4 align='center'><a href='https://pejcic.rs'>Stefan Pejčić</a></h4>
+<h4 align='center'><a href='https://github.com/kangpcode'>Dhafa Nazula Permadi</a></h4>
 </td>
 <td id='radovanjecmenica'>
 <a href='https://github.com/radovanjecmenica'>
@@ -150,15 +167,23 @@ Special thanks to all [contributors](https://github.com/kangpcode/DavPanel/graph
 
 ## Contribute
 
-Check out [CONTRIBUTING.md](https://github.com/kangpcode/DavPanel/blob/main/CONTRIBUTING.md) for more information on how to help with _davpanel_.
+Check out [CONTRIBUTING.md](CONTRIBUTING.md) for more information on how to help with _DavPanel_. Bug reports and pull requests belong in the DavPanel fork; historical upstream issue links are kept as citations only.
 
-## License
+## Maintainer
 
-- DavAdmin and DavPanel UI are distributed under EULA.
-- DavCLI and configuration files are distributed under Commons Attribution-NonCommercial (CC BY-NC) license.
+**Dhafa Nazula Permadi** ([kangpcode](https://github.com/kangpcode)) — <kangpcode@users.noreply.github.com>
+
+## Upstream & license
+
+DavPanel is a fork of **OpenPanel** by **Stefan Pejcic** and contributors (<https://github.com/stefanpejcic/OpenPanel>). The original copyright, trademark and proprietary notices are retained in [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
+
+- DavAdmin and DavPanel UI are distributed under the upstream EULA.
+- DavCLI and configuration files are distributed under CC BY-NC 4.0.
+- "OpenPanel" and the OpenPanel logo are trademarks of OpenPanel, LLC; this fork does not claim them, and the DavPanel name/logo are used only to identify the fork.
+- Commercial use, resale, or hosting the panel as a paid service still requires the upstream Enterprise license or separate written consent from OpenPanel, LLC. This fork does not remove or bypass the license check.
 
 <hr />
 <h2 align="center">
-  ✨ All davpanel docs are hosted on <a href="https://davpanel.com/">davpanel.com</a> ✨
+  ✨ DavPanel documentation lives at <a href="https://davpanel.com/">davpanel.com</a> ✨
 </h2>
 <hr />

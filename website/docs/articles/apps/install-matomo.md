@@ -1,19 +1,19 @@
 ---
 sidebar_label: "Matomo"
-description: "How to self-host Matomo analytics (a privacy-friendly Google Analytics alternative) with OpenPanel: one-click install, adding the tracking code, archiving cron, updates and backups."
+description: "How to self-host Matomo analytics (a privacy-friendly Google Analytics alternative) with DavPanel: one-click install, adding the tracking code, archiving cron, updates and backups."
 ---
 
 # How to Self-Host Matomo Analytics (Google Analytics Alternative)
 
 [Matomo](https://matomo.org/) is an open-source web analytics platform and the most popular self-hosted alternative to Google Analytics. Because the data stays on your server, it's easier to comply with GDPR - and you own 100% of your data.
 
-OpenPanel installs and configures Matomo in one click.
+DavPanel installs and configures Matomo in one click.
 
 ---
 
 ## Requirements
 
-- OpenPanel Community or Enterprise - the **Matomo** module must be enabled for your hosting plan.
+- DavPanel Community or Enterprise - the **Matomo** module must be enabled for your hosting plan.
 - A domain or subdomain for the dashboard, e.g. `analytics.example.com`.
 - MySQL or MariaDB (Matomo doesn't support PostgreSQL).
 
@@ -21,16 +21,16 @@ OpenPanel installs and configures Matomo in one click.
 
 ## Install Matomo
 
-1. Add `analytics.example.com` in **OpenPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
-2. Go to **OpenPanel → Websites → Install App** and click **Install Matomo**.
+1. Add `analytics.example.com` in **DavPanel → Domains** ([Add a new domain](/docs/panel/domains/new/)).
+2. Go to **DavPanel → Websites → Install App** and click **Install Matomo**.
 3. Choose the **Matomo version** (*Latest*), the **domain**, and the **admin login, email and password**.
 4. Optionally expand **Database settings** - the name, user and password are generated for you.
 5. Start the installation.
 
-![Install Matomo form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/matomo-form.png#gh-light-mode-only)
-![Install Matomo form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/matomo-form_dark.png#gh-dark-mode-only)
+![Install Matomo form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/matomo-form.png#gh-light-mode-only)
+![Install Matomo form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/matomo-form_dark.png#gh-dark-mode-only)
 
-OpenPanel downloads Matomo, creates the database, and completes Matomo's setup wizard for you - no browser wizard needed.
+DavPanel downloads Matomo, creates the database, and completes Matomo's setup wizard for you - no browser wizard needed.
 
 Open `https://analytics.example.com`, or click **Login as Admin** on the app's manage page.
 
@@ -52,7 +52,7 @@ You'll see visits in the Matomo dashboard within a few seconds.
 By default, Matomo builds reports when someone opens the dashboard, which gets slow on busy sites. Switch to cron-based archiving:
 
 1. In Matomo, go to **Administration → System → General settings** and set **Archive reports when viewed from the browser** to **No**.
-2. In **OpenPanel → Cron Jobs**, create a job:
+2. In **DavPanel → Cron Jobs**, create a job:
    - **Container**: the domain's PHP container, e.g. `php-fpm-8.3`
    - **Schedule**: **Hourly**
    - **Command**:
@@ -67,7 +67,7 @@ See [Cron Jobs](/docs/panel/cronjobs/).
 
 ## Managing Matomo
 
-Matomo appears in **OpenPanel → Websites → Sites**. Its manage page has:
+Matomo appears in **DavPanel → Websites → Sites**. Its manage page has:
 
 - **Login as Admin** - one-click login to the dashboard.
 - **Cache** - runs `core:clear-caches`.
@@ -76,7 +76,7 @@ Matomo appears in **OpenPanel → Websites → Sites**. Its manage page has:
 - **Clone** - copies Matomo to another domain, updating `trusted_hosts` automatically.
 - **Logs** - Matomo's own log files.
 
-More: [Matomo in OpenPanel](/docs/panel/applications/matomo/).
+More: [Matomo in DavPanel](/docs/panel/applications/matomo/).
 
 ---
 

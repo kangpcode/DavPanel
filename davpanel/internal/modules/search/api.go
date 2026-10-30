@@ -3,8 +3,8 @@ package search
 import (
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
 )
 
 // RegisterAPI wires the /api/search/{what} route onto mux - reuses HandleSearch as-is since it already reads the user via auth.UserID, which RequireAPI populates the same way RequireLogin does, gated per-what internally via gateFor

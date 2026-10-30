@@ -4,14 +4,14 @@ sidebar_position: 7
 
 # Activity Log
 
-The Account Activity page provides a log record of all your actions performed on the OpenPanel, along with the timestamp and IP address from which the action was executed. The primary objective of this page is to offer insights into who carried out specific actions, such as deleting a file, adding domains, resetting WordPress admin passwords, and more.
+The Account Activity page provides a log record of all your actions performed on the DavPanel, along with the timestamp and IP address from which the action was executed. The primary objective of this page is to offer insights into who carried out specific actions, such as deleting a file, adding domains, resetting WordPress admin passwords, and more.
 
 ![account_activity_log.png](/img/panel/v2/activity.png)
 
 
 ## Recorded actions:
 
-The OpenPanel interface records the following account activities:
+The DavPanel interface records the following account activities:
 
 * Added item to favorites
 * Removed item from favorites

@@ -1,6 +1,6 @@
-# OpenPanel Installation on Vultr
+# DavPanel Installation on Vultr
 
-This guide will walk you through deploying **OpenPanel** on a Vultr instance with Ubuntu.
+This guide will walk you through deploying **DavPanel** on a Vultr instance with Ubuntu.
 
 ---
 
@@ -37,19 +37,19 @@ ssh root@yourInstanceIp
 
 ---
 
-## Step 3: Run the OpenPanel Installer
+## Step 3: Run the DavPanel Installer
 
 Run the installation script:
 
 ```bash
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
 > Follow the prompts to select your preferred database engine and complete installation.
 
 ---
 
-## Step 4: Access OpenPanel
+## Step 4: Access DavPanel
 
 1. Open your browser and navigate to:
 
@@ -63,10 +63,10 @@ https://yourInstanceIp:2087
 
 ## Notes
 
-* Ensure your Vultr instance meets [OpenPanel minimum requirements](https://openpanel.com/docs/admin/intro/#requirements).
+* Ensure your Vultr instance meets [DavPanel minimum requirements](https://davpanel.com/docs/admin/intro/#requirements).
 * For production environments, consider restricting firewall access after installation.
-* Use the [OpenPanel Install Command Generator](https://openpanel.com/install) for advanced configuration options.
+* Use the [DavPanel Install Command Generator](https://davpanel.com/install) for advanced configuration options.
 
 ---
 
-**Congratulations!** You have successfully installed OpenPanel on Vultr.
+**Congratulations!** You have successfully installed DavPanel on Vultr.

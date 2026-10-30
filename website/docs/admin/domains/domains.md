@@ -10,13 +10,13 @@ Domains page displays all domains currently hosted on server.
 ## List domains
 
 <Tabs>
-  <TabItem value="openadmin-domains-list" label="With OpenAdmin" default>
+  <TabItem value="davadmin-domains-list" label="With DavAdmin" default>
 
 
 To list all current domains navigate to Domains page. 
 
-![Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner](/img/openadmin-screenshots/domains/domains-list.png#gh-light-mode-only)
-![Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner](/img/openadmin-screenshots/domains/domains-list_dark.png#gh-dark-mode-only)
+![Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner](/img/davadmin-screenshots/domains/domains-list.png#gh-light-mode-only)
+![Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner](/img/davadmin-screenshots/domains/domains-list_dark.png#gh-dark-mode-only)
 
 The table shows these columns by default:
 
@@ -28,7 +28,7 @@ The table shows these columns by default:
 | **Webserver**   | The webserver of the account that owns the domain (Apache, Nginx, OpenResty or OpenLiteSpeed). |
 | **SSL**         | Whether the domain has an SSL certificate.                                  |
 | **WAF**         | Toggle to enable or disable Coraza WAF for the domain.                      |
-| **Owner**       | The OpenPanel user who owns the domain.                                     |
+| **Owner**       | The DavPanel user who owns the domain.                                     |
 | **Actions**     | Menu with the [domain actions](#domain-actions).                            |
 
 Click **Show Columns** to show or hide columns. These optional columns are hidden by default:
@@ -45,24 +45,24 @@ Any default column except Actions can be hidden the same way. Column visibility 
 Use the search box (**Search by user/domain...**) to filter the list by domain name or owning username.
 
   </TabItem>
-  <TabItem value="CLI-domains-list" label="With OpenCLI">
+  <TabItem value="CLI-domains-list" label="With DavCLI">
 
 To list all current domains  run:
 
 ```bash
-opencli domains-all
+davcli domains-all
 ```
 
 Example output:
 ```bash
-root@server:~# opencli domains-all
-openpanel.com
-openpanel.org
-demo.openpanel.com
-api.openpanel.com
-support.openpanel.org
-ip.openpanel.com
-my.openpanel.com
+root@server:~# davcli domains-all
+davpanel.com
+davpanel.org
+demo.davpanel.com
+api.davpanel.com
+support.davpanel.org
+ip.davpanel.com
+my.davpanel.com
 ```
 
   </TabItem>
@@ -72,8 +72,8 @@ my.openpanel.com
 
 Tick the checkbox of one or more domains, or the checkbox in the table header to select all domains shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two domains selected with the bulk actions bar offering Change PHP version, HSTS, WAF, Rate limit, Cloudflare, Suspend, Unsuspend and Delete](/img/openadmin-screenshots/domains/domains-bulk.png#gh-light-mode-only)
-![Two domains selected with the bulk actions bar offering Change PHP version, HSTS, WAF, Rate limit, Cloudflare, Suspend, Unsuspend and Delete](/img/openadmin-screenshots/domains/domains-bulk_dark.png#gh-dark-mode-only)
+![Two domains selected with the bulk actions bar offering Change PHP version, HSTS, WAF, Rate limit, Cloudflare, Suspend, Unsuspend and Delete](/img/davadmin-screenshots/domains/domains-bulk.png#gh-light-mode-only)
+![Two domains selected with the bulk actions bar offering Change PHP version, HSTS, WAF, Rate limit, Cloudflare, Suspend, Unsuspend and Delete](/img/davadmin-screenshots/domains/domains-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -86,8 +86,8 @@ Tick the checkbox of one or more domains, or the checkbox in the table header to
 | **Unsuspend** | Unsuspends the selected domains. |
 | **Delete** | Deletes the selected domains with their DNS zones, SSL and web server configuration, the files are kept. |
 
-![Change PHP version step of the bulk actions bar with a dropdown of the installed PHP versions](/img/openadmin-screenshots/domains/domains-bulk-php.png#gh-light-mode-only)
-![Change PHP version step of the bulk actions bar with a dropdown of the installed PHP versions](/img/openadmin-screenshots/domains/domains-bulk-php_dark.png#gh-dark-mode-only)
+![Change PHP version step of the bulk actions bar with a dropdown of the installed PHP versions](/img/davadmin-screenshots/domains/domains-bulk-php.png#gh-light-mode-only)
+![Change PHP version step of the bulk actions bar with a dropdown of the installed PHP versions](/img/davadmin-screenshots/domains/domains-bulk-php_dark.png#gh-dark-mode-only)
 
 Click an action, confirm it, and it runs on the selected domains one after another. When it's done the page reloads with a notice listing the domains it worked for, or which ones failed and why.
 
@@ -95,30 +95,30 @@ Click an action, confirm it, and it runs on the selected domains one after anoth
 
 
 <Tabs>
-  <TabItem value="openadmin-domain-new" label="With OpenAdmin" default>
+  <TabItem value="davadmin-domain-new" label="With DavAdmin" default>
 
   Click on 'Add Domain' button, insert the domain and select the user to add it, then click on 'Add Domain'.
 
   With an **Enterprise** license the form also has a **Docroot** field next to the username. It starts as `/var/www/html/` and fills in `/var/www/html/<domain>` as you type the domain, so you only need to change it for a custom folder, for example `/var/www/html/shop/public`. The docroot must start with `/var/www/html/`, can only contain letters, numbers, dots, dashes, underscores and slashes, and can't contain `..`. On Community edition the docroot is always `/var/www/html/<domain>`.
 
-![Add Domain form with the domain name, the user to add it to and the docroot](/img/openadmin-screenshots/domains/domains-add.png#gh-light-mode-only)
-![Add Domain form with the domain name, the user to add it to and the docroot](/img/openadmin-screenshots/domains/domains-add_dark.png#gh-dark-mode-only)
+![Add Domain form with the domain name, the user to add it to and the docroot](/img/davadmin-screenshots/domains/domains-add.png#gh-light-mode-only)
+![Add Domain form with the domain name, the user to add it to and the docroot](/img/davadmin-screenshots/domains/domains-add_dark.png#gh-dark-mode-only)
 
 
   </TabItem>
-  <TabItem value="CLI-domain-new" label="With OpenCLI">
+  <TabItem value="CLI-domain-new" label="With DavCLI">
     
 To add a new domain run the following command:
 
 ```bash
-opencli domains-add <DOMAIN_NAME> <USERNAME> [--docroot /var/www/html/<FOLDER>] [--debug]
+davcli domains-add <DOMAIN_NAME> <USERNAME> [--docroot /var/www/html/<FOLDER>] [--debug]
 ```
 
 Without `--docroot`, the domain uses `/var/www/html/<DOMAIN_NAME>`.
 
 Example:
 ```bash
-root@stefan:/usr/local/admin# opencli domains-add pejcci.rs wzs11p2i --debug
+root@stefan:/usr/local/admin# davcli domains-add pejcci.rs wzs11p2i --debug
 Checking if domain already exists on the server
 Adding pejcci.rs to the domains database
 Purging cached list of domains for the account
@@ -164,8 +164,8 @@ teashop.net stefan 8.4
 - A custom docroot requires an **Enterprise** license, with the same rules as the single [Add domain](#add-domain) form. Without a docroot the domain uses `/var/www/html/<DOMAIN>`.
 - Empty lines and lines starting with `#` are skipped. Up to 500 domains can be added at once.
 
-![Bulk add domains form with one domain per line](/img/openadmin-screenshots/domains/domains-bulk-add.png#gh-light-mode-only)
-![Bulk add domains form with one domain per line](/img/openadmin-screenshots/domains/domains-bulk-add_dark.png#gh-dark-mode-only)
+![Bulk add domains form with one domain per line](/img/davadmin-screenshots/domains/domains-bulk-add.png#gh-light-mode-only)
+![Bulk add domains form with one domain per line](/img/davadmin-screenshots/domains/domains-bulk-add_dark.png#gh-dark-mode-only)
 
 The list is checked when you leave the text area and again on the server before anything is added: every line with a problem is listed with its line number, along with users that don't exist or are suspended, and domains that appear twice. If any line is wrong, no domains are added.
 
@@ -185,8 +185,8 @@ Each row in the Domains table has an actions menu (the `⋮` button) with the fo
 - **Edit Caddyfile** — opens the Caddy config editor for the domain.
 - **Delete domain** — permanently deletes the domain, see [Delete domain](#delete-domain) below.
 
-![Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain](/img/openadmin-screenshots/domains/domains-actions.png#gh-light-mode-only)
-![Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain](/img/openadmin-screenshots/domains/domains-actions_dark.png#gh-dark-mode-only)
+![Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain](/img/davadmin-screenshots/domains/domains-actions.png#gh-light-mode-only)
+![Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain](/img/davadmin-screenshots/domains/domains-actions_dark.png#gh-dark-mode-only)
 
 ## Suspend a domain
 
@@ -194,22 +194,22 @@ Suspending a domain replaces its website with a suspended page, email and other 
 
 1. Open the domain's actions menu (`⋮`) and click **Suspend domain**.
 2. Pick a **Reason**. **Default suspended page** shows the [Suspended Website](/docs/admin/domains/file_templates/#suspended-website) page, the other options are the [suspension reasons](/docs/admin/domains/file_templates/#suspension-reasons) from **Domains > Domain Templates**, such as *Copyright / DMCA Violation* or *Overdue Payment / Billing*.
-3. Optionally enter a **Comment**, for example a ticket number. The user sees it in OpenPanel.
+3. Optionally enter a **Comment**, for example a ticket number. The user sees it in DavPanel.
 4. Click **Suspend**.
 
-![Suspend Domain dialog with the Reason dropdown, an optional comment for the user and the Suspend button](/img/openadmin-screenshots/domains/domains-suspend.png#gh-light-mode-only)
-![Suspend Domain dialog with the Reason dropdown, an optional comment for the user and the Suspend button](/img/openadmin-screenshots/domains/domains-suspend_dark.png#gh-dark-mode-only)
+![Suspend Domain dialog with the Reason dropdown, an optional comment for the user and the Suspend button](/img/davadmin-screenshots/domains/domains-suspend.png#gh-light-mode-only)
+![Suspend Domain dialog with the Reason dropdown, an optional comment for the user and the Suspend button](/img/davadmin-screenshots/domains/domains-suspend_dark.png#gh-dark-mode-only)
 
 The Status column then shows **Suspended by admin** with the reason below it:
 
-![Domains list with one domain marked Suspended by admin and its reason Copyright / DMCA Violation below the badge](/img/openadmin-screenshots/domains/domains-suspended.png#gh-light-mode-only)
-![Domains list with one domain marked Suspended by admin and its reason Copyright / DMCA Violation below the badge](/img/openadmin-screenshots/domains/domains-suspended_dark.png#gh-dark-mode-only)
+![Domains list with one domain marked Suspended by admin and its reason Copyright / DMCA Violation below the badge](/img/davadmin-screenshots/domains/domains-suspended.png#gh-light-mode-only)
+![Domains list with one domain marked Suspended by admin and its reason Copyright / DMCA Violation below the badge](/img/davadmin-screenshots/domains/domains-suspended_dark.png#gh-dark-mode-only)
 
-A domain suspended by an Administrator is locked for the user. In OpenPanel the user sees **Suspended by Admin** and the reason, and can't unsuspend, delete or edit the domain: changing its docroot, VirtualHost, redirect, SSL, Cloudflare setting or DNS zone is refused, from the panel and from the API, until an Administrator unsuspends it. Users can still suspend and unsuspend their own domains, these show as **Suspended by user**. Suspending a domain the user already suspended turns it into an admin suspension.
+A domain suspended by an Administrator is locked for the user. In DavPanel the user sees **Suspended by Admin** and the reason, and can't unsuspend, delete or edit the domain: changing its docroot, VirtualHost, redirect, SSL, Cloudflare setting or DNS zone is refused, from the panel and from the API, until an Administrator unsuspends it. Users can still suspend and unsuspend their own domains, these show as **Suspended by user**. Suspending a domain the user already suspended turns it into an admin suspension.
 
 To unsuspend, open the actions menu and click **Unsuspend domain**. The domain's original configuration is put back.
 
-From the terminal, use [`opencli domains-suspend`](/docs/articles/opencli/domains/#suspend) with `--by=admin`, `--template=<reason>` and `--comment="..."`, and `opencli domains-unsuspend <domain> --by=admin`. Without `--by=admin` the suspension counts as the user's own.
+From the terminal, use [`davcli domains-suspend`](/docs/articles/davcli/domains/#suspend) with `--by=admin`, `--template=<reason>` and `--comment="..."`, and `davcli domains-unsuspend <domain> --by=admin`. Without `--by=admin` the suspension counts as the user's own.
 
 ## Move domain
 
@@ -217,13 +217,13 @@ This is currently not possible.
 
 ## Delete domain
 
-Domains can be deleted directly from OpenAdmin:
+Domains can be deleted directly from DavAdmin:
 
 1. Open the domain's actions menu (`⋮`) in the Domains table and click **Delete domain**.
 2. A confirmation dialog lists what will be removed: VHost configuration files, Caddyfile entries, SSL certificates, and email accounts & redirects. Website files and the docroot directory are **not** deleted.
 3. Type the domain name to confirm, then click **Delete Permanently**.
 
-![Delete domain confirmation asking to type the domain name before deleting it permanently](/img/openadmin-screenshots/domains/domains-delete.png#gh-light-mode-only)
-![Delete domain confirmation asking to type the domain name before deleting it permanently](/img/openadmin-screenshots/domains/domains-delete_dark.png#gh-dark-mode-only)
+![Delete domain confirmation asking to type the domain name before deleting it permanently](/img/davadmin-screenshots/domains/domains-delete.png#gh-light-mode-only)
+![Delete domain confirmation asking to type the domain name before deleting it permanently](/img/davadmin-screenshots/domains/domains-delete_dark.png#gh-dark-mode-only)
 
 > Domains with attached websites cannot be deleted — remove all websites from Site Manager first. If the domain is added again later, default configurations are recreated.

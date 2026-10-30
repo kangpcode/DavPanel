@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	appctx "github.com/kangpcode/davpanel/internal/app"
 )
 
 // captured from php-fpm-8.5 (shinsenter image) on the test server

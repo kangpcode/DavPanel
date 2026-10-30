@@ -4,9 +4,9 @@ sidebar_label: "Setup DKIM"
 
 # How to Set Up DKIM for Your Mail Server
 
-Ensure that you're running the [**Enterprise edition**](https://openpanel.com/enterprise/) of OpenPanel. Email support is only available in this version.
+Ensure that you're running the [**Enterprise edition**](https://davpanel.com/enterprise/) of DavPanel. Email support is only available in this version.
 
-Follow [this guide](/docs/articles/user-experience/how-to-setup-email-in-openpanel/) to enable Emails in OpenPanel.
+Follow [this guide](/docs/articles/user-experience/how-to-setup-email-in-davpanel/) to enable Emails in DavPanel.
 
 ---
 
@@ -17,17 +17,17 @@ OpenDKIM is currently enabled by default.
 To generate DKIM keys for a domain, run:
 
 ```bash
-opencli email-setup config dkim domain DOMAIN_NAME_HERE
+davcli email-setup config dkim domain DOMAIN_NAME_HERE
 ```
 
-When the mailserver is installed, OpenPanel already generates a 2048-bit key for every newly added domain, so you only need to run this for domains that don't have a key yet.
+When the mailserver is installed, DavPanel already generates a 2048-bit key for every newly added domain, so you only need to run this for domains that don't have a key yet.
 
 ### Key length
 
 Keys are 2048-bit by default. To generate a different size, add the `keysize` option. Supported values are `1024`, `2048` and `4096`:
 
 ```bash
-opencli email-setup config dkim keysize 1024 domain DOMAIN_NAME_HERE
+davcli email-setup config dkim keysize 1024 domain DOMAIN_NAME_HERE
 ```
 
 A 2048-bit public key is longer than the 255 characters a single `TXT` string can hold, so the record has to be split into multiple parts (see [Formatting the TXT record value](#external-dns) below). If your DNS provider can't store a split or long `TXT` record, use `1024`: the record then fits in a single string. Otherwise keep `2048`, which is the recommended size; `1024` is the minimum that receivers accept.
@@ -42,11 +42,11 @@ Existing keys are never overwritten. If the domain already has a DKIM key, the c
 
 When mail signed with your DKIM key is sent from your mail server, the receiver needs to check a DNS `TXT` record to verify the DKIM signature is trustworthy.
 
-### OpenPanel DNS
+### DavPanel DNS
 
-If you are using nameservers on the same OpenPanel server that mailserver is running on, then run:
+If you are using nameservers on the same DavPanel server that mailserver is running on, then run:
 ```bash
-podman cp openadmin_mailserver:/tmp/docker-mailserver/opendkim/keys/DOMAIN_NAME_HERE/mail.txt /tmp/mail.txt && cat /tmp/mail.txt >> /etc/bind/zones/DOMAIN_NAME_HERE.zone
+podman cp davadmin_mailserver:/tmp/docker-mailserver/opendkim/keys/DOMAIN_NAME_HERE/mail.txt /tmp/mail.txt && cat /tmp/mail.txt >> /etc/bind/zones/DOMAIN_NAME_HERE.zone
 ```
 
 Make sure to replace `DOMAIN_NAME_HERE` with *yourdomain.com*
@@ -60,7 +60,7 @@ This will append the DKIM record to the DNS zone.
 If you are using external nameservers like [Cloudflare](https://www.cloudflare.com/), run this command to view the record:
 
 ```bash
-podman cp openadmin_mailserver:/tmp/docker-mailserver/opendkim/keys/DOMAIN_NAME_HERE/mail.txt /tmp/mail.txt && cat /tmp/mail.txt
+podman cp davadmin_mailserver:/tmp/docker-mailserver/opendkim/keys/DOMAIN_NAME_HERE/mail.txt /tmp/mail.txt && cat /tmp/mail.txt
 ```
 
 Add the TXT record to your **remote server's DNS zone**:
@@ -106,7 +106,7 @@ $ dig +short TXT mail._domainkey.example.com
 
 ## 3. Restart Mailserver
 
-Currently mailserver needs to be stopped and started again in order to start signing your outgoing emails with DKIM. Navigate to **OpenAdmin > Services > Service Status** and click 'Stop' for mailserver, then again 'Start'.
+Currently mailserver needs to be stopped and started again in order to start signing your outgoing emails with DKIM. Navigate to **DavAdmin > Services > Service Status** and click 'Stop' for mailserver, then again 'Start'.
 
 [![2025-07-17-15-37.png](/img/docs-content/d3hgY01F-2025-07-17-15-37.png)](/img/docs-content/d3hgY01F-2025-07-17-15-37.png)
 
@@ -124,16 +124,16 @@ To change the key length of a domain that already has a DKIM key (for example, t
 
 2. Generate the new key:
    ```bash
-   opencli email-setup config dkim keysize 1024 domain DOMAIN_NAME_HERE
+   davcli email-setup config dkim keysize 1024 domain DOMAIN_NAME_HERE
    ```
 
 3. Replace the DNS record. The old public key no longer matches, so the existing `mail._domainkey` record has to be replaced, not added to.
 
-   **OpenPanel DNS:** remove the old record from the zone, append the new one and reload the zone:
+   **DavPanel DNS:** remove the old record from the zone, append the new one and reload the zone:
    ```bash
    sed -i '/^mail\._domainkey/{:a;/)/!{N;ba};d}' /etc/bind/zones/DOMAIN_NAME_HERE.zone
    cat /usr/local/mail/openmail/docker-data/dms/config/opendkim/keys/DOMAIN_NAME_HERE/mail.txt >> /etc/bind/zones/DOMAIN_NAME_HERE.zone
-   opencli domains-dns check DOMAIN_NAME_HERE && opencli domains-dns reload DOMAIN_NAME_HERE
+   davcli domains-dns check DOMAIN_NAME_HERE && davcli domains-dns reload DOMAIN_NAME_HERE
    ```
    If you use a secondary (slave) DNS server, also increase the serial number in the zone's `SOA` record before reloading so the change is transferred.
 

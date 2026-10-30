@@ -49,27 +49,27 @@ export const RefineWeek = ({ variant }: Props) => {
                         {
                             title: "FOSSBilling",
                             label: "davpanel.com",
-                            link: "https://davpanel.com/docs/articles/extensions/openpanel-and-fossbilling/",
+                            link: "https://davpanel.com/docs/articles/extensions/davpanel-and-fossbilling/",
                         },
                         {
                             title: "WHMCS",
                             label: "davpanel.com",
-                            link: "https://davpanel.com/docs/articles/extensions/openpanel-and-whmcs/",
+                            link: "https://davpanel.com/docs/articles/extensions/davpanel-and-whmcs/",
                         },
                         {
                             title: "Blesta",
                             label: "davpanel.com",
-                            link: "https://davpanel.com/docs/articles/extensions/openpanel-and-blesta/",
+                            link: "https://davpanel.com/docs/articles/extensions/davpanel-and-blesta/",
                         },
                         {
                             title: "ClientExec",
                             label: "davpanel.com",
-                            link: "https://davpanel.com/docs/articles/extensions/openpanel-and-clientexec/",
+                            link: "https://davpanel.com/docs/articles/extensions/davpanel-and-clientexec/",
                         },
                         {
                             title: "WISECP",
                             label: "davpanel.com",
-                            link: "https://davpanel.com/docs/articles/extensions/openpanel-and-wisecp/",
+                            link: "https://davpanel.com/docs/articles/extensions/davpanel-and-wisecp/",
                         },
                     ].map((item) => (
                         <a

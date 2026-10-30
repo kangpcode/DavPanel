@@ -4,19 +4,19 @@ sidebar_position: 2
 
 # Node.js and Python
 
-Containerized [Node.js](https://nodejs.org) and [Python](https://python.org/) applications can be created and managed in **OpenPanel Enterprise Edition**.
+Containerized [Node.js](https://nodejs.org) and [Python](https://python.org/) applications can be created and managed in **DavPanel Enterprise Edition**.
 
 ---
 
 ## Create an Application
 
-To create a new Python or Node.js application, navigate to **OpenPanel > AutoInstaller** and select **Python** or **NodeJS**.
+To create a new Python or Node.js application, navigate to **DavPanel > AutoInstaller** and select **Python** or **NodeJS**.
 
 ![screenshot](/img/docs-content/HmZh5ZMJ-new-tab.png)
 
 On the next page, you can configure the following settings:
 
-* **Name** – The name of the application and container as displayed in OpenPanel.
+* **Name** – The name of the application and container as displayed in DavPanel.
 * **Port** – Set a custom port (e.g., 3000 or 5000) if your app uses one. Otherwise, port 80 is used by default.
 * **Domain Name / Subfolder** – The domain (and optional subfolder) where the application will be publicly accessible.
 * **Startup File** – The file executed at startup with the `node` or `py` command.
@@ -34,7 +34,7 @@ The installation process will be displayed below the form. Once complete, you’
 
 ### NodeJS Example App
 
-An example NodeJS (express) application that is running on http://nodejs.openpanel.org/
+An example NodeJS (express) application that is running on http://nodejs.davpanel.org/
 
 Example settings:
 ![example](/img/docs-content/cdC3Jxdp-example-nodejs-settings.png)
@@ -66,7 +66,7 @@ Example `package.json` file:
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Stefan Pejcic",
+  "author": "Dhafa Nazula Permadi",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2"
@@ -76,7 +76,7 @@ Example `package.json` file:
 
 ### Python Example App
 
-An example Python (Flask) application that is running on http://python.openpanel.org/
+An example Python (Flask) application that is running on http://python.davpanel.org/
 
 Example settings:
 ![example](/img/docs-content/D2Z3DNdW-example-python-settings.png)
@@ -106,7 +106,7 @@ Flask==2.3.3
 
 ## Manage Applications
 
-Once your application is created, you can manage it from **OpenPanel > Site Manager**.
+Once your application is created, you can manage it from **DavPanel > Site Manager**.
 
 ![screenshot](/img/docs-content/vYbbVP6T-manage-apps.png)
 

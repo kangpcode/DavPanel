@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"net/url"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // handlePrestashopVersions backs prestashop_install.html's version dropdown - filtering out versions with no downloadable asset (see version.go) needs server-side logic, so this exposes the already-filtered list as JSON, matching nextcloud's identical approach

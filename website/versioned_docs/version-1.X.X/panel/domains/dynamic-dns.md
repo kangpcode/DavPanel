@@ -22,7 +22,7 @@ Dynamic DNS lets you point a subdomain (e.g. `home.yourdomain.com`) to a device 
 
 ## Creating an Entry
 
-1. Go to **OpenPanel > Domains > Dynamic DNS**.
+1. Go to **DavPanel > Domains > Dynamic DNS**.
 2. Click **Add Entry**.
 3. Fill in the form:
 
@@ -39,14 +39,14 @@ Dynamic DNS lets you point a subdomain (e.g. `home.yourdomain.com`) to a device 
 Make a plain HTTP GET request to your update URL:
 
 ```
-https://OPENPANEL_URL:2083/dynamic-dns/update?token=YOUR_TOKEN
+https://DAVPANEL_URL:2083/dynamic-dns/update?token=YOUR_TOKEN
 ```
 
 The record is updated to the **IP address of the machine making the request**.
 
 Example curl request:
 ```bash
-curl "https://OPENPANEL_URL:2083/dynamic-dns/update?token=YOUR_TOKEN"
+curl "https://DAVPANEL_URL:2083/dynamic-dns/update?token=YOUR_TOKEN"
 ```
 
 Example response:

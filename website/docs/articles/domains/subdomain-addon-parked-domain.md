@@ -1,11 +1,11 @@
 ---
 sidebar_label: "Subdomains, Addon & Parked Domains"
-description: "How to add a subdomain, an addon domain or a parked (alias) domain in OpenPanel. All domains are equal - each can have its own website, SSL and DNS, or share a site with another domain."
+description: "How to add a subdomain, an addon domain or a parked (alias) domain in DavPanel. All domains are equal - each can have its own website, SSL and DNS, or share a site with another domain."
 ---
 
 # How to Add a Subdomain, Addon Domain or Parked Domain
 
-If you're coming from cPanel, you're used to three separate pages: **Subdomains**, **Addon Domains** and **Parked (Alias) Domains**. In OpenPanel there's just one: **Domains**. **All domains are equal** - every domain or subdomain you add gets its own:
+If you're coming from cPanel, you're used to three separate pages: **Subdomains**, **Addon Domains** and **Parked (Alias) Domains**. In DavPanel there's just one: **Domains**. **All domains are equal** - every domain or subdomain you add gets its own:
 
 - website folder (document root),
 - free SSL certificate,
@@ -14,7 +14,7 @@ If you're coming from cPanel, you're used to three separate pages: **Subdomains*
 
 What makes a domain a "subdomain", "addon" or "parked" domain is only how you set it up.
 
-| cPanel term | In OpenPanel |
+| cPanel term | In DavPanel |
 |---|---|
 | **Subdomain** (`blog.example.com`) | Add `blog.example.com` on the Domains page |
 | **Addon domain** (a second website, `another.com`) | Add `another.com` on the Domains page |
@@ -24,7 +24,7 @@ What makes a domain a "subdomain", "addon" or "parked" domain is only how you se
 
 ## Add a Subdomain
 
-1. Go to **OpenPanel → Domains** and click **Add Domain**.
+1. Go to **DavPanel → Domains** and click **Add Domain**.
 2. Enter the full subdomain, e.g. `blog.example.com`.
 3. Optionally change the **Document Root** (default: `/var/www/html/blog.example.com`).
 4. Click **Add Domain**.
@@ -44,9 +44,9 @@ You can now install WordPress or any other app on the subdomain, just like on a 
 
 An addon domain is simply another domain with its own website.
 
-1. Go to **OpenPanel → Domains → Add Domain**.
+1. Go to **DavPanel → Domains → Add Domain**.
 2. Enter the domain, e.g. `another.com`, and click **Add Domain**.
-3. Point the domain to the server: either set its **nameservers** at the registrar to your server's nameservers (see [Configure nameservers](/docs/articles/domains/how-to-configure-nameservers-in-openpanel/)), or create an `A` record for `another.com` and `www` pointing to the server's IP.
+3. Point the domain to the server: either set its **nameservers** at the registrar to your server's nameservers (see [Configure nameservers](/docs/articles/domains/how-to-configure-nameservers-in-davpanel/)), or create an `A` record for `another.com` and `www` pointing to the server's IP.
 
 Addon domains count toward your plan's domain limit.
 
@@ -58,7 +58,7 @@ A parked domain shows the **same website** as another domain - for example `exam
 
 ### Option 1: Same content on both domains
 
-1. Go to **OpenPanel → Domains → Add Domain** and enter `example.net`.
+1. Go to **DavPanel → Domains → Add Domain** and enter `example.net`.
 2. Set **Document Root** to the **main domain's folder**, e.g. `/var/www/html/example.com`.
 3. Click **Add Domain**.
 

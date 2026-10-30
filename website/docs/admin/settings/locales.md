@@ -4,17 +4,17 @@ sidebar_position: 9
 
 # Locales (Languages)
 
-Manage the languages available to OpenPanel users.
+Manage the languages available to DavPanel users.
 
-![Languages page listing locales with their provider, install status, default and Set as Default buttons](/img/openadmin-screenshots/settings/locales-list.png#gh-light-mode-only)
-![Languages page listing locales with their provider, install status, default and Set as Default buttons](/img/openadmin-screenshots/settings/locales-list_dark.png#gh-dark-mode-only)
+![Languages page listing locales with their provider, install status, default and Set as Default buttons](/img/davadmin-screenshots/settings/locales-list.png#gh-light-mode-only)
+![Languages page listing locales with their provider, install status, default and Set as Default buttons](/img/davadmin-screenshots/settings/locales-list_dark.png#gh-dark-mode-only)
 
 ## Bulk Actions
 
 Tick the checkbox of one or more locales, or the checkbox in the table header to select all locales shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
 
-![Two locales selected with the bulk actions bar offering Install, Update and Delete](/img/openadmin-screenshots/settings/locales-bulk.png#gh-light-mode-only)
-![Two locales selected with the bulk actions bar offering Install, Update and Delete](/img/openadmin-screenshots/settings/locales-bulk_dark.png#gh-dark-mode-only)
+![Two locales selected with the bulk actions bar offering Install, Update and Delete](/img/davadmin-screenshots/settings/locales-bulk.png#gh-light-mode-only)
+![Two locales selected with the bulk actions bar offering Install, Update and Delete](/img/davadmin-screenshots/settings/locales-bulk_dark.png#gh-dark-mode-only)
 
 | Action | What it does |
 |---|---|
@@ -28,12 +28,12 @@ Click an action, confirm it, and it runs on the selected locales one after anoth
 
 By default, only the **EN** locale is installed. To enable other locales, they must be installed first.
 
-OpenAdmin also recommends locales to install, based on the country of each user's last login to OpenPanel (from their `.lastlogin` file). For example, if users log in from Serbia, it recommends installing `sr-rs` with an **Install** button, listing those users. Only locales that are available and not yet installed are recommended, and logins from the server's own IP (OpenAdmin's autologin) or private IPs are skipped.
+DavAdmin also recommends locales to install, based on the country of each user's last login to DavPanel (from their `.lastlogin` file). For example, if users log in from Serbia, it recommends installing `sr-rs` with an **Install** button, listing those users. Only locales that are available and not yet installed are recommended, and logins from the server's own IP (DavAdmin's autologin) or private IPs are skipped.
 
 <Tabs>
-  <TabItem value="openadmin-install-locale" label="With OpenAdmin" default>
+  <TabItem value="davadmin-install-locale" label="With DavAdmin" default>
 
-To install a locale, go to **OpenAdmin > Settings > Locales** and click the **Install** button next to the desired locale.
+To install a locale, go to **DavAdmin > Settings > Locales** and click the **Install** button next to the desired locale.
 
 To install every available locale at once, click **Install All** at the top of the page. This downloads all locales from GitHub (about 11 MB in total) and re-downloads ones that are already installed, so it also updates them. Once finished, a notification lists which locales were installed and which failed.
 
@@ -70,30 +70,30 @@ The response lists what was installed and what failed. `success` is `false` if a
 ```
 
   </TabItem>
-  <TabItem value="CLI-install-locale" label="With OpenCLI">
+  <TabItem value="CLI-install-locale" label="With DavCLI">
 
 To install a locale from the terminal, use its locale prefix from [Github](https://github.com/stefanpejcic/openpanel-translations/tree/main) and run:
 
 ```bash
-opencli locale <LOCALE_HERE>
+davcli locale <LOCALE_HERE>
 ```
 
 Example: Install Turkish locale:
 
 ```bash
-opencli locale tr-tr
+davcli locale tr-tr
 ```
 
 Example: Install multiple locales:
 
 ```bash
-opencli locale sr-rs tr-tr zh-cn
+davcli locale sr-rs tr-tr zh-cn
 ```
 
 Example: Install all available locales:
 
 ```bash
-opencli locale $(curl -s "https://api.github.com/repos/stefanpejcic/openpanel-translations/contents" | jq -r '.[] | select(.type=="dir" and (.name|test("^[a-z]{2}-[a-z]{2}$"))) | .name' | tr '\n' ' ')
+davcli locale $(curl -s "https://api.github.com/repos/stefanpejcic/openpanel-translations/contents" | jq -r '.[] | select(.type=="dir" and (.name|test("^[a-z]{2}-[a-z]{2}$"))) | .name' | tr '\n' ' ')
 ```
 
   </TabItem>
@@ -102,10 +102,10 @@ opencli locale $(curl -s "https://api.github.com/repos/stefanpejcic/openpanel-tr
 
 ## Update Locale
 
-Each time the **Locales** page is opened, OpenAdmin compares every installed locale file with the latest version on GitHub. If a newer version exists, a notification lists the locales with updates, the locale shows an **Update available** badge, and an **Update** button appears in its **Actions** column.
+Each time the **Locales** page is opened, DavAdmin compares every installed locale file with the latest version on GitHub. If a newer version exists, a notification lists the locales with updates, the locale shows an **Update available** badge, and an **Update** button appears in its **Actions** column.
 
 <Tabs>
-  <TabItem value="openadmin-update-locale" label="With OpenAdmin" default>
+  <TabItem value="davadmin-update-locale" label="With DavAdmin" default>
 
 Click **Update** next to a locale to download its latest version, or click **Update All** at the top of the page to update every outdated locale at once. **Update All** is only shown when at least one update is available.
 
@@ -133,12 +133,12 @@ curl -X POST https://panel.example.com:2087/api/settings/locales \
 The response lists updated locales under `installed` and failed ones under `failed`.
 
   </TabItem>
-  <TabItem value="CLI-update-locale" label="With OpenCLI">
+  <TabItem value="CLI-update-locale" label="With DavCLI">
 
 Installing a locale again downloads its latest version:
 
 ```bash
-opencli locale tr-tr
+davcli locale tr-tr
 ```
 
   </TabItem>
@@ -147,7 +147,7 @@ opencli locale tr-tr
 ## Delete Locale
 
 <Tabs>
-  <TabItem value="openadmin-delete-locale" label="With OpenAdmin" default>
+  <TabItem value="davadmin-delete-locale" label="With DavAdmin" default>
 
 Click **Delete** next to an installed locale and confirm. The default locale can't be deleted; set another locale as default first.
 
@@ -167,7 +167,7 @@ curl -X POST https://panel.example.com:2087/api/settings/locales \
 Remove the locale's directory, named after its two-letter prefix:
 
 ```bash
-rm -rf /etc/openpanel/openpanel/translations/tr
+rm -rf /etc/davpanel/davpanel/translations/tr
 ```
 
   </TabItem>
@@ -181,9 +181,9 @@ Users who had selected a deleted locale will see untranslated (English) text ins
 
 
 <Tabs>
-  <TabItem value="openadmin-default-locale" label="With OpenAdmin" default>
+  <TabItem value="davadmin-default-locale" label="With DavAdmin" default>
 
-To make a specific locale the default, go to **OpenAdmin > Settings > Locales** and click the **Set as Default** button next to the desired locale.
+To make a specific locale the default, go to **DavAdmin > Settings > Locales** and click the **Set as Default** button next to the desired locale.
 
   </TabItem>
   <TabItem value="CLI-default-locale" label="From Terminal">
@@ -191,13 +191,13 @@ To make a specific locale the default, go to **OpenAdmin > Settings > Locales** 
 To set a default locale from the terminal:
 
 ```bash
-echo <LOCALE_HERE> > /etc/openpanel/openpanel/default_locale
+echo <LOCALE_HERE> > /etc/davpanel/davpanel/default_locale
 ```
 
 Example: Set Turkish as the default:
 
 ```bash
-echo tr > /etc/openpanel/openpanel/default_locale
+echo tr > /etc/davpanel/davpanel/default_locale
 ```
 
   </TabItem>

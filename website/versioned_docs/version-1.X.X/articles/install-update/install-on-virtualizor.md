@@ -1,6 +1,6 @@
-# Installing OpenPanel on Virtualizor
+# Installing DavPanel on Virtualizor
 
-To add OpenPanel to your Virtualizor server as an additional control panel available for your users to install:
+To add DavPanel to your Virtualizor server as an additional control panel available for your users to install:
 
 1. Log in to your server:
    * as root via SSH, or

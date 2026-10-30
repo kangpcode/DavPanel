@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"strconv"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/logger"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/logger"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
 )
 
 // RegisterPasskeysAPI wires the /api/account/passkeys routes onto mux, gated behind "passkeys". Registration isn't exposed here - the WebAuthn ceremony is browser-native and tied to a session cookie, which doesn't fit a stateless Bearer-token client. Only list and revoke do.

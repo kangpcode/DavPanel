@@ -1,21 +1,21 @@
 ---
 sidebar_label: "Change PHP Version per Domain"
-description: "How to change the PHP version of a website in OpenPanel: select a PHP version per domain, set the default version for new domains, check compatibility, and change it from the terminal."
+description: "How to change the PHP version of a website in DavPanel: select a PHP version per domain, set the default version for new domains, check compatibility, and change it from the terminal."
 ---
 
 # How to Change the PHP Version per Domain
 
-OpenPanel lets every website run its own PHP version - an old app can stay on PHP 7.4 while a new site uses PHP 8.4, on the same account. Each version runs in its own PHP-FPM container, started automatically when a domain needs it.
+DavPanel lets every website run its own PHP version - an old app can stay on PHP 7.4 while a new site uses PHP 8.4, on the same account. Each version runs in its own PHP-FPM container, started automatically when a domain needs it.
 
 ---
 
 ## Change the PHP Version of a Website
 
-1. Go to **OpenPanel → PHP → Select PHP Version**.
+1. Go to **DavPanel → PHP → Select PHP Version**.
 2. Find the domain and choose the new version from the dropdown.
 3. Save.
 
-OpenPanel updates the domain's web server configuration and reloads it. If the chosen PHP version isn't running yet, its container is started - the first switch to a new version can take a few seconds.
+DavPanel updates the domain's web server configuration and reloads it. If the chosen PHP version isn't running yet, its container is started - the first switch to a new version can take a few seconds.
 
 The page also shows each version's support status, so you can spot sites on **outdated or unsupported** PHP versions.
 
@@ -27,13 +27,13 @@ On **OpenLiteSpeed**, the PHP version can't be set per domain - all domains use 
 
 ### For WordPress sites
 
-In **OpenPanel → WordPress**, open the site's **Manage** page - the PHP version is shown there too and can be changed for sites installed at the domain root.
+In **DavPanel → WordPress**, open the site's **Manage** page - the PHP version is shown there too and can be changed for sites installed at the domain root.
 
 ---
 
 ## Set the Default Version for New Domains
 
-Go to **OpenPanel → PHP → Default PHP Version** and choose the version new domains should use. Existing domains keep their current version. See [Default PHP Version](/docs/panel/php/default/).
+Go to **DavPanel → PHP → Default PHP Version** and choose the version new domains should use. Existing domains keep their current version. See [Default PHP Version](/docs/panel/php/default/).
 
 ---
 
@@ -56,7 +56,7 @@ Each PHP version has its own settings. After switching, check that your settings
 
 - **php.ini values** (`memory_limit`, `upload_max_filesize`, ...) - **PHP → PHP.INI Editor** or **PHP → Options**, per version. See [Increase PHP limits](/docs/articles/websites/how-to-set-or-increase-PHP-INI-memory-limit-or-other-values/).
 - **Per-website overrides** with `.user.ini` - see [PHP settings per website](/docs/articles/websites/php-user-ini-files/).
-- **Extensions** (ionCube, Redis, imagick, ...) - see [How to install a PHP extension](/docs/articles/websites/how-to-install-php-extensions-in-openpanel/).
+- **Extensions** (ionCube, Redis, imagick, ...) - see [How to install a PHP extension](/docs/articles/websites/how-to-install-php-extensions-in-davpanel/).
 
 ---
 
@@ -64,16 +64,16 @@ Each PHP version has its own settings. After switching, check that your settings
 
 ```bash
 # show a domain's PHP version
-opencli php-domain example.com
+davcli php-domain example.com
 
 # change it
-opencli php-domain example.com --update 8.4
+davcli php-domain example.com --update 8.4
 
 # default version for new domains of a user
-opencli php-default USERNAME --update 8.4
+davcli php-default USERNAME --update 8.4
 ```
 
-See [opencli php](/docs/articles/opencli/php/).
+See [davcli php](/docs/articles/davcli/php/).
 
 ---
 
@@ -91,5 +91,5 @@ Open `https://example.com/phpinfo.php`, check the version at the top, then **del
 
 ## Related
 
-- [Host a PHP website](/docs/articles/websites/hosting-a-php-website-with-openpanel/)
+- [Host a PHP website](/docs/articles/websites/hosting-a-php-website-with-davpanel/)
 - [Deploy a Laravel app](/docs/articles/websites/deploy-laravel-app/)

@@ -4,10 +4,10 @@ sidebar_position: 3
 
 # Defaults
 
-From **OpenAdmin > Settings > User Defaults** Administrators can edit values for the `docker-compose.yml` and `.env` files used for new users.
+From **DavAdmin > Settings > User Defaults** Administrators can edit values for the `docker-compose.yml` and `.env` files used for new users.
 
-![Edit Defaults page with the default webserver, database, Varnish cache, PHP version and autostart services for new users](/img/openadmin-screenshots/settings/defaults-page.png#gh-light-mode-only)
-![Edit Defaults page with the default webserver, database, Varnish cache, PHP version and autostart services for new users](/img/openadmin-screenshots/settings/defaults-page_dark.png#gh-dark-mode-only)
+![Edit Defaults page with the default webserver, database, Varnish cache, PHP version and autostart services for new users](/img/davadmin-screenshots/settings/defaults-page.png#gh-light-mode-only)
+![Edit Defaults page with the default webserver, database, Varnish cache, PHP version and autostart services for new users](/img/davadmin-screenshots/settings/defaults-page_dark.png#gh-dark-mode-only)
 
 These files determine services and limits for new users.
 
@@ -22,8 +22,8 @@ The page shows recommendations based on the sites, plans and services already on
 - **Autostart services:** recommended to leave off, since autostarted services use resources on every new account whether it uses them or not. By default services only start when needed, for example when the user creates a cronjob, a database or adds a domain.
 - **Service CPU/RAM limits:** for PHP-FPM, the webservers and MySQL/MariaDB, a limit below the smallest plan in use (by CPU and RAM) means that service can't use everything the plan allows, so the plan's values are recommended as the minimum. `0` means unlimited and never shows a recommendation.
 
-> [How to setup Apache, Nginx, OpenResty, OpenLiteSpeed, and Varnish as default webserver](/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/)
-> [How to setup MySQL, MariaDB or Percona for default database type](/docs/articles/containers/how-to-set-mysql-mariadb-per-user-in-openpanel/)
+> [How to setup Apache, Nginx, OpenResty, OpenLiteSpeed, and Varnish as default webserver](/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/)
+> [How to setup MySQL, MariaDB or Percona for default database type](/docs/articles/containers/how-to-set-mysql-mariadb-per-user-in-davpanel/)
 
 ### Available webservers
 
@@ -35,11 +35,11 @@ To stop offering a webserver, for example OpenLiteSpeed, remove its service bloc
 
 Using the 'Advanced' option you can directly edit the files.
 
-![Service limits on the Edit Defaults page for new user accounts](/img/openadmin-screenshots/settings/defaults-services.png#gh-light-mode-only)
-![Service limits on the Edit Defaults page for new user accounts](/img/openadmin-screenshots/settings/defaults-services_dark.png#gh-dark-mode-only)
+![Service limits on the Edit Defaults page for new user accounts](/img/davadmin-screenshots/settings/defaults-services.png#gh-light-mode-only)
+![Service limits on the Edit Defaults page for new user accounts](/img/davadmin-screenshots/settings/defaults-services_dark.png#gh-dark-mode-only)
 
 In these files you can configure additional services (docker containers) and change defaults for existing services.
 
 Keep in mind that this is intended for advanced users and misconfiguration can cause exposed system ports, user hogging resources or exceeding disk limits.
 
-For more information refer to [How to add custom container images](/docs/articles/containers/how-to-add-custom-docker-image-for-openpanel-user)
+For more information refer to [How to add custom container images](/docs/articles/containers/how-to-add-custom-docker-image-for-davpanel-user)

@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/modules/errorlogs"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/modules/errorlogs"
 )
 
 func testBuilder(t *testing.T, allowed ...string) *builder {

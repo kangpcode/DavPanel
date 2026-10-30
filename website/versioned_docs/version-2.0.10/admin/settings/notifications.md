@@ -4,42 +4,42 @@ sidebar_position: 7
 
 # Notifications
 
-Configure OpenAdmin notifications and Email alerts settings.
+Configure DavAdmin notifications and Email alerts settings.
 
 <Tabs>
-  <TabItem value="openadmin-notifications-view" label="With OpenAdmin" default>
+  <TabItem value="davadmin-notifications-view" label="With DavAdmin" default>
 
-  To view or edit current notification settings, go to **OpenAdmin > Settings > Notifications** or click the 'Edit Settings' button on the Notification page.
+  To view or edit current notification settings, go to **DavAdmin > Settings > Notifications** or click the 'Edit Settings' button on the Notification page.
   
-  ![Email section with the address for notifications and daily usage reports](/img/openadmin-screenshots/settings/notifications-email.png#gh-light-mode-only)
-  ![Email section with the address for notifications and daily usage reports](/img/openadmin-screenshots/settings/notifications-email_dark.png#gh-dark-mode-only)
+  ![Email section with the address for notifications and daily usage reports](/img/davadmin-screenshots/settings/notifications-email.png#gh-light-mode-only)
+  ![Email section with the address for notifications and daily usage reports](/img/davadmin-screenshots/settings/notifications-email_dark.png#gh-dark-mode-only)
 
   </TabItem>
-  <TabItem value="CLI-notifications-view" label="With OpenCLI">
+  <TabItem value="CLI-notifications-view" label="With DavCLI">
 
 To view notification settings, run:
 
 ```bash
-opencli admin notifications get <OPTION>
+davcli admin notifications get <OPTION>
 ```
 
 Example:
 
 ```bash
-# opencli admin notifications get reboot
+# davcli admin notifications get reboot
 yes
 ```
 
 To update notification settings, run:
 
 ```bash
-opencli admin notifications update <OPTION> <NEW-VALUE>
+davcli admin notifications update <OPTION> <NEW-VALUE>
 ```
 
 Example:
 
 ```bash
-opencli admin notifications update load 10
+davcli admin notifications update load 10
 Updated load to 10
 ```
 
@@ -56,7 +56,7 @@ The control lives on the **Notifications** page itself (next to the search box),
 
 Pausing only skips the email/webhook sends — notifications still get logged and show up on the Notifications page as usual, and the pause always expires on its own even if you never click resume.
 
-Under the hood this writes a timestamp to a flag file (`/tmp/openpanel_notifications_paused`) that `opencli sentinel` checks before sending any alert. See [`GET/POST /api/notifications/pause`](/docs/admin/settings/api) and [`POST /api/notifications/resume`](/docs/admin/settings/api) to control it via the API.
+Under the hood this writes a timestamp to a flag file (`/tmp/davpanel_notifications_paused`) that `davcli sentinel` checks before sending any alert. See [`GET/POST /api/notifications/pause`](/docs/admin/settings/api) and [`POST /api/notifications/resume`](/docs/admin/settings/api) to control it via the API.
 
 ---
 
@@ -77,8 +77,8 @@ If email address is set, daily usage report will be sent to the address, schedul
 
 Send notifications to a webhook URL (discord or any other).
 
-![Webhook section with the webhook URL field](/img/openadmin-screenshots/settings/notifications-webhook.png#gh-light-mode-only)
-![Webhook section with the webhook URL field](/img/openadmin-screenshots/settings/notifications-webhook_dark.png#gh-dark-mode-only)
+![Webhook section with the webhook URL field](/img/davadmin-screenshots/settings/notifications-webhook.png#gh-light-mode-only)
+![Webhook section with the webhook URL field](/img/davadmin-screenshots/settings/notifications-webhook_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -86,11 +86,11 @@ Send notifications to a webhook URL (discord or any other).
 
 Receive notifications when services are down or unresponsive. Services are checked every 5 minutes.
 
-![Services section with a toggle per monitored service](/img/openadmin-screenshots/settings/notifications-services.png#gh-light-mode-only)
-![Services section with a toggle per monitored service](/img/openadmin-screenshots/settings/notifications-services_dark.png#gh-dark-mode-only)
+![Services section with a toggle per monitored service](/img/davadmin-screenshots/settings/notifications-services.png#gh-light-mode-only)
+![Services section with a toggle per monitored service](/img/davadmin-screenshots/settings/notifications-services_dark.png#gh-dark-mode-only)
 
-- **OpenPanel:** Notification if OpenPanel UI fails.
-- **OpenAdmin:** Notification if OpenAdmin UI fails.
+- **DavPanel:** Notification if DavPanel UI fails.
+- **DavAdmin:** Notification if DavAdmin UI fails.
 - **Caddy:** Notification if webserver is not responding.
 - **MySQL:** Notification if database is unreachable.
 - **Podman:** Notification if Podman service is down.
@@ -109,8 +109,8 @@ Get alerts when resource usage exceeds thresholds (checked every 5 minutes):
 * Disk Usage %
 * SWAP %
 
-![Resource Usage section with the load, CPU, memory, disk and swap thresholds](/img/openadmin-screenshots/settings/notifications-thresholds.png#gh-light-mode-only)
-![Resource Usage section with the load, CPU, memory, disk and swap thresholds](/img/openadmin-screenshots/settings/notifications-thresholds_dark.png#gh-dark-mode-only)
+![Resource Usage section with the load, CPU, memory, disk and swap thresholds](/img/davadmin-screenshots/settings/notifications-thresholds.png#gh-light-mode-only)
+![Resource Usage section with the load, CPU, memory, disk and swap thresholds](/img/davadmin-screenshots/settings/notifications-thresholds_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -122,12 +122,12 @@ Receive notifications when specific server-level actions are detected:
 * **Unusual traffic or SYN flood:** Fires when suspicious traffic or DDoS attacks are detected. When enabled, an additional **Website traffic** section appears where you can set the **Max total connections** and **Max connections per IP** thresholds (on ports 80/443) that trigger the notification.
 * **Out of Memory (OOM) errors:** Checks journal logs for system services and user processes killed by OOM in the last 24 hours.
 * **DNS issue detected:** Triggered when the panel domain or nameservers are misconfigured or not resolving to this server. Disable if using external nameservers or a Cloudflare proxy.
-* **OpenAdmin login from new IP:** Triggered when the OpenAdmin panel is accessed from an unrecognized IP address.
+* **DavAdmin login from new IP:** Triggered when the DavAdmin panel is accessed from an unrecognized IP address.
 * **SSH login from new IP:** Triggered when root SSH access is detected from an unknown IP address. The IP can be whitelisted in the SSH Allowlist section below.
-* **New update available:** Triggered when a new version of OpenPanel is available for update.
+* **New update available:** Triggered when a new version of DavPanel is available for update.
 
-![Server actions section with toggles for reboot, OOM, DNS and other server events](/img/openadmin-screenshots/settings/notifications-server.png#gh-light-mode-only)
-![Server actions section with toggles for reboot, OOM, DNS and other server events](/img/openadmin-screenshots/settings/notifications-server_dark.png#gh-dark-mode-only)
+![Server actions section with toggles for reboot, OOM, DNS and other server events](/img/davadmin-screenshots/settings/notifications-server.png#gh-light-mode-only)
+![Server actions section with toggles for reboot, OOM, DNS and other server events](/img/davadmin-screenshots/settings/notifications-server_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -135,10 +135,10 @@ Receive notifications when specific server-level actions are detected:
 
 Get notified whenever an action occurs in the admin or user panels.
 
-![User actions section with toggles for account and domain change notifications](/img/openadmin-screenshots/settings/notifications-users.png#gh-light-mode-only)
-![User actions section with toggles for account and domain change notifications](/img/openadmin-screenshots/settings/notifications-users_dark.png#gh-dark-mode-only)
+![User actions section with toggles for account and domain change notifications](/img/davadmin-screenshots/settings/notifications-users.png#gh-light-mode-only)
+![User actions section with toggles for account and domain change notifications](/img/davadmin-screenshots/settings/notifications-users_dark.png#gh-dark-mode-only)
 
-- OpenAdmin enabled/disabled
+- DavAdmin enabled/disabled
 - API access enabled/disabled
 - Admin account created
 - Reseller account created
@@ -170,8 +170,8 @@ Get notified whenever an action occurs in the admin or user panels.
 
 Specify IP addresses (or CIDRs) that will be exempt from SSH login checks.
 
-![SSH Allowlist section with the allowed IP addresses](/img/openadmin-screenshots/settings/notifications-ssh.png#gh-light-mode-only)
-![SSH Allowlist section with the allowed IP addresses](/img/openadmin-screenshots/settings/notifications-ssh_dark.png#gh-dark-mode-only)
+![SSH Allowlist section with the allowed IP addresses](/img/davadmin-screenshots/settings/notifications-ssh.png#gh-light-mode-only)
+![SSH Allowlist section with the allowed IP addresses](/img/davadmin-screenshots/settings/notifications-ssh_dark.png#gh-dark-mode-only)
 
 ---
 
@@ -179,45 +179,45 @@ Specify IP addresses (or CIDRs) that will be exempt from SSH login checks.
 
 No SMTP server is configured by default — email notifications will **not** be sent until you set one up here.
 
-![SMTP section with the mail server settings and the Test SMTP connection button](/img/openadmin-screenshots/settings/notifications-smtp.png#gh-light-mode-only)
-![SMTP section with the mail server settings and the Test SMTP connection button](/img/openadmin-screenshots/settings/notifications-smtp_dark.png#gh-dark-mode-only)
+![SMTP section with the mail server settings and the Test SMTP connection button](/img/davadmin-screenshots/settings/notifications-smtp.png#gh-light-mode-only)
+![SMTP section with the mail server settings and the Test SMTP connection button](/img/davadmin-screenshots/settings/notifications-smtp_dark.png#gh-dark-mode-only)
 
 To configure an SMTP server for email delivery, configure the following:
 
 <Tabs>
-  <TabItem value="openadmin-notifications-smtp" label="With OpenAdmin" default>
+  <TabItem value="davadmin-notifications-smtp" label="With DavAdmin" default>
     Set server port, TLS or SSL, Username and Password to use for authentication.
   </TabItem>
-  <TabItem value="CLI-notifications-smtp" label="With OpenCLI">
+  <TabItem value="CLI-notifications-smtp" label="With DavCLI">
 
-Configure each value via `opencli config update` commands, for example:
+Configure each value via `davcli config update` commands, for example:
 
 ```bash
-opencli config update mail_server example.net
+davcli config update mail_server example.net
 ```
 
 ```bash
-opencli config update mail_port 465
+davcli config update mail_port 465
 ```
 
 ```bash
-opencli config update mail_use_tls False
+davcli config update mail_use_tls False
 ```
 
 ```bash
-opencli config update mail_use_ssl True
+davcli config update mail_use_ssl True
 ```
 
 ```bash
-opencli config update mail_username user@example.net
+davcli config update mail_username user@example.net
 ```
 
 ```bash
-opencli config update mail_password strongpassword123
+davcli config update mail_password strongpassword123
 ```
 
 ```bash
-opencli config update mail_default_sender user@example.net
+davcli config update mail_default_sender user@example.net
 ```
 
   </TabItem>

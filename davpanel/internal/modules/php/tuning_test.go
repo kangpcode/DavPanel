@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/dbtuning"
+	"github.com/kangpcode/davpanel/internal/core/dbtuning"
 )
 
 func basePHPStats() PHPTuningStats {

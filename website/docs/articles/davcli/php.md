@@ -1,0 +1,116 @@
+# PHP
+
+Manage users' PHP versions: list enabled, list available, change version, etc.
+
+### Get version for a domain
+
+To view the current PHP version used by a domain, run the following command:
+
+```bash
+davcli php-domain <DOMAIN-NAME>
+```
+
+<details>
+  <summary>Example output</summary>
+
+```bash
+# davcli php-domain pejcic.rs
+Domain 'pejcic.rs' (owned by user: stefan) uses PHP version: 8.1
+```
+</details>
+
+### Change version for a domain
+
+To change a PHP version for a domain name use the `--update` flag:
+
+```bash
+davcli php-domain <DOMAIN-NAME> --update <PHP-VERSION>
+```
+
+<details>
+  <summary>Example output</summary>
+
+```bash
+# davcli php-domain pejcic.rs --update 8.3
+Updated PHP version in the configuration file to 8.3
+```
+</details>
+
+### View default version
+
+The default PHP version for a user determines which PHP version will be used for all domains that the user adds in the future. It does not change the PHP version for any existing domains.
+
+To list the currently set default PHP version for a user, run the following command:
+
+```bash
+davcli php-default <USERNAME>
+```
+
+<details>
+  <summary>Example output</summary>
+
+```bash
+# davcli php-default stefan
+Default PHP version for user 'stefan' is: 8.3
+```
+</details>
+
+### Change the default version
+
+To update the default PHP version for a user use the php-default with `--update` flag and provide the new PHP version.
+
+```bash
+davcli php-default <USERNAME> --update <VERSION>
+```
+
+<details>
+  <summary>Example output</summary>
+
+```bash
+# davcli php-default stefan --update 8.1
+Default PHP version for user 'stefan' updated to: 8.1
+```
+</details>
+
+### List versions
+
+To list all available PHP versions for a user, grep 'php-fpm' in docker-compose.yml file for the user:
+
+```bash
+grep php-fpm- /home/<USERNAME>/docker-compose.yml
+```
+
+
+<details>
+  <summary>Example output</summary>
+
+```bash
+# grep php-fpm- /home/demo/docker-compose.yml
+  php-fpm-5.6:
+    container_name: php-fpm-5.6
+  php-fpm-7.0:
+    container_name: php-fpm-7.0
+  php-fpm-7.1:
+    container_name: php-fpm-7.1
+  php-fpm-7.2:
+    container_name: php-fpm-7.2
+  php-fpm-7.3:
+    container_name: php-fpm-7.3
+  php-fpm-7.4:
+    container_name: php-fpm-7.4
+  php-fpm-8.0:
+    container_name: php-fpm-8.0
+  php-fpm-8.1:
+    container_name: php-fpm-8.1
+  php-fpm-8.2:
+    container_name: php-fpm-8.2
+  php-fpm-8.3:
+    container_name: php-fpm-8.3
+  php-fpm-8.4:
+    container_name: php-fpm-8.4
+  php-fpm-8.5:
+    container_name: php-fpm-8.5
+```
+</details>
+
+To add PHP versions that are newer than the user's `docker-compose.yml` file, run [`davcli update --php`](/docs/articles/davcli/update/#php).

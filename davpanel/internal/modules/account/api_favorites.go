@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/auth"
-	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
-	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/auth"
+	"github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"github.com/kangpcode/davpanel/internal/core/reqip"
 )
 
 // RegisterFavoritesAPI wires the /api/account/favorites routes onto mux, gated behind "favorites". Reuses favorites.go's read/add/deleteFavorite helpers, just with REST-conventional verbs (POST/DELETE) instead of /json/favorites's PUT/DELETE pair.

@@ -9,7 +9,7 @@ import (
 	"sort"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 var nextcloudArchiveNameRE = regexp.MustCompile(`nextcloud-(\d+\.\d+\.\d+)\.zip`)

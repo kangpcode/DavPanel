@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 // remoteStore abstracts listing and fetching backup archives from whichever destination is currently configured in backup.env. doReindex, handleRestoreFromBackup and handleDownloadBackup all go through this interface, so adding a new destination type only means adding one more implementation here.

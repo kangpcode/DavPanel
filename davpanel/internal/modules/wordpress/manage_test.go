@@ -3,7 +3,7 @@ package wordpress
 import (
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
 )
 
 func TestWPManagerRuleRE(t *testing.T) {

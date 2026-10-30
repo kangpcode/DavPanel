@@ -4,13 +4,13 @@ sidebar_position: 1
 
 # Backups
 
-In OpenPanel, backups are configurable directly **by the panel users**, unlike other panels where backups are managed by the admin.
+In DavPanel, backups are configurable directly **by the panel users**, unlike other panels where backups are managed by the admin.
 
 This empowers users to define their own backup schedules, choose exactly what to back up, and select from a wide range of supported destinations.
 As a result, administrators have fewer tasks to manage, and users gain greater control and flexibility.
 
-![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/openpanel-screenshots/files/backups-page.png#gh-light-mode-only)
-![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/openpanel-screenshots/files/backups-page_dark.png#gh-dark-mode-only)
+![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/davpanel-screenshots/files/backups-page.png#gh-light-mode-only)
+![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/davpanel-screenshots/files/backups-page_dark.png#gh-dark-mode-only)
 
 :::note Attribution
 User backups are powered by [offen/docker-volume-backup](https://github.com/offen/docker-volume-backup). Large parts of the configuration reference on this page (destinations, encryption, rotation, schedule, compression, names, exclude and notifications) are adapted from its [documentation](https://offen.github.io/docker-volume-backup/reference/), Copyright © offen.software and contributors, licensed under the [Mozilla Public License 2.0](https://github.com/offen/docker-volume-backup/blob/main/LICENSE). See [Credits & License](#credits--license) below.
@@ -22,7 +22,7 @@ If your administrator runs backups centrally for all users (**Admin Configured**
 
 ## Destinations
 
-OpenPanel supports the following destinations:
+DavPanel supports the following destinations:
 
 - [**S3 storage**](#s3) - AWS S3, Filebase, MinIO, etc.
 - [**WebDAV**](#webdav) - Remote backups using WebDAV.
@@ -32,8 +32,8 @@ OpenPanel supports the following destinations:
 
 User can select destination from **Backups > Destination** page.
 
-![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/openpanel-screenshots/files/backups_destination-page.png#gh-light-mode-only)
-![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/openpanel-screenshots/files/backups_destination-page_dark.png#gh-dark-mode-only)
+![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/davpanel-screenshots/files/backups_destination-page.png#gh-light-mode-only)
+![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/davpanel-screenshots/files/backups_destination-page_dark.png#gh-dark-mode-only)
 
 Once backup is selected, it's options are available on **Backups > Configuration tab**.
 
@@ -217,7 +217,7 @@ Options here are available byt disabled by default and need to be manually enabl
 
 `BACKUP_EXCLUDE_REGEXP` - When a value is given, all files in `BACKUP_SOURCES` whose full path matches the regular expression will be excluded from the archive. Regular Expressions can be used as from [the Go standard library](https://pkg.go.dev/regexp). Example: `\.log$`.
 
-The default is `\.(log|tar\.gz)$`, which skips log files and `.tar.gz` archives, such as the full account backups that `opencli user-backup` stores in `_backups/`.
+The default is `\.(log|tar\.gz)$`, which skips log files and `.tar.gz` archives, such as the full account backups that `davcli user-backup` stores in `_backups/`.
 
 ## Notifications
 
@@ -454,8 +454,8 @@ backup
 
 The **Restore & Download** page (`/backups/list`) lets you browse the backup files that already exist on your configured destination, restore them back onto your account, or download them to your computer. It works with every destination: SSH/SFTP, S3, WebDAV, Azure Blob Storage and Dropbox.
 
-![Restore & Download overview with backup totals, a tile per type of data and the restore queue and logs](/img/openpanel-screenshots/files/backups_list-list.png#gh-light-mode-only)
-![Restore & Download overview with backup totals, a tile per type of data and the restore queue and logs](/img/openpanel-screenshots/files/backups_list-list_dark.png#gh-dark-mode-only)
+![Restore & Download overview with backup totals, a tile per type of data and the restore queue and logs](/img/davpanel-screenshots/files/backups_list-list.png#gh-light-mode-only)
+![Restore & Download overview with backup totals, a tile per type of data and the restore queue and logs](/img/davpanel-screenshots/files/backups_list-list_dark.png#gh-dark-mode-only)
 
 Click **Reindex Destination** to connect to the remote destination and list the available backup archives. Reindexing runs in the background and the page updates automatically once it finishes. Only the `backup/00-meta/` folder at the start of each archive is read, and archives that were already indexed are not read again. Older archives without that folder are still listed in full (on SSH/SFTP with `tar -tzf` on the remote server, on other destinations by reading the whole archive).
 
@@ -467,8 +467,8 @@ Older backups don't list their emails and domains, so the **Emails** and **Domai
 
 ### Everything, Website Files and Cron Jobs
 
-![Everything tab listing backups with their contents and size, one selected with the Download and Restore buttons](/img/openpanel-screenshots/files/backups_list-everything.png#gh-light-mode-only)
-![Everything tab listing backups with their contents and size, one selected with the Download and Restore buttons](/img/openpanel-screenshots/files/backups_list-everything_dark.png#gh-dark-mode-only)
+![Everything tab listing backups with their contents and size, one selected with the Download and Restore buttons](/img/davpanel-screenshots/files/backups_list-everything.png#gh-light-mode-only)
+![Everything tab listing backups with their contents and size, one selected with the Download and Restore buttons](/img/davpanel-screenshots/files/backups_list-everything_dark.png#gh-dark-mode-only)
 
 These tabs list whole backups. Select one and the bar at the bottom shows **Download** and **Restore**.
 
@@ -477,15 +477,15 @@ These tabs list whole backups. Select one and the bar at the bottom shows **Down
 
 ### Choosing single files
 
-![Choose files dialog browsing a website files backup with a folder ticked for restore](/img/openpanel-screenshots/files/backups_list-files.png#gh-light-mode-only)
-![Choose files dialog browsing a website files backup with a folder ticked for restore](/img/openpanel-screenshots/files/backups_list-files_dark.png#gh-dark-mode-only)
+![Choose files dialog browsing a website files backup with a folder ticked for restore](/img/davpanel-screenshots/files/backups_list-files.png#gh-light-mode-only)
+![Choose files dialog browsing a website files backup with a folder ticked for restore](/img/davpanel-screenshots/files/backups_list-files_dark.png#gh-dark-mode-only)
 
 On **Website Files**, select a backup and click **Choose files** to browse it folder by folder. Tick single files or whole folders and click **Restore selected**, or click the download icon next to a file to download just that file. Only the part of the archive up to the last picked item is read from the destination.
 
 ### Databases, Emails and Domains
 
-![Domains tab with two domains selected, each tagged with VirtualHost, PHP version and DNS zone and a dropdown to pick the backup](/img/openpanel-screenshots/files/backups_list-domains.png#gh-light-mode-only)
-![Domains tab with two domains selected, each tagged with VirtualHost, PHP version and DNS zone and a dropdown to pick the backup](/img/openpanel-screenshots/files/backups_list-domains_dark.png#gh-dark-mode-only)
+![Domains tab with two domains selected, each tagged with VirtualHost, PHP version and DNS zone and a dropdown to pick the backup](/img/davpanel-screenshots/files/backups_list-domains.png#gh-light-mode-only)
+![Domains tab with two domains selected, each tagged with VirtualHost, PHP version and DNS zone and a dropdown to pick the backup](/img/davpanel-screenshots/files/backups_list-domains_dark.png#gh-dark-mode-only)
 
 These tabs list every database, email account and domain found in your backups, once each, with the size (and message count for email accounts) and how many backups contain it. The newest backup is used unless you pick another one from the dropdown, and you can select several to restore them together.
 
@@ -496,8 +496,8 @@ These tabs list every database, email account and domain found in your backups, 
 
 ### Restoring
 
-![Restore Summary dialog listing the selected databases and the Restore Selected Items button](/img/openpanel-screenshots/files/backups_list-summary.png#gh-light-mode-only)
-![Restore Summary dialog listing the selected databases and the Restore Selected Items button](/img/openpanel-screenshots/files/backups_list-summary_dark.png#gh-dark-mode-only)
+![Restore Summary dialog listing the selected databases and the Restore Selected Items button](/img/davpanel-screenshots/files/backups_list-summary.png#gh-light-mode-only)
+![Restore Summary dialog listing the selected databases and the Restore Selected Items button](/img/davpanel-screenshots/files/backups_list-summary_dark.png#gh-dark-mode-only)
 
 Select a backup (or databases, email accounts, domains or files) and click **Restore**. The **Restore Summary** lists the items that will be restored; click **Restore Selected Items** to add them to the queue. Restores run in the background, one at a time per account, so you can close the page while they run. Each database is dropped, recreated and its dump is piped into the `mysql`/`mariadb` or `psql` client inside your database container.
 
@@ -507,8 +507,8 @@ Restoring overwrites existing data and cannot be undone.
 
 ### Queue and logs
 
-![Logs tab with the latest restores, the backup each came from, how long it took and whether it worked](/img/openpanel-screenshots/files/backups_list-logs.png#gh-light-mode-only)
-![Logs tab with the latest restores, the backup each came from, how long it took and whether it worked](/img/openpanel-screenshots/files/backups_list-logs_dark.png#gh-dark-mode-only)
+![Logs tab with the latest restores, the backup each came from, how long it took and whether it worked](/img/davpanel-screenshots/files/backups_list-logs.png#gh-light-mode-only)
+![Logs tab with the latest restores, the backup each came from, how long it took and whether it worked](/img/davpanel-screenshots/files/backups_list-logs_dark.png#gh-dark-mode-only)
 
 Under **Restore activity** on the overview (or the tabs at the top), **Queue** shows what is waiting or being restored and **Logs** shows your latest 100 restores: what was restored, from which backup, when it finished, how long it took and whether it worked, with the result or the error. The summary at the top shows when the last restore finished, or how many are in the queue. A restore that was running when the panel restarted is logged as failed, the ones still waiting in the queue continue.
 
@@ -526,7 +526,7 @@ time=2025-07-22T11:21:05.117Z level=ERROR msg="Fatal error running command: file
 
 ## Credits & License
 
-The backup functionality in OpenPanel uses [offen/docker-volume-backup](https://github.com/offen/docker-volume-backup) by [offen.software](https://www.offen.software/). Thank you to its authors and contributors.
+The backup functionality in DavPanel uses [offen/docker-volume-backup](https://github.com/offen/docker-volume-backup) by [offen.software](https://www.offen.software/). Thank you to its authors and contributors.
 
 - Setting descriptions in the [Destinations](#destinations), [Encryption](#encryption), [Rotation](#rotation), [Source](#source), [Schedule](#schedule), [Compression](#compression), [Names](#names), [Exclude](#exclude) and [Notifications](#notifications) sections are adapted from the [docker-volume-backup configuration reference](https://offen.github.io/docker-volume-backup/reference/) and [how-to guides](https://offen.github.io/docker-volume-backup/how-tos/), Copyright © offen.software and contributors. That content is licensed under the [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/), and the source is available at [github.com/offen/docker-volume-backup](https://github.com/offen/docker-volume-backup).
 - Notification service URL formats and options are adapted from the [shoutrrr documentation](https://containrrr.dev/shoutrrr/), Copyright © containrrr contributors, licensed under the [MIT License](https://github.com/containrrr/shoutrrr/blob/main/LICENSE).

@@ -6,8 +6,8 @@ sidebar_position: 7
 
 The **Statistics > Error Logs** page shows the errors of all your websites in one place, so you don't need to know which service or container to check.
 
-![Error Logs page with the website, service, severity, search and date filters above a table of errors with their time, severity, service, website and message](/img/openpanel-screenshots/statistics/error_logs-page.png#gh-light-mode-only)
-![Error Logs page with the website, service, severity, search and date filters above a table of errors with their time, severity, service, website and message](/img/openpanel-screenshots/statistics/error_logs-page_dark.png#gh-dark-mode-only)
+![Error Logs page with the website, service, severity, search and date filters above a table of errors with their time, severity, service, website and message](/img/davpanel-screenshots/statistics/error_logs-page.png#gh-light-mode-only)
+![Error Logs page with the website, service, severity, search and date filters above a table of errors with their time, severity, service, website and message](/img/davpanel-screenshots/statistics/error_logs-page_dark.png#gh-dark-mode-only)
 
 :::info
 If you do not see the Error Logs page, ask your provider to enable the [Error Logs module](/docs/admin/settings/modules/#error-logs) for your hosting plan.
@@ -25,8 +25,8 @@ Each row shows the time in your browser's timezone, the severity, the service it
 
 ## Filtering
 
-![Error Logs filters: website with subfolder sites, service, severity, search, the date range picker and the Apply and Reset buttons](/img/openpanel-screenshots/statistics/error_logs-filters.png#gh-light-mode-only)
-![Error Logs filters: website with subfolder sites, service, severity, search, the date range picker and the Apply and Reset buttons](/img/openpanel-screenshots/statistics/error_logs-filters_dark.png#gh-dark-mode-only)
+![Error Logs filters: website with subfolder sites, service, severity, search, the date range picker and the Apply and Reset buttons](/img/davpanel-screenshots/statistics/error_logs-filters.png#gh-light-mode-only)
+![Error Logs filters: website with subfolder sites, service, severity, search, the date range picker and the Apply and Reset buttons](/img/davpanel-screenshots/statistics/error_logs-filters_dark.png#gh-dark-mode-only)
 
 * **Website**: one of your domains, or a website installed in a subfolder like `example.com/blog`, listed under its domain. A PHP error is matched to a website by the path of the file that caused it, and a 5xx response by the requested URL. Picking a domain also shows the errors of the websites in its subfolders.
 * **Service**: one source, for example a single PHP version, the web server or one application.
@@ -40,8 +40,8 @@ Errors are shown 100 per page, newest first, up to the newest 5,000. If there ar
 
 Select errors with the checkboxes, or all of them with the checkbox in the table header, and use the bar at the bottom of the page:
 
-![Two errors selected with the bulk actions bar offering Copy and Download](/img/openpanel-screenshots/statistics/error_logs-bulk.png#gh-light-mode-only)
-![Two errors selected with the bulk actions bar offering Copy and Download](/img/openpanel-screenshots/statistics/error_logs-bulk_dark.png#gh-dark-mode-only)
+![Two errors selected with the bulk actions bar offering Copy and Download](/img/davpanel-screenshots/statistics/error_logs-bulk.png#gh-light-mode-only)
+![Two errors selected with the bulk actions bar offering Copy and Download](/img/davpanel-screenshots/statistics/error_logs-bulk_dark.png#gh-dark-mode-only)
 
 * **Copy** puts the selected errors on your clipboard.
 * **Download** saves the selected errors as a `.txt` file.

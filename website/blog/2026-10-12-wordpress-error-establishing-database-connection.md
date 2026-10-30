@@ -1,10 +1,10 @@
 ---
 title: "How to Fix \"Error Establishing a Database Connection\" in WordPress"
-description: "Find out why WordPress shows \"Error establishing a database connection\" and fix it step by step: wrong wp-config.php credentials, a stopped MySQL server, missing privileges, too many connections and corrupted tables. Includes how to fix it from OpenPanel without SSH."
+description: "Find out why WordPress shows \"Error establishing a database connection\" and fix it step by step: wrong wp-config.php credentials, a stopped MySQL server, missing privileges, too many connections and corrupted tables. Includes how to fix it from DavPanel without SSH."
 slug: wordpress-error-establishing-database-connection
-authors: stefanpejcic
+authors: kangpcode
 tags: [WordPress, MySQL, MariaDB, Troubleshooting, wp-config.php, Tutorial]
-image: https://openpanel.com/img/blog/wordpress_database_connection_error_cover.png
+image: https://davpanel.com/img/blog/wordpress_database_connection_error_cover.png
 hide_table_of_contents: false
 ---
 
@@ -37,10 +37,10 @@ The one-line message hides the real reason. There are two ways to see it.
 
 ### Turn on WP_DEBUG
 
-In [OpenPanel](/), open the site in [WordPress Manager](/docs/panel/applications/wordpress/), go to the **Debugging** tab and turn on **WP_DEBUG** and **WP_DEBUG_DISPLAY**. No need to edit `wp-config.php` by hand:
+In [DavPanel](/), open the site in [WordPress Manager](/docs/panel/applications/wordpress/), go to the **Debugging** tab and turn on **WP_DEBUG** and **WP_DEBUG_DISPLAY**. No need to edit `wp-config.php` by hand:
 
-![Debugging tab with toggles for WP_DEBUG, WP_DEBUG_LOG, WP_DEBUG_DISPLAY, SCRIPT_DEBUG and SAVEQUERIES](/img/openpanel-screenshots/applications/wordpress-debugging.png#gh-light-mode-only)
-![Debugging tab with toggles for WP_DEBUG, WP_DEBUG_LOG, WP_DEBUG_DISPLAY, SCRIPT_DEBUG and SAVEQUERIES](/img/openpanel-screenshots/applications/wordpress-debugging_dark.png#gh-dark-mode-only)
+![Debugging tab with toggles for WP_DEBUG, WP_DEBUG_LOG, WP_DEBUG_DISPLAY, SCRIPT_DEBUG and SAVEQUERIES](/img/davpanel-screenshots/applications/wordpress-debugging.png#gh-light-mode-only)
+![Debugging tab with toggles for WP_DEBUG, WP_DEBUG_LOG, WP_DEBUG_DISPLAY, SCRIPT_DEBUG and SAVEQUERIES](/img/davpanel-screenshots/applications/wordpress-debugging_dark.png#gh-dark-mode-only)
 
 From the terminal, set them with [WP-CLI](https://wp-cli.org/) in the site's folder:
 
@@ -62,7 +62,7 @@ Turn `WP_DEBUG` off again when you're done, so visitors don't see error details.
 
 ### Test the connection with a small PHP script
 
-To test the credentials without WordPress, create a file named `db-test.php` in the site's folder, with the same values that are in `wp-config.php`. In OpenPanel, use **New File** in the [File Manager](/docs/panel/files/#create-file). On other servers, use any editor, like `nano db-test.php`:
+To test the credentials without WordPress, create a file named `db-test.php` in the site's folder, with the same values that are in `wp-config.php`. In DavPanel, use **New File** in the [File Manager](/docs/panel/files/#create-file). On other servers, use any editor, like `nano db-test.php`:
 
 ```php
 <?php
@@ -95,25 +95,25 @@ Open `https://yourdomain.com/db-test.php` in the browser. The error code tells y
 
 WordPress connects with four values from `wp-config.php`: the database name, user, password and host. If any one of them is wrong, you get this error.
 
-In [OpenPanel](/), open the site in [WordPress Manager](/docs/panel/applications/wordpress/). The **Overview** tab shows the database the site uses: the host, name, table prefix, user and password, and a link to open it in phpMyAdmin.
+In [DavPanel](/), open the site in [WordPress Manager](/docs/panel/applications/wordpress/). The **Overview** tab shows the database the site uses: the host, name, table prefix, user and password, and a link to open it in phpMyAdmin.
 
 ![Database details on the Overview tab of WordPress Manager with the database name, table prefix, user, hidden password and phpMyAdmin links](/img/blog/wordpress_database_connection_error_db_details.png#gh-light-mode-only)
 ![Database details on the Overview tab of WordPress Manager with the database name, table prefix, user, hidden password and phpMyAdmin links](/img/blog/wordpress_database_connection_error_db_details_dark.png#gh-dark-mode-only)
 
-Each OpenPanel user has their own MySQL or MariaDB service, so the host is a bit different from shared hosting:
+Each DavPanel user has their own MySQL or MariaDB service, so the host is a bit different from shared hosting:
 
 - `localhost` connects through a socket shared between the database and PHP. This is the default.
 - **Never `127.0.0.1`.** PHP runs in its own container, and nothing listens on port 3306 inside it.
 
 If you don't know the password, don't guess. Go to **MySQL > Users** and click **Change Password** next to the user:
 
-![Change User Password form with the username prefilled and a new password field](/img/openpanel-screenshots/mysql/password-form.png#gh-light-mode-only)
-![Change User Password form with the username prefilled and a new password field](/img/openpanel-screenshots/mysql/password-form_dark.png#gh-dark-mode-only)
+![Change User Password form with the username prefilled and a new password field](/img/davpanel-screenshots/mysql/password-form.png#gh-light-mode-only)
+![Change User Password form with the username prefilled and a new password field](/img/davpanel-screenshots/mysql/password-form_dark.png#gh-dark-mode-only)
 
 Then open `wp-config.php` in the [File Manager](/docs/panel/files/#edit-file), put in the new password and click **Save**:
 
-![File editor with syntax highlighting and the Save button](/img/openpanel-screenshots/files/edit-editor.png#gh-light-mode-only)
-![File editor with syntax highlighting and the Save button](/img/openpanel-screenshots/files/edit-editor_dark.png#gh-dark-mode-only)
+![File editor with syntax highlighting and the Save button](/img/davpanel-screenshots/files/edit-editor.png#gh-light-mode-only)
+![File editor with syntax highlighting and the Save button](/img/davpanel-screenshots/files/edit-editor_dark.png#gh-dark-mode-only)
 
 On any other server, open `wp-config.php` in the site's root folder and find these four lines:
 
@@ -152,15 +152,15 @@ wp config set DB_PASSWORD 'new-password'
 
 If the credentials are right, the next suspect is the server itself. If **all** sites that use the same database server show the error, it's almost always this.
 
-In OpenPanel, the MySQL page has a **Logs** tab that shows the log of your database service, and **Containers > Logs** shows the same for any service. Here MariaDB logs that connections were aborted:
+In DavPanel, the MySQL page has a **Logs** tab that shows the log of your database service, and **Containers > Logs** shows the same for any service. Here MariaDB logs that connections were aborted:
 
-![Container Logs page showing the last lines of the mariadb container log](/img/openpanel-screenshots/containers/logs-page.png#gh-light-mode-only)
-![Container Logs page showing the last lines of the mariadb container log](/img/openpanel-screenshots/containers/logs-page_dark.png#gh-dark-mode-only)
+![Container Logs page showing the last lines of the mariadb container log](/img/davpanel-screenshots/containers/logs-page.png#gh-light-mode-only)
+![Container Logs page showing the last lines of the mariadb container log](/img/davpanel-screenshots/containers/logs-page_dark.png#gh-dark-mode-only)
 
 Opening **MySQL > Databases** starts the database service if it's stopped. If your plan includes the Docker feature, the [Containers](/docs/panel/containers/) page shows how much memory the database service uses compared to its limit, and lets you start, stop or restart it and give it more memory:
 
-![Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status](/img/openpanel-screenshots/containers/containers-list.png#gh-light-mode-only)
-![Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status](/img/openpanel-screenshots/containers/containers-list_dark.png#gh-dark-mode-only)
+![Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status](/img/davpanel-screenshots/containers/containers-list.png#gh-light-mode-only)
+![Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status](/img/davpanel-screenshots/containers/containers-list_dark.png#gh-dark-mode-only)
 
 If it keeps running out of memory, the [Optimize Database](/docs/panel/mysql/configuration/#optimize-database) check on **MySQL > Configuration** notices when the service was stopped for running out of memory, and suggests a buffer pool size and other settings that fit its limit. To see if the disk is full, open [Disk Usage](/docs/panel/statistics/disk_usage/).
 
@@ -194,10 +194,10 @@ systemctl start mysql
 
 A user can log in to MySQL and still not be allowed to use the database. This often happens when the database is imported or recreated under the same name: the new database has no privileges for the old user.
 
-In OpenPanel, go to **MySQL > Users** and click **Assign User to Database**. Pick the user and the database, keep all privileges checked and save:
+In DavPanel, go to **MySQL > Users** and click **Assign User to Database**. Pick the user and the database, keep all privileges checked and save:
 
-![Assign User to Database form with user and database dropdowns and a grid of privilege checkboxes](/img/openpanel-screenshots/mysql/assign-form.png#gh-light-mode-only)
-![Assign User to Database form with user and database dropdowns and a grid of privilege checkboxes](/img/openpanel-screenshots/mysql/assign-form_dark.png#gh-dark-mode-only)
+![Assign User to Database form with user and database dropdowns and a grid of privilege checkboxes](/img/davpanel-screenshots/mysql/assign-form.png#gh-light-mode-only)
+![Assign User to Database form with user and database dropdowns and a grid of privilege checkboxes](/img/davpanel-screenshots/mysql/assign-form_dark.png#gh-dark-mode-only)
 
 From the terminal, check what the user is allowed to do:
 
@@ -223,15 +223,15 @@ Raising the limit is often not the real fix. Connections pile up because somethi
 - **Bots**: brute-force attacks on `wp-login.php` and `xmlrpc.php` can open hundreds of connections a minute.
 - **Idle connections**: a high `wait_timeout` keeps idle connections open for hours.
 
-In OpenPanel, **MySQL > Show Processes** lists the queries that are running now. A long-running query can be stopped with **Kill**:
+In DavPanel, **MySQL > Show Processes** lists the queries that are running now. A long-running query can be stopped with **Kill**:
 
-![MySQL Processes table with the Refresh Processes button and the currently running queries](/img/openpanel-screenshots/mysql/processlist-list.png#gh-light-mode-only)
-![MySQL Processes table with the Refresh Processes button and the currently running queries](/img/openpanel-screenshots/mysql/processlist-list_dark.png#gh-dark-mode-only)
+![MySQL Processes table with the Refresh Processes button and the currently running queries](/img/davpanel-screenshots/mysql/processlist-list.png#gh-light-mode-only)
+![MySQL Processes table with the Refresh Processes button and the currently running queries](/img/davpanel-screenshots/mysql/processlist-list_dark.png#gh-dark-mode-only)
 
 `max_connections` and `wait_timeout` can be changed on **MySQL > Configuration**. The Optimize Database check there looks for *Too many connections* errors and refused connections, and for many idle ones, and suggests values for both.
 
-![MySQL Configuration page with a table of settings, editable values and the Save Changes button](/img/openpanel-screenshots/mysql/configuration-page.png#gh-light-mode-only)
-![MySQL Configuration page with a table of settings, editable values and the Save Changes button](/img/openpanel-screenshots/mysql/configuration-page_dark.png#gh-dark-mode-only)
+![MySQL Configuration page with a table of settings, editable values and the Save Changes button](/img/davpanel-screenshots/mysql/configuration-page.png#gh-light-mode-only)
+![MySQL Configuration page with a table of settings, editable values and the Save Changes button](/img/davpanel-screenshots/mysql/configuration-page_dark.png#gh-dark-mode-only)
 
 To cut the bot traffic, turn on **Block access to xmlrpc.php** and **Mitigate Spam Logins and Comments** in the site's [Security](/docs/panel/applications/wordpress/#security-measures) tab in WordPress Manager. Turning on the Varnish page cache and Redis object cache on the [Cache](/docs/panel/applications/wordpress/#cache) tab also means fewer requests reach the database at all.
 
@@ -253,10 +253,10 @@ SHOW FULL PROCESSLIST;
 
 If the front of the site shows the error but wp-admin shows *"One or more database tables are unavailable. The database may need to be repaired."*, the connection works and a table is damaged. This mostly happens to MyISAM tables after a crash or a full disk.
 
-In OpenPanel, go to **MySQL > Databases** and click **Repair** next to the database. A dialog lists every table with its engine and size, and checks and fixes the MyISAM and Aria ones. InnoDB tables are shown as *Not needed*.
+In DavPanel, go to **MySQL > Databases** and click **Repair** next to the database. A dialog lists every table with its engine and size, and checks and fixes the MyISAM and Aria ones. InnoDB tables are shown as *Not needed*.
 
-![MySQL Databases page listing databases with their assigned users and action buttons](/img/openpanel-screenshots/mysql/databases-list.png#gh-light-mode-only)
-![MySQL Databases page listing databases with their assigned users and action buttons](/img/openpanel-screenshots/mysql/databases-list_dark.png#gh-dark-mode-only)
+![MySQL Databases page listing databases with their assigned users and action buttons](/img/davpanel-screenshots/mysql/databases-list.png#gh-light-mode-only)
+![MySQL Databases page listing databases with their assigned users and action buttons](/img/davpanel-screenshots/mysql/databases-list_dark.png#gh-dark-mode-only)
 
 From the terminal, `mysqlcheck` does the same:
 
@@ -286,7 +286,7 @@ A few less common causes:
 
 - **The database was deleted or never imported**: the `1049 Unknown database` error. Import it from a backup.
 - **Wrong table prefix**: if `$table_prefix` in `wp-config.php` doesn't match the tables in the database, WordPress connects but finds no tables, and starts the install screen instead. Compare it with the table names in phpMyAdmin.
-- **Corrupted WordPress core files**: rare, but a broken `wp-includes/class-wpdb.php` after a failed update causes the same error. Reinstall the core files (in OpenPanel, **Reinstall** on the site's Security tab).
+- **Corrupted WordPress core files**: rare, but a broken `wp-includes/class-wpdb.php` after a failed update causes the same error. Reinstall the core files (in DavPanel, **Reinstall** on the site's Security tab).
 - **The database server is on another host**: check that its firewall allows connections from your web server on port 3306.
 
 ## Quick checklist
@@ -317,4 +317,4 @@ mysqlcheck --repair wp_blog
 
 "Error establishing a database connection" always means WordPress can't reach its database. Get the real MySQL error first, and it points you to the cause: credentials, a stopped server, missing privileges, too many connections or damaged tables.
 
-With [OpenPanel](/), every user has their own isolated MySQL or MariaDB service, so a busy or broken site on the same server can't take your database down with it. And you can work through every step in this guide from the panel, no SSH or root access needed: database details in [WordPress Manager](/docs/panel/applications/wordpress/), passwords and privileges on [MySQL Users](/docs/panel/mysql/users/), logs and restarts in [Containers](/docs/panel/containers/), and connection limits and table repairs on the [Configuration](/docs/panel/mysql/configuration/) and [Databases](/docs/panel/mysql/databases/) pages.
+With [DavPanel](/), every user has their own isolated MySQL or MariaDB service, so a busy or broken site on the same server can't take your database down with it. And you can work through every step in this guide from the panel, no SSH or root access needed: database details in [WordPress Manager](/docs/panel/applications/wordpress/), passwords and privileges on [MySQL Users](/docs/panel/mysql/users/), logs and restarts in [Containers](/docs/panel/containers/), and connection limits and table repairs on the [Configuration](/docs/panel/mysql/configuration/) and [Databases](/docs/panel/mysql/databases/) pages.

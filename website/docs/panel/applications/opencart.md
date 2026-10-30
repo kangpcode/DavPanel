@@ -10,10 +10,10 @@ Install and manage [OpenCart](https://www.opencart.com/) sites in an existing do
 
 ## Install OpenCart
 
-Navigate to **OpenPanel > Websites > Install App** and click **Install OpenCart**.
+Navigate to **DavPanel > Websites > Install App** and click **Install OpenCart**.
 
-![Install OpenCart form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/opencart-form.png#gh-light-mode-only)
-![Install OpenCart form with the site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/opencart-form_dark.png#gh-dark-mode-only)
+![Install OpenCart form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/opencart-form.png#gh-light-mode-only)
+![Install OpenCart form with the site details, domain and location, and admin credentials](/img/davpanel-screenshots/applications/opencart-form_dark.png#gh-dark-mode-only)
 
 On the install page, configure:
 
@@ -34,7 +34,7 @@ Every OpenCart install shows up on the general **Site Manager** page (`/sites`) 
 
 ### Login as Admin
 
-The **Login as Admin** button generates a one-time login link and opens the OpenCart admin dashboard already authenticated, without needing the admin password. OpenCart core has no built-in CLI command for this, so OpenPanel deploys a small login helper file into the docroot at install time; each click issues a fresh token valid for 10 minutes and usable once.
+The **Login as Admin** button generates a one-time login link and opens the OpenCart admin dashboard already authenticated, without needing the admin password. OpenCart core has no built-in CLI command for this, so DavPanel deploys a small login helper file into the docroot at install time; each click issues a fresh token valid for 10 minutes and usable once.
 
 ### Cache
 

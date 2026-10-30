@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # WebServer Settings
 
-The **WebServer Settings** interface enables OpenPanel users to edit the primary webserver configuration file directly using a text editor.
+The **WebServer Settings** interface enables DavPanel users to edit the primary webserver configuration file directly using a text editor.
 
 These settings are **global** and apply to **all domains** (i.e., affect the virtual hosts configuration).
 

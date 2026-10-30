@@ -1,8 +1,8 @@
 # Setup DKIM
 
-Ensure that you're running the [**Enterprise edition**](https://openpanel.com/enterprise/) of OpenPanel. Email support is only available in this version.
+Ensure that you're running the [**Enterprise edition**](https://davpanel.com/enterprise/) of DavPanel. Email support is only available in this version.
 
-Follow [this guide](/docs/articles/user-experience/how-to-setup-email-in-openpanel/) to enable Emails in OpenPanel.
+Follow [this guide](/docs/articles/user-experience/how-to-setup-email-in-davpanel/) to enable Emails in DavPanel.
 
 ---
 
@@ -13,7 +13,7 @@ OpenDKIM is currently enabled by default.
 To generate DKIM keys for a domain, run:
 
 ```bash
-opencli email-setup config dkim domain DOMAIN_NAME_HERE
+davcli email-setup config dkim domain DOMAIN_NAME_HERE
 ```
 
 ---
@@ -22,11 +22,11 @@ opencli email-setup config dkim domain DOMAIN_NAME_HERE
 
 When mail signed with your DKIM key is sent from your mail server, the receiver needs to check a DNS `TXT` record to verify the DKIM signature is trustworthy.
 
-### OpenPanel DNS
+### DavPanel DNS
 
-If you are using nameservers on the same OpenPanel server that mailserver is running on, then run:
+If you are using nameservers on the same DavPanel server that mailserver is running on, then run:
 ```bash
-docker cp openadmin_mailserver:/tmp/docker-mailserver/opendkim/keys/DOMAIN_NAME_HERE/mail.txt /tmp/mail.txt && cat /tmp/mail.txt >> /etc/bind/zones/DOMAIN_NAME_HERE.zone
+docker cp davadmin_mailserver:/tmp/docker-mailserver/opendkim/keys/DOMAIN_NAME_HERE/mail.txt /tmp/mail.txt && cat /tmp/mail.txt >> /etc/bind/zones/DOMAIN_NAME_HERE.zone
 ```
 
 Make sure to replace `DOMAIN_NAME_HERE` with *yourdomain.com*
@@ -40,7 +40,7 @@ This will append the DKIM record to the DNS zone.
 If you are using external nameservers like [Cloudflare](https://www.cloudflare.com/), run this command to view the record:
 
 ```bash
-docker cp openadmin_mailserver:/tmp/docker-mailserver/opendkim/keys/DOMAIN_NAME_HERE/mail.txt /tmp/mail.txt && cat /tmp/mail.txt
+docker cp davadmin_mailserver:/tmp/docker-mailserver/opendkim/keys/DOMAIN_NAME_HERE/mail.txt /tmp/mail.txt && cat /tmp/mail.txt
 ```
 
 Add the TXT record to your **remote server's DNS zone**:
@@ -86,7 +86,7 @@ $ dig +short TXT mail._domainkey.example.com
 
 ## 3. Restart Mailserver
 
-Currently mailserver needs to be stopped and started again in order to start signing your outgoing emails with DKIM. Navigate to **OpenAdmin > Services > Status** and click 'Stop' for mailserver, then again 'Start'.
+Currently mailserver needs to be stopped and started again in order to start signing your outgoing emails with DKIM. Navigate to **DavAdmin > Services > Status** and click 'Stop' for mailserver, then again 'Start'.
 
 [![2025-07-17-15-37.png](/img/docs-content/d3hgY01F-2025-07-17-15-37.png)](/img/docs-content/d3hgY01F-2025-07-17-15-37.png)
 

@@ -1,19 +1,19 @@
 ---
-sidebar_label: "OpenPanel Installation on a Home Server"
-description: "How to self-host websites from home with OpenPanel: hardware, port forwarding, dynamic IP, CGNAT, Cloudflare Tunnel, email limitations and accessing sites from your own network."
+sidebar_label: "DavPanel Installation on a Home Server"
+description: "How to self-host websites from home with DavPanel: hardware, port forwarding, dynamic IP, CGNAT, Cloudflare Tunnel, email limitations and accessing sites from your own network."
 ---
 
-# How to Self-Host Websites on a Home Server with OpenPanel
+# How to Self-Host Websites on a Home Server with DavPanel
 
-You can run **OpenPanel** on a spare PC, mini PC, NAS or small ARM board at home and host your own websites, apps and services. Installation is the same as on a VPS - the extra work is making the server reachable from the internet.
+You can run **DavPanel** on a spare PC, mini PC, NAS or small ARM board at home and host your own websites, apps and services. Installation is the same as on a VPS - the extra work is making the server reachable from the internet.
 
-For a Raspberry Pi, see [Install OpenPanel on a Raspberry Pi](/docs/articles/install-update/install-on-raspberry-pi/). For a VM on Proxmox, see [Install OpenPanel on Proxmox VE](/docs/articles/install-update/install-on-proxmox/).
+For a Raspberry Pi, see [Install DavPanel on a Raspberry Pi](/docs/articles/install-update/install-on-raspberry-pi/). For a VM on Proxmox, see [Install DavPanel on Proxmox VE](/docs/articles/install-update/install-on-proxmox/).
 
 ---
 
 ## What You Need
 
-- **A dedicated machine or VM** - OpenPanel needs a clean OS with nothing else installed (no other web server, Docker or panel).
+- **A dedicated machine or VM** - DavPanel needs a clean OS with nothing else installed (no other web server, Docker or panel).
 - **CPU**: any 64-bit x86 (AMD64) or ARM64 (AArch64) processor.
 - **RAM**: at least **2 GB**, **4 GB or more** recommended.
 - **Disk**: at least **20 GB**, an SSD is strongly recommended.
@@ -35,19 +35,19 @@ Some home internet plans don't allow running servers, and some ISPs block incomi
 
 ---
 
-## Step 2: Install OpenPanel
+## Step 2: Install DavPanel
 
 Connect from another computer and run the installer as root:
 
 ```bash
 ssh your-user@192.168.1.50
 sudo -i
-bash <(curl -sSL https://openpanel.org)
+bash <(curl -sSL https://davpanel.org)
 ```
 
 When the installation finishes, open `https://192.168.1.50:2087` from your local network and log in with the printed credentials.
 
-![OpenPanel installer output in a terminal: the OpenPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the OpenAdmin URL with the generated username and password at the end](/img/openpanel-screenshots/install/installer-output-generic.png#screenshot)
+![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-generic.png#screenshot)
 
 ---
 
@@ -60,25 +60,25 @@ In your router's admin page (often under **NAT**, **Port Forwarding** or **Virtu
 | Port | Needed for |
 |---|---|
 | `80`, `443` TCP (+ `443` UDP) | Websites and SSL certificates - **required** |
-| `2083` TCP | OpenPanel user panel |
-| `2087` TCP | OpenAdmin - better to keep it local-only or restrict it by IP |
-| `53` TCP/UDP | Only if you use OpenPanel as the DNS server for your domains |
+| `2083` TCP | DavPanel user panel |
+| `2087` TCP | DavAdmin - better to keep it local-only or restrict it by IP |
+| `53` TCP/UDP | Only if you use DavPanel as the DNS server for your domains |
 
-Then point your domain's `A` record to your **public** IP (the one shown at [ip.openpanel.com](https://ip.openpanel.com)). OpenPanel detects the public IP automatically and uses it in new DNS zones.
+Then point your domain's `A` record to your **public** IP (the one shown at [ip.davpanel.com](https://ip.davpanel.com)). DavPanel detects the public IP automatically and uses it in new DNS zones.
 
 :::tip Use an external DNS provider at home
-At home it is usually easier to keep DNS at your registrar or Cloudflare instead of running OpenPanel as your nameserver - you don't need to forward port 53, and DNS keeps working when your server is offline.
+At home it is usually easier to keep DNS at your registrar or Cloudflare instead of running DavPanel as your nameserver - you don't need to forward port 53, and DNS keeps working when your server is offline.
 :::
 
 #### CGNAT check
 
-If your router's WAN IP is different from the IP shown on [ip.openpanel.com](https://ip.openpanel.com), or starts with `100.64`-`100.127`, your ISP uses **CGNAT** and port forwarding will not work. Ask your ISP for a public IP, or use option B.
+If your router's WAN IP is different from the IP shown on [ip.davpanel.com](https://ip.davpanel.com), or starts with `100.64`-`100.127`, your ISP uses **CGNAT** and port forwarding will not work. Ask your ISP for a public IP, or use option B.
 
 ### Option B: Cloudflare Tunnel (No Port Forwarding)
 
 A Cloudflare Tunnel makes an outgoing connection from your server to Cloudflare, so you don't need a public IP or open ports. It works behind CGNAT and on networks where the ISP blocks incoming traffic.
 
-Follow [Host Websites Behind a Cloudflare Tunnel](/docs/articles/server/cloudflared-tunnel-openpanel/).
+Follow [Host Websites Behind a Cloudflare Tunnel](/docs/articles/server/cloudflared-tunnel-davpanel/).
 
 ---
 
@@ -92,7 +92,7 @@ Options:
 - **Use a Cloudflare Tunnel** - the IP doesn't matter at all.
 - **Keep DNS at Cloudflare or another provider with an API**, and run a dynamic DNS client (such as `ddclient`) on the server to update the `A` records when the IP changes.
 
-If you host DNS on another OpenPanel server, its [Dynamic DNS](/docs/panel/domains/dynamic-dns/) feature gives you an update URL you can call from a cron job at home to keep a record in sync.
+If you host DNS on another DavPanel server, its [Dynamic DNS](/docs/panel/domains/dynamic-dns/) feature gives you an update URL you can call from a cron job at home to keep a record in sync.
 
 ---
 
@@ -121,5 +121,5 @@ Websites can still send email through an external SMTP relay - see [Port 25 Bloc
 ## Keeping It Running
 
 - **Power**: a small **UPS** protects the server and disks from power cuts.
-- **Backups**: configure [OpenPanel backups](/docs/articles/backups/configuring-backups/) to an external drive or remote storage - a home server has no provider snapshots.
-- **Security**: keep OpenAdmin (`2087`) off the internet or [restrict it by IP](/docs/articles/dev-experience/limit_access_to_openadmin/), and follow the [server hardening checklist](/docs/articles/security/securing-openpanel/).
+- **Backups**: configure [DavPanel backups](/docs/articles/backups/configuring-backups/) to an external drive or remote storage - a home server has no provider snapshots.
+- **Security**: keep DavAdmin (`2087`) off the internet or [restrict it by IP](/docs/articles/dev-experience/limit_access_to_davadmin/), and follow the [server hardening checklist](/docs/articles/security/securing-davpanel/).

@@ -4,20 +4,20 @@ sidebar_position: 21
 
 # Node.js
 
-Containerized [Node.js](https://nodejs.org) applications can be created and managed in **OpenPanel Enterprise Edition**.
+Containerized [Node.js](https://nodejs.org) applications can be created and managed in **DavPanel Enterprise Edition**.
 
 ---
 
 ## Create an Application
 
-To create a new Node.js application, navigate to **OpenPanel > AutoInstaller** and click **Setup Node.js Application**.
+To create a new Node.js application, navigate to **DavPanel > AutoInstaller** and click **Setup Node.js Application**.
 
-![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/openpanel-screenshots/applications/autoinstaller-page.png#gh-light-mode-only)
-![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/openpanel-screenshots/applications/autoinstaller-page_dark.png#gh-dark-mode-only)
+![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/davpanel-screenshots/applications/autoinstaller-page.png#gh-light-mode-only)
+![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/davpanel-screenshots/applications/autoinstaller-page_dark.png#gh-dark-mode-only)
 
 On the next page, you can configure the following settings:
 
-* **Name** – The name of the application and container as displayed in OpenPanel.
+* **Name** – The name of the application and container as displayed in DavPanel.
 * **Port** – Set a custom port (e.g., 3000) if your app uses one. Otherwise, port 80 is used by default.
 * **Domain Name / Subfolder** – The domain (and optional subfolder) where the application will be publicly accessible.
 * **Startup File** – The file executed at startup with the `node` command. Defaults to `index.js`.
@@ -28,15 +28,15 @@ On the next page, you can configure the following settings:
 * **CPU Cores** – Number of CPU cores allocated to the application.
 * **Memory** – Amount of memory (in GB) allocated to the application.
 
-![Install Node.js Application form with the application details, domain, startup file and advanced options](/img/openpanel-screenshots/applications/nodejs_install-form.png#gh-light-mode-only)
-![Install Node.js Application form with the application details, domain, startup file and advanced options](/img/openpanel-screenshots/applications/nodejs_install-form_dark.png#gh-dark-mode-only)
+![Install Node.js Application form with the application details, domain, startup file and advanced options](/img/davpanel-screenshots/applications/nodejs_install-form.png#gh-light-mode-only)
+![Install Node.js Application form with the application details, domain, startup file and advanced options](/img/davpanel-screenshots/applications/nodejs_install-form_dark.png#gh-dark-mode-only)
 
 After completing the form, click **Start Installation**.
 The installation process will be displayed below the form. Once complete, you’ll be redirected to the management page where you can view all your applications.
 
 ### Example App
 
-An example Node.js (Express) application that is running on http://nodejs.openpanel.org/
+An example Node.js (Express) application that is running on http://nodejs.davpanel.org/
 
 Example settings:
 
@@ -67,7 +67,7 @@ Example `package.json` file:
   "scripts": {
     "start": "node app.js"
   },
-  "author": "Stefan Pejcic",
+  "author": "Dhafa Nazula Permadi",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2"
@@ -79,15 +79,15 @@ Example `package.json` file:
 
 ## Manage Applications
 
-Once your application is created, you can manage it from **OpenPanel > Site Manager**.
+Once your application is created, you can manage it from **DavPanel > Site Manager**.
 
-![Site Manager listing websites grouped by type with their version, creation date and PageSpeed scores](/img/openpanel-screenshots/applications/sites-list.png#gh-light-mode-only)
-![Site Manager listing websites grouped by type with their version, creation date and PageSpeed scores](/img/openpanel-screenshots/applications/sites-list_dark.png#gh-dark-mode-only)
+![Site Manager listing websites grouped by type with their version, creation date and PageSpeed scores](/img/davpanel-screenshots/applications/sites-list.png#gh-light-mode-only)
+![Site Manager listing websites grouped by type with their version, creation date and PageSpeed scores](/img/davpanel-screenshots/applications/sites-list_dark.png#gh-dark-mode-only)
 
 Click **Manage** next to the application name to open its management page.
 
-![Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions](/img/openpanel-screenshots/applications/nodejs-site.png#gh-light-mode-only)
-![Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions](/img/openpanel-screenshots/applications/nodejs-site_dark.png#gh-dark-mode-only)
+![Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions](/img/davpanel-screenshots/applications/nodejs-site.png#gh-light-mode-only)
+![Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions](/img/davpanel-screenshots/applications/nodejs-site_dark.png#gh-dark-mode-only)
 
 On this page, you can view important details such as:
 

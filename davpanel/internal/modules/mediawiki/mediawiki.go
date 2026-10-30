@@ -5,10 +5,10 @@ import (
 	"context"
 	"net/http"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
-	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
-	"gist.github.com/kangpcode/davpanel/internal/modules/crons"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"github.com/kangpcode/davpanel/internal/modules/crons"
 )
 
 // mediawikiCronComment is the crons.ini comment used both by install.go's crons.AddJob call and manage.go's crons.RemoveJobByComment call - it must be derived identically in both places to actually find/remove the same job later

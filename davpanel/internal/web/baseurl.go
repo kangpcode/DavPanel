@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strings"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/sysinfo"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/sysinfo"
 )
 
 // PublicBaseURL reconstructs the scheme+host+port the same way enforceAccessDomain() (internal/auth/loaduser.go) does for the canonical-domain redirect - by render time, the request's host has already passed that check

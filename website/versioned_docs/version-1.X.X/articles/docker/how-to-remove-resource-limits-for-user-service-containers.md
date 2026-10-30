@@ -1,6 +1,6 @@
 # Unlimited CPU&RAM
 
-Setting unlimited CPU and RAM resources allows an OpenPanel user account to consume all available CPU cores and physical memory on the server.
+Setting unlimited CPU and RAM resources allows an DavPanel user account to consume all available CPU cores and physical memory on the server.
 
 **This is strongly discouraged**, even on a single-user VPS, as a rogue process or compromised website could destabilize the entire system. It's important to set resource limits to ensure the system has enough capacity for essential services such as monitoring, container orchestration, DNS, and more.
 
@@ -56,7 +56,7 @@ sed -i '/deploy:/,/^[^[:space:]]/{
   /cpus:/d
   /memory:/d
   /pids:/d
-}' /etc/openpanel/docker/compose/1.0/docker-compose.yml
+}' /etc/davpanel/docker/compose/1.0/docker-compose.yml
 ```
 
 ---

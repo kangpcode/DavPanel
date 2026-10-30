@@ -4,13 +4,13 @@ sidebar_position: 2
 
 # Feature Manager
 
-The Feature Manager allows administrators to enable or disable specific features (pages) within the OpenPanel UI. This is useful for customizing the control panel experience based on user roles, security policies, or hosting plans.
+The Feature Manager allows administrators to enable or disable specific features (pages) within the DavPanel UI. This is useful for customizing the control panel experience based on user roles, security policies, or hosting plans.
 
 Each feature can be toggled individually via the interface. Once activated, the feature becomes visible and accessible to all users. Deactivating a feature hides it from the panel and disables its functionality.
 
-![openadmin features](/img/admin/tremor/features.png)
+![davadmin features](/img/admin/tremor/features.png)
 
-![openadmin features](/img/admin/tremor/features_edit.png)
+![davadmin features](/img/admin/tremor/features_edit.png)
 
 ---
 
@@ -50,7 +50,7 @@ Here is the rewritten information in a table format with the requested columns:
 | Memcached                  | `/cache/memcached`       | Configure Memcached per user.                            |                                                |
 | Elasticsearch              | `/cache/elasticsearch`   | Configure Elasticsearch from the panel.                  |                                                |
 | Opensearch                 | `/cache/opensearch`      | Configure Opensearch from the panel.                     |                                                |
-| Temporary Links            | `/websites`              | Test websites using temporary OpenPanel subdomains.      | Links expire after 15 minutes.                 |
+| Temporary Links            | `/websites`              | Test websites using temporary DavPanel subdomains.      | Links expire after 15 minutes.                 |
 | Login History              | `/account/loginlog`      | View history of the last 20 IP logins.                   |                                                |
 | 2FA                        | `/account/2fa`           | Enable Two-Factor Authentication.                        |                                                |
 | Activity Log               | `/account/activity`      | Review all recorded account actions.                     |                                                |
@@ -82,7 +82,7 @@ Create two separate feature sets:
 
 ## Feature not showing?
 
-Features are accessible to users [only if the corresponding **Module** is active](/docs/admin/settings/modules/). Modules control which OpenPanel features are available, while **Feature Sets** determine access based on the user's hosting package.
+Features are accessible to users [only if the corresponding **Module** is active](/docs/admin/settings/modules/). Modules control which DavPanel features are available, while **Feature Sets** determine access based on the user's hosting package.
 
-For example, adding the "Docker" feature to a plan does **not** grant access to the Docker (Containers) pages in the UI unless the **Docker module** is also activated under **OpenAdmin > Settings > Modules**.
+For example, adding the "Docker" feature to a plan does **not** grant access to the Docker (Containers) pages in the UI unless the **Docker module** is also activated under **DavAdmin > Settings > Modules**.
 

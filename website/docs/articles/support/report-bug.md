@@ -4,7 +4,7 @@ sidebar_label: "Report a Bug"
 
 # How to Report a Bug
 
-As a small team, we carefully prioritize our work to keep maintenance costs low and honor the fixed pricing we introduced in 2023. The same developers who build and maintain OpenPanel are also responsible for handling tickets and emails. To use our time effectively, we ask that you follow the guidelines below.
+As a small team, we carefully prioritize our work to keep maintenance costs low and honor the fixed pricing we introduced in 2023. The same developers who build and maintain DavPanel are also responsible for handling tickets and emails. To use our time effectively, we ask that you follow the guidelines below.
 
 ## When to Open a Ticket
 
@@ -14,7 +14,7 @@ Please **only open a ticket for sales, or marketing-related** matters.
 
 For how-to questions or general issues like “this is not working” please use:
 
-* [Our Discord channel](https://discord.openpanel.com/)
+* [Our Discord channel](https://discord.davpanel.com/)
 * [GitHub Discussions](https://github.com/stefanpejcic/OpenPanel/discussions)
 
 These spaces are ideal for getting quick help from both the team and experienced users.

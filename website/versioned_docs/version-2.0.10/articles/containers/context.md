@@ -1,6 +1,6 @@
 # Managing User Containers from the Terminal
 
-In OpenPanel, each user has their own [Docker context](https://docs.docker.com/engine/manage-resources/contexts/) running in [rootless mode](https://docs.docker.com/engine/security/rootless/). If you are familiar with Docker, you can manage a user’s files and services directly from the terminal.
+In DavPanel, each user has their own [Docker context](https://docs.docker.com/engine/manage-resources/contexts/) running in [rootless mode](https://docs.docker.com/engine/security/rootless/). If you are familiar with Docker, you can manage a user’s files and services directly from the terminal.
 
 SSH access as the **root user** on the server is required to switch between Docker contexts.
 
@@ -13,10 +13,10 @@ Each user’s environment is based on:
 * **`docker-compose.yml`** – defines services, networks, and volumes.
 * **`.env`** – defines CPU/memory limits, Docker image tags, and custom ports.
 
-> ⚠️ Always edit these files via the OpenAdmin interface. The interface validates your changes. Editing directly from the terminal bypasses validation and can break services. Make a backup before any modifications.
+> ⚠️ Always edit these files via the DavAdmin interface. The interface validates your changes. Editing directly from the terminal bypasses validation and can break services. Make a backup before any modifications.
 
-* [Volume Management in OpenPanel](/docs/articles/containers/volume-management-openpanel/)
-* [Network Isolation in OpenPanel](/docs/articles/containers/network-isolation-openpanel/)
+* [Volume Management in DavPanel](/docs/articles/containers/volume-management-davpanel/)
+* [Network Isolation in DavPanel](/docs/articles/containers/network-isolation-davpanel/)
 
 ---
 
@@ -63,7 +63,7 @@ It contains configuration files and user data. Example structure:
 /home/USERNAME/docker_data/volumes/USERNAME_html_data/_data/
 ```
 
-* File ownership should match the OpenPanel user ID. Check with:
+* File ownership should match the DavPanel user ID. Check with:
 
 ```bash
 id -u USERNAME
@@ -81,7 +81,7 @@ quota -u USERNAME
 
 ## Managing Services
 
-Services are defined in `/home/USERNAME/docker-compose.yml`. You can extend this file with custom services, but to maintain compatibility with the OpenPanel UI, [follow the guidelines](#).
+Services are defined in `/home/USERNAME/docker-compose.yml`. You can extend this file with custom services, but to maintain compatibility with the DavPanel UI, [follow the guidelines](#).
 
 Use the user’s Docker context to manage their services. Examples:
 
@@ -125,11 +125,11 @@ Domain configuration files are stored in:
 
 * **Caddy configuration:**
 ```
-/etc/openpanel/caddy/domains/<DOMAIN>.conf
+/etc/davpanel/caddy/domains/<DOMAIN>.conf
 ```
 
 Each domain has its own Caddyfile. Caddy handles SSL certificates and acts as a reverse proxy to the user’s web server.
-For more information, see: [How Web Traffic Flows with User Containers](https://openpanel.com/docs/articles/containers/how-traffic-flows-in-openpanel/)
+For more information, see: [How Web Traffic Flows with User Containers](https://davpanel.com/docs/articles/containers/how-traffic-flows-in-davpanel/)
 
 
 * **BIND9 zone file:**
@@ -142,19 +142,19 @@ Contains the DNS records for the domain.
 
 ## Backups
 
-OpenPanel uses [offen/docker-volume-backup](https://offen.github.io/docker-volume-backup/) for backups. Configuration is stored in `/home/{CONTEXT}/backup.env`.
+DavPanel uses [offen/docker-volume-backup](https://offen.github.io/docker-volume-backup/) for backups. Configuration is stored in `/home/{CONTEXT}/backup.env`.
 
 * Administrators can schedule automatic backups for users.
 * Users can also enable and manage their own backups if permitted.
 * Only Docker volumes are backed up, which include the actual user data (website files and databases).
 
-For detailed instructions, see: [Configuring OpenPanel Backups](/docs/articles/backups/configuring-backups)
+For detailed instructions, see: [Configuring DavPanel Backups](/docs/articles/backups/configuring-backups)
 
 ---
 
 ## Crons
 
-OpenPanel uses [mcuadros/ofelia](https://github.com/mcuadros/ofelia) for cron obs. Configuration is stored in `/home/{CONTEXT}/crons.ini`.
+DavPanel uses [mcuadros/ofelia](https://github.com/mcuadros/ofelia) for cron obs. Configuration is stored in `/home/{CONTEXT}/crons.ini`.
 
 ---
 

@@ -1,10 +1,10 @@
 ---
-sidebar_label: "Installing OpenPanel on Virtualizor"
+sidebar_label: "Installing DavPanel on Virtualizor"
 ---
 
-# How to Install OpenPanel on Virtualizor VPS
+# How to Install DavPanel on Virtualizor VPS
 
-To add OpenPanel to your Virtualizor server as an additional control panel available for your users to install:
+To add DavPanel to your Virtualizor server as an additional control panel available for your users to install:
 
 1. Log in to your server:
    * as root via SSH, or

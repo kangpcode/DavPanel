@@ -10,4 +10,4 @@ For each version, the current development status is displayed, highlighting doma
 
 Ensure you check your site's requirements before selecting the appropriate PHP version.
 
-![change version for domains](/img/panel/v2/openpanel_change_default_php.gif)
+![change version for domains](/img/panel/v2/davpanel_change_default_php.gif)

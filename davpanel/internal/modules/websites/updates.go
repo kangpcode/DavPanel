@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/cache"
-	"gist.github.com/kangpcode/davpanel/internal/core/githubapi"
-	"gist.github.com/kangpcode/davpanel/internal/web"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/cache"
+	"github.com/kangpcode/davpanel/internal/core/githubapi"
+	"github.com/kangpcode/davpanel/internal/web"
 )
 
 // This file mirrors the latest-version lookups every CMS module's own version.go already has (see internal/modules/joomla/version.go, prestashop/version.go, etc.) - duplicated locally rather than imported, same "websites doesn't cross-import the CMS packages" convention websites.go's getMoodleVersion/extractMoodleDatabaseInfo etc. already establish (and those functions are unexported in their own packages anyway, so a cross-import wouldn't compile). Used by handleSitesUpdates to tell /sites which installed sites have a newer version available.

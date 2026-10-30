@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"github.com/kangpcode/davpanel/internal/core/tenantfs"
 )
 
 var usersDir = "/etc/davpanel/davpanel/core/users"

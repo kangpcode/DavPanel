@@ -64,7 +64,7 @@ export const integrations: IntegrationsType = {
             icon: Apache,
             description:
                 "Run Apache web server per user. Apache's support for .htaccess files enables users to customize and override global configuration settings on a per-directory basis.",
-            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/#apache",
+            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/#apache",
             status: "stable",
         },
         {
@@ -72,7 +72,7 @@ export const integrations: IntegrationsType = {
             icon: Nginx,
             description:
                 "Nginx web server is a lightweight, open-source solution. The DavPanel version of the Nginx web server enables configuration of cache exclusion, cache purging, URL rewriting, and FastCGI cache on a per-domain basis.",
-            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/#nginx",
+            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/#nginx",
             status: "stable",
         },
         {
@@ -80,7 +80,7 @@ export const integrations: IntegrationsType = {
             icon: Nginx,
             description:
                 "OpenResty allows per-user customization by defining user-specific location blocks or dynamic Lua logic in the main config. Configuration is centralized and preloaded for performance ",
-            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/#openresty",
+            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/#openresty",
             status: "stable",
         },
         {
@@ -88,7 +88,7 @@ export const integrations: IntegrationsType = {
             icon: Apache,
             description:
                 "OpenLiteSpeed is a high-performance, lightweight web server with built-in caching and .htaccess support. DavPanel allows per-user configuration for security, caching, and rewrite rules.",
-            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/#openlitespeed",
+            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/#openlitespeed",
             status: "enterprise",
         },
         {
@@ -96,7 +96,7 @@ export const integrations: IntegrationsType = {
             icon: Nginx,
             description:
                 "Varnish is a powerful HTTP accelerator designed for content-heavy websites. DavPanel enables WordPress caching rules, purge logic, and backend configuration for optimal performance.",
-            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/",
+            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/",
             status: "enterprise",
          },
     ],
@@ -401,7 +401,7 @@ export const integrations: IntegrationsType = {
             name: "Terminal Commands",
             icon: Terminal,
             description:
-                "OpenCLI serves as the terminal interface for Administrators, allowing automation of diverse DavPanel settings with access to over 100 available commands.",
+                "DavCLI serves as the terminal interface for Administrators, allowing automation of diverse DavPanel settings with access to over 100 available commands.",
             url: "https://dev.davpanel.com/cli/commands.html",
             status: "stable",
         },
@@ -411,7 +411,7 @@ export const integrations: IntegrationsType = {
             name: "Branding",
             icon: Branding,
             description: "Fully customise the DavPanel with colours, logos, fonts and more that mirror the look and feel of your hosting company.",
-            url: "/docs/admin/settings/openpanel/#branding",
+            url: "/docs/admin/settings/davpanel/#branding",
             status: "enterprise",
         },
         {
@@ -508,7 +508,7 @@ export const integrations: IntegrationsType = {
             icon: UserServer,
             description:
                 "Administrators can select Apache, Nginx, OpenResty or OpenLitespeed as the default web server for new users. This flexibility allows admins to accommodate a mix of users utilizing Apache and others using Nginx, all within the same server.",
-            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-openpanel/",
+            url: "/docs/articles/containers/how-to-set-nginx-apache-varnish-per-user-in-davpanel/",
             status: "stable",
         },
         {
@@ -516,7 +516,7 @@ export const integrations: IntegrationsType = {
             icon: UserServer,
             description:
                 "Administrators can select either MySQL, Percona or MariaDB as the mysql server for each user. This flexibility allows admins to accommodate a mix of users utilizing MySQL and others using MariaDB, all within the same server.",
-            url: "/docs/articles/containers/how-to-set-mysql-mariadb-per-user-in-openpanel/",
+            url: "/docs/articles/containers/how-to-set-mysql-mariadb-per-user-in-davpanel/",
             status: "stable",
         },
     ],
@@ -613,7 +613,7 @@ export const integrations: IntegrationsType = {
             name: "Custom ports",
             icon: Ports,
             description:
-                "Administrators have the flexibility to customize the default port (e.g., change from 2083) and alter the directory path (e.g., from /openpanel) to cater to specific preferences.",
+                "Administrators have the flexibility to customize the default port (e.g., change from 2083) and alter the directory path (e.g., from /davpanel) to cater to specific preferences.",
             url: "/docs/admin/settings/general/#ports",
             status: "enterprise",
         },
@@ -631,35 +631,35 @@ export const integrations: IntegrationsType = {
             name: "WHMCS",
             icon: WHMCS,
             description: "Integrate with the leading web hosting management and billing software.",
-            url: "/docs/articles/extensions/openpanel-and-whmcs/",
+            url: "/docs/articles/extensions/davpanel-and-whmcs/",
             status: "enterprise",
         },
         {
             name: "Blesta",
             icon: WHMCS,
             description: "Provision DavPanel accounts from blesta.",
-            url: "https://blesta.club/extensions/openpanel",
+            url: "https://blesta.club/extensions/davpanel",
             status: "enterprise",
         },
         {
             name: "FOSSBilling",
             icon: WHMCS,
             description: "Provision DavPanel accounts from FOSSBilling software.",
-            url: "https://davpanel.com/docs/articles/extensions/openpanel-and-fossbilling/",
+            url: "https://davpanel.com/docs/articles/extensions/davpanel-and-fossbilling/",
             status: "enterprise",
         },
         {
             name: "ClientExec",
             icon: WHMCS,
             description: "Provision DavPanel accounts from ClientExec.",
-            url: "/docs/articles/extensions/openpanel-and-clientexec/",
+            url: "/docs/articles/extensions/davpanel-and-clientexec/",
             status: "enterprise",
         },
         {
             name: "WISECP",
             icon: WHMCS,
             description: "Provision DavPanel accounts from WISECP.",
-            url: "/docs/articles/extensions/openpanel-and-wisecp/",
+            url: "/docs/articles/extensions/davpanel-and-wisecp/",
             status: "enterprise",
         },
         {

@@ -81,4 +81,4 @@ fi
 echo ""
 echo "📥 Changing branch from '1.1' to 'main' for DavCLI scripts.."
 rm -rf /usr/local/davcli
-cd /usr/local/ && git clone https://github.com/stefanpejcic/davcli
+cd /usr/local/ && git clone https://github.com/kangpcode/davcli

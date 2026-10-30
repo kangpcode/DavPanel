@@ -6,7 +6,7 @@ sidebar_position: 5
 
 [Varnish](https://varnish-cache.org/) is a reverse caching proxy that acts as an HTTP accelerator, optimizing content-heavy dynamic websites and APIs.
 
-Use **OpenPanel > Caching > Varnish** to manage the Varnish service, enable or disable it per domain, and view service logs.
+Use **DavPanel > Caching > Varnish** to manage the Varnish service, enable or disable it per domain, and view service logs.
 
 ---
 

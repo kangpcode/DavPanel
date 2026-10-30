@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	appctx "gist.github.com/kangpcode/davpanel/internal/app"
-	"gist.github.com/kangpcode/davpanel/internal/core/config"
+	appctx "github.com/kangpcode/davpanel/internal/app"
+	"github.com/kangpcode/davpanel/internal/core/config"
 )
 
 // the documented /api/disk-usage used to redirect to /api/disk-usage/, which clients that don't follow redirects never get past

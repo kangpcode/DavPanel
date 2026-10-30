@@ -3,7 +3,7 @@ package account
 import (
 	"testing"
 
-	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
+	"github.com/kangpcode/davpanel/internal/core/appkit"
 )
 
 func TestIsCyberPanelHash(t *testing.T) {
