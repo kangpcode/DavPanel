@@ -1,0 +1,362 @@
+---
+sidebar_position: 3
+---
+
+# WordPress Manager
+
+![Site Manager listing websites grouped by type with their version, creation date and PageSpeed scores](/img/openpanel-screenshots/applications/sites-list.png#gh-light-mode-only)
+![Site Manager listing websites grouped by type with their version, creation date and PageSpeed scores](/img/openpanel-screenshots/applications/sites-list_dark.png#gh-dark-mode-only)
+
+The WordPress Manager is your all-in-one tool inside OpenPanel for installing and managing WordPress websites — without ever needing to log in to wp-admin. It makes handling multiple sites fast, simple, and efficient.
+
+## Manage WordPress sites
+
+The WordPress Manager lets you adjust settings, create backups, update plugins, toggle debugging, and more — all directly from OpenPanel. No need to open multiple dashboards or remember dozens of logins.
+Perfect for agencies, developers, and anyone managing several WordPress sites at once.
+
+### WP Manager
+
+On the main WP Manager page you can:
+
+- [View installations](#wp-manager): see the domain, WordPress version, install date, admin email.
+- [Refresh website data](#refresh-website-data): if you’ve changed a domain, updated WordPress manually, or modified the admin email.
+- [Manage themes and plugins sets](#themes-and-plugins-sets): define which themes and plugins are auto-installed on every new site.
+- [Install WordPress](#install-wordpress): set up a fresh WordPress installation in a few clicks.
+- [Scan for existing installations](#scanning-importing-installations): detect and import manually installed WordPress sites.
+- [Change to Table/Grid view](#grid-vs-table-view): display sites in either Grid (default) or Table mode.
+
+### Install WordPress
+
+Installing WordPress is quick and automatic. OpenPanel takes care of everything — downloading WordPress from WordPress.org, creating the database, linking it to your domain, and configuring your new site.
+
+1. Add your **domain name** first.
+2. Open **Websites** from the sidebar and click **+ New Website**.
+3. Choose I**nstall WordPress**.
+
+![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/openpanel-screenshots/applications/autoinstaller-page.png#gh-light-mode-only)
+![Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications](/img/openpanel-screenshots/applications/autoinstaller-page_dark.png#gh-dark-mode-only)
+
+Then fill in the form:
+
+- Website name
+- Site description (optional)
+- Domain name (optionally a subfolder)
+- Admin username
+- Admin password
+- WordPress version
+
+
+Click **Start Installation** and you’re done.
+
+![Install WordPress form with site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/wp_install-form.png#gh-light-mode-only)
+![Install WordPress form with site details, domain and location, and admin credentials](/img/openpanel-screenshots/applications/wp_install-form_dark.png#gh-dark-mode-only)
+
+:::info
+New WordPress sites get **high-performance database keys** during installation: the same keys the [Index WP MySQL For Speed](https://wordpress.org/plugins/index-wp-mysql-for-speed/) plugin adds, applied directly to the database without installing the plugin. They make lookups on posts, post meta, options, comments and users faster as the site grows. Your content isn't changed, only the table indexes.
+
+A later WordPress core database upgrade can add some of the standard keys back next to them. That doesn't break anything, and you can install the plugin yourself if you want it to keep managing the keys.
+:::
+
+📘 Read the full guide: [How to Install WordPress® With OpenPanel](/docs/articles/websites/how-to-install-wordpress-with-openpanel/#install-wordpress-via-wp-manager)
+
+### Scanning (Importing) Installations
+
+If you already have WordPress installed manually, you can import it into the WP Manager.
+The system scans your hosting files for `wp-config.php` and automatically adds the found websites.
+
+![Scan for Existing Installations button next to New Installation on the WordPress Manager page](/img/openpanel-screenshots/applications/wp_manager-scan.png#gh-light-mode-only)
+![Scan for Existing Installations button next to New Installation on the WordPress Manager page](/img/openpanel-screenshots/applications/wp_manager-scan_dark.png#gh-dark-mode-only)
+
+📘 Read the full guide: [How to Migrate a WordPress® Installation to OpenPanel](/docs/articles/websites/how-to-upload-wordpress-website-to-openpanel/)
+
+### Themes and Plugins Sets
+
+Tired of installing the same setup every time?
+Create **Theme Set** and **Plugin Set** that automatically apply to new WordPress installs.
+
+![Themes and Plugins buttons for managing the sets that are installed on every new WordPress site](/img/openpanel-screenshots/applications/wp_manager-sets.png#gh-light-mode-only)
+![Themes and Plugins buttons for managing the sets that are installed on every new WordPress site](/img/openpanel-screenshots/applications/wp_manager-sets_dark.png#gh-dark-mode-only)
+
+For example, you might set up a default combo like:
+
+- Elementor theme + child theme
+- Elementor plugin
+- Classic Editor plugin
+
+Every time you install a new site — boom, it’s ready with your preferred setup.
+
+📘 Read the full guide: [WordPress Plugin & Theme Sets in OpenPanel](/docs/articles/websites/wordpress-plugins-themes-sets-in-openpanel/)
+
+### Bulk Actions
+
+Tick the checkbox of one or more sites, or the checkbox in the table header to select every site shown by the current search. A bar appears at the bottom of the page with the number selected, a **Clear** link and these actions:
+
+![Two WordPress sites selected in the table view with the bulk actions bar offering Update, Backup, Detach and Uninstall](/img/openpanel-screenshots/applications/wp_manager-bulk.png#gh-light-mode-only)
+![Two WordPress sites selected in the table view with the bulk actions bar offering Update, Backup, Detach and Uninstall](/img/openpanel-screenshots/applications/wp_manager-bulk_dark.png#gh-dark-mode-only)
+
+| Action | What it does |
+|---|---|
+| **Update** | Updates WordPress core on the selected sites. |
+| **Backup** | Backs up the files and database of the selected sites. |
+| **Detach** | Removes the selected sites from WordPress Manager, their files and databases are kept. |
+| **Uninstall** | Permanently deletes the selected sites, including their files and databases. |
+
+Bulk actions are in the **Table view**, click **Switch to Table view** if the sites are shown as cards.
+
+Click an action, confirm it, and it runs on the selected sites one after another. When it's done the page reloads with a notice listing the sites it worked for, or which ones failed and why.
+
+### Refresh Website Data
+
+If you’ve made manual changes to your site (like updating WordPress core or changing the admin email), click **Refresh Data** to sync everything with WP Manager.
+
+![Refresh Data button on the WordPress Manager page](/img/openpanel-screenshots/applications/wp_manager-refresh.png#gh-light-mode-only)
+![Refresh Data button on the WordPress Manager page](/img/openpanel-screenshots/applications/wp_manager-refresh_dark.png#gh-dark-mode-only)
+
+### Grid vs. Table View
+
+You can view your sites in a **grid with screenshots** or a **simple table** view.
+Switch views anytime using a button.
+
+![Switch to Table view button on the WordPress Manager page](/img/openpanel-screenshots/applications/wp_manager-view.png#gh-light-mode-only)
+![Switch to Table view button on the WordPress Manager page](/img/openpanel-screenshots/applications/wp_manager-view_dark.png#gh-dark-mode-only)
+
+---
+
+## Site Manager
+
+![WordPress site manager with the screenshot, versions, files and database details](/img/openpanel-screenshots/applications/wordpress-site.png#gh-light-mode-only)
+![WordPress site manager with the screenshot, versions, files and database details](/img/openpanel-screenshots/applications/wordpress-site_dark.png#gh-dark-mode-only)
+
+
+### Auto Login to wp-admin
+
+Use **Login as Admin** for one-click secure access to your WordPress dashboard — no password needed.
+
+![Site header with the Live Preview and Login as Admin buttons](/img/openpanel-screenshots/applications/wordpress-header.png#gh-light-mode-only)
+![Site header with the Live Preview and Login as Admin buttons](/img/openpanel-screenshots/applications/wordpress-header_dark.png#gh-dark-mode-only)
+
+### Temporary Link
+
+Preview your site even before your domain is connected or SSL is ready.
+Temporary links last 15 minutes.
+
+Click **Live Preview** to generate one:
+
+
+### Screenshot
+
+Website screenshots refresh automatically every 24 hours.
+Need it sooner? Click the refresh icon over the screenshot.
+
+### Versions
+
+* **WordPress Version** – The WordPress version is retrieved from the database and verified via an AJAX request to the website itself, ensuring the displayed version is accurate. If an update is available, a badge will appear next to the version number.
+* **PHP Version** – The PHP version is read from the domain’s VirtualHost configuration file, guaranteeing that the version shown matches the one actually configured for the domain.
+* **MySQL/MariaDB Version** – Displays whether the site uses MySQL or MariaDB, along with the version number obtained directly from the terminal.
+* **Created** – Indicates the date and time when the website was first added to WP Manager.
+
+![WordPress, PHP and MariaDB version cards and the creation date](/img/openpanel-screenshots/applications/wordpress-versions.png#gh-light-mode-only)
+![WordPress, PHP and MariaDB version cards and the creation date](/img/openpanel-screenshots/applications/wordpress-versions_dark.png#gh-dark-mode-only)
+
+### Speed
+
+Website performance is monitored daily using **Google PageSpeed Insights**. For both mobile and desktop devices, you can view the check time along with key metrics such as **First Contentful Paint**, **Speed Index**, and **Time to Interactive**.
+
+You can also [add your own PageSpeed Insights API key](/docs/articles/websites/google-pagespeed-insights-api-key/#adding-the-api-key-in-openpanel) to customize the data collection.
+
+![Speed card with desktop and mobile PageSpeed scores and First Contentful Paint, Speed Index and Time to Interactive](/img/openpanel-screenshots/applications/wordpress-speed.png#gh-light-mode-only)
+![Speed card with desktop and mobile PageSpeed scores and First Contentful Paint, Speed Index and Time to Interactive](/img/openpanel-screenshots/applications/wordpress-speed_dark.png#gh-dark-mode-only)
+
+### Safe Browsing
+
+Checks your domain against the **Google Safe Browsing** API for malware, social engineering, unwanted software, and other flagged threats. Results are cached for 12 hours.
+
+![Google Safe Browsing section of the Security tab with the result of the check against the Google Safe Browsing list](/img/openpanel-screenshots/applications/wordpress-safe-browsing.png#gh-light-mode-only)
+![Google Safe Browsing section of the Security tab with the result of the check against the Google Safe Browsing list](/img/openpanel-screenshots/applications/wordpress-safe-browsing_dark.png#gh-dark-mode-only)
+
+### Vulnerability Scan
+
+Scans the site's WordPress core, plugin, and theme versions for known vulnerabilities. A fresh scan runs automatically if no cached report exists yet, or can be triggered manually.
+
+![WP Vulnerabilities section of the Security tab with the number of detected vulnerabilities, the last check time and the Scan for vulnerabilities button](/img/openpanel-screenshots/applications/wordpress-vulnerabilities.png#gh-light-mode-only)
+![WP Vulnerabilities section of the Security tab with the number of detected vulnerabilities, the last check time and the Scan for vulnerabilities button](/img/openpanel-screenshots/applications/wordpress-vulnerabilities_dark.png#gh-dark-mode-only)
+
+### Firewall
+
+If CorazaWAF is enabled on the server, and your account has access to the WAF feature, you will see a *Firewall* widget displaying current status for the domain, an option to change it and number of denied/challenged requests in the last hour.
+
+![Firewall card showing the firewall as active with denied and challenged request counts](/img/openpanel-screenshots/applications/wordpress-firewall.png#gh-light-mode-only)
+![Firewall card showing the firewall as active with denied and challenged request counts](/img/openpanel-screenshots/applications/wordpress-firewall_dark.png#gh-dark-mode-only)
+
+
+### Overview
+
+Under *Overview* tab you can view:
+- Files: Folder path and Folder Size
+- Database: Size, Host, Name, Table Prefix, User, Password and link to open phpMyAdmin
+
+![Files and Database cards of the Overview tab with the folder path and size, disk usage, and the database name, user, host, size and phpMyAdmin link](/img/openpanel-screenshots/applications/wordpress-files-database.png#gh-light-mode-only)
+![Files and Database cards of the Overview tab with the folder path and size, disk usage, and the database name, user, host, size and phpMyAdmin link](/img/openpanel-screenshots/applications/wordpress-files-database_dark.png#gh-dark-mode-only)
+
+### Options
+
+*Options* tab displays current WordPress settings and allows you to change them.
+
+Available options:
+
+- Site URl
+- Homepage URL
+- Site Name
+- Blog Description
+- Administrator Email
+- Enable New User Registration
+- Enable SEO Visibility
+- Enable Pingbacks
+
+![Options tab with the site URL, site name, email, registration, SEO visibility and pingback settings](/img/openpanel-screenshots/applications/wordpress-options.png#gh-light-mode-only)
+![Options tab with the site URL, site name, email, registration, SEO visibility and pingback settings](/img/openpanel-screenshots/applications/wordpress-options_dark.png#gh-dark-mode-only)
+
+### Cache
+
+The *Cache* tab shows how fast the site's home page loads with and without caching, and lets you turn each cache level on or off for this site.
+
+**Home page response time**
+
+Click *Measure now* (or *Measure again*) to time the home page. The requests are made on the server itself, so they skip the network, Caddy and the WAF:
+
+- **With cache**: the page as your visitors get it now, from Varnish when the page cache is on, otherwise from the webserver with OPcache and Redis as set below.
+- **No cache at all**: the page rendered in a separate PHP process with OPcache off and Redis disabled. It runs next to your site, so visitors are not affected.
+
+Each measurement takes a few seconds, the shown time is the median of several requests. The tiles next to it show:
+
+- **Pages from cache**: share of recent page requests to this site that Varnish answered from cache.
+- **Queries from Redis**: share of object cache lookups answered from Redis in the last hour, plus the number of keys and memory this site uses.
+- **Last measurement**: when the site was last measured, how much time the cache saves per visit, and a trend of the last 10 measurements.
+
+**Cache levels**
+
+- **Page cache (Varnish)**: serves ready-made pages without touching PHP. Admin area, logged-in users, cart and checkout always stay dynamic. Turning it on starts Varnish for your account if it isn't running yet. *Lifetime* sets how long a page stays in the cache for this domain (1 minute to 1 day, default 1 hour).
+- **Object cache (Redis)**: answers repeated database queries from your private Redis. Turning it on starts Redis if needed, and installs, activates and configures the free [Redis Object Cache](https://wordpress.org/plugins/redis-cache/) plugin. Turning it off disables the plugin.
+- **OPcache**: keeps compiled WordPress and plugin code in memory. The switch turns it off or on for this site only, the memory usage shown covers all your sites on the same PHP version. Not available on OpenLiteSpeed.
+
+*Purge all* clears this site's pages from Varnish and its keys from Redis.
+
+Varnish and Redis controls are only available if they are included in your hosting plan.
+
+![Cache tab with the home page response time with and without cache, cache hit tiles, and the Varnish, Redis and OPcache cache levels](/img/openpanel-screenshots/applications/wordpress-caching.png#gh-light-mode-only)
+![Cache tab with the home page response time with and without cache, cache hit tiles, and the Varnish, Redis and OPcache cache levels](/img/openpanel-screenshots/applications/wordpress-caching_dark.png#gh-dark-mode-only)
+
+### Maintenance mode
+
+Enable or disable maintenance mode directly from WP Manager.
+You can even edit the maintenance.php file right from the panel.
+
+![Maintenance tab with the maintenance mode toggle](/img/openpanel-screenshots/applications/wordpress-maintenance.png#gh-light-mode-only)
+![Maintenance tab with the maintenance mode toggle](/img/openpanel-screenshots/applications/wordpress-maintenance_dark.png#gh-dark-mode-only)
+
+### Security
+
+Keep your site safe with built-in security tools.
+
+From here, you can:
+- Shuffle WordPress salts
+- Check core file integrity
+- Reinstall WordPress core if needed
+- Scan the site for malware, with a warning when files from this site are already in [quarantine](/docs/panel/security/malware-scanner/#quarantine)
+
+![Security tab with vulnerability report, Safe Browsing, salts, integrity check, malware scan and reinstall](/img/openpanel-screenshots/applications/wordpress-security.png#gh-light-mode-only)
+![Security tab with vulnerability report, Safe Browsing, salts, integrity check, malware scan and reinstall](/img/openpanel-screenshots/applications/wordpress-security_dark.png#gh-dark-mode-only)
+
+#### Security Measures
+
+Server-level rules that harden the site. They are applied by the webserver before a request reaches PHP, so they also stop requests that WordPress plugins never see. Toggle each one on or off from the Security tab:
+
+| Rule | What it does |
+|------|--------------|
+| **Disable wp-admin** | Returns a `401 Unauthorized` error for requests to `/wp-admin`, blocking the WordPress dashboard completely. `admin-ajax.php` and `admin-post.php` stay reachable, so contact forms, carts and other plugin features on the site keep working. Turn it off again when you need to log in to wp-admin. |
+| **Mitigate Spam Logins and Comments** | Drops `POST` requests to `wp-login.php` and `wp-comments-post.php` that don't come with a Referer from the same site, stopping bots that submit logins and comments directly. Logging in and commenting from the site keep working. |
+| **Block access to wp-config.php** | Blocks all requests to `wp-config.php` so database credentials are never exposed, even if PHP processing fails. |
+| **Disable PHP in uploads** | Blocks `.php` files in `/wp-content/uploads/`, so a malicious file uploaded there can't be run. |
+| **Block access to xmlrpc.php** | Returns `403` for `xmlrpc.php`, disabling XML-RPC remote publishing and pingbacks used for brute-force and DDoS amplification. |
+| **Protect Environment Files** | Blocks public access to `.env` files (including `.env.local`, `.env.production` and similar), `.htaccess` and `.htpasswd` in any folder of the site. |
+| **Protect Sensitive Files** | Blocks backup files (`.bak`, `.swp`), readme and license files, and extensions like `.log`, `.sh` or `.exe`. |
+| **Block Author Enumeration** | Blocks requests with the `author=` query parameter and the REST API users list (`/wp-json/wp/v2/users`), so bots can't discover valid usernames. Logged in users can still use the users endpoint, so the block editor keeps working. |
+| **Block Malicious Bots** | Blocks aggressive scrapers and security scanners like AhrefsBot, SemrushBot, MJ12bot and Nikto by their User-Agent. |
+| **Restrict wp-includes PHP** | Blocks PHP execution in `wp-includes`, except `wp-tinymce.php` so the editor keeps working. |
+| **Disable PHP in Cache** | Blocks PHP scripts stored in cache directories, stopping cache poisoning and file inclusion exploits. |
+| **Disable Script Concatenation** | Blocks `load-scripts.php` and `load-styles.php` to prevent a known ReDoS attack that spikes server CPU. |
+
+Rules can also be managed from the terminal with [`opencli websites-secure`](/docs/articles/opencli/websites/#secure).
+
+### Updates
+
+Control how WordPress handles updates for the core, plugins, and themes.
+By default, only minor core updates are auto-enabled.
+
+![Updates tab listing core, plugin and theme update status](/img/openpanel-screenshots/applications/wordpress-updates.png#gh-light-mode-only)
+![Updates tab listing core, plugin and theme update status](/img/openpanel-screenshots/applications/wordpress-updates_dark.png#gh-dark-mode-only)
+
+If a newer WordPress core version is available, you will see 'Click to update WordPress core' button which when clicked will perform WordPress update to the newest version available.
+
+### Debugging
+
+Toggle WordPress’s built-in debugging tools (WP_DEBUG, WP_DEBUG_LOG, etc.) directly from WP Manager.
+
+These are great for testing or development sites — not recommended for production.
+For details, check [Debugging in WordPress](https://wordpress.org/documentation/article/debugging-in-wordpress/) for more information on these options.
+
+![Debugging tab with the latest errors of the site at the top, then the toggles for WP_DEBUG, WP_DEBUG_LOG, WP_DEBUG_DISPLAY, SCRIPT_DEBUG and SAVEQUERIES](/img/openpanel-screenshots/applications/wordpress-debugging.png#gh-light-mode-only)
+![Debugging tab with the latest errors of the site at the top, then the toggles for WP_DEBUG, WP_DEBUG_LOG, WP_DEBUG_DISPLAY, SCRIPT_DEBUG and SAVEQUERIES](/img/openpanel-screenshots/applications/wordpress-debugging_dark.png#gh-dark-mode-only)
+
+When your hosting plan includes [Error Logs](/docs/panel/statistics/error_logs/), the tab starts with the site's 10 newest errors: PHP, web server and HTTP 5xx errors of this site only, not of other sites in its subfolders. Click an error to see the whole message, **Refresh** to load them again, and **View Logs** to open the Error Logs page filtered to this site.
+
+![Error Logs section of the Debugging tab listing the site's latest errors with their severity, time and service, with View Logs and Refresh links](/img/openpanel-screenshots/applications/wordpress-debugging-errors.png#gh-light-mode-only)
+![Error Logs section of the Debugging tab listing the site's latest errors with their severity, time and service, with View Logs and Refresh links](/img/openpanel-screenshots/applications/wordpress-debugging-errors_dark.png#gh-dark-mode-only)
+
+### Backups
+
+Create and restore backups anytime — files, database, or both.
+
+Create a Backup:
+- Choose what to back up (files, database, or both).
+- Click **Generate Backup**.
+
+![Backups tab with the Create a Backup and Restore from Backups sections](/img/openpanel-screenshots/applications/wordpress-backups.png#gh-light-mode-only)
+![Backups tab with the Create a Backup and Restore from Backups sections](/img/openpanel-screenshots/applications/wordpress-backups_dark.png#gh-dark-mode-only)
+
+Restore a Backup:
+To restore, click Restore, pick a backup date, and confirm.
+
+### Clone
+
+Create a clone (copy files and database tables, replace links in database, fluch wp cache and rewrite rules).
+
+Create a clone:
+- Under 'Target' select the desired domain and optionally 'Database' to be used.
+- Click **Clone Website**.
+
+![Clone tab with the destination location and database for the copy](/img/openpanel-screenshots/applications/wordpress-clone.png#gh-light-mode-only)
+![Clone tab with the destination location and database for the copy](/img/openpanel-screenshots/applications/wordpress-clone_dark.png#gh-dark-mode-only)
+
+### Git
+
+When the Git module is enabled, the **Git** tab lists the repositories that deploy to this website and lets you add one with the website's folder already filled in. A typical WordPress setup keeps a custom theme or plugin in Git and deploys it into `wp-content/themes/<theme>` or `wp-content/plugins/<plugin>`, with a deploy action that activates it with WP-CLI. WordPress core, uploads and other plugins are left alone.
+
+![Git tab in the Site Manager with a theme repository and a remote repository, their deploy buttons, clone URL and webhook URL](/img/openpanel-screenshots/applications/git-tab.png#gh-light-mode-only)
+![Git tab in the Site Manager with a theme repository and a remote repository, their deploy buttons, clone URL and webhook URL](/img/openpanel-screenshots/applications/git-tab_dark.png#gh-dark-mode-only)
+
+See [Git](/docs/panel/applications/git) for pushing, webhooks and deploy actions.
+
+### Remove
+
+Want to stop managing a site in WP Manager (without deleting it)?
+
+Use **Detach** — your files and database remain untouched.
+
+
+To completely remove a website — files, database, and all — click **Uninstall**, then confirm.
+
+![Remove tab with the Detach and Uninstall options](/img/openpanel-screenshots/applications/wordpress-remove.png#gh-light-mode-only)
+![Remove tab with the Detach and Uninstall options](/img/openpanel-screenshots/applications/wordpress-remove_dark.png#gh-dark-mode-only)
+
+Related guides: [Create a WordPress staging site](/docs/articles/websites/wordpress-staging-site/) · [Use WP-CLI](/docs/articles/websites/wordpress-wp-cli/) · [Fix the white screen / critical error](/docs/articles/websites/wordpress-white-screen-critical-error/) · [Redis object cache](/docs/articles/websites/wordpress-redis-object-cache/)

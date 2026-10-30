@@ -1,0 +1,160 @@
+package php
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strings"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/auth"
+	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"gist.github.com/kangpcode/davpanel/internal/core/logger"
+	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+// RegisterDomainsAPI wires the per-domain PHP version API routes onto mux - the domain goes in the body, not the path, since PUT /api/php/domains/{domain} would collide with PUT /api/php/{version}/options as an ambiguous ServeMux pattern
+func RegisterDomainsAPI(mux *http.ServeMux, a *appctx.App) {
+	apiregistry.Handle(mux, a, "php", "GET /api/php/domains", func(w http.ResponseWriter, r *http.Request) { apiPHPDomainsList(a, w, r) })
+	apiregistry.Handle(mux, a, "php", "PUT /api/php/domains", func(w http.ResponseWriter, r *http.Request) { apiPHPDomainSet(a, w, r) })
+}
+
+// apiPHPDomainsList returns every domain owned by the caller together with its currently assigned PHP version
+func apiPHPDomainsList(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, _ := auth.UserID(r)
+	_, _, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	webServer := webserver.GetEnvFileValue(userContext, "WEB_SERVER")
+	isLitespeed := strings.Contains(strings.ToLower(webServer), "litespeed")
+	phpDefaultVersion := webserver.GetEnvFileValue(userContext, "DEFAULT_PHP_VERSION")
+	installedVersions := FetchPHPVersions(ctx, a, userContext)
+	phpVersionsData := fetchPHPVersionsAPI(ctx)
+
+	domainsList, _ := a.AllDomainsForUser(ctx, userID)
+	rows, counts, outdated := buildPHPDomainRows(userContext, domainsList, phpVersionsData)
+
+	web.WriteJSON(w, http.StatusOK, map[string]any{
+		"domains":                rows,
+		"counts":                 counts,
+		"outdated_domains":       outdated,
+		"available_php_versions": installedVersions,
+		"php_default_version":    phpDefaultVersion,
+		"is_litespeed":           isLitespeed,
+	})
+}
+
+// apiPHPDomainSet switches one domain to a different installed PHP version, rewriting its vhost upstream and restarting services as needed - not available under LiteSpeed, which has no per-domain PHP, use PUT /api/php/default there instead
+func apiPHPDomainSet(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, _ := auth.UserID(r)
+	_, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	var body struct {
+		Domain  string `json:"domain"`
+		Version string `json:"version"`
+	}
+	if decErr := json.NewDecoder(r.Body).Decode(&body); decErr != nil {
+		_ = r.ParseForm()
+		body.Domain = r.Form.Get("domain")
+		body.Version = r.Form.Get("version")
+	}
+	domainURL := strings.TrimSpace(body.Domain)
+	if domainURL == "" || !validDomainRE.MatchString(domainURL) {
+		writeJSONError(w, http.StatusBadRequest, "Invalid domain")
+		return
+	}
+
+	webServer := webserver.GetEnvFileValue(userContext, "WEB_SERVER")
+	if strings.Contains(strings.ToLower(webServer), "litespeed") {
+		writeJSONError(w, http.StatusBadRequest, "Only one PHP version can be used on LiteSpeed; set the server-wide default with PUT /api/php/default instead")
+		return
+	}
+
+	if !a.CheckDomainBelongsToUser(ctx, userID, domainURL) {
+		writeJSONError(w, http.StatusForbidden, "You do not own this domain")
+		return
+	}
+
+	newVersion := strings.TrimSpace(body.Version)
+
+	installedVersions := FetchPHPVersions(ctx, a, userContext)
+	if newVersion == "" || !phpVersionFormRE.MatchString(newVersion) || !containsString(installedVersions, newVersion) {
+		writeJSONError(w, http.StatusBadRequest, "Invalid or unavailable PHP version selected")
+		return
+	}
+
+	oldVersion := GetPHPVForDomain(ctx, a, userContext, domainURL)
+	if oldVersion == "/" || !phpVersionFormRE.MatchString(oldVersion) {
+		writeJSONError(w, http.StatusUnprocessableEntity, "Could not determine current PHP version for domain "+domainURL)
+		return
+	}
+
+	if oldVersion == newVersion {
+		web.WriteJSON(w, http.StatusOK, map[string]any{
+			"message": "Domain " + domainURL + " already uses PHP " + newVersion, "domain": domainURL, "version": newVersion,
+		})
+		return
+	}
+
+	newPHPContainer := "php-fpm-" + newVersion
+	if !docker.IsServiceRunning(ctx, userContext, newPHPContainer) {
+		result := docker.StartOrStopContainer(ctx, userContext, newPHPContainer, "activate", "run")
+		if !result.Success {
+			writeJSONError(w, http.StatusInternalServerError, "Failed to start PHP "+newVersion+": "+result.Message)
+			return
+		}
+		webserver.WaitListening(ctx, userContext, newPHPContainer)
+	}
+
+	confFile := "/home/" + userContext + "/docker-data/volumes/" + userContext + "_webserver_data/_data/" + domainURL + ".conf"
+	content, readErr := tenantfs.ReadFile(confFile)
+	if readErr != nil {
+		writeJSONError(w, http.StatusInternalServerError, "Failed to read vhost configuration for "+domainURL+": "+readErr.Error())
+		return
+	}
+
+	updated := strings.ReplaceAll(string(content), "php-fpm-"+oldVersion, "php-fpm-"+newVersion)
+	if writeErr := tenantfs.WriteFile(confFile, []byte(updated), 0o644); writeErr != nil {
+		writeJSONError(w, http.StatusInternalServerError, "Failed to write vhost configuration for "+domainURL+": "+writeErr.Error())
+		return
+	}
+	if strings.Contains(updated, "php-fpm-"+oldVersion) {
+		writeJSONError(w, http.StatusInternalServerError, "Error occurred while updating PHP version for domain "+domainURL)
+		return
+	}
+
+	_, _ = a.DB.ExecContext(ctx, "UPDATE domains SET php_version = ? WHERE domain_url = ?", newVersion, domainURL)
+
+	// old php only goes down once the webserver points elsewhere
+	reloadErr := webserver.ReloadWebserver(ctx, userContext, webServer)
+	if reloadErr == nil {
+		stopPHPServiceIfRunningAndUnused(ctx, userContext, oldVersion)
+	}
+
+	ipAddress := reqip.ClientIP(r)
+	_ = logger.RecordUserAction(a.Config, currentUsername, fmt.Sprintf("changed PHP version for domain %s from %s to %s", domainURL, oldVersion, newVersion), ipAddress)
+	if reloadErr != nil {
+		writeJSONError(w, http.StatusInternalServerError, "PHP version for domain "+domainURL+" was saved, but "+webServer+" could not apply it and still uses PHP "+oldVersion+": "+reloadErr.Error())
+		return
+	}
+
+	web.WriteJSON(w, http.StatusOK, map[string]any{
+		"message":     fmt.Sprintf("PHP version for domain %s updated from %s to %s", domainURL, oldVersion, newVersion),
+		"domain":      domainURL,
+		"old_version": oldVersion,
+		"new_version": newVersion,
+	})
+}

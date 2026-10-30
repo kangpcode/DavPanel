@@ -1,0 +1,63 @@
+package mysql
+
+import (
+	"encoding/json"
+	"net/http"
+	"strings"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/auth"
+	"gist.github.com/kangpcode/davpanel/internal/core/logger"
+	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+)
+
+// apiMySQLSetRootPassword changes the MySQL root user's password (both the given host, defaulting to '%', and 'localhost'), then persists it to my.cnf/.env, no restart needed - the API equivalent of POST /mysql/root-password (handleRootPasswordMySQL in rootpassword.go) - there's no GET counterpart since the root password isn't readable anywhere, so this is write-only, and deliberately has no strength check, matching handleRootPasswordMySQL's own comment that the root password is admin-only
+func apiMySQLSetRootPassword(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	_, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	var body struct {
+		Password string `json:"password"`
+		Host     string `json:"host"`
+	}
+	_ = json.NewDecoder(r.Body).Decode(&body)
+	password := body.Password
+	dbHost := strings.TrimSpace(body.Host)
+	if dbHost == "" {
+		dbHost = "%"
+	}
+	if password == "" {
+		writeAPIMySQLJSON(w, http.StatusBadRequest, map[string]string{"error": "Password is required."})
+		return
+	}
+	escapedPassword := escapeMySQLString(password)
+
+	if _, execErr := mysqlmanager.Exec(ctx, userContext, "ALTER USER 'root'@'"+dbHost+"' IDENTIFIED BY '"+escapedPassword+"'", ""); execErr != nil {
+		writeAPIMySQLJSON(w, http.StatusInternalServerError, map[string]string{"error": mysqlAPIError(execErr)})
+		return
+	}
+	if _, execErr := mysqlmanager.Exec(ctx, userContext, "ALTER USER 'root'@'localhost' IDENTIFIED BY '"+escapedPassword+"'", ""); execErr != nil {
+		writeAPIMySQLJSON(w, http.StatusInternalServerError, map[string]string{"error": mysqlAPIError(execErr)})
+		return
+	}
+	if _, execErr := mysqlmanager.Exec(ctx, userContext, "FLUSH PRIVILEGES", ""); execErr != nil {
+		writeAPIMySQLJSON(w, http.StatusInternalServerError, map[string]string{"error": mysqlAPIError(execErr)})
+		return
+	}
+
+	docker.SetEnvValue(userContext, "MYSQL_ROOT_PASSWORD", password)
+
+	if writeErr := setMyCnfPassword(userContext, password); writeErr != nil {
+		writeAPIMySQLJSON(w, http.StatusOK, map[string]any{"updated": true, "restarted": false, "warning": "Password changed but failed to update stored configuration."})
+		return
+	}
+	mysqlmanager.InvalidatePool(userContext)
+
+	_ = logger.RecordUserAction(a.Config, currentUsername, "changed MySQL root user password via API", reqip.ClientIP(r))
+	writeAPIMySQLJSON(w, http.StatusOK, map[string]any{"updated": true, "restarted": false})
+}

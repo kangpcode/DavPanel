@@ -1,0 +1,475 @@
+import React from "react";
+import {
+    StrapiWithText,
+    SupabaseWithText,
+} from "@site/src/assets/integration-icons";
+import { FooterDiscordIcon as DiscordIcon } from "../../refine-theme/icons/footer-discord";
+import { FooterGithubIcon as GithubIcon } from "../../refine-theme/icons/footer-github";
+import { FooterRedditIcon as RedditIcon } from "../../refine-theme/icons/footer-reddit";
+import { FooterTwitterIcon as TwitterIcon } from "../../refine-theme/icons/footer-twitter";
+
+// The contents added to the timeline are defined day by day in the data.timeline. All contents are not published at the same time.
+// For unpublished contents, the link can be defined as null. If the link is set to null, the timeline item becomes disabled.
+// If `publishDate` is defined, a countdown will be displayed for the timeline item.
+// The format for `publishDate` is `YYYY-MM-DDTHH:mm+03:00` = `2023-06-20T13:00+03:00`.
+
+const hashtags = "opensource";
+const supabaseShareTweetURL = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+    "https://davpanel.com/whmcs-module/",
+)}&text=${encodeURIComponent(
+    `📚 Setup WHMCS & DavPanel account provisioning in just 5 minutes.\n\n`,
+)}&hashtags=${hashtags}`;
+
+const strapiShareTweetURL = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+    "https://davpanel.com/fossbilling-module/",
+)}&text=${encodeURIComponent(
+    `📚 Setup FOSSBilling & DavPanel account provisioning in just 5 minutes.\n\n`,
+)}&hashtags=${hashtags}`;
+
+const blestaShareTweetURL = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+    "https://davpanel.com/blesta-module/",
+)}&text=${encodeURIComponent(
+    `📚 Setup Blesta & DavPanel account provisioning in just 5 minutes.\n\n`,
+)}&hashtags=${hashtags}`;
+
+const clientexecShareTweetURL = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+    "https://davpanel.com/clientexec-module/",
+)}&text=${encodeURIComponent(
+    `📚 Setup ClientExec & DavPanel account provisioning in just 5 minutes.\n\n`,
+)}&hashtags=${hashtags}`;
+
+const wisecpShareTweetURL = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+    "https://davpanel.com/wisecp-module/",
+)}&text=${encodeURIComponent(
+    `📚 Setup WISECP & DavPanel account provisioning in just 5 minutes.\n\n`,
+)}&hashtags=${hashtags}`;
+
+
+export const data = {
+    blesta: {
+        logo: SupabaseWithText,
+        cover: "/img/tutorial-cards/blesta.jpeg",
+        cover2x: "/img/tutorial-cards/blesta.jpeg",
+        coverAlt: "Blesta and DavPanel module integration",
+        title: "blesta",
+        description:
+            "Setup <strong>Blesta & DavPanel</strong> account provisioning in just 5 minutes.",
+        date: "February 14 - February 20, 2026",
+        timeline: [
+            {
+                date: "February 14, Monday",
+                title: "Upload DavPanel Module",
+                description: `
+                Upload the <strong className="font-bold">davpanel</strong> directory to your Blesta installation at 
+                <strong className="font-bold">components/modules/openpanel/</strong>.`,
+                link: "https://github.com/Equitia/blesta-module-openpanel?tab=readme-ov-file#installation",
+                image: "/week-of-refine/supabase-timeline-1.jpg",
+                image2x: "/week-of-refine/supabase-timeline-1-2x.jpg",
+            },
+            {
+                date: "February 15, Tuesday",
+                title: "Install Module in Blesta",
+                description: `
+                Log in to your <strong className="font-bold">Blesta Admin area</strong>, navigate to 
+                <strong className="font-bold">Settings > Modules > Available</strong>, find 
+                <strong className="font-bold">DavPanel</strong> and click 
+                <strong className="font-bold">Install</strong>.`,
+                link: "https://github.com/Equitia/blesta-module-openpanel?tab=readme-ov-file#installation",
+                image: "/week-of-refine/supabase-timeline-2.jpg",
+                image2x: "/week-of-refine/supabase-timeline-2-2x.jpg",
+            },
+            {
+                date: "February 16, Wednesday",
+                title: "Enable API Access on DavPanel",
+                description: `
+                Log in to your <strong className="font-bold">DavAdmin panel</strong>, go to 
+                <strong className="font-bold">Settings > DavPanel API</strong>, and enable 
+                <strong className="font-bold">API Access</strong>. 
+                (Optional but recommended) Whitelist your Blesta server IP address in Firewall settings.`,
+                link: "https://github.com/Equitia/blesta-module-openpanel?tab=readme-ov-file#1-enable-api-access-on-openpanel",
+                image: "/week-of-refine/supabase-timeline-3.jpg",
+                image2x: "/week-of-refine/supabase-timeline-3-2x.jpg",
+            },
+            {
+                date: "February 17, Thursday",
+                title: "Add Server in Blesta",
+                description: `
+                Navigate to <strong className="font-bold">Settings > Modules > Installed > DavPanel > Add Server</strong> 
+                and enter your server details: Hostname, API Port (default 2087), HTTPS enabled, Admin Username and Password. 
+                Then click <strong className="font-bold">Add Server</strong>.`,
+                link: "https://github.com/Equitia/blesta-module-openpanel?tab=readme-ov-file#2-add-server-in-blesta",
+                image: "/week-of-refine/supabase-timeline-4.jpg",
+                image2x: "/week-of-refine/supabase-timeline-4-2x.jpg",
+            },
+            {
+                date: "February 18, Friday",
+                title: "Create a Package",
+                description: `
+                Navigate to <strong className="font-bold">Packages > Browse Packages > Create Package</strong>. 
+                Under <strong className="font-bold">Module Options</strong>, select 
+                <strong className="font-bold">DavPanel</strong>, choose your Server Group and 
+                select the desired <strong className="font-bold">DavPanel Plan</strong>. 
+                If no plans appear, verify API credentials and API status.`,
+                link: "https://github.com/Equitia/blesta-module-openpanel?tab=readme-ov-file#installation",
+                image: "/week-of-refine/supabase-timeline-5.jpg",
+                image2x: "/week-of-refine/supabase-timeline-5-2x.jpg",
+            },
+            {
+                date: "February 19, Saturday",
+                title: "Test Provisioning",
+                description: `
+                Create a test order in Blesta to verify that automatic 
+                <strong className="font-bold">Account Provisioning</strong> works correctly. 
+                You can also test upgrades, suspensions, terminations, and Single Sign-On (SSO).`,
+                link: "",
+                image: "/week-of-refine/supabase-timeline-6.jpg",
+                image2x: "/week-of-refine/supabase-timeline-6-2x.jpg",
+            },
+        ],
+
+        shareTweetUrl: blestaShareTweetURL,
+        tweetIDList: [
+            "1645507785621209097",
+            "1635625661778763776",
+            "1640741763408076803",
+            "1625488050863353856",
+            "1615260152822628352",
+            "1621513516036526080",
+            "1621932348009861132",
+            "1597878371760979970",
+            "1616390215068688384",
+            "1617841995233529861",
+            "1620724625536880641",
+            "1618180208414322689",
+        ],
+    },    
+    clientexec: {
+        logo: StrapiWithText,
+        cover: "/img/tutorial-cards/clientexec.png",
+        cover2x: "/img/tutorial-cards/clientexec.png",
+        coverAlt: "ClientExec and DavPanel module integration",
+        title: "clientexec",
+        description:
+            "Setup <strong>ClientExec & DavPanel</strong> account provisioning in just 5 minutes.",
+        date: "September 14 - September 20, 2026",
+        timeline: [
+            {
+                date: "September 14, Monday",
+                title: "Enable API access in DavAdmin",
+                description: `
+                First make sure that API access is enabled by going to <strong className="font-bold">DavAdmin > API</strong> or by running <strong className="font-bold">opencli config get api</strong> from the terminal.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-clientexec/#enable-api",
+                image: "/week-of-refine/supabase-timeline-1.jpg",
+                image2x: "/week-of-refine/supabase-timeline-1-2x.jpg",
+            },
+            {
+                date: "September 15, Tuesday",
+                title: "Whitelist on Firewall",
+                description: `ClientExec server needs to be able to connect to DavAdmin on port 2087, whitelist both servers: <strong className="font-bold">csf -a SERVER_IP</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-clientexec/#whitelist-on-openpanel",
+                image: "/week-of-refine/supabase-timeline-2.jpg",
+                image2x: "/week-of-refine/supabase-timeline-2-2x.jpg",
+            },
+            {
+                date: "September 16, Wednesday",
+                title: "Install DavPanel Plugin",
+                description: `SSH to your ClientExec server and inside <strong className="font-bold">path_to_clientexec/plugins/server</strong> run this command to download the plugin: <strong className="font-bold">git clone https://github.com/stefanpejcic/openpanel-clientexec.git openpanel</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-clientexec/#install-openpanel-clientexec-plugin",
+                image: "/week-of-refine/supabase-timeline-3.jpg",
+                image2x: "/week-of-refine/supabase-timeline-3-2x.jpg",
+            },
+            {
+                date: "September 17, Thursday",
+                title: "Add Server in ClientExec",
+                description: `In ClientExec admin, add a new server and select the <strong className="font-bold">DavPanel</strong> plugin, then fill in the DavAdmin admin username/password, hostname, and port (default 2087).`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-clientexec/#plugin-setup",
+                image: "/week-of-refine/supabase-timeline-4.jpg",
+                image2x: "/week-of-refine/supabase-timeline-4-2x.jpg",
+                enabledTime: "2026-09-17 12:30",
+            },
+            {
+                date: "September 18, Friday",
+                title: "Create Hosting Plans",
+                description: `On the ClientExec server create hosting plans that match the package names created on the DavPanel server, then assign the <strong className="font-bold">DavPanel</strong> server to the product.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-clientexec/#create-hosting-package-1",
+                image: "/week-of-refine/supabase-timeline-5.jpg",
+                image2x: "/week-of-refine/supabase-timeline-5-2x.jpg",
+            },
+            {
+                date: "September 19, Saturday",
+                title: "Test",
+                description: `Create a new order on ClientExec to test if the DavAdmin API account provisioning is functioning properly.`,
+                link: "",
+                image: "/week-of-refine/supabase-timeline-6.jpg",
+                image2x: "/week-of-refine/supabase-timeline-6-2x.jpg",
+            },
+        ],
+        shareTweetUrl: clientexecShareTweetURL,
+    },
+    wisecp: {
+        logo: StrapiWithText,
+        cover: "/img/tutorial-cards/wisecp.png",
+        cover2x: "/img/tutorial-cards/wisecp.png",
+        coverAlt: "WISECP and DavPanel module integration",
+        title: "wisecp",
+        description:
+            "Setup <strong>WISECP & DavPanel</strong> account provisioning in just 5 minutes.",
+        date: "September 14 - September 20, 2026",
+        timeline: [
+            {
+                date: "September 14, Monday",
+                title: "Enable API access in DavAdmin",
+                description: `
+                First make sure that API access is enabled by going to <strong className="font-bold">DavAdmin > API</strong> or by running <strong className="font-bold">opencli config get api</strong> from the terminal.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-wisecp/#enable-api",
+                image: "/week-of-refine/supabase-timeline-1.jpg",
+                image2x: "/week-of-refine/supabase-timeline-1-2x.jpg",
+            },
+            {
+                date: "September 15, Tuesday",
+                title: "Whitelist on Firewall",
+                description: `WISECP server needs to be able to connect to DavAdmin on port 2087, whitelist both servers: <strong className="font-bold">csf -a SERVER_IP</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-wisecp/#whitelist-on-openpanel",
+                image: "/week-of-refine/supabase-timeline-2.jpg",
+                image2x: "/week-of-refine/supabase-timeline-2-2x.jpg",
+            },
+            {
+                date: "September 16, Wednesday",
+                title: "Install DavPanel Module",
+                description: `SSH to your WISECP server and inside the WISECP install directory run this command to clone and copy the module into place: <strong className="font-bold">git clone https://github.com/stefanpejcic/openpanel-wisecp-module.git</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-wisecp/#install-openpanel-wisecp-module",
+                image: "/week-of-refine/supabase-timeline-3.jpg",
+                image2x: "/week-of-refine/supabase-timeline-3-2x.jpg",
+            },
+            {
+                date: "September 17, Thursday",
+                title: "Add Server in WISECP",
+                description: `In WISECP admin, go to <strong className="font-bold">Settings > Servers > Add New</strong> and select the <strong className="font-bold">DavPanel</strong> module, then fill in the DavAdmin admin username/password, hostname, and port (default 2087).`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-wisecp/#module-setup",
+                image: "/week-of-refine/supabase-timeline-4.jpg",
+                image2x: "/week-of-refine/supabase-timeline-4-2x.jpg",
+                enabledTime: "2026-09-17 12:30",
+            },
+            {
+                date: "September 18, Friday",
+                title: "Create Hosting Plans",
+                description: `On the WISECP server create hosting plans that match the package names created on the DavPanel server, then assign the <strong className="font-bold">DavPanel</strong> server to the product.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-wisecp/#create-hosting-package-1",
+                image: "/week-of-refine/supabase-timeline-5.jpg",
+                image2x: "/week-of-refine/supabase-timeline-5-2x.jpg",
+            },
+            {
+                date: "September 19, Saturday",
+                title: "Test",
+                description: `Create a new order on WISECP to test if the DavAdmin API account provisioning is functioning properly.`,
+                link: "",
+                image: "/week-of-refine/supabase-timeline-6.jpg",
+                image2x: "/week-of-refine/supabase-timeline-6-2x.jpg",
+            },
+        ],
+        shareTweetUrl: wisecpShareTweetURL,
+    },
+    supabase: {
+        logo: SupabaseWithText,
+        cover: "/img/tutorial-cards/whmcs.jpeg",
+        cover2x: "/img/tutorial-cards/whmcs.jpeg",
+        coverAlt: "WHMCS and DavPanel module integration",
+        title: "supabase",
+        description:
+            "Setup <strong>WHMCS & DavPanel</strong> account provisioning in just 5 minutes.",
+        date: "February 14 - February 20, 2023",
+        timeline: [
+            {
+                date: "February 14, Monday",
+                title: "Enable API access in DavAdmin",
+                description: `
+                First make sure that API access is enabled by going to <strong className="font-bold">DavAdmin > API</strong> or by running <strong className="font-bold">opencli config get api</strong> from the terminal.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-whmcs/#enable-api",
+                image: "/week-of-refine/supabase-timeline-1.jpg",
+                image2x: "/week-of-refine/supabase-timeline-1-2x.jpg",
+            },
+            {
+                date: "February 15, Tuesday",
+                title: "Whitelist on Firewall",
+                description: `WHMCS server needs to be able to connect to DavAdmin on port 2087, whitelist both servers: <strong className="font-bold">csf -a SERVER_IP</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-whmcs/#whitelist-on-openpanel",
+                image: "/week-of-refine/supabase-timeline-2.jpg",
+                image2x: "/week-of-refine/supabase-timeline-2-2x.jpg",
+            },
+            {
+                date: "February 16, Wednesday",
+                title: "Install DavPanel Module",
+                description: `SSH to your WHMCS server and inside <strong className="font-bold">path_to_whmcs/modules/servers</strong> run this command to download the module: <strong className="font-bold">git clone https://github.com/stefanpejcic/openpanel-whmcs-module.git openpanel</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-whmcs/#install-openpanel-whmc-module",
+                image: "/week-of-refine/supabase-timeline-3.jpg",
+                image2x: "/week-of-refine/supabase-timeline-3-2x.jpg",
+            },
+            {
+                date: "February 17, Thursday",
+                title: "Setup Server",
+                description: `From WHMCS <strong className="font-bold">System Settings > Products & Services > Servers</strong> click on <strong className="font-bold">Create New Server</strong> and under module select <strong className="font-bold">davpanel</strong>  then add server IP, username and password for the DavAdmin.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-whmcs/#whmcs-module-setup",
+                image: "/week-of-refine/supabase-timeline-4.jpg",
+                image2x: "/week-of-refine/supabase-timeline-4-2x.jpg",
+                enabledTime: "2023-06-21 12:30",
+            },
+            {
+                date: "February 18, Friday",
+                title: "Create Hosting Plans",
+                description: `Create a new group, then create new plans under this group. When creating products, make sure to select <strong className="font-bold">davpanel</strong> for Module and the newly created group`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-whmcs/#create-hosting-package-1",
+                image: "/week-of-refine/supabase-timeline-5.jpg",
+                image2x: "/week-of-refine/supabase-timeline-5-2x.jpg",
+            },
+            {
+                date: "February 19, Saturday",
+                title: "Test",
+                description: `Create a new order on WHMCS to test if the DavAdmin API account provisioning is functioning properly.`,
+                link: "",
+                image: "/week-of-refine/supabase-timeline-6.jpg",
+                image2x: "/week-of-refine/supabase-timeline-6-2x.jpg",
+            },
+        ],
+        shareTweetUrl: supabaseShareTweetURL,
+        tweetIDList: [
+            "1645507785621209097",
+            "1635625661778763776",
+            "1640741763408076803",
+            "1625488050863353856",
+            "1615260152822628352",
+            "1621513516036526080",
+            "1621932348009861132",
+            "1597878371760979970",
+            "1616390215068688384",
+            "1617841995233529861",
+            "1620724625536880641",
+            "1618180208414322689",
+        ],
+    },
+    strapi: {
+        logo: StrapiWithText,
+        cover: "/img/tutorial-cards/FOSSBilling.png",
+        cover2x: "/img/tutorial-cards/FOSSBilling.png",
+        coverAlt: "FOSSBilling and DavPanel module integration",
+        title: "strapi",
+        description:
+            "Setup <strong>FOSSBilling & DavPanel</strong> account provisioning in just 5 minutes.",
+        date: "April 10 - April 14, 2023",
+        timeline: [
+            {
+                date: "February 14, Monday",
+                title: "Enable API access in DavAdmin",
+                description: `
+                First make sure that API access is enabled by going to <strong className="font-bold">DavAdmin > API</strong> or by running <strong className="font-bold">opencli config get api</strong> from the terminal.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-fossbilling/#enable-api-access",
+                image: "/week-of-refine/supabase-timeline-1.jpg",
+                image2x: "/week-of-refine/supabase-timeline-1-2x.jpg",
+            },
+            {
+                date: "February 15, Tuesday",
+                title: "Whitelist on Firewall",
+                description: `FOSSBilling server needs to be able to connect to DavAdmin on port 2087, whitelist both servers: <strong className="font-bold">csf -a SERVER_IP</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-fossbilling/#openpanel",
+                image: "/week-of-refine/supabase-timeline-2.jpg",
+                image2x: "/week-of-refine/supabase-timeline-2-2x.jpg",
+            },
+            {
+                date: "February 16, Wednesday",
+                title: "Install DavPanel Server Manager",
+                description: `SSH to your FOSSBilling server and inside the directory where FOSSBilling is installed run this command to download the module: <strong className="font-bold">wget -O library/Server/Manager/DavPanel.php https://raw.githubusercontent.com/stefanpejcic/FOSSBilling-DavPanel/main/DavPanel.php</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-fossbilling/#download-openpanel-server-manager",
+                image: "/week-of-refine/supabase-timeline-3.jpg",
+                image2x: "/week-of-refine/supabase-timeline-3-2x.jpg",
+            },
+            {
+                date: "February 17, Thursday",
+                title: "Setup Server",
+                description: `From FOSSBilling <strong className="font-bold">System > Hosting Plans</strong> click on <strong className="font-bold">New Server</strong> and under server manager select <strong className="font-bold">davpanel</strong>  then add server IP, username and password for the DavAdmin.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-fossbilling/#add-openpanel-server",
+                image: "/week-of-refine/supabase-timeline-4.jpg",
+                image2x: "/week-of-refine/supabase-timeline-4-2x.jpg",
+                enabledTime: "2023-06-21 12:30",
+            },
+            {
+                date: "February 18, Friday",
+                title: "Create Hosting Plans",
+                description: `From FOSSBilling <strong className="font-bold">System > Hosting plans and servers</strong> click on <strong className="font-bold">New hosting plan</strong> and set the plan name to match that from <strong className="font-bold">DavAdmin</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-fossbilling/#add-hosting-plan-for-openpanel",
+                image: "/week-of-refine/supabase-timeline-5.jpg",
+                image2x: "/week-of-refine/supabase-timeline-5-2x.jpg",
+            },
+            {
+                date: "February 18, Friday",
+                title: "Assign Server to Product",
+                description: `From FOSSBilling <strong className="font-bold">Products >  Products & Services</strong> click on <strong className="font-bold">Edit</strong> for a plan and set it to match <strong className="font-bold">plan on davadmin</strong>.`,
+                link: "https://davpanel.com/docs/articles/extensions/openpanel-and-fossbilling/#assign-openpanel-server-to-product",
+                image: "/week-of-refine/supabase-timeline-5.jpg",
+                image2x: "/week-of-refine/supabase-timeline-5-2x.jpg",
+            },
+            {
+                date: "February 19, Saturday",
+                title: "Test",
+                description: `Create a new order on FOSSBilling to test if the DavAdmin API account provisioning is functioning properly.`,
+                link: "",
+                image: "/week-of-refine/supabase-timeline-6.jpg",
+                image2x: "/week-of-refine/supabase-timeline-6-2x.jpg",
+            },
+        ],
+        shareTweetUrl: strapiShareTweetURL,
+        tweetIDList: [
+            "1645507785621209097",
+            "1635625661778763776",
+            "1640741763408076803",
+            "1625488050863353856",
+            "1615260152822628352",
+            "1621513516036526080",
+            "1621932348009861132",
+            "1597878371760979970",
+            "1616390215068688384",
+            "1617841995233529861",
+            "1620724625536880641",
+            "1620724625536880651",
+            "1618180208414322689",
+        ],
+    },
+};
+
+export const additionalSources = [
+    {
+        title: "Join our",
+        label: "Discord Server",
+        icon: <DiscordIcon color="#5865F2" width="24" height="24" />,
+        link: "https://discord.gg/refine",
+        color: "#5865F2",
+    },
+    {
+        title: "Visit our",
+        label: "GitHub Repo",
+        icon: (
+            <GithubIcon
+                className="text-gray-1000 dark:text-gray-0"
+                width="24"
+                height="24"
+            />
+        ),
+        link: "https://github.com/refinedev/refine",
+        color: "#242436",
+    },
+    {
+        title: "Follow us on",
+        label: "Twitter",
+        icon: <TwitterIcon color="#00AAEC" width="24" height="24" />,
+        link: "https://twitter.com/refine_dev",
+        color: "#00AAEC",
+    },
+    {
+        title: "Follow us on",
+        label: "Reddit",
+        icon: <RedditIcon color="#FF4500" width="24" height="24" />,
+        link: "https://reddit.com/r/refine",
+        color: "#FF4500",
+    },
+];
+
+export type WeekVariants = keyof typeof data;
+export type WeekData = (typeof data)[WeekVariants];

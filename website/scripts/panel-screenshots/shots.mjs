@@ -1,0 +1,2515 @@
+// screenshot manifest: one entry per docs page, see PLAN.md for conventions
+export const BASE_URL = process.env.PANEL_URL || 'https://demo.davpanel.com:2083';
+// a server other than the demo gets its own session file
+export const STATE_PATH = process.env.PANEL_URL ? `.auth/state_${new URL(process.env.PANEL_URL).hostname}.json` : '.auth/state.json';
+export const OUT_DIR = '../../static/img/davpanel-screenshots';
+export const VIEWPORT_WIDTH = 1100;
+
+import { rename, all, click, fill, fillVisible, selectFirst, maskIPs, hideNotices, hideOnboarding, hideText, markCard, tab, markSection, bulkSelect, onlyRows, fitBulkBar, firstRows } from './helpers.mjs';
+
+// the rule exceptions section is collapsed until a domain has some
+const wafExceptions = values => async page => {
+  await page.evaluate(() => { document.querySelector('main details:has(#removed_rules)').open = true; });
+  await fill(values)(page);
+  await page.evaluate(() => document.activeElement.blur());
+  // opening it makes the page taller than the viewport shoot.mjs already set
+  await page.setViewportSize({ width: page.viewportSize().width, height: await page.evaluate(() => document.documentElement.scrollHeight) });
+};
+
+// readable names for the demo's random mysql users and databases
+const MYSQL_USERS = { u1pd6u5s: 'wp_blog_user', stefan: 'shop_admin' };
+const MYSQL_DBS = { bd37zzjy: 'wp_blog', stefan: 'shop_db' };
+const MONGO_NAMES = { claudetestuser: 'shop_admin', claudetest: 'shop_db' };
+const PG_NAMES = { postgredb: 'shop_db', postgreuser: 'shop_admin' };
+const PASSWORD = 'hT9#vQ2m!Lx7pR4z';
+const DEMO_IP = { '185.241.214.25': '203.0.113.10' };
+// demo domains -> example domains, most specific first
+const DOMAINS = {
+  // the test server that has the bulk actions before the demo does
+  'example.tEst.rs': 'example.com',
+  'example.test.rs': 'example.com',
+  'matomo.test.rs': 'example.org',
+  'wp.demo.davpanel.com': 'blog.example.com',
+  'website-builder.tests.davpanel.com': 'portfolio.example.com',
+  'redirect.tests.davpanel.com': 'old.example.com',
+  'python.tests.davpanel.com': 'api.example.com',
+  'nodejs.tests.davpanel.com': 'app.example.com',
+  'files.tests.davpanel.com': 'files.example.com',
+  'php.tests.davpanel.com': 'shop.example.com',
+  'wp.tests.davpanel.com': 'blog.example.com',
+  'to-be-removed.com': 'example.net',
+  // WAF test domains, each with a different firewall setup
+  'waf2.tests.davpanel.com': 'cloud.example.com',
+  'waf3.tests.davpanel.com': 'forum.example.com',
+  'waf4.tests.davpanel.com': 'shop.example.com',
+  'waf.tests.davpanel.com': 'blog.example.com',
+  'tests.davpanel.com': 'example.com',
+  // test server domain, for pages shot there with PANEL_URL
+  'example.test.rs': 'example.com',
+  'aliasexample@': 'sales@',
+  'something@gmail.com': 'team@example.org',
+  'test1@': 'john@',
+  'stefan@': 'deploy@',
+  'testing@': 'designer@',
+  '28cp-memekid3-superJumbo.jpg': 'team-photo.jpg',
+  nodeaplikacija: 'nodeapp',
+  pythonaplikacija: 'pythonapp',
+  bd37zzjy: 'wp_blog',
+  u1pd6u5s: 'wp_blog_user',
+};
+// AI Assistant fixtures: the drawer reads its chat from sessionStorage, and /ai/info is answered here so nothing reaches the model
+const AI_INFO = { name: 'AI Assistant', configured: true, used: 12, limit: 100, actions: 'all', allowed: [{ action: 'emails_post', title: 'Create mailbox' }, { action: 'domains_post', title: 'Add a new domain' }] };
+const AI_CHAT = [
+  { role: 'user', content: 'How do I point my domain to this server?' },
+  { role: 'assistant', content: 'Set the nameservers at the company where you registered the domain:\n\n1. Log in to your domain registrar.\n2. Open the DNS or nameserver settings for the domain.\n3. Replace the nameservers with `ns1.example.net` and `ns2.example.net`.\n\nChanges can take up to 24 hours to work everywhere.' },
+  { role: 'user', content: 'Which domains do I have?' },
+  { role: 'action', content: 'Looked up: List all domains', ok: true },
+  { role: 'assistant', content: 'You have 2 domains: **example.com** and **blog.example.com**. Both are active and have an SSL certificate.' },
+];
+const AI_CONFIRM = [
+  { role: 'user', content: 'Create info@example.com with a 2 GB quota' },
+  { role: 'action', content: 'Looked up: List all domains', ok: true },
+  { role: 'assistant', content: 'I\'ll create **info@example.com** with a 2 GB quota. I generated this password for it, save it somewhere safe: `hT9#vQ2m!Lx7pR4z`' },
+  { role: 'confirm', state: 'pending', card: { id: 'x', title: 'Create mailbox', kind: 'change', request: 'POST /api/emails', fields: [['domain', 'example.com'], ['format', 'GB'], ['gb', '2'], ['password', '••••••••'], ['username', 'info']], remember: true, tainted: false } },
+];
+const AI_DESTRUCTIVE = [
+  { role: 'user', content: 'Remove old.example.com, I don\'t use it anymore' },
+  { role: 'assistant', content: 'This removes **old.example.com** from your account.' },
+  { role: 'confirm', state: 'pending', card: { id: 'x', title: 'Remove a domain', kind: 'destructive', request: 'DELETE /api/domains/old.example.com', fields: [['domain', 'old.example.com']], remember: false, tainted: false } },
+];
+// fit: shrink the drawer to its messages so a crop of it has no empty space
+const aiDrawer = (chat, info = false, fit = false) => async page => {
+  await page.route('**/ai/info', route => route.fulfill({ json: AI_INFO }));
+  // the drawer reads the chat once on load, so store it and load the page again
+  await page.evaluate(c => sessionStorage.setItem('ai_assistant_chat', JSON.stringify(c)), chat);
+  await page.reload({ waitUntil: 'load' });
+  await page.waitForTimeout(800);
+  await hideOnboarding(page);
+  await page.locator('#ai-assistant-btn').click();
+  await page.mouse.move(0, 0);
+  await page.waitForTimeout(800);
+  if (info) {
+    await page.locator('#ai-assistant-info').click();
+    await page.waitForTimeout(300);
+  }
+  await page.locator('#ai-assistant-input').blur();
+  if (fit) {
+    await page.evaluate(() => {
+      document.getElementById('ai-assistant-drawer').style.bottom = 'auto';
+      document.getElementById('ai-assistant-messages').style.flex = 'none';
+    });
+  }
+};
+
+// /backups/list: click rows of the visible table (selects a backup, or ticks an item)
+const bkRows = (...idx) => async page => {
+  const rows = page.locator('main tbody:visible > tr:visible');
+  for (const i of idx) await rows.nth(i).locator('td').last().click();
+  await page.waitForTimeout(400);
+};
+const bkKeepRows = keep => async page => {
+  await page.evaluate(keep => document.querySelectorAll('main tbody').forEach(tb => { if (tb.offsetParent) [...tb.children].filter(tr => tr.tagName === 'TR').forEach((tr, i) => { if (!keep.includes(i)) tr.remove(); }); }), keep);
+};
+const bkFirstRows = n => bkKeepRows([...Array(n).keys()]);
+// the test server's databases
+const BK_NAMES = rename({ bt_shop: 'shop_db', bt_pg: 'app_pg', does_not_exist: 'old_db' }, 'body');
+// the action bar is fixed to the window bottom, put it back in the flow under the table
+const bkBar = async page => {
+  await page.evaluate(() => {
+    const bar = document.querySelector('[x-init="placeBar()"]');
+    bar.style.position = 'static';
+    bar.previousElementSibling.style.display = 'none';
+  });
+  await page.waitForTimeout(300);
+};
+// Choose files on the newest backup, the test server's root has scratch files, so show the site folder and index.php
+const bkPicker = async page => {
+  await bkRows(0)(page);
+  await page.locator('main button[aria-label="Choose files"]').click();
+  await page.waitForFunction(() => { const p = Alpine.$data(document.querySelector('[role=tab]')).picker; return !p.loading && (p.dirs.length || p.files.length); }, null, { timeout: 30000 });
+  await page.evaluate(() => {
+    const p = Alpine.$data(document.querySelector('[role=tab]')).picker;
+    p.dirs = p.dirs.filter(d => d.name.includes('.'));
+    p.files = p.files.filter(f => ['index.php', '20MB.zip'].includes(f.name));
+    p.picked[p.dirs[0].name] = true;
+  });
+  await page.waitForTimeout(400);
+};
+
+const MAIL_HOST = { 'demo.davpanel.com': 'mail.example.com' };
+// test server mailboxes for the migrate page, also with the non-breaking hyphens the table shows
+const MIGRATE_NAMES = {
+  'src-test@shared.tests.davpanel.com': 'info@oldhost.com',
+  'src‑test@shared.tests.davpanel.com': 'info@oldhost.com',
+  'dst-test@shared.tests.davpanel.com': 'info@example.com',
+  'dst‑test@shared.tests.davpanel.com': 'info@example.com',
+  'saassa@shared.tests.davpanel.com': 'sales@example.com',
+  '185.7.32.112': 'mail.oldhost.com',
+};
+const MIGRATE_LOG = [
+  'Host1: success login on [mail.oldhost.com] with user [info@oldhost.com] auth [LOGIN] or [LOGIN]',
+  'Host2: success login on [mail.example.com] with user [info@example.com] auth [LOGIN] or [LOGIN]',
+  '++++ Looping on each one of 4 folders to sync',
+  'Folder     1/4 [Drafts]                            -> [Drafts]                           ',
+  'Host1: folder [Drafts] has 3 messages in total (mentioned by SELECT)',
+  'Host2: folder [Drafts] has 0 messages in total (mentioned by SELECT)',
+  'msg Drafts/1 {2817}           copied to Drafts/1         12.40 msgs/s  34.112 KiB/s 2.751 KiB copied ',
+  'msg Drafts/2 {1904}           copied to Drafts/2         18.92 msgs/s  43.865 KiB/s 4.610 KiB copied ',
+  'msg Drafts/3 {5390}           copied to Drafts/3         22.37 msgs/s  73.441 KiB/s 9.874 KiB copied ',
+  'Folder     2/4 [INBOX]                             -> [INBOX]                            ',
+  'Host1: folder [INBOX] has 1284 messages in total (mentioned by SELECT)',
+  'Host2: folder [INBOX] has 0 messages in total (mentioned by SELECT)',
+  'Host1: folder [INBOX] considering 1284 messages',
+  'Host2: folder [INBOX] considering 0 messages',
+  'Host1: folder [INBOX] selected 1284 messages, duplicates 0',
+  'Host2: folder [INBOX] selected 0 messages, duplicates 0',
+  // same columns as a real run: msgs/s, KiB/s and the running total, which carries on from the Drafts folder
+  ...[[1, 4211], [2, 18734], [3, 2906], [4, 61873], [5, 3318], [6, 7702], [7, 12456], [8, 2290]].map(([n, size], i, list) => {
+    const total = 10111 + list.slice(0, i + 1).reduce((t, [, b]) => t + b, 0);
+    const secs = 0.45 + (i + 4) * 0.095;
+    return `msg INBOX/${n} {${size}}`.padEnd(30) + ` copied to INBOX/${n}`.padEnd(28) +
+      `${((i + 4) / secs).toFixed(2)} msgs/s  ${(total / 1024 / secs).toFixed(3)} KiB/s ${(total / 1024).toFixed(3)} KiB copied `;
+  }),
+].join('\n');
+
+
+// runs on every shot after its own prepare(), so selectors there can still use the real names
+export const globalPrepare = all(rename(DOMAINS, 'body'), maskIPs('main'), hideNotices);
+
+const DEMO_HOST = { 'demo.davpanel.com': 'panel.example.com', 'test@test.com': 'john@example.com' };
+
+// demo users have random db/user names, swap them for readable ones before shooting
+const mysqlFixtures = async page => {
+  await page.evaluate(() => {
+    const names = [['wp_blog', 'wp_blog_user', '48.20'], ['shop_db', 'shop_admin', '126.75']];
+    document.querySelectorAll('#databases-table tbody tr').forEach((row, i) => {
+      const [db, user, size] = names[i] || [];
+      if (!db) return;
+      const [dbCell, userCell] = [...row.querySelectorAll('td:not(.db_size_cell)')].filter(td => !td.querySelector('.bulk-select-box'));
+      const dbText = [...dbCell.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
+      if (dbText) dbText.textContent = db;
+      else dbCell.firstElementChild.textContent = db;
+      const link = userCell.querySelector('a') || userCell;
+      link.textContent = user;
+      const sizeCell = row.querySelector('.db_size_cell');
+      if (sizeCell && sizeCell.style.display !== 'none') sizeCell.textContent = size;
+    });
+  });
+};
+
+// rows selected with the bulk actions bar open under the table, optionally on an action's confirm step
+const bulkShot = (table, keys, alt, { action, value, name = 'bulk', keep } = {}) => ({
+  name,
+  alt,
+  prepare: all(
+    ...(keep ? [onlyRows(table, keep)] : []),
+    bulkSelect(keys),
+    ...(action ? [click(`[data-bulk-action="${action}"]`)] : []),
+    ...(value != null ? [fill({ [`[data-bulk-input="${action}"]`]: value })] : []),
+    fitBulkBar(table),
+  ),
+  crop: { from: `${table} thead`, to: '#bulk-actions-bar' },
+});
+
+// rows opened in prepare() can push the page past the height shoot.mjs set from the first render
+const growToPage = async page => {
+  await page.setViewportSize({ width: page.viewportSize().width, height: await page.evaluate(() => document.documentElement.scrollHeight) });
+  await page.waitForTimeout(300);
+};
+
+// turn off table columns through the page's Alpine controller, so wide tables fit the shot width
+const hideColumns = keys => async page => {
+  await page.evaluate(keys => {
+    const data = window.Alpine.$data(document.querySelector('[x-data*="createTableController"]'));
+    for (const k of keys) data.columns[k] = false;
+  }, keys);
+  await page.waitForTimeout(300);
+};
+
+// profile recommendation toasts pop up on the WAF pages, keep them out of the shots
+const clearToasts = async page => {
+  await page.evaluate(() => document.getElementById('toast-container')?.replaceChildren());
+};
+
+// token prefixes are real secrets on the test server
+const maskTokens = async page => {
+  await page.evaluate(() => document.querySelectorAll('#mcp-tokens-table td.font-mono').forEach((td, i) => { td.textContent = ['op_mcp_Xk29fQ…', 'op_mcp_Rw81hT…'][i % 2]; }));
+};
+
+// file manager fixtures: keep a few tidy rows and give the odd test files readable names
+const FM_KEEP = ['wp.tests.davpanel.com', 'php.tests.davpanel.com', 'files.tests.davpanel.com', 'backups', 'index.php', 'index.html', '20MB.zip', 'mtr_output.txt'];
+const FM_NAMES = { '20MB.zip': 'site-backup.zip', 'mtr_output.txt': 'notes.txt' };
+const fmFixture = async page => {
+  await page.evaluate(([keep, names]) => {
+    document.querySelectorAll('#filemanager_table tbody tr.clickable-row').forEach(tr => {
+      const name = tr.dataset.file;
+      if (!keep.includes(name)) return tr.remove();
+      if (!names[name]) return;
+      tr.dataset.file = names[name];
+      tr.querySelectorAll('td:first-child h6, td:first-child h6 a').forEach(el => {
+        if (el.firstElementChild) return;
+        el.textContent = el.textContent.replace(name, names[name]);
+      });
+    });
+  }, [FM_KEEP, FM_NAMES]);
+};
+
+// select rows by (fixture) name, the first with a plain click and the rest with ctrl
+const fmSelect = (...files) => async page => {
+  for (const [i, f] of files.entries()) {
+    await page.locator(`tr[data-file="${f}"]`).click(i ? { modifiers: ['Control'] } : {});
+  }
+  await page.waitForTimeout(300);
+};
+
+const fmAction = id => async page => {
+  await page.evaluate(id => document.getElementById(id).click(), id);
+  await page.waitForTimeout(500);
+};
+
+// the picker lists real folders, so drop the ones that aren't fixtures once it has loaded
+const pickerReady = async page => {
+  await page.waitForFunction(() => document.querySelector('#fmPickerList button[data-path]') || document.querySelector('#fmPickerList li:only-child'), null, { timeout: 10000 });
+  await page.waitForTimeout(300);
+  await page.evaluate(keep => {
+    document.querySelectorAll('#fmPickerList button[data-path]').forEach(b => {
+      const p = b.dataset.path;
+      if (p && !p.includes('/') && !keep.includes(p)) b.closest('li').remove();
+    });
+  }, FM_KEEP);
+};
+
+const PICKER_CROP = { from: '#fmPickerModal > div', pad: 0, clamp: false };
+
+// a quarantine row with its inline confirmation open for one action
+const quarantineAction = (name, button, alt) => ({
+  name,
+  alt,
+  prepare: async page => {
+    await page.locator(`#quarantine-table tbody tr:first-of-type button:text-is("${button}")`).click();
+    await page.waitForTimeout(400);
+    // focusing the confirm button scrolls the table sideways, bring the path back into view
+    await page.evaluate(() => document.querySelectorAll('main .overflow-x-auto, main .overflow-auto').forEach(e => (e.scrollLeft = 0)));
+  },
+  // the table with its Actions column only fits a wider window
+  viewportWidth: 1440,
+  crop: { from: '#quarantine-table thead', to: '#quarantine-table tbody tr:nth-of-type(2)', pad: 8 },
+});
+
+export const pages = {
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs mysql/databases
+  'mysql/databases': {
+    url: '/mysql',
+    before: onlyRows('#databases-table', ['wp_blog', 'shop_db']),
+    prepare: mysqlFixtures,
+    shots: [
+      {
+        name: 'list',
+        alt: 'MySQL Databases page listing databases with their assigned users and action buttons',
+        crop: { from: 'main section > div:first-child', to: '#databases-table tbody tr:last-of-type' },
+      },
+      {
+        name: 'connection',
+        alt: 'MariaDB badge next to the Databases title hovered, with the tooltip showing the server name and port to connect with',
+        prepare: async page => {
+          await page.evaluate(() => { window.Alpine.$data(document.querySelector('main section [x-data*="tooltip"]')).tooltip = true; });
+          await page.waitForTimeout(500);
+        },
+        crop: { from: 'main section > div:first-child', to: '#databases-table tbody tr:last-of-type' },
+      },
+      {
+        name: 'sizes',
+        alt: 'Databases table with Show database sizes enabled and the size unit dropdown set to MB',
+        async prepare(page) {
+          await page.check('#showSizesCheckbox', { force: true });
+          await page.selectOption('#display-size', 'mb').catch(() => {});
+          // changing the unit refetches sizes, let that finish before fixtures overwrite the cells
+          await page.waitForTimeout(2500);
+          await page.waitForFunction(() => [...document.querySelectorAll('.db_size_cell')].every(c => /\d|N\/A/.test(c.textContent)), null, { timeout: 15_000 }).catch(() => {});
+        },
+        crop: { from: 'main section > div:first-child', to: '#databases-table tbody tr:last-of-type' },
+      },
+      {
+        name: 'export',
+        alt: 'Export panel for a database with the SQL or GZIP format and Browser or Files destination options',
+        async prepare(page) {
+          await page.locator('#databases-table tbody tr').first().locator('button[title="Export"]').click();
+          await page.locator('.export-section').first().waitFor({ state: 'visible' });
+          await page.waitForTimeout(400);
+          await page.mouse.move(0, 0);
+        },
+        crop: { from: '#databases-table thead', to: '.export-section >> visible=true', pad: 16 },
+      },
+      {
+        name: 'delete',
+        alt: 'Delete button turned into a Confirm button with a countdown after the first click',
+        async prepare(page) {
+          await page.locator('#databases-table tbody tr').first().locator('form[action="/mysql/delete"] button').click();
+          await page.waitForTimeout(300);
+          await page.mouse.move(0, 0);
+        },
+        crop: { from: '#databases-table thead', to: '#databases-table tbody tr:first-child', pad: 0 },
+      },
+      bulkShot('#databases-table', ['wp_blog', 'shop_db'], 'Two databases selected with the bulk actions bar offering Export, Optimize, Repair, Assign user, Remove user and Delete', { keep: ['wp_blog', 'shop_db'] }),
+    ],
+  },
+  'mysql/new_db': {
+    url: '/mysql/new',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Create Database form with the database name field and the Create Database button',
+        prepare: fill({ 'input[name=database_name]': 'shop_db' }),
+        crop: 'content',
+      },
+    ],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs mysql/users
+  'mysql/users': {
+    url: '/mysql/users',
+    before: onlyRows('#users-table', ['wp_blog_user', 'shop_admin']),
+    prepare: rename(MYSQL_USERS, '#users-table'),
+    shots: [
+      {
+        name: 'list',
+        alt: 'MySQL Users page listing database users with Change Password and Delete buttons',
+        crop: 'content',
+      },
+      {
+        name: 'delete',
+        alt: 'Delete button turned into a Confirm button with a countdown after the first click',
+        prepare: click('#users-table tbody tr:first-of-type button.btn-danger', 300),
+        crop: { from: '#users-table thead', to: '#users-table tbody tr:first-of-type' },
+      },
+      bulkShot('#users-table', ['wp_blog_user', 'shop_admin'], 'Two database users selected with the bulk actions bar offering Change password, Add to database, Remove from database and Delete', { keep: ['wp_blog_user', 'shop_admin'] }),
+    ],
+  },
+  'mysql/new_user': {
+    url: '/mysql/user',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Create MySQL User form with username and password fields and a password strength bar',
+        prepare: fill({ 'main input[name=db_user]': 'shop_admin', '#password': 'hT9#vQ2m!Lx7pR4z' }),
+        crop: 'content',
+      },
+    ],
+  },
+  'mysql/assign': {
+    url: '/mysql/assign',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Assign User to Database form with user and database dropdowns and a grid of privilege checkboxes',
+        prepare: all(
+          async page => {
+            await page.waitForFunction(() => document.querySelectorAll("select[name='db_user'] option").length > 1);
+            await page.selectOption("select[name='db_user']", 'stefan');
+            await page.selectOption("select[name='database_name']", 'stefan');
+            await page.waitForTimeout(1200);
+          },
+          rename(MYSQL_USERS, "select[name='db_user']"),
+          rename(MYSQL_DBS, "select[name='database_name']"),
+        ),
+        crop: 'content',
+      },
+    ],
+  },
+  'mysql/remove': {
+    url: '/mysql/remove',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Remove User from Database form with user and database dropdowns',
+        prepare: all(
+          async page => {
+            await page.waitForFunction(() => document.querySelectorAll('main select option').length > 2).catch(() => {});
+            const selects = page.locator('main select');
+            for (let i = 0; i < (await selects.count()); i++) {
+              const opts = await selects.nth(i).locator('option').evaluateAll(os => os.map(o => o.value).filter(Boolean));
+              if (opts.includes('stefan')) await selects.nth(i).selectOption('stefan');
+            }
+          },
+          rename(MYSQL_USERS, "main select[name='db_user']"),
+          rename(MYSQL_DBS, "main select:not([name='db_user'])"),
+        ),
+        crop: 'content',
+      },
+    ],
+  },
+  'mysql/password': {
+    url: '/mysql/password/stefan',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Change User Password form with the username prefilled and a new password field',
+        prepare: all(rename(MYSQL_USERS), fill({ '#new_password': 'hT9#vQ2m!Lx7pR4z' })),
+        crop: 'content',
+      },
+    ],
+  },
+  'mysql/wizard': {
+    url: '/mysql/wizard',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Database Wizard with steps to create a database, create a user with a password, and a preview of the GRANT statement',
+        prepare: async page => {
+          const inputs = page.locator('main input[type=text]:visible');
+          const values = ['shop_db', 'shop_admin', 'hT9#vQ2m!Lx7pR4z'];
+          for (let i = 0; i < Math.min(3, await inputs.count()); i++) await inputs.nth(i).fill(values[i]);
+          await page.waitForTimeout(300);
+        },
+        crop: 'content',
+      },
+    ],
+  },
+  'mysql/import': {
+    url: '/mysql/import',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Import into Database form with a database dropdown and a file picker for the .sql file',
+        prepare: all(
+          async page => {
+            const sel = page.locator('main select').first();
+            await page.waitForFunction(() => document.querySelectorAll('main select option').length > 1).catch(() => {});
+            await sel.selectOption({ index: 1 }).catch(() => {});
+          },
+          rename(MYSQL_DBS, 'main select'),
+        ),
+        crop: 'content',
+      },
+    ],
+  },
+  'mysql/phpmyadmin': {
+    url: '/mysql',
+    prepare: mysqlFixtures,
+    shots: [
+      {
+        name: 'button',
+        alt: 'phpMyAdmin button with its tooltip in the actions of a database row',
+        prepare: async page => {
+          await page.locator('#databases-table tbody tr:first-of-type a[href^="/phpmyadmin"]').hover();
+          await page.waitForTimeout(400);
+        },
+        crop: { from: '#databases-table thead', to: 'main div.absolute:has-text("phpMyAdmin") >> visible=true', pad: 12 },
+      },
+    ],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs mysql/processlist
+  'mysql/processlist': {
+    url: '/mysql/processlist',
+    shots: [
+      { name: 'list', alt: 'MySQL Processes table with the Refresh Processes button and the currently running queries', crop: 'content' },
+      bulkShot('#processlist-table', 2, 'Two running queries selected with the bulk actions bar offering Kill'),
+    ],
+  },
+  // needs remote access enabled and a user with two allowed hosts, bulk actions are new in 2.0.12:
+  // PANEL_URL=https://host:2083 node shoot.mjs mysql/remote_access
+  'mysql/remote_access': {
+    url: '/mysql/remote-mysql',
+    before: onlyRows('#remote-access-table', ['wp_blog_user@203', 'wp_blog_user@198']),
+    shots: [
+      bulkShot('#remote-access-table', 2, 'Two allowed hosts of a user selected in the remote access list with the bulk actions bar offering Remove access', { keep: ['wp_blog_user@203', 'wp_blog_user@198'] }),
+    ],
+  },
+  'mysql/remote': {
+    url: '/mysql/remote-mysql',
+    prepare: rename({ '185.241.214.25': '203.0.113.10' }),
+    shots: [
+      {
+        name: 'page',
+        alt: 'Remote Access page showing remote access as Disabled with the Enable Remote Database Access button',
+        crop: 'content',
+      },
+      {
+        name: 'status',
+        alt: 'Remote access Status row showing Disabled with the Click to Enable button',
+        crop: { from: 'main .m-6 section:nth-of-type(1)', pad: 24 },
+      },
+      {
+        name: 'connection',
+        alt: 'Remote and Local connection details with the server address and port for each',
+        crop: { from: 'main .m-6 section:nth-of-type(2)', to: 'main .m-6 section:nth-of-type(3)', pad: 24 },
+      },
+    ],
+  },
+  'mysql/root-password': {
+    url: '/mysql/root-password',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Change MySQL root password form with a new password field and a password strength bar',
+        prepare: async page => {
+          await page.locator('main input:not([type=hidden])').first().fill('hT9#vQ2m!Lx7pR4z');
+          await page.waitForTimeout(300);
+        },
+        crop: 'content',
+      },
+    ],
+  },
+  'mysql/configuration': {
+    url: '/mysql/configuration',
+    shots: [
+      {
+        name: 'page',
+        alt: 'MySQL Configuration page with a table of settings, editable values and the Save Changes button',
+        crop: { from: 'main section > div:first-child', to: 'main table tbody tr:nth-of-type(9)' },
+      },
+    ],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs postgresql/databases
+  'postgresql/databases': {
+    url: '/postgresql',
+    before: onlyRows('#databases-table', ['wp_blog', 'shop_db']),
+    prepare: rename(PG_NAMES),
+    shots: [
+      { name: 'list', alt: 'PostgreSQL Databases page listing databases with their size, assigned users and actions', crop: 'content' },
+      {
+        name: 'delete',
+        alt: 'Delete button turned into a Confirm button with a countdown after the first click',
+        prepare: click('#databases-table tbody tr:first-of-type button.btn-danger', 300),
+        crop: { from: '#databases-table thead', to: '#databases-table tbody tr:first-of-type' },
+      },
+      bulkShot('#databases-table', ['wp_blog', 'shop_db'], 'Two PostgreSQL databases selected with the bulk actions bar offering Export, Assign user, Remove user and Delete', { keep: ['wp_blog', 'shop_db'] }),
+    ],
+  },
+  'postgresql/new_db': {
+    url: '/postgresql/new',
+    shots: [{ name: 'form', alt: 'Create PostgreSQL Database form with the database name field', prepare: fillVisible(['shop_db']), crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs postgresql/users
+  'postgresql/users': {
+    url: '/postgresql/users',
+    prepare: rename(PG_NAMES),
+    shots: [
+      { name: 'list', alt: 'PostgreSQL Users page listing database users with Change Password and Delete buttons', crop: 'content' },
+      {
+        name: 'delete',
+        alt: 'Delete button turned into a Confirm button with a countdown after the first click',
+        prepare: click('#users-table tbody tr:first-of-type button.btn-danger', 300),
+        crop: { from: '#users-table thead', to: '#users-table tbody tr:first-of-type' },
+      },
+      bulkShot('#users-table', ['wp_blog_user', 'shop_admin'], 'Two PostgreSQL users selected with the bulk actions bar offering Change password, Add to database, Remove from database and Delete'),
+    ],
+  },
+  'postgresql/new_user': {
+    url: '/postgresql/user',
+    shots: [{ name: 'form', alt: 'Create PostgreSQL User form with username and password fields and a password strength bar', prepare: fillVisible(['shop_admin', PASSWORD]), crop: 'content' }],
+  },
+  'postgresql/assign': {
+    url: '/postgresql/assign',
+    shots: [{ name: 'form', alt: 'Assign User to Database form with user and database dropdowns', prepare: all(selectFirst(1200), rename(PG_NAMES)), crop: 'content' }],
+  },
+  'postgresql/remove': {
+    url: '/postgresql/remove',
+    shots: [{ name: 'form', alt: 'Remove User from Database form with user and database dropdowns', prepare: all(selectFirst(), rename(PG_NAMES)), crop: 'content' }],
+  },
+  'postgresql/password': {
+    url: '/postgresql/password/postgreuser',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Change User Password form with the username prefilled and a new password field',
+        prepare: all(rename(PG_NAMES), async page => {
+          await page.locator('main input:visible').last().fill(PASSWORD);
+          await page.waitForTimeout(300);
+        }),
+        crop: 'content',
+      },
+    ],
+  },
+  'postgresql/wizard': {
+    url: '/postgresql/wizard',
+    shots: [
+      {
+        name: 'form',
+        alt: 'PostgreSQL Database Wizard with steps to create a database, create a user with a password, and a preview of the GRANT statement',
+        prepare: fillVisible(['shop_db', 'shop_admin', PASSWORD]),
+        crop: 'content',
+      },
+    ],
+  },
+  'postgresql/import': {
+    url: '/postgresql/import',
+    shots: [{ name: 'form', alt: 'Import into PostgreSQL Database form with a database dropdown and a file picker', prepare: all(selectFirst(), rename(PG_NAMES)), crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs postgresql/processlist
+  'postgresql/processlist': {
+    url: '/postgresql/processlist',
+    shots: [
+      { name: 'list', alt: 'PostgreSQL Processes table listing the active backend processes', crop: 'content' },
+      { ...bulkShot('#processlist-table', 2, 'Two running queries selected with the bulk actions bar offering Kill'), before: firstRows('#processlist-table', 9) },
+    ],
+  },
+  'postgresql/remote': {
+    url: '/postgresql/remote-postgresql',
+    prepare: rename(DEMO_IP),
+    shots: [
+      { name: 'page', alt: 'Remote PostgreSQL Access page showing remote access as Disabled with the Enable Remote PostgreSQL Access button', crop: 'content' },
+      { name: 'status', alt: 'Remote access Status row showing Disabled with the Click to Enable button', crop: { from: 'main .m-6 section:nth-of-type(1)', pad: 24 } },
+      {
+        name: 'connection',
+        alt: 'Remote and Local PostgreSQL connection details with the server address and port for each',
+        crop: { from: 'main .m-6 section:nth-of-type(2)', to: 'main .m-6 section:nth-of-type(3)', pad: 24 },
+      },
+    ],
+  },
+  'postgresql/configuration': {
+    url: '/postgresql/configuration',
+    shots: [
+      {
+        name: 'page',
+        alt: 'PostgreSQL Configuration page with a table of settings, editable values and the Save Changes button',
+        crop: { from: 'main section > div:first-child', to: 'main table tbody tr:nth-of-type(9)' },
+      },
+    ],
+  },
+  'account/account': {
+    url: '/account',
+    prepare: rename(DEMO_HOST),
+    shots: [{ name: 'form', alt: 'Email & Password page with the email address, new password and confirm password fields', crop: 'content' }],
+  },
+  'account/2fa': {
+    url: '/account/2fa',
+    shots: [{ name: 'page', alt: 'Two-Factor Authentication page showing 2FA as disabled with the Click to enable 2FA button', crop: 'content' }],
+  },
+  'account/passkeys': {
+    url: '/account/passkeys',
+    shots: [{ name: 'page', alt: 'Passkeys page with the Add a passkey button and the list of registered passkeys', crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs account/sessions
+  'account/sessions': {
+    url: '/account/sessions',
+    prepare: maskIPs(),
+    shots: [
+      { name: 'list', alt: 'Active Sessions table with the IP address, creation time, online status and a Terminate action for each session', crop: 'content' },
+      { ...bulkShot('#sessions-table', 2, 'Two sessions selected with the bulk actions bar offering Terminate'), before: firstRows('#sessions-table', 4) },
+    ],
+  },
+  'account/login-history': {
+    url: '/account/login-history',
+    prepare: maskIPs(),
+    shots: [
+      {
+        name: 'list',
+        alt: 'Login History table with the country flag, IP address and login time of each successful login',
+        crop: { from: 'main section > div:first-child', to: 'main table tbody tr:nth-of-type(6)' },
+      },
+    ],
+  },
+  'account/activity': {
+    url: '/account/activity',
+    prepare: maskIPs(),
+    shots: [
+      {
+        name: 'list',
+        alt: 'Activity Log with type filter buttons, quick date ranges and a table of actions, each with a colored icon for its type',
+        crop: { from: 'main section > div:first-child', to: 'main table tbody tr:nth-of-type(8)' },
+      },
+      {
+        name: 'type-filter',
+        url: '/account/activity?type=danger',
+        alt: 'Activity Log filtered to Destructive actions, showing only deletions, removals and resets with a red trash icon',
+        crop: { from: '.activity-toolbar', to: 'main table tbody tr:nth-of-type(6)' },
+      },
+      {
+        name: 'date-range',
+        url: '/account/activity?from=2026-09-01&to=2026-09-23',
+        alt: 'Date range picker open with presets on the left, a two month calendar with the selected range highlighted, and Cancel and Apply buttons',
+        prepare: async page => {
+          await page.click('.dr-trigger');
+          await page.locator('.dr-pop').waitFor();
+          await page.waitForTimeout(250);
+        },
+        crop: { from: '.activity-toolbar', to: '.dr-pop', pad: 12 },
+      },
+    ],
+  },
+  'account/notifications': {
+    url: '/account/notifications',
+    prepare: rename({ 'stefan@test.rs': 'john@example.com' }, 'body'),
+    shots: [
+      { name: 'form', alt: 'Email Notifications page with a card and switch for each event, a Learn more link on each card and the Save Preferences button', crop: 'content' },
+      { name: 'login', alt: 'New login card with the Email me switch on and its two extra options, also for known IP addresses and email me if login alerts get turned off', prepare: markCard('New login'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'password', alt: 'Password changed card with the Email me switch and the option to get an email if this alert gets turned off', prepare: markCard('Password changed'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'twofa', alt: 'Two-factor authentication changed card with the Email me switch and the option to get an email if this alert gets turned off', prepare: markCard('Two-factor authentication changed'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'contact-email', alt: 'Contact email changed card with the Email me switch and the option to get an email if this alert gets turned off', prepare: markCard('Contact email changed'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'passkey', alt: 'Passkey added or removed card with the Email me switch and the option to get an email if this alert gets turned off', prepare: markCard('Passkey added or removed'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'api-token', alt: 'API token created or revoked card with the Email me switch and the option to get an email if this alert gets turned off', prepare: markCard('API token created or revoked'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'ssl', alt: 'SSL certificate problem card with the Email me switch and a Learn more link', prepare: markCard('SSL certificate problem'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'malware', alt: 'Malware found card with the Email me switch and a Learn more link', prepare: markCard('Malware found'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'ratelimit', alt: 'Hourly email limit reached card with the Email me switch and a Learn more link', prepare: markCard('Hourly email limit reached'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'service', alt: 'Service stopped card with the Email me switch and a Learn more link', prepare: markCard('Service stopped'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'disk', alt: 'Disk space running out card with the Email me switch and a Learn more link', prepare: markCard('Disk space running out'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'mailbox', alt: 'Mailbox almost full card with the Email me switch and a Learn more link', prepare: markCard('Mailbox almost full'), crop: { from: '[data-shot=card]', pad: 12 } },
+      // new in 2.0.16, shot on a test server with PANEL_URL until the demo has them
+      { name: 'wp-vulnerability', alt: 'Vulnerable WordPress site card with the Email me switch and a Learn more link', prepare: markCard('Vulnerable WordPress site'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'visitors-blocked', alt: 'Visitors blocked by rate limit card with the Email me switch and a Learn more link', prepare: markCard('Visitors blocked by rate limit'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'daily-summary', alt: 'Daily summary card with the Email me switch and a Learn more link', prepare: markCard('Daily summary'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'error-report', alt: 'Daily error report card with the Email me switch and a Learn more link', prepare: markCard('Daily error report'), crop: { from: '[data-shot=card]', pad: 12 } },
+    ],
+  },
+  // Error Logs and Daily Summary are new in 2.0.16, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs statistics/error_logs statistics/daily_summary statistics/daily_summary-toast applications/wordpress-errors
+  'statistics/error_logs': {
+    url: '/error-logs?from=2026-10-15&to=2026-10-15&tz=0',
+    // one row per service and severity reads better than 98 rows of the same 502
+    before: async page => {
+      await page.evaluate(() => {
+        const seen = new Set();
+        document.querySelectorAll('#errorLogsTable tbody tr').forEach(tr => {
+          const key = tr.children[2].textContent.trim() + '|' + tr.children[3].textContent.trim();
+          if (seen.has(key) || seen.size >= 8) tr.remove(); else seen.add(key);
+        });
+      });
+    },
+    shots: [
+      { name: 'page', alt: 'Error Logs page with the website, service, severity, search and date filters above a table of errors with their time, severity, service, website and message', crop: 'content' },
+      { name: 'filters', alt: 'Error Logs filters: website with subfolder sites, service, severity, search, the date range picker and the Apply and Reset buttons', crop: { from: '#errorLogsFilters', pad: 12 } },
+      bulkShot('#errorLogsTable', 2, 'Two errors selected with the bulk actions bar offering Copy and Download'),
+    ],
+  },
+  'statistics/daily_summary': {
+    url: '/summary/2026-10-16',
+    shots: [
+      { name: 'page', alt: 'Daily Summary with the day in one sentence, requests, unique IPs, bandwidth, error pages and firewall blocks, the problems found with a button to fix each one, and the All good list', crop: 'content', viewportHeight: 1000 },
+      { name: 'websites', alt: 'Websites card listing each website by requests with its unique IPs, bandwidth, 404s and firewall blocks', prepare: markCard('Websites'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'usage', alt: 'Resource Usage card with disk space, files and folders, CPU and memory at the busiest hour as bars, next to the panel logins with country flags, then the changes made to the account', prepare: async page => { await page.evaluate(() => { const h = [...document.querySelectorAll('main h2')].find(e => e.textContent.trim() === 'Resource Usage'); h.parentElement.parentElement.setAttribute('data-shot', 'section'); }); }, crop: { from: '[data-shot=section]', pad: 12 } },
+    ],
+  },
+  'statistics/daily_summary-toast': {
+    as: 'statistics/daily_summary',
+    url: '/dashboard',
+    shots: [
+      {
+        name: 'toast',
+        alt: 'Dashboard toast saying yesterday\'s summary found something to check, with the number of items that need attention and worth a look and a View summary button',
+        // the toast shows once per summary, so forget that it was shown
+        prepare: async page => {
+          await page.evaluate(() => localStorage.removeItem('summary_toast_date'));
+          await page.reload();
+          await page.waitForSelector('#toast-container > *:visible', { timeout: 10000 });
+          await page.evaluate(() => document.getElementById('toast-container').setAttribute('data-keep', ''));
+          await page.waitForTimeout(600);
+        },
+        crop: { from: '#toast-container > *:visible', pad: 12, clamp: false },
+      },
+    ],
+  },
+  'applications/wordpress-errors': {
+    as: 'applications/wordpress',
+    url: '/website?domain=wp.tests.davpanel.com',
+    prepare: async page => { await page.waitForTimeout(2500); },
+    shots: [
+      { name: 'debugging', alt: 'Debugging tab with the latest errors of the site at the top, then the toggles for WP_DEBUG, WP_DEBUG_LOG, WP_DEBUG_DISPLAY, SCRIPT_DEBUG and SAVEQUERIES', prepare: all(tab('Debugging'), async page => { await page.waitForTimeout(3000); }), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+      { name: 'debugging-errors', alt: 'Error Logs section of the Debugging tab listing the site\'s latest errors with their severity, time and service, with View Logs and Refresh links', prepare: all(tab('Debugging'), async page => { await page.waitForTimeout(3000); }, markSection('Error Logs')), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs account/favorites
+  'account/favorites': {
+    url: '/account/favorites',
+    before: rename({ 'Kontrolna tabla': 'Dashboard' }),
+    shots: [
+      { name: 'list', alt: 'Favorites table listing saved pages with their title, link and a Delete action', crop: 'content' },
+      { ...bulkShot('#favorites-table', ['cronjobs', 'mysql'], 'Two favorites selected with the bulk actions bar offering Delete'), before: rename({ 'Kontrolna tabla': 'Dashboard' }) },
+    ],
+  },
+  'account/language': {
+    url: '/account/language',
+    shots: [{ name: 'page', alt: 'Change Language page with a card for each language showing its flag, native and English name, the current one highlighted', crop: 'content' }],
+  },
+  'account/api': {
+    url: '/account/api',
+    prepare: async page => {
+      await page.locator('.swagger-ui .opblock').first().waitFor({ timeout: 15000 }).catch(() => {});
+    },
+    shots: [{ name: 'page', alt: 'API Reference page with the interactive DavPanel API documentation and the Download spec button', crop: { content: 'main', maxHeight: 900 } }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs account/mcp
+  'account/mcp': {
+    url: '/account/mcp',
+    prepare: rename(DEMO_HOST),
+    shots: [
+      { name: 'page', alt: 'MCP page with the token generator and connection snippets for Claude Code and Claude Desktop', crop: 'content' },
+      { ...bulkShot('#mcp-tokens-table', 2, 'Two MCP tokens selected with the bulk actions bar offering Revoke'), before: maskTokens },
+    ],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs domains/domains
+  'domains/domains': {
+    url: '/domains',
+    shots: [
+      { name: 'list', alt: 'Domains page listing domains with their status, PHP version, SSL certificate and WAF toggle', prepare: hideColumns(['docroot']), crop: 'content' },
+      {
+        name: 'filters',
+        alt: 'Status filter open next to Show Columns, with the PHP Version, SSL, Type and Redirect filters beside it',
+        prepare: click('.relative:has(> div input[name=domain-filter-status]) > button'),
+        crop: { content: 'main [x-model="searchQuery"]', maxHeight: 260 },
+      },
+      {
+        name: 'cloudflare',
+        alt: 'Domain restricted to Cloudflare with the orange cloud icon next to its name',
+        prepare: all(hideColumns(['docroot']), onlyRows('#domains-table', ['files.tests.davpanel.com', 'php.tests.davpanel.com', 'nodejs.tests.davpanel.com'])),
+        crop: { from: 'main table thead', to: 'main table tbody', pad: 0 },
+      },
+      {
+        name: 'actions',
+        alt: 'Actions menu of a domain with Edit DNS Zone, Manage WAF, Remove Cloudflare restriction, Change docroot, Edit VirtualHosts, Capitalize, Suspend and Delete',
+        prepare: async page => {
+          // hide the wide columns so the Actions column fits without horizontal scrolling
+          await hideColumns(['docroot', 'php', 'site_count', 'redirect', 'ssl', 'waf'])(page);
+          await page.locator('#dropdownHoverButton-0').hover();
+          await page.waitForTimeout(500);
+        },
+        crop: { from: 'main table thead', to: '#dropdownHover-0', pad: 12 },
+      },
+      bulkShot('#domains-table', ['wp.tests.davpanel.com'], 'A domain selected with the bulk actions bar offering Suspend, Unsuspend, Change PHP version, Redirect to, Remove redirect, WAF, Cloudflare and Delete', { keep: ['wp.tests.davpanel.com', 'php.tests.davpanel.com', 'nodejs.tests.davpanel.com'] }),
+      bulkShot('#domains-table', ['wp.tests.davpanel.com'], 'Cloudflare bulk action asking whether to restrict the selected domains to Cloudflare or unrestrict them', { action: 'cloudflare', name: 'bulk-cloudflare', keep: ['wp.tests.davpanel.com', 'php.tests.davpanel.com', 'nodejs.tests.davpanel.com'] }),
+    ],
+  },
+  'domains/new': {
+    url: '/domains/new',
+    shots: [
+      {
+        name: 'form',
+        alt: 'New Domain form with the domain name and document root fields',
+        prepare: async page => {
+          await page.locator('main input:visible').first().fill('mycoffeeshop.com');
+          await page.waitForTimeout(500);
+        },
+        crop: 'content',
+      },
+    ],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs domains/dns
+  'domains/dns': {
+    url: '/domains/edit-dns-zone/example.test.rs',
+    shots: [
+      {
+        name: 'list',
+        alt: 'DNS zone editor listing A, MX, CNAME and TXT records with Edit and Delete buttons',
+        crop: { from: 'main', to: 'main table tbody tr:nth-of-type(9)', fromTop: true },
+      },
+      { ...bulkShot('#filemanager_table', 2, 'Two DNS records selected with the bulk actions bar offering Update TTL and Delete'), before: firstRows('#filemanager_table', 6) },
+    ],
+  },
+  'domains/ssl': {
+    url: '/domains/ssl?domain_name=wp.tests.davpanel.com',
+    shots: [
+      { name: 'page', alt: 'SSL page for a domain with the AutoSSL status, the Generate now button, and the certificate details and files', crop: { from: 'main', to: 'main .m-6 section:nth-of-type(3)', fromTop: true, pad: 24 } },
+      { name: 'custom', alt: 'Configure custom SSL form with fields for the certificate and the private key', crop: { from: 'main .m-6 section:nth-of-type(4)', pad: 24 } },
+      { name: 'status', alt: 'SSL Status row showing Auto SSL with the Generate now button', crop: { from: 'main .m-6 section:nth-of-type(1)', pad: 24 } },
+    ],
+  },
+  'domains/redirects': {
+    url: '/domains/redirect?domain=redirect.tests.davpanel.com',
+    shots: [{ name: 'form', alt: 'Redirect Domain to URL form with the destination URL field and the Save Redirect button', crop: 'content' }],
+  },
+  'domains/docroot': {
+    url: '/domains/docroot?domain_name=wp.tests.davpanel.com',
+    shots: [{ name: 'form', alt: 'Change docroot form with the document root folder field', crop: 'content' }],
+  },
+  'domains/vhosts': {
+    url: '/domains/vhosts?domain=wp.tests.davpanel.com',
+    shots: [{ name: 'editor', alt: 'VirtualHosts file editor showing the domain configuration with the Save Changes button', crop: { content: 'main', maxHeight: 760 } }],
+  },
+  'domains/logs': {
+    url: '/domains/log/wp.tests.davpanel.com',
+    shots: [
+      {
+        name: 'list',
+        alt: 'Domain Logs table with the timestamp, client IP, method and requested URI of each request',
+        crop: { from: 'main section > div:first-child', to: 'main table tbody tr:nth-of-type(10)' },
+      },
+    ],
+  },
+  'domains/dynamic-dns': {
+    url: '/domains/dynamic-dns',
+    prepare: async page => {
+      // the update token is a live credential on the demo
+      await page.evaluate(() => document.querySelectorAll('main *').forEach(el => {
+        for (const n of el.childNodes) if (n.nodeType === 3) n.textContent = n.textContent.replace(/token=[^\s&"]+/g, 'token=a1b2c3d4e5f6…');
+      }));
+    },
+    shots: [{ name: 'list', alt: 'Dynamic DNS page listing entries with their subdomain, record type, IP, TTL and update URL', crop: 'content' }],
+  },
+  'domains/capitalize': {
+    url: '/domains/capitalize/to-be-removed.com',
+    prepare: async page => {
+      await page.evaluate(() => {
+        const box = document.getElementById('letters-container');
+        const tpl = box.firstElementChild;
+        const word = 'MyCoffeeShop.com';
+        box.innerHTML = '';
+        for (const ch of word) {
+          const b = tpl.cloneNode();
+          b.textContent = ch;
+          b.classList.remove('border-blue-500', 'border-transparent');
+          b.classList.add(/[A-Z]/.test(ch) ? 'border-blue-500' : 'border-transparent');
+          box.appendChild(b);
+        }
+        document.querySelectorAll('main .punycode').forEach(e => (e.textContent = 'mycoffeeshop.com'));
+      });
+    },
+    shots: [{ name: 'page', alt: 'Capitalize page with one button per letter, the capitalized letters of MyCoffeeShop.com underlined', crop: 'content' }],
+  },
+  'domains/suspend': {
+    url: '/domains/suspend?domain=wp.tests.davpanel.com',
+    shots: [{ name: 'form', alt: 'Suspend domain confirmation with an optional reason field and the Confirm Suspend button', crop: 'content' }],
+  },
+  'domains/unsuspend': {
+    url: '/domains/unsuspend?domain=website-builder.tests.davpanel.com',
+    shots: [{ name: 'form', alt: 'Unsuspend domain confirmation with the Confirm Unsuspend button', crop: 'content' }],
+  },
+  'domains/goaccess': {
+    url: '/domains/stats/wp.tests.davpanel.com',
+    prepare: async page => {
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.waitForTimeout(1500);
+    },
+    shots: [{ name: 'report', alt: 'GoAccess report for a domain with request totals, unique visitors and a chart of daily visitors', crop: { from: '#overall', pad: 16, clamp: false, height: 760 } }],
+  },
+  'domains/delete': {
+    url: '/domains/delete?domain=to-be-removed.com',
+    shots: [{ name: 'form', alt: 'Delete domain confirmation page with the Delete Domain button', crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs emails/emails
+  'emails/emails': {
+    url: '/emails',
+    before: onlyRows('#email-accounts', ['info@', 'sales@', 'john@']),
+    shots: [
+      { name: 'list', alt: 'Email Accounts page listing mailboxes with their storage usage and the Webmail, Manage and Connect Devices buttons', crop: 'content' },
+      {
+        name: 'buttons',
+        alt: 'Webmail, Manage and Connect Devices buttons in the row of an email account',
+        crop: { from: 'main table thead', to: 'main table tbody tr:first-of-type' },
+      },
+      bulkShot('#email-accounts', ['info@example.test.rs', 'sales@example.test.rs'], 'Two email accounts selected with the bulk actions bar offering suspend and unsuspend of incoming and outgoing email, Change quota, Change password and Delete', { keep: ['info@', 'sales@', 'john@'] }),
+    ],
+  },
+  'emails/new': {
+    url: '/emails/new',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Create an Email form with the domain, username, password and storage quota fields',
+        prepare: async page => {
+          await page.locator('main input[placeholder="info"], main input[name=email_username], main input[name=username]').first().fill('john').catch(() => {});
+          await page.waitForTimeout(300);
+        },
+        crop: 'content',
+      },
+    ],
+  },
+  'emails/edit': {
+    url: '/emails/edit/info@wp.tests.davpanel.com',
+    shots: [{ name: 'form', alt: 'Edit Email account page with storage quota, incoming and outgoing mail toggles and a password field', crop: 'content' }],
+  },
+  'emails/connect': {
+    url: '/emails/info/info@wp.tests.davpanel.com',
+    prepare: rename(MAIL_HOST),
+    shots: [{ name: 'page', alt: 'Connect Devices page with the username, incoming and outgoing servers and the IMAP and SMTP ports', crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs emails/aliases
+  'emails/aliases': {
+    url: '/emails/aliases',
+    shots: [
+      { name: 'list', alt: 'Aliases page listing alias addresses and the addresses they deliver to', crop: 'content' },
+      bulkShot('#aliases-table', 2, 'Two aliases selected with the bulk actions bar offering Add destination and Delete'),
+    ],
+  },
+  'emails/aliases_new': {
+    url: '/emails/aliases/new',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Create an Alias form with the domain, alias address and destination address fields',
+        prepare: all(selectFirst(400), fillVisible(['sales', 'team@example.org'])),
+        crop: 'content',
+      },
+    ],
+  },
+  'emails/default': {
+    url: '/emails/default/wp.tests.davpanel.com',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Default Email Address page with the current catch-all configuration and the destination address field',
+        prepare: fillVisible(['info@wp.tests.davpanel.com']),
+        crop: 'content',
+      },
+    ],
+  },
+  'emails/filters': {
+    url: '/emails/filter/info@wp.tests.davpanel.com/gui',
+    shots: [
+      { name: 'page', alt: 'Email Filters page with no filters yet and the Create first filter button', crop: 'content' },
+      {
+        name: 'rule',
+        alt: 'An email filter that moves messages whose subject contains newsletter into the Newsletters folder',
+        prepare: all(click('main button:has-text("Create first filter")', 600), fillVisible(['Newsletters', 'newsletter', 'Newsletters'])),
+        crop: 'content',
+      },
+    ],
+  },
+  'emails/deliverability': {
+    url: '/emails/deliverability/wp.tests.davpanel.com',
+    prepare: async page => {
+      await page.waitForFunction(() => !document.querySelector('main').innerText.includes('Checking DNS records'), null, { timeout: 30000 }).catch(() => {});
+      await page.waitForTimeout(500);
+    },
+    shots: [{ name: 'page', alt: 'Email Deliverability details for a domain comparing the current and expected SPF, DKIM and DMARC records', crop: 'content' }],
+  },
+  'emails/deliverability_list': {
+    url: '/emails/deliverability',
+    prepare: async page => {
+      await page.waitForFunction(() => !document.querySelector('main').innerText.includes('Checking'), null, { timeout: 30000 }).catch(() => {});
+      await page.waitForTimeout(500);
+    },
+    shots: [{ name: 'list', alt: 'Email Deliverability overview listing domains with the status of their email DNS records', crop: 'content' }],
+  },
+  'emails/import': {
+    url: '/emails/import',
+    shots: [{ name: 'form', alt: 'Import Emails form with the file picker for a CSV, XLSX or XLS file and the Upload button', crop: 'content' }],
+  },
+  // email_migrate is new in 2.0.18, until the demo has it: PANEL_URL=https://host:2083 node shoot.mjs emails/migrate
+  'emails/migrate': {
+    url: '/emails/migrate',
+    prepare: rename(MIGRATE_NAMES, 'body'),
+    shots: [
+      {
+        name: 'form',
+        alt: 'Migrate Emails form with the source server, security, port, username and password fields, the destination account and the Test connection and Start migration buttons',
+        prepare: async page => {
+          await page.fill('#source_host', 'mail.oldhost.com');
+          await page.fill('#source_user', 'info@oldhost.com');
+          await page.fill('#source_password', PASSWORD);
+          await page.selectOption('#destination', 'dst-test@shared.tests.davpanel.com');
+          await page.fill('#destination_password', PASSWORD);
+          await page.evaluate(() => document.activeElement.blur());
+          // what a passed Test connection leaves under the form, the test itself is a POST
+          await page.evaluate(() => {
+            const box = document.getElementById('migrateTestResult');
+            box.className = 'mt-6 rounded border p-3 text-sm border-green-200 bg-green-50 text-green-800 dark:border-gray-800 dark:bg-green-900 dark:text-green-300';
+            box.replaceChildren(...['Source server: login successful', 'Destination account: login successful'].map(t => Object.assign(document.createElement('p'), { textContent: t })));
+          });
+        },
+        crop: { from: '#migrateFormCard' },
+      },
+      {
+        name: 'running',
+        alt: 'Migration in progress with the live imapsync log and the Cancel button',
+        // a real run of a small mailbox is over in a second, so the running card gets a log in imapsync's format
+        prepare: async page => {
+          await page.evaluate(log => {
+            document.getElementById('migrateFormCard').classList.add('hidden');
+            document.getElementById('migrateRunning').classList.remove('hidden');
+            document.getElementById('migrateRunningInfo').textContent = 'info@oldhost.com (mail.oldhost.com) → info@example.com';
+            const pre = document.getElementById('migrateLiveLog');
+            pre.textContent = log;
+            pre.scrollTop = pre.scrollHeight;
+          }, MIGRATE_LOG);
+        },
+        crop: { from: '#migrateRunning' },
+      },
+      {
+        name: 'history',
+        alt: 'Recent migrations table with a failed and a completed migration and the log of the completed one',
+        prepare: async page => {
+          await page.locator('#migrateHistory a:has-text("View log")').nth(1).click();
+          await page.waitForTimeout(800);
+          await rename(MIGRATE_NAMES, 'body')(page);
+          await page.evaluate(() => { const pre = document.getElementById('migrateLogView'); pre.scrollTop = pre.scrollHeight; });
+        },
+        crop: { from: '#migrateHistory' },
+      },
+    ],
+  },
+  'emails/delete': {
+    url: '/emails/delete/info@wp.tests.davpanel.com',
+    shots: [{ name: 'form', alt: 'Delete email account confirmation for the selected address', crop: 'content' }],
+  },
+  'emails/aliases_manage': {
+    url: '/emails/aliases/aliasexample@wp.tests.davpanel.com',
+    shots: [{ name: 'page', alt: 'Manage alias page listing its destination addresses with Remove buttons and a field to add a destination', crop: 'content' }],
+  },
+  'files/files': {
+    url: '/files',
+    // these UX changes are new in 2.0.14, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs files/files files/files_more files/files_drop files/files_modern
+    before: fmFixture,
+    shots: [
+      { name: 'list', alt: 'File Manager listing the folders and files in /var/www/html with their size, modification date and permissions', crop: 'content' },
+      {
+        name: 'new-file',
+        alt: 'New file row at the top of the table with the file name typed in, the Open in File Editor checkbox, and the Create and Cancel buttons',
+        prepare: async page => {
+          await page.locator('#newFileButton').click();
+          await page.locator('#filename').fill('robots.txt');
+          await page.waitForTimeout(300);
+        },
+        crop: { from: 'main table thead', to: 'tr[data-file="index.php"]', pad: 8 },
+      },
+      {
+        name: 'new-folder',
+        alt: 'New folder row at the top of the table with the folder name typed in and the Create and Cancel buttons',
+        prepare: async page => {
+          await page.locator('#newFolderButton').click();
+          await page.locator('#foldername').fill('images');
+          await page.waitForTimeout(300);
+        },
+        crop: { from: 'main table thead', to: 'tr[data-file="index.php"]', pad: 8 },
+      },
+      {
+        name: 'upload',
+        alt: 'Upload area opened above the file list with two dropped files listed by name and size, waiting for the Upload button to be clicked',
+        prepare: async page => {
+          // a fake drop with in-memory files, the page only lists them and waits for confirmation
+          await page.evaluate(() => {
+            const dt = new DataTransfer();
+            dt.items.add(new File(['x'.repeat(48213)], 'logo.png', { type: 'image/png' }));
+            dt.items.add(new File(['x'.repeat(1843)], 'contact.html', { type: 'text/html' }));
+            document.body.dispatchEvent(new DragEvent('drop', { bubbles: true, cancelable: true, dataTransfer: dt }));
+          });
+          await page.waitForTimeout(500);
+        },
+        crop: { from: 'main', to: '#upload_files_form', fromTop: true, pad: 24 },
+      },
+      {
+        name: 'buttons',
+        alt: 'File Manager toolbar with Select all, View, Edit, Download, Rename, Copy, Move, Compress, Extract, Permissions and Delete buttons',
+        prepare: fmSelect('index.php'),
+        crop: { from: '#mainButtons', pad: 8 },
+      },
+      {
+        name: 'context-menu',
+        alt: 'Right-click menu on a file with View, Edit, Download, Rename, Copy, Move, Compress, Permissions and Delete',
+        prepare: async page => {
+          await page.locator('tr[data-file="index.php"]').click({ button: 'right' });
+          await page.waitForTimeout(500);
+        },
+        crop: { from: 'main table thead', to: '#fmContextMenu', pad: 16 },
+      },
+      {
+        name: 'rename',
+        alt: 'Name of the selected file turned into an input with Save and Cancel buttons for renaming it in place',
+        prepare: all(fmSelect('index.php'), fmAction('renameButton')),
+        crop: { from: 'main table thead', to: 'tr[data-file="index.php"]', pad: 8 },
+      },
+      {
+        name: 'permissions',
+        alt: 'Permissions of three selected items being edited in place, the first row has the octal input with Save and Cancel and the other rows show the typed value',
+        prepare: all(fmSelect('index.php', 'site-backup.zip', 'notes.txt'), fmAction('permButton'), async page => {
+          await page.locator('.fm-inline-input').fill('');
+          await page.locator('.fm-inline-input').pressSequentially('640', { delay: 40 });
+          await page.waitForTimeout(300);
+        }),
+        crop: { from: 'main table thead', to: 'tr[data-file="notes.txt"]', pad: 8 },
+      },
+      {
+        name: 'compress',
+        alt: 'Compress dialog with the archive name and format, a folder browser to pick where the archive is saved, and the Compress button',
+        prepare: all(fmSelect('index.php', 'notes.txt'), fmAction('compressButton'), pickerReady),
+        crop: PICKER_CROP,
+      },
+      {
+        name: 'extract',
+        alt: 'Extract dialog for an archive with the folder browser, the destination path and the option to extract into a new folder',
+        prepare: all(fmSelect('site-backup.zip'), fmAction('extractButton'), pickerReady, async page => {
+          await page.locator('#fmPickerSubfolder').check();
+        }),
+        crop: PICKER_CROP,
+      },
+    ],
+  },
+  'files/edit': {
+    url: '/file-manager/edit-file/index.php',
+    shots: [{ name: 'editor', alt: 'File editor with syntax highlighting and the Save button', viewportHeight: 420 }],
+  },
+  'files/upload': {
+    url: '/file-manager/upload',
+    shots: [{ name: 'form', alt: 'File Upload page with the drag and drop area and the Upload button', crop: 'content' }],
+  },
+  'files/wget': {
+    url: '/file-manager/upload?method=download',
+    shots: [{ name: 'form', alt: 'Download from URL page with the URL field and the Download button', prepare: fillVisible(['https://wordpress.org/latest.zip']), crop: 'content' }],
+  },
+  'files/trash': {
+    url: '/files.trash',
+    // inline restore/delete are new in 2.0.14, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs files/trash
+    // readable names for the test server's leftover trash items
+    prepare: rename({ radofol_11u8yy: 'old-theme', radozip_11u8yy: 'backup-2025.zip', 'smoke2.txt': 'notes.txt', claude_smoke_dir: 'docs' }, 'main'),
+    shots: [
+      { name: 'list', alt: 'Trash page listing deleted files with their deletion date and original path, and the Restore All, Restore, Delete All and Delete buttons', crop: { from: 'main', to: 'main table tbody tr:last-of-type', fromTop: true, pad: 24 } },
+      {
+        name: 'restore',
+        alt: 'Two trash items being restored, their rows greyed out except the name and an arrow pointing to the original path, with the Restore and Cancel buttons',
+        prepare: async page => {
+          const rows = page.locator('main table tbody tr.clickable-row');
+          await rows.nth(0).click();
+          await rows.nth(1).click({ modifiers: ['Control'] });
+          await page.waitForTimeout(300);
+          await page.evaluate(() => document.getElementById('restoreButton').click());
+          await page.waitForTimeout(400);
+        },
+        crop: { from: 'main table thead', to: 'main table tbody tr:last-of-type', pad: 8 },
+      },
+      {
+        name: 'delete',
+        alt: 'Two trash items crossed out in red with the Delete permanently and Cancel buttons',
+        prepare: async page => {
+          const rows = page.locator('main table tbody tr.clickable-row');
+          await rows.nth(0).click();
+          await rows.nth(1).click({ modifiers: ['Control'] });
+          await page.waitForTimeout(300);
+          await page.evaluate(() => document.getElementById('deleteTrashButton').click());
+          await page.waitForTimeout(400);
+        },
+        crop: { from: 'main table thead', to: 'main table tbody tr:last-of-type', pad: 8 },
+      },
+    ],
+  },
+  // quotas are new in 2.0.15, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs files/ftp files/ftp_new files/ftp_quota
+  'files/ftp': {
+    url: '/ftp',
+    shots: [
+      { name: 'list', alt: 'FTP Accounts page with the FTP server and port, and a table of accounts with their path, quota and configuration downloads', crop: 'content' },
+      bulkShot('#ftp-table', 2, 'Two FTP accounts selected with the bulk actions bar offering Change password, Change path, Change quota, Remove quota and Delete'),
+    ],
+  },
+  'files/ftp_new': {
+    url: '/ftp/new',
+    shots: [{
+      name: 'form',
+      alt: 'New FTP Account form with the username, domain, password, path and disk quota fields',
+      prepare: all(fillVisible(['deploy']), fill({ '#quota': '2' }), async page => page.selectOption('#quota_unit', 'G'),
+        // the domain select shows its options' label attribute, which rename() doesn't touch
+        async page => page.evaluate(map => document.querySelectorAll('#domain option[label]').forEach(o => o.label = map[o.label] || o.label), DOMAINS)),
+      crop: 'content',
+    }],
+  },
+  // FTP_QUOTA_USER picks an account on the server the page is shot from
+  'files/ftp_quota': {
+    url: `/ftp/quota/${process.env.FTP_QUOTA_USER || 'stefan@wp.tests.davpanel.com'}`,
+    shots: [{ name: 'form', alt: 'Change FTP quota form with the current quota and usage, and the quota field with a MB/GB unit', crop: 'content' }],
+  },
+  'files/ftp_connections': {
+    url: '/ftp/connections',
+    shots: [{ name: 'list', alt: 'FTP Connections page listing current FTP sessions', crop: 'content' }],
+  },
+  'files/ftp_password': {
+    url: '/ftp/password/stefan@wp.tests.davpanel.com',
+    shots: [{ name: 'form', alt: 'Change FTP password form with a new password field', crop: 'content' }],
+  },
+  'files/ftp_path': {
+    url: '/ftp/path/stefan@wp.tests.davpanel.com',
+    shots: [{ name: 'form', alt: 'Change FTP path form with the folder field', crop: 'content' }],
+  },
+  'files/backups': {
+    url: '/backups',
+    shots: [{ name: 'page', alt: 'Backups page with the three setup steps: connect a destination, configure settings, and set limits', crop: 'content' }],
+  },
+  'files/backups_destination': {
+    url: '/backups/destination',
+    shots: [{ name: 'page', alt: 'Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options', crop: 'content' }],
+  },
+  // needs a server with indexed backups, the demo has none: PANEL_URL=https://<test server>:2083
+  'files/backups_list': {
+    url: '/backups/list',
+    shots: [
+      { name: 'list', alt: 'Restore & Download overview with backup totals, a tile per type of data and the restore queue and logs', crop: 'content' },
+      { name: 'everything', url: '/backups/list?tab=full', alt: 'Everything tab listing backups with their contents and size, one selected with the Download and Restore buttons', prepare: all(bkRows(0), bkFirstRows(3), bkBar), crop: { content: 'nav[aria-label="Backup types"]' } },
+      { name: 'files', url: '/backups/list?tab=html', alt: 'Choose files dialog browsing a website files backup with a folder ticked for restore', prepare: bkPicker, crop: { from: '[x-show="picker.open"] > div', clamp: false } },
+      { name: 'domains', url: '/backups/list?tab=vhosts', alt: 'Domains tab with two domains selected, each tagged with VirtualHost, PHP version and DNS zone and a dropdown to pick the backup', prepare: all(bkRows(0, 1), bkFirstRows(4), bkBar), crop: { content: 'nav[aria-label="Backup types"]' } },
+      { name: 'summary', url: '/backups/list?tab=databases', alt: 'Restore Summary dialog listing the selected databases and the Restore Selected Items button', prepare: all(bkRows(0, 1), click('main button[aria-label="Restore"]', 600), BK_NAMES), crop: { from: '[x-show="summaryOpen"] > div', clamp: false } },
+      { name: 'logs', url: '/backups/list?tab=logs', alt: 'Logs tab with the latest restores, the backup each came from, how long it took and whether it worked', prepare: all(bkKeepRows([0, 1, 5, 9, 10]), BK_NAMES), crop: { content: 'nav[aria-label="Backup types"]' } },
+    ],
+  },
+  'files/backup-wizard': {
+    url: '/backup-wizard',
+    shots: [{ name: 'page', alt: 'Backup Wizard with the list of included items, the Generate Backup button and the existing backups', crop: 'content' }],
+  },
+  'files/disk_usage': {
+    url: '/disk-usage/',
+    prepare: async page => { await page.waitForTimeout(1000); },
+    shots: [{ name: 'page', alt: 'Disk Usage page with a table of folder sizes and a bar chart of disk usage per folder', crop: 'content' }],
+  },
+  'files/inodes': {
+    url: '/inodes-explorer/',
+    prepare: async page => { await page.waitForTimeout(1000); },
+    shots: [{ name: 'page', alt: 'Inodes Explorer page with a table of inode counts per folder and a bar chart', crop: 'content' }],
+  },
+  'files/fix_permissions': {
+    url: '/fix-permissions',
+    shots: [{ name: 'form', alt: 'Fix Permissions page with the directory field and the Fix Permissions button', crop: 'content' }],
+  },
+  // scan logs are new in 2.0.14, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs files/malware files/quarantine files/malware_logs
+  'files/malware': {
+    url: '/malware-scanner',
+    // the weekly quarantine reminder has its own shot below, keep it out of these
+    init: () => localStorage.setItem('malwareQuarantineToastAt', String(Date.now())),
+    shots: [
+      { name: 'form', alt: 'ClamAV Scanner page with the directory to scan and the Start Scan button', crop: 'content' },
+      {
+        name: 'scanning',
+        alt: 'Scan in progress with the radar spinner, the number of files scanned and the file being checked',
+        prepare: async page => {
+          await page.locator('#start-scan-btn').click();
+          await page.waitForFunction(() => Number(document.getElementById('scan-progress-count').textContent) > 20, null, { timeout: 30000 }).catch(() => {});
+          // freeze the progress line so the shot doesn't catch it mid-update
+          await page.evaluate(() => { window.handleScanLine = () => {}; });
+          await page.waitForTimeout(300);
+        },
+        crop: { from: '#scan-progress', pad: 12 },
+      },
+    ],
+  },
+  // the reminder toast only shows when the user has quarantined files: PANEL_URL=https://host:2083 node shoot.mjs files/malware_reminder
+  'files/malware_reminder': {
+    url: '/malware-scanner',
+    as: 'files/malware',
+    shots: [
+      {
+        name: 'reminder',
+        alt: 'Warning toast saying how many files are in quarantine, with a Review button that opens the Quarantine page',
+        prepare: async page => {
+          await page.waitForSelector('#toast-container > *:visible', { timeout: 10000 });
+          await page.evaluate(() => document.getElementById('toast-container').setAttribute('data-keep', ''));
+          await page.waitForTimeout(600);
+        },
+        crop: { from: '#toast-container > *:visible', pad: 12, clamp: false },
+      },
+    ],
+  },
+  // needs a scan with findings, e.g. drop an EICAR test file into the user's site and run `davcli files-malware_scan <user>`
+  'files/malware_logs': {
+    url: '/malware-scanner/logs',
+    shots: [
+      { name: 'list', alt: 'Scan Logs page listing past scans with their date, source, directory, number of files and result', prepare: async page => { await page.evaluate(() => [...document.querySelectorAll('#scan-logs-table > tbody')].slice(6).forEach(b => b.remove())); }, crop: 'content' },
+      {
+        name: 'details',
+        alt: 'Details of a scan listing the infected files and the malware found in each',
+        prepare: async page => {
+          await page.locator('#scan-logs-table tbody:has(button) button').first().click();
+          await page.waitForTimeout(400);
+          await page.evaluate(() => document.querySelector('#scan-logs-table tbody:has(button)').setAttribute('data-shot', 'scan'));
+        },
+        crop: { from: '[data-shot=scan]', pad: 12 },
+      },
+    ],
+  },
+  // inline confirmations are new in 2.0.14, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs files/quarantine
+  'files/quarantine': {
+    url: '/malware-scanner/quarantine',
+    shots: [
+      { name: 'list', alt: 'Quarantine page listing files that ClamAV flagged as malicious with their original location, the malware found, and sortable File and Reason columns', viewportWidth: 1440, crop: 'content' },
+      bulkShot('#quarantine-table', 2, 'Two quarantined files selected with the bulk actions bar offering Restore, Mark safe and Delete'),
+      quarantineAction('restore', 'Restore', 'Quarantined file about to be restored, its path shown in blue with a restore icon and the Restore and Cancel buttons in its row'),
+      quarantineAction('safe', 'Mark as safe', 'Quarantined file about to be marked as safe, its path shown in green with the Mark as safe and Cancel buttons in its row'),
+      quarantineAction('delete', 'Delete', 'Quarantined file about to be deleted, its path crossed out in red with the Delete permanently and Cancel buttons in its row'),
+    ],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs php/domains
+  'php/domains': {
+    url: '/php/domains',
+    shots: [
+      { name: 'list', alt: 'PHP version for domains page listing each domain with its current PHP version and a dropdown to change it', crop: 'content' },
+      bulkShot('#php-domains-table', ['example.test.rs'], 'A domain selected with the bulk actions bar offering Change version and Reset to default'),
+    ],
+  },
+  'php/default': {
+    url: '/php/default',
+    shots: [{ name: 'form', alt: 'Default PHP version page with a card for each installed PHP version, its support status and the current default marked', crop: 'content' }],
+  },
+  'php/extensions': {
+    url: '/php/8.5/extensions',
+    shots: [
+      { name: 'list', alt: 'PHP 8.5 Extensions page listing extensions with their status and Enable or Disable buttons', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(8)', fromTop: true } },
+      {
+        name: 'install',
+        alt: 'Install PHP extensions dialog with checkboxes for the extensions that can be installed, imagick and memcached selected',
+        prepare: async page => {
+          await page.locator('main button:has-text("Install")').first().click();
+          await page.waitForTimeout(2500);
+          for (const ext of ['imagick', 'memcached']) await page.locator(`label:has-text("${ext}") input[type=checkbox]`).first().check({ force: true }).catch(() => {});
+        },
+        viewportHeight: 520,
+      },
+    ],
+  },
+  'php/options': {
+    url: '/php/8.5/options',
+    shots: [{ name: 'page', alt: 'PHP 8.5 Options page with editable values such as memory_limit, max_execution_time and upload limits', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(11)', fromTop: true } }],
+  },
+  'php/php_ini_editor': {
+    url: '/php/8.5/editor',
+    shots: [{ name: 'editor', alt: 'PHP 8.5 INI Editor showing the php.ini file with the Save Changes button', crop: { content: 'main', maxHeight: 640 } }],
+  },
+  'caching/redis': {
+    url: '/cache/redis',
+    shots: [
+      { name: 'page', alt: 'Redis page with the service status, TCP server and port, container resource usage and logs', crop: 'content' },
+      {
+        name: 'limits',
+        alt: 'Containers page opened from Edit limits, with the CPU and memory limits of the Redis container',
+        url: '/containers?s=redis',
+        crop: 'content',
+      },
+      { name: 'status', alt: 'Redis Status row with the Click to Enable or Click to Disable button', crop: { from: 'main', to: 'main .m-6 > div:first-child', fromTop: true, pad: 24 } },
+      { name: 'log-button', alt: 'Logs section of the Redis page with the View container log button', crop: { from: 'main .m-6 > section', pad: 16 } },
+    ],
+  },
+  'caching/memcached': {
+    url: '/cache/memcached',
+    shots: [
+      { name: 'page', alt: 'Memcached page with the service status, TCP server and port, container resource usage and logs', crop: 'content' },
+      {
+        name: 'limits',
+        alt: 'Containers page opened from Edit limits, with the CPU and memory limits of the Memcached container',
+        url: '/containers?s=memcached',
+        crop: 'content',
+      },
+      { name: 'status', alt: 'Memcached Status row with the Click to Enable or Click to Disable button', crop: { from: 'main', to: 'main .m-6 > div:first-child', fromTop: true, pad: 24 } },
+      { name: 'log-button', alt: 'Logs section of the Memcached page with the View container log button', crop: { from: 'main .m-6 > section', pad: 16 } },
+    ],
+  },
+  'caching/valkey': {
+    url: '/cache/valkey',
+    shots: [
+      { name: 'page', alt: 'Valkey page with the service status, TCP server and port', crop: 'content' },
+      { name: 'status', alt: 'Valkey Status row with the Click to Enable or Click to Disable button', crop: { from: 'main', to: 'main .m-6 > div:first-child', fromTop: true, pad: 24 } },
+    ],
+  },
+  'caching/elasticsearch': {
+    url: '/cache/elasticsearch',
+    shots: [
+      { name: 'page', alt: 'ElasticSearch page with the service status, TCP server and port', crop: 'content' },
+    ],
+  },
+  'caching/opensearch': {
+    url: '/cache/opensearch',
+    shots: [
+      { name: 'page', alt: 'OpenSearch page with the service status, TCP server and port', crop: 'content' },
+    ],
+  },
+  'caching/varnish': {
+    url: '/cache/varnish',
+    shots: [{ name: 'page', alt: 'Varnish page with the service status and a per-domain toggle to enable the Varnish cache', crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs containers/containers
+  'containers/containers': {
+    url: '/containers',
+    shots: [
+      { name: 'list', alt: 'Containers page listing services with a checkbox, their image, CPU and memory usage, PIDs and status', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(9)', fromTop: true } },
+      {
+        name: 'bulk',
+        alt: 'Three containers selected with the bulk actions bar at the bottom offering Start, Stop, Restart, Edit CPU, Edit RAM, Edit PIDs and Delete',
+        viewportHeight: 760,
+        prepare: all(bulkSelect(['backup', 'cron', 'elasticsearch'])),
+        crop: { from: '#containers-table thead', to: '#bulk-actions-bar' },
+      },
+      {
+        name: 'bulk-cpu',
+        alt: 'Bulk actions bar asking for the new CPU limit of the three selected containers, with Cancel and Confirm buttons',
+        viewportHeight: 760,
+        prepare: all(bulkSelect(['backup', 'cron', 'elasticsearch']), click('[data-bulk-action="cpu"]'), fill({ '[data-bulk-input="cpu"]': '0.5' })),
+        crop: { from: '#bulk-actions-bar', to: '#bulk-actions-bar' },
+      },
+      {
+        name: 'bulk-delete',
+        alt: 'Bulk delete confirmation in red for one custom container, noting that the selected built-in container will be skipped',
+        viewportHeight: 760,
+        // needs a container you added yourself, e.g. uptimekuma from the containers/new example
+        prepare: all(bulkSelect(['memcached', 'uptimekuma']), click('[data-bulk-action="delete"]')),
+        crop: { from: '#bulk-actions-bar', to: '#bulk-actions-bar' },
+      },
+    ],
+  },
+  'containers/edit': {
+    url: '/containers/edit/redis',
+    shots: [{ name: 'form', alt: 'Edit service form with the image, resource limits, networks, storage and environment variables', crop: { content: 'main', maxHeight: 1700 } }],
+  },
+  'containers/new': {
+    url: '/containers/new',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Add a container form with the image and name, resource presets, networks, storage and environment variables',
+        prepare: async page => {
+          await page.fill('#image', 'louislam/uptime-kuma:1');
+          await page.dispatchEvent('#image', 'input');
+          await page.waitForTimeout(300);
+        },
+        crop: { content: 'main', maxHeight: 1400 },
+      },
+    ],
+  },
+  'containers/change': {
+    url: '/containers/image/change/redis',
+    shots: [{ name: 'form', alt: 'Change image tag for redis with the tag dropdown open, searching the redis tags from Docker Hub for 8.8', viewportHeight: 1100, prepare: async page => {
+      await page.waitForFunction(() => { const s = [...document.querySelectorAll('#tag_button span')].find(x => x.textContent.includes('Loading')); return s && getComputedStyle(s).display === 'none'; }, null, { timeout: 20000 });
+      await page.click('#tag_button');
+      await page.fill('input[placeholder="Search or type a tag"]', '8.8');
+      await page.waitForTimeout(300);
+    }, crop: 'content' }],
+  },
+  'containers/logs': {
+    url: '/containers/logs?container=mariadb&lines=100',
+    prepare: async page => {
+      await page.waitForFunction(() => !/Select a container/.test(document.getElementById('log-content')?.textContent || ''), null, { timeout: 15000 }).catch(() => {});
+    },
+    shots: [{ name: 'page', alt: 'Container Logs page showing the last lines of the mariadb container log', crop: { content: 'main', maxHeight: 760 } }],
+  },
+  'containers/mysql': {
+    url: '/containers/mysql',
+    shots: [{ name: 'page', alt: 'Database Server page with cards for MySQL, MariaDB and Percona, the current one marked, and a notice to remove existing databases before switching', crop: 'content' }],
+  },
+  'containers/webserver': {
+    url: '/containers/webserver',
+    shots: [{ name: 'page', alt: 'Web Server Type page with a card for each available web server, the current one marked, and the Switch button', crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs advanced/cronjobs
+  'advanced/cronjobs': {
+    url: '/cronjobs',
+    shots: [
+      { name: 'list', alt: 'Cron Jobs page with the summary cards and the table of jobs with their on/off switch, schedule, container, command and comment', crop: { from: 'main', to: 'main table tbody tr:last-of-type', fromTop: true, pad: 24 } },
+      { name: 'summary', alt: 'Summary above the cron jobs table with the active jobs, jobs that failed on their last run, the next run with its time and job, and the cron time zone', prepare: async page => { await page.waitForTimeout(2500); }, crop: { from: '[x-data^="cronSummary"]', pad: 12 } },
+      {
+        name: 'timezone',
+        alt: 'Cron time zone in the summary opened for editing, with the time zone dropdown and the Save and Cancel buttons',
+        prepare: async page => {
+          const cell = page.locator('[x-data^="{ editing: false, hover"]');
+          await cell.hover();
+          await cell.locator('button[title]').click();
+          await page.waitForTimeout(400);
+        },
+        crop: { from: '[x-data^="{ editing: false, hover"]', pad: 12 },
+      },
+      { name: 'toggle', alt: 'Status column of the cron jobs table with the switch on for active jobs and off for a job that is disabled', crop: { from: 'main table thead th:nth-of-type(2)', to: 'main table tbody tr:last-of-type td:nth-of-type(2)', pad: 12 } },
+      {
+        name: 'run',
+        alt: 'Run now dialog of a cron job showing the command output and Finished successfully',
+        prepare: async page => {
+          // open the dialog with a finished run instead of starting the job over the websocket
+          await page.evaluate(() => {
+            const el = [...document.querySelectorAll('[x-data]')].find(e => /runOpen/.test(e.getAttribute('x-data')));
+            const d = window.Alpine.$data(el);
+            d.runOutput = [
+              'Connecting to ip.davpanel.com (203.0.113.25:443)',
+              "saving to 'index.html'",
+              'index.html           100% |********************************|    13  0:00:00 ETA',
+              "'index.html' saved",
+              '',
+            ].join('\n');
+            d.runStatus = 'done';
+            d.runExitCode = 0;
+            d.runOpen = true;
+          });
+          await page.waitForTimeout(600);
+        },
+        viewportHeight: 720,
+      },
+      {
+        name: 'logs',
+        url: '/cronjobs/logs',
+        alt: 'Logs tab of the Cron Jobs page with the Job and Lines filters and Refresh button in the page header, and log entries of recent runs',
+        prepare: async page => {
+          // fill the log view with clean ofelia lines (real ones on test servers are empty scheduler warnings)
+          await page.evaluate(() => {
+            const el = [...document.querySelectorAll('[x-data]')].find(e => /cronLogs/.test(e.getAttribute('x-data')));
+            const d = window.Alpine.$data(el);
+            const cmd = 'wget -q -O - https://blog.example.com >/dev/null 2>&1';
+            const run = (h, id, ms) => [
+              { log: `2026-09-24T${h}:04:05.114Z common.go:125 ▶ NOTICE [Job "ip-check" (${id})] Started - ${cmd}` },
+              { log: `2026-09-24T${h}:04:05.${ms}Z common.go:125 ▶ NOTICE [Job "ip-check" (${id})] Finished in "${ms - 114}.${String(ms * 7919).slice(-6)}ms", failed: false, skipped: false, error: none` },
+            ];
+            d.logEntries = [...run('10', '6dcdc3147ab9', 482), ...run('11', 'eee5f6c6baee', 437), ...run('12', '32f1ca9e059e', 519)];
+            d.logsError = '';
+            d.logsLoading = false;
+          });
+          await page.waitForTimeout(600);
+        },
+        crop: { content: 'main', maxHeight: 620 },
+      },
+      {
+        name: 'edit',
+        alt: 'A cron job row in edit mode with editable schedule, container, command and comment fields',
+        prepare: click('main table tbody tr:first-of-type button[title="Edit"]', 500),
+        // the row in edit mode is wider than the default viewport
+        viewportWidth: 1600,
+        crop: { from: 'main table thead', to: 'main table tbody tr:first-of-type', pad: 8 },
+      },
+      {
+        name: 'delete',
+        alt: 'Delete icon of a cron job turned red with a 5 second countdown after the first click',
+        prepare: click('main table tbody tr:first-of-type button[onclick^="confirmDelete"]', 300),
+        crop: { from: 'main table thead', to: 'main table tbody tr:first-of-type', pad: 8 },
+      },
+      bulkShot('#cronjobs-table', 2, 'Two cron jobs selected with the bulk actions bar offering Enable, Disable, Run now, Change schedule, Change container, No overlap on, No overlap off and Delete'),
+    ],
+  },
+  'advanced/cronjobs_new': {
+    url: '/cronjobs/new',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Create Cron Job form with a PHP command, the container of the default PHP version picked for it, the schedule options from 1 min to Custom, comment and No overlap fields',
+        prepare: async page => {
+          // typing sends input events, so the form picks the PHP container on its own
+          await page.locator('#command').pressSequentially('php /var/www/html/blog.example.com/wp-cron.php', { delay: 5 });
+          await page.fill('#comment', 'wp-cron');
+        },
+        crop: 'content',
+      },
+      {
+        name: 'custom',
+        alt: 'Schedule options with Custom picked and the cron expression field below them',
+        prepare: async page => {
+          await page.locator('main [role=radio]').last().click();
+          await page.fill('#schedule', '0 30 2 * * 1-5');
+          await page.waitForTimeout(300);
+        },
+        crop: { from: 'main [role=radiogroup]', to: '#schedule', pad: 36 },
+      },
+    ],
+  },
+  'advanced/cronjobs_editor': {
+    url: '/cronjobs/editor',
+    shots: [{ name: 'editor', alt: 'Cron jobs File Editor showing the jobs in crons.ini format', crop: { content: 'main', maxHeight: 700 } }],
+  },
+  'advanced/services': {
+    url: '/services/redis',
+    shots: [{ name: 'page', alt: 'Service page for redis with its status, container resource usage and logs', crop: 'content' }],
+  },
+  'advanced/services_list': {
+    url: '/services/',
+    shots: [{ name: 'page', alt: 'Choose Service page with the service dropdown', crop: 'content' }],
+  },
+  'advanced/ip-blocker': {
+    url: '/security/ip-blocker',
+    shots: [{ name: 'form', alt: 'IP Blocker page with a text area for IP addresses and CIDR ranges to block', prepare: async page => { await page.locator('main textarea').first().fill('198.51.100.23\n203.0.113.0/24').catch(() => {}); }, crop: { content: 'main', maxHeight: 560 } }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs advanced/process_manager
+  'advanced/process_manager': {
+    url: '/process-manager',
+    shots: [
+      { name: 'list', alt: 'Process Manager listing processes per container with their user, PID, CPU, time and command', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(12)', fromTop: true } },
+      { ...bulkShot('#process-manager-table', 2, 'Two processes selected with the bulk actions bar offering Kill'), before: firstRows('#process-manager-table', 8) },
+    ],
+  },
+  'advanced/webserver_settings': {
+    url: '/server/webserver_conf',
+    shots: [{ name: 'editor', alt: 'Web server configuration editor with the Restore Default and Save Changes buttons', crop: { content: 'main', maxHeight: 700 } }],
+  },
+  // WAF profiles, levels and monitor mode are new in 2.0.13, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs advanced/waf advanced/waf_domain advanced/waf_monitor
+  // the shots need the four waf*.tests.davpanel.com test domains and a few WAF log entries on that server
+  'advanced/waf': {
+    url: '/server/waf',
+    prepare: clearToasts,
+    shots: [
+      { name: 'list', alt: 'Web Firewall page with the firewall switch for all domains, filters, and a table of domains with blocked requests, protection level and app profiles', crop: 'content' },
+      { name: 'filters', alt: 'Profile filter next to the search box, listing All, None and every app profile', prepare: click('main button:has-text("Profile")'), crop: { from: 'main input[type=search]', to: 'main ul:visible >> nth=-1', pad: 24, right: true } },
+      { ...bulkShot('#waf-domains-table', ['waf.tests.davpanel.com', 'waf4.tests.davpanel.com'], 'Two domains selected with the bulk actions bar offering Set Level, Apply Profile, Enable WAF and Disable WAF', { action: 'set_level' }) },
+    ],
+  },
+  'advanced/waf_domain': {
+    url: '/server/waf/waf.tests.davpanel.com',
+    prepare: clearToasts,
+    shots: [
+      { name: 'page', alt: 'WAF page for a domain with protection status, protection level, recent blocked requests, app profiles and advanced rule exceptions', crop: 'content' },
+      { name: 'protection', alt: 'Firewall is on, with the number of requests checked and blocked in the last 24 hours and the Monitor only and Turn off buttons', crop: { from: 'main h2:text-is("Protection")', to: 'main form[action="/server/waf"]', pad: 24, right: true } },
+      { name: 'level', alt: 'Protection level options Compatibility, Standard and Strict, with Standard selected', crop: { from: 'main h2:text-is("Protection level")', to: 'main label:has(input[name=waf_level]) >> nth=-1', pad: 24, right: true } },
+      { name: 'recent', alt: 'Recent blocked requests grouped by reason, like SQL injection and cross-site scripting, with Disable rule buttons and a table of the latest requests', crop: { from: 'main h2:text-is("Recent blocked requests")', to: 'main table >> nth=0', pad: 24, right: true } },
+      { name: 'profiles', alt: 'App profiles with a recommendation to turn on the WordPress profile and a switch for each profile', crop: { from: 'main h2:text-is("App profiles")', to: 'main p:has-text("Only turn on profiles")', pad: 24, right: true } },
+      { name: 'ids', alt: 'Disabled IDs field of the WAF settings with rule IDs 942100 and 920350', prepare: wafExceptions({ '#removed_rules': '942100 920350', '#removed_tags': '' }), crop: { from: 'main div.grid:has(#removed_rules)', pad: 24, right: true } },
+      { name: 'tags', alt: 'Disabled Tags field of the WAF settings with the attack-sqli tag', prepare: wafExceptions({ '#removed_rules': '', '#removed_tags': 'attack-sqli' }), crop: { from: 'main div.grid:has(#removed_tags)', pad: 24, right: true } },
+    ],
+  },
+  // same docs page, a domain in monitor only mode
+  'advanced/waf_monitor': {
+    as: 'advanced/waf_domain',
+    url: '/server/waf/waf3.tests.davpanel.com',
+    prepare: clearToasts,
+    shots: [
+      { name: 'monitor', alt: 'Monitor only mode: requests are checked and logged but nothing is blocked, with the Turn on blocking and Turn off buttons', crop: { from: 'main h2:text-is("Protection")', to: 'main form[action="/server/waf"]', pad: 24, right: true } },
+    ],
+  },
+  'advanced/waf_logs': {
+    url: '/server/waf/log',
+    shots: [{ name: 'page', alt: 'WAF Logs page with the dropdown to choose the domain whose firewall log to view', crop: 'content' }],
+  },
+  'advanced/resource_usage': {
+    url: '/server/usage',
+    prepare: async page => { await page.waitForTimeout(1500); },
+    shots: [{ name: 'page', alt: 'Resource Usage page with gauges for current CPU and RAM usage', crop: 'content' }],
+  },
+  'advanced/resource_history': {
+    url: '/server/usage/history',
+    prepare: async page => { await page.waitForTimeout(1500); },
+    shots: [{ name: 'page', alt: 'Historical CPU and Memory Usage charts and a table of past usage', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(6)', fromTop: true } }],
+  },
+  'advanced/server_info': {
+    url: '/server/info',
+    prepare: async page => { await page.waitForTimeout(1500); },
+    shots: [
+      { name: 'page', alt: 'Server tab of the Server Information page with hostname, load, uptime, IP address, ports and operating system', crop: 'content' },
+      { name: 'plan', url: '/server/info#plan', alt: 'Hosting Plan tab of the Server Information page with the plan name and its limits for CPU, memory, disk, domains, websites, databases, email and FTP', prepare: async page => { await page.waitForTimeout(1500); }, crop: 'content' },
+      { name: 'panel', url: '/server/info#panel', alt: 'Panel tab of the Server Information page with the panel version and the features enabled for the account', prepare: async page => { await page.waitForTimeout(2000); }, crop: 'content' },
+    ],
+  },
+  'dashboard/dashboard': {
+    url: '/dashboard',
+    prepare: hideOnboarding,
+    shots: [
+      // wide enough for the modern dashboard's two section columns
+      { name: 'window', alt: 'DavPanel dashboard with the sidebar, feature shortcuts in two columns of sections, and the 2FA, Information and Usage widgets', viewportWidth: 1440, viewportHeight: 820 },
+      { name: 'twofa', alt: 'Two-Factor Authentication widget showing 2FA as disabled with the Click to Enable button', prepare: all(hideOnboarding, markCard('Two-Factor Authentication')), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'information', alt: 'Information widget with the username, plan, IP address and last login IP address', prepare: all(hideOnboarding, markCard('Information')), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'usage', alt: 'Usage widget with bars for websites, domains, databases, email and FTP accounts, storage, inodes, CPU and memory', prepare: all(hideOnboarding, markCard('Usage')), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'howto', alt: 'General How-to widget with links to knowledge base articles', prepare: all(hideOnboarding, markCard('General How-to')), crop: { from: '[data-shot=card]', pad: 12 } },
+      {
+        name: 'layout',
+        alt: 'User menu with the Layout row, showing the lock and reset buttons',
+        prepare: async page => {
+          await hideOnboarding(page);
+          await page.locator('button[aria-label="User settings"]').click();
+          await page.waitForTimeout(400);
+        },
+        viewportHeight: 820,
+        crop: { from: '#popup-menu > div', clamp: false, pad: 8 },
+      },
+      {
+        name: 'favorites',
+        alt: 'Star icon in the top-right corner of the page header, used to add the current page to favorites',
+        prepare: hideOnboarding,
+        viewportHeight: 820,
+        crop: { from: '#addFavoriteBtn', clamp: false, pad: 14 },
+      },
+      {
+        name: 'favorites-sidebar',
+        alt: 'Favorites list at the top of the sidebar with a saved page',
+        prepare: hideOnboarding,
+        viewportHeight: 820,
+        crop: { from: '#sidebar', clamp: false, height: 150 },
+      },
+      {
+        name: 'service',
+        alt: 'Service badge in the page header with its tooltip showing the container name and resource usage',
+        url: '/mysql',
+        prepare: async page => {
+          await page.locator('#service-status span[x-on\\:mouseenter]').first().hover();
+          await page.waitForFunction(() => document.querySelector('#service-status [x-show="showTooltip"]')?.innerText.trim().length > 20, null, { timeout: 15000 }).catch(() => {});
+          await page.waitForTimeout(500);
+        },
+        viewportHeight: 820,
+        crop: { from: '#service-status', to: '#service-status [x-show="showTooltip"]', clamp: false, pad: 12 },
+      },
+      {
+        name: 'search',
+        alt: 'Search box opened from the magnifying glass icon in the header, with results for mysql',
+        prepare: async page => {
+          await hideOnboarding(page);
+          await page.locator('#openSearchBtn').click();
+          await page.locator('#searchInput').fill('mysql');
+          await page.waitForTimeout(2000);
+        },
+        viewportHeight: 820,
+        crop: { from: '#searchGroup', to: '#filteredDropdown', clamp: false, pad: 8 },
+      },
+    ],
+  },
+  // the AI Assistant isn't on the demo, so these are shot on a test server with PANEL_URL and the chat is filled in from fixtures
+  'dashboard/dashboard-ai': {
+    as: 'dashboard/dashboard',
+    url: '/dashboard',
+    prepare: hideOnboarding,
+    shots: [
+      {
+        name: 'ai-button',
+        alt: 'AI button in the page header, next to the search icon and the favorites star',
+        viewportHeight: 820,
+        crop: { from: '#openSearchBtn', to: '#addFavoriteBtn', clamp: false, pad: 14 },
+      },
+      {
+        name: 'ai-window',
+        alt: 'AI Assistant open on the right side of the dashboard, answering how to point a domain to the server and listing the account domains',
+        viewportWidth: 1440,
+        viewportHeight: 820,
+        prepare: aiDrawer(AI_CHAT),
+      },
+      {
+        name: 'ai-confirm',
+        alt: 'AI Assistant asking for approval to create an email account, with the request details and Approve, Always allow and Decline buttons',
+        viewportWidth: 1440,
+        viewportHeight: 820,
+        prepare: aiDrawer(AI_CONFIRM, false, true),
+        crop: { from: '#ai-assistant-drawer', clamp: false },
+      },
+      {
+        name: 'ai-destructive',
+        alt: 'Destructive action card in the AI Assistant for removing a domain, with only Approve and Decline buttons',
+        viewportWidth: 1440,
+        viewportHeight: 820,
+        prepare: aiDrawer(AI_DESTRUCTIVE, false, true),
+        crop: { from: '#ai-assistant-drawer', clamp: false },
+      },
+      {
+        name: 'ai-info',
+        alt: 'AI Assistant info panel with what the assistant can do, questions used this month and the always allowed actions with Remove buttons',
+        viewportWidth: 1440,
+        viewportHeight: 820,
+        prepare: aiDrawer(AI_CHAT, true),
+        crop: { from: '#ai-assistant-drawer .ai-drawer-head', to: '#ai-assistant-about', clamp: false, pad: 1 },
+      },
+    ],
+  },
+  'dashboard/dark-mode': {
+    url: '/dashboard',
+    init: () => localStorage.setItem('color-theme', 'dark'),
+    prepare: hideOnboarding,
+    shots: [
+      { name: 'window', alt: 'DavPanel dashboard in dark mode', viewportHeight: 820 },
+    ],
+  },
+  'dashboard/onboarding': {
+    url: '/dashboard',
+    shots: [
+      {
+        name: 'wizard',
+        alt: 'Onboarding wizard on its first step, choosing the webserver: Apache, Nginx, OpenLiteSpeed or OpenResty',
+        viewportHeight: 820,
+        crop: { from: 'div.max-w-xl:has(h2:has-text("set up your account"))', clamp: false },
+      },
+    ],
+  },
+  'intro/login': {
+    url: '/login',
+    anonymous: true,
+    prepare: all(hideText('Sign in with testinguser', 1), rename({ testinguser: 'john' }, 'body')),
+    shots: [{ name: 'form', alt: 'DavPanel login form with username and password fields, the Forgot password link and passkey sign-in', viewportHeight: 820 }],
+  },
+  'intro/reset': {
+    url: '/reset_password',
+    anonymous: true,
+    shots: [{ name: 'form', alt: 'Password reset form asking for the account email address', prepare: fillVisible(['john@example.com']), viewportHeight: 820 }],
+  },
+  'applications/sites': {
+    url: '/sites',
+    shots: [
+      { name: 'list', alt: 'Site Manager listing websites grouped by type with their version, creation date and PageSpeed scores', crop: 'content' },
+      {
+        name: 'scan',
+        alt: 'Scan button in Site Manager and the confirmation box that explains the scan, with Start Scan and Cancel buttons',
+        prepare: click('#scanForSitesButton', 500),
+        crop: { from: 'main', to: '#scanForSitesExplain', fromTop: true, pad: 16 },
+      },
+      {
+        name: 'bulk',
+        alt: 'Site Manager with one site selected and the bulk action bar with Update, Backup, Detach and Delete buttons',
+        prepare: async page => {
+          await page.locator('main .site-select-box').nth(1).check();
+          await page.waitForTimeout(600);
+        },
+        viewportHeight: 900,
+        crop: { from: 'main', to: 'main div[x-show="selectedCount > 0"]', fromTop: true, clamp: false, pad: 16 },
+      },
+    ],
+  },
+  'applications/autoinstaller': {
+    url: '/auto-installer',
+    shots: [{ name: 'page', alt: 'Auto Installer page with cards for WordPress, Joomla, Drupal, Website Builder, PrestaShop, OpenCart and other applications', crop: { content: 'main', maxHeight: 1000 } }],
+  },
+  'applications/wp_install': {
+    url: '/wordpress/install',
+    shots: [{ name: 'form', alt: 'Install WordPress form with site details, domain and location, and admin credentials', prepare: all(fillVisible(['My Coffee Shop', 'Fresh coffee, every day']), async page => { await page.locator('main input[type=email]').first().fill('owner@example.com').catch(() => {}); }), crop: 'content' }],
+  },
+  // git isn't on the demo yet, shoot these with PANEL_URL set to a test server that has repos
+  'applications/git': {
+    url: '/git',
+    prepare: async page => {
+      // webhook tokens are live credentials
+      await page.evaluate(() => document.querySelectorAll('main *').forEach(el => {
+        for (const n of el.childNodes) if (n.nodeType === 3) n.textContent = n.textContent.replace(/(git-webhook\/[^/\s]+\/)[A-Za-z0-9]+/g, '$1a1b2c3d4e5f6…');
+      }));
+    },
+    shots: [
+      { name: 'list', alt: 'Git page with the repositories table showing each repository, its website, deployment mode, latest commit and last deploy', crop: 'content', viewportWidth: 1800 },
+      {
+        name: 'add',
+        alt: 'Add Repository form with the remote and local source options, repository URL, name, branch, website, deploy directory, deployment mode and deploy actions',
+        prepare: all(click('#add-repository', 600), async page => {
+          await page.evaluate(() => document.querySelector('[x-show="panel === \'create\'"]').setAttribute('data-shot', 'create'));
+          await fill({ '#remote_url': 'https://github.com/example/blog-theme.git' })(page);
+          await page.waitForTimeout(400);
+        }),
+        crop: { from: '[data-shot=create]' },
+      },
+      {
+        name: 'columns',
+        alt: 'Show Columns menu with switches for each column of the repositories table',
+        prepare: async page => {
+          await page.evaluate(() => {
+            const btn = [...document.querySelectorAll('main button')].find(b => b.textContent.trim() === 'Show Columns');
+            btn.click();
+            btn.closest('section').firstElementChild.setAttribute('data-shot', 'toolbar');
+          });
+          await page.waitForTimeout(500);
+          await page.evaluate(() => document.querySelector('[x-show="colsOpen"]').setAttribute('data-shot', 'cols'));
+        },
+        crop: { from: '[data-shot=toolbar]', to: '[data-shot=cols]', pad: 12 },
+      },
+      {
+        name: 'settings',
+        alt: 'Settings row of a local repository with its clone URL, branch, deploy directory, deployment mode, deploy actions and the output of the last deploy',
+        prepare: async page => {
+          await page.evaluate(() => {
+            window.Alpine.$data(document.querySelector('[x-data^="gitRepos"]')).open = 'git-demo-theme';
+            const row = document.getElementById('repo-git-demo-theme');
+            row.setAttribute('data-shot', 'row');
+            row.nextElementSibling.setAttribute('data-shot', 'settings');
+          });
+          await page.waitForTimeout(600);
+          await growToPage(page);
+        },
+        crop: { from: '[data-shot=row]', to: '[data-shot=settings]' },
+        viewportWidth: 1800,
+      },
+      {
+        name: 'remove',
+        alt: 'Remove confirmation under a repository row with Cancel and Remove buttons',
+        prepare: async page => {
+          await page.evaluate(() => {
+            window.Alpine.$data(document.querySelector('[x-data^="gitRepos"]')).removing = 'demo-local-empty';
+            const row = document.getElementById('repo-demo-local-empty');
+            row.setAttribute('data-shot', 'row');
+            row.nextElementSibling.nextElementSibling.setAttribute('data-shot', 'remove');
+          });
+          await page.waitForTimeout(600);
+          await growToPage(page);
+        },
+        crop: { from: '[data-shot=row]', to: '[data-shot=remove]' },
+        viewportWidth: 1800,
+      },
+      (() => {
+        const shot = bulkShot('#git-table', ['demo-remote-auto', 'demo-remote-manual', 'demo-local-manual'], 'Repositories selected with the bulk actions bar showing Pull Updates, Deploy, Change deployment mode and Remove');
+        return { ...shot, prepare: all(shot.prepare, growToPage), viewportWidth: 1800 };
+      })(),
+    ],
+  },
+  'applications/git_log': {
+    as: 'applications/git',
+    url: '/git?log=git-demo-theme',
+    shots: [{ name: 'log', alt: 'Commit log of a repository with each commit, its message, author and date, and the deployed commit marked', crop: 'content' }],
+  },
+  'applications/git_tab': {
+    as: 'applications/git',
+    url: '/website?domain=example.test.rs',
+    shots: [{
+      name: 'tab',
+      alt: 'Git tab in the Site Manager with a theme repository and a remote repository, their deploy buttons, clone URL and webhook URL',
+      prepare: all(tab('Git'), async page => {
+        await page.waitForTimeout(1500);
+        await page.evaluate(() => {
+          const keep = ['git-demo-theme', 'demo-remote-auto'];
+          document.querySelectorAll('#git .space-y-3 > div').forEach(card => {
+            const name = card.querySelector('span.font-medium')?.textContent.trim();
+            if (!keep.includes(name)) card.remove();
+          });
+          document.querySelectorAll('#git *').forEach(el => {
+            for (const n of el.childNodes) if (n.nodeType === 3) n.textContent = n.textContent.replace(/(git-webhook\/[^/\s]+\/)[A-Za-z0-9]+/g, '$1a1b2c3d4e5f6…');
+          });
+        });
+      }, growToPage),
+      crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 },
+    }],
+  },
+  'applications/wordpress': {
+    url: '/website?domain=wp.tests.davpanel.com',
+    prepare: async page => { await page.waitForTimeout(2500); },
+    shots: [
+      { name: 'site', alt: 'WordPress site manager with the screenshot, versions, files and database details', viewportHeight: 900, crop: { content: 'main', maxHeight: 900 } },
+      { name: 'header', alt: 'Site header with the Live Preview and Login as Admin buttons', crop: { from: 'main', to: 'main a:has-text("Live Preview")', fromTop: true, pad: 24 } },
+      { name: 'versions', alt: 'WordPress, PHP and MariaDB version cards and the creation date', crop: { from: 'main :text-is("WordPress:")', to: 'main :text-is("Created:")', pad: 64, right: true } },
+      { name: 'speed', alt: 'Speed card with desktop and mobile PageSpeed scores and First Contentful Paint, Speed Index and Time to Interactive', prepare: markCard('Speed'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'firewall', alt: 'Firewall card showing the firewall as active with denied and challenged request counts', prepare: markCard('Firewall'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'cache', alt: 'Cache card with the cache type and the Clear Cache button', prepare: markCard('Cache'), crop: { from: '[data-shot=card]', pad: 12 } },
+      { name: 'options', alt: 'Options tab with the site URL, site name, email, registration, SEO visibility and pingback settings', prepare: tab('Options'), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+      {
+        name: 'files-database',
+        alt: 'Files and Database cards of the Overview tab with the folder path and size, disk usage, and the database name, user, host, size and phpMyAdmin link',
+        prepare: async page => {
+          await page.evaluate(() => {
+            const card = title => {
+              const h = [...document.querySelectorAll('main h2, main h3, main p, main span')].find(e => e.childElementCount === 0 && e.textContent.trim() === title && e.offsetParent);
+              let el = h;
+              while (el && !(/\brounded/.test(el.className) && /\bborder\b/.test(el.className) && el.getBoundingClientRect().height > 100)) el = el.parentElement;
+              return el;
+            };
+            card('Files')?.setAttribute('data-shot', 'files');
+            card('Database')?.setAttribute('data-shot', 'database');
+          });
+        },
+        crop: { from: '[data-shot=files]', to: '[data-shot=database]', pad: 12 },
+      },
+      {
+        name: 'vulnerabilities',
+        alt: 'WP Vulnerabilities section of the Security tab with the number of detected vulnerabilities, the last check time and the Scan for vulnerabilities button',
+        prepare: all(tab('Security'), async page => { await page.waitForTimeout(1500); }, markSection('WP Vulnerabilities')),
+        crop: { from: '[data-shot=section]', pad: 16 },
+      },
+      {
+        name: 'safe-browsing',
+        alt: 'Google Safe Browsing section of the Security tab with the result of the check against the Google Safe Browsing list',
+        prepare: all(tab('Security'), async page => { await page.waitForTimeout(2500); }, markSection('Google Safe Browsing')),
+        crop: { from: '[data-shot=section]', pad: 16 },
+      },
+      { name: 'maintenance', alt: 'Maintenance tab with the maintenance mode toggle', prepare: tab('Maintenance'), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+      { name: 'security', alt: 'Security tab with vulnerability report, Safe Browsing, salts, integrity check, malware scan and reinstall', prepare: tab('Security'), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+      { name: 'updates', alt: 'Updates tab listing core, plugin and theme update status', prepare: tab('Updates'), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+      { name: 'debugging', alt: 'Debugging tab with toggles for WP_DEBUG, WP_DEBUG_LOG, WP_DEBUG_DISPLAY, SCRIPT_DEBUG and SAVEQUERIES', prepare: tab('Debugging'), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+      { name: 'backups', alt: 'Backups tab with the Create a Backup and Restore from Backups sections', prepare: tab('Backups'), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+      { name: 'clone', alt: 'Clone tab with the destination location and database for the copy', prepare: tab('Clone'), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+      { name: 'remove', alt: 'Remove tab with the Detach and Uninstall options', prepare: tab('Remove'), crop: { from: 'main', to: '[data-shot=tabs]', fromTop: true, pad: 16 } },
+    ],
+  },
+  'applications/python': {
+    url: '/website?domain=python.tests.davpanel.com',
+    prepare: async page => { await page.waitForTimeout(2500); },
+    shots: [
+      { name: 'site', alt: 'Python application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions', viewportHeight: 900, crop: { content: 'main', maxHeight: 900 } },
+    ],
+  },
+  'applications/python_install': {
+    url: '/python/install',
+    shots: [{ name: 'form', alt: 'Install Python Application form with the application details, domain, startup file and the Small, Medium and Large resource presets', crop: 'content' }],
+  },
+  'applications/nodejs': {
+    url: '/website?domain=nodejs.tests.davpanel.com',
+    prepare: async page => { await page.waitForTimeout(2500); },
+    shots: [
+      { name: 'site', alt: 'Node.js application page with its status, runtime version, CPU and memory limits, and Stop and Restart actions', viewportHeight: 900, crop: { content: 'main', maxHeight: 900 } },
+    ],
+  },
+  'applications/nodejs_install': {
+    url: '/nodejs/install',
+    shots: [{ name: 'form', alt: 'Install Node.js Application form with the application details, domain, startup file and the Small, Medium and Large resource presets', crop: 'content' }],
+  },
+  'applications/n8n_install': {
+    url: '/n8n/install',
+    prepare: async page => {
+      await page.fill('input[name=service_name]', 'n8n');
+      await page.selectOption('select[name=domain_id]', { label: 'to-be-removed.com' });
+      await page.fill('input[name=owner_email]', 'admin@example.com');
+      // the form pre-generates a real password, show a placeholder one instead
+      await page.fill('input[name=owner_password]', 'your-strong-password');
+      // option text is drawn from its label attribute, which rename() doesn't touch
+      await page.evaluate(() => document.querySelectorAll('select[name=domain_id] option').forEach(o => { if (o.label === 'to-be-removed.com') o.label = 'n8n.example.com'; }));
+      await rename({ 'to-be-removed.com': 'n8n.example.com' }, 'body')(page);
+    },
+    shots: [{ name: 'form', alt: 'Install n8n form with the application name, fixed port 5678, version, domain, owner account and resource limits', crop: 'content' }],
+  },
+  'applications/n8n': {
+    url: '/website?domain=to-be-removed.com',
+    prepare: async page => {
+      await page.waitForTimeout(2500);
+      await rename({ 'to-be-removed.com': 'n8n.example.com' }, 'body')(page);
+    },
+    shots: [
+      {
+        name: 'site',
+        alt: 'Overview tab of an n8n application with its status, n8n version, CPU and memory limits, Stop and Restart actions and files',
+        // the test domain doesn't resolve, so hide the failed website screenshot placeholder
+        prepare: async page => { await page.evaluate(() => { document.querySelector('#dashboard > div:first-child > div:first-child').style.display = 'none'; }); },
+        crop: { from: '#n8n-tab', to: '#dashboard > div:nth-child(2)', pad: 8 },
+      },
+      { name: 'settings', alt: 'Container name and port, n8n version picker and CPU, memory and PIDs limits on the Overview tab', crop: { from: '#dashboard > div:nth-child(3)', to: '#dashboard > form', pad: 8 } },
+      {
+        name: 'envvars',
+        url: '/website?domain=to-be-removed.com&tab=envvars',
+        alt: 'Env Vars tab with custom KEY=VALUE environment variables for the n8n container and the Save Environment Variables button',
+        prepare: fill({ 'textarea[name=env_vars]': 'GENERIC_TIMEZONE=Europe/Berlin\nN8N_DEFAULT_BINARY_DATA_MODE=filesystem\nEXECUTIONS_DATA_MAX_AGE=168' }),
+        crop: { from: '#n8n-tab', to: '#envvars', pad: 8 },
+      },
+      { name: 'logs', url: '/website?domain=to-be-removed.com&tab=logs', alt: 'Logs tab showing the n8n container log', crop: { from: '#n8n-tab', to: '#logs', pad: 8 } },
+      {
+        name: 'remove',
+        url: '/website?domain=to-be-removed.com&tab=remove',
+        alt: 'Remove tab with the Confirm delete and Cancel buttons shown after clicking Delete Application',
+        prepare: click('#remove button:has-text("Delete Application")', 400),
+        crop: { from: '#n8n-tab', to: '#remove', pad: 8 },
+      },
+    ],
+  },
+  'applications/ruby_install': {
+    url: '/ruby/install',
+    shots: [{ name: 'form', alt: 'Install Ruby Application form with the application details, domain, startup command and the Small, Medium and Large resource presets', crop: 'content' }],
+  },
+  'applications/java_install': {
+    url: '/java/install',
+    shots: [{ name: 'form', alt: 'Install Java Application form with the application details, domain, startup command and the Small, Medium and Large resource presets', crop: 'content' }],
+  },
+  'applications/builder': {
+    url: '/website-builder/install',
+    shots: [{ name: 'form', alt: 'Website Builder page with the domain and folder to create the website in', crop: 'content' }],
+  },
+  'applications/php_install': {
+    url: '/php/install',
+    shots: [{ name: 'form', alt: 'Install PHP Application form with the domain and folder, and an optional Composer project to create', crop: 'content' }],
+  },
+  'applications/drupal': {
+    url: '/drupal/install',
+    shots: [{ name: 'form', alt: 'Install Drupal form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/joomla': {
+    url: '/joomla/install',
+    shots: [{ name: 'form', alt: 'Install Joomla form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/moodle': {
+    url: '/moodle/install',
+    shots: [{ name: 'form', alt: 'Install Moodle form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/nextcloud': {
+    url: '/nextcloud/install',
+    shots: [{ name: 'form', alt: 'Install Nextcloud form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/matomo': {
+    url: '/matomo/install',
+    shots: [{ name: 'form', alt: 'Install Matomo form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/mediawiki': {
+    url: '/mediawiki/install',
+    shots: [{ name: 'form', alt: 'Install MediaWiki form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/dokuwiki': {
+    url: '/dokuwiki/install',
+    shots: [{ name: 'form', alt: 'Install DokuWiki form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/flarum': {
+    url: '/flarum/install',
+    shots: [{ name: 'form', alt: 'Install Flarum form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/ojs': {
+    url: '/ojs/install',
+    shots: [{ name: 'form', alt: 'Install OJS form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/opencart': {
+    url: '/opencart/install',
+    shots: [{ name: 'form', alt: 'Install OpenCart form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/phpbb': {
+    url: '/phpbb/install',
+    shots: [{ name: 'form', alt: 'Install phpBB form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/prestashop': {
+    url: '/prestashop/install',
+    shots: [{ name: 'form', alt: 'Install PrestaShop form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/sofawiki': {
+    url: '/sofawiki/install',
+    shots: [{ name: 'form', alt: 'Install SofaWiki form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/tinyfilemanager': {
+    url: '/tinyfilemanager/install',
+    shots: [{ name: 'form', alt: 'Install TinyFileManager form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  'applications/tinyphotogallery': {
+    url: '/tinyphotogallery/install',
+    shots: [{ name: 'form', alt: 'Install TinyPhotoGallery form with the site details, domain and location, and admin credentials', crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs applications/wp_manager
+  'applications/wp_manager': {
+    url: '/wordpress',
+    shots: [
+      { name: 'scan', alt: 'Scan for Existing Installations button next to New Installation on the WordPress Manager page', crop: { from: 'main a:has-text("New Installation")', to: '#scanButton', pad: 16 } },
+      { name: 'sets', alt: 'Themes and Plugins buttons for managing the sets that are installed on every new WordPress site', crop: { from: 'main div:has(> a:text-is("Themes"))', pad: 3 } },
+      { name: 'refresh', alt: 'Refresh Data button on the WordPress Manager page', crop: { from: '#refreshData', pad: 3 } },
+      { name: 'view', alt: 'Switch to Table view button on the WordPress Manager page', crop: { from: 'main a:has-text("Switch to Table view")', pad: 3 } },
+      { ...bulkShot('#sites-table', 2, 'Two WordPress sites selected in the table view with the bulk actions bar offering Update, Backup, Detach and Uninstall'), url: '/wordpress?view=table' },
+    ],
+  },
+  'domains/dns_sections': {
+    url: '/domains/edit-dns-zone/wp.tests.davpanel.com',
+    shots: [
+      {
+        name: 'edit',
+        alt: 'A DNS record row in edit mode with editable fields and the Save and Cancel buttons',
+        prepare: async page => {
+          await page.locator('main #filemanager_table tbody tr:visible >> nth=2').locator('button:has-text("Edit")').click();
+          await page.waitForTimeout(600);
+        },
+        crop: { from: 'main #filemanager_table thead', to: 'main #filemanager_table tbody tr:visible >> nth=2', pad: 8 },
+      },
+      {
+        name: 'create',
+        alt: 'New Record row added at the top of the DNS table with the record type, name, TTL and value fields',
+        prepare: async page => {
+          await page.locator('#AddDNSRecord').click();
+          await page.waitForTimeout(600);
+        },
+        crop: { from: 'main', to: '#addRecordRow', fromTop: true, pad: 16 },
+      },
+      {
+        name: 'delete',
+        alt: 'Delete button of a DNS record turned into a Confirm button after the first click',
+        prepare: async page => {
+          await page.locator('main #filemanager_table tbody tr:visible >> nth=2').locator('button:has-text("Delete")').click();
+          await page.waitForTimeout(400);
+        },
+        crop: { from: 'main #filemanager_table thead', to: 'main #filemanager_table tbody tr:visible >> nth=2', pad: 8 },
+      },
+      {
+        name: 'toolbar',
+        alt: 'DNS Zone Editor menu with the Edit DNS File, Export Zone and Reset options',
+        prepare: async page => {
+          await page.locator('#dropdownHoverButton').hover();
+          await page.waitForTimeout(600);
+        },
+        crop: { from: '#dropdownHover', pad: 6 },
+      },
+      {
+        name: 'reset',
+        alt: 'Reset Zone panel asking for confirmation before the DNS zone is restored to its default records',
+        prepare: async page => {
+          await page.locator('#dropdownHoverButton').hover();
+          await page.waitForTimeout(400);
+          await page.locator('#dropdownHover a:has-text("Reset")').click();
+          await page.waitForTimeout(800);
+        },
+        viewportHeight: 620,
+        crop: { from: '#drawer-right-restart-zone', clamp: false },
+      },
+    ],
+  },
+  'domains/dns_editor': {
+    url: '/domains/edit-dns-zone/wp.tests.davpanel.com?view=code',
+    shots: [{ name: 'editor', alt: 'Advanced Editor showing the DNS zone file of the domain for direct editing', crop: { content: 'main', maxHeight: 760 } }],
+  },
+  'domains/dynamic-dns_create': {
+    url: '/domains/dynamic-dns',
+    shots: [
+      {
+        name: 'form',
+        alt: 'Add Entry form for a new Dynamic DNS record with the domain, subdomain and initial IP fields',
+        prepare: async page => {
+          await page.locator('#add-entry').click();
+          await page.waitForTimeout(600);
+          await page.locator("[x-show=\"panel === 'create'\"] input[name=subdomain]").fill('home').catch(() => {});
+        },
+        crop: { from: 'main', to: "main div[x-show=\"panel === 'create'\"]", fromTop: true, pad: 16 },
+      },
+    ],
+  },
+  'files/files_drop': {
+    url: '/files',
+    shots: [
+      {
+        name: 'drop',
+        alt: 'File Manager while dragging files over the page, with the drag and drop upload area shown above the file list',
+        prepare: async page => {
+          // no real file is dragged, the page only needs the dragenter events to show the drop area
+          await page.evaluate(() => {
+            const dt = new DataTransfer();
+            // the page only reacts to drags that carry files
+            dt.items.add(new File(['x'], 'logo.png', { type: 'image/png' }));
+            document.dispatchEvent(new DragEvent('dragenter', { bubbles: true, cancelable: true, dataTransfer: dt }));
+            const area = document.getElementById('dropArea') || document.querySelector('label[for="fileUpload"]');
+            area?.dispatchEvent(new DragEvent('dragenter', { bubbles: true, cancelable: true, dataTransfer: dt }));
+          });
+          await page.waitForTimeout(500);
+        },
+        crop: { from: 'main', to: '#upload_files_form', fromTop: true, pad: 24 },
+      },
+    ],
+  },
+  'files/ftp_actions': {
+    url: '/ftp',
+    shots: [
+      {
+        name: 'delete',
+        alt: 'Delete icon of an FTP account turned into a Confirm button with a countdown after the first click',
+        prepare: async page => {
+          // the actions column is past the right edge, so scroll the table to it first
+          await page.evaluate(() => document.querySelectorAll('main .overflow-x-auto, main .overflow-auto').forEach(e => (e.scrollLeft = e.scrollWidth)));
+          await page.locator('main table tbody tr:first-of-type form[action="/ftp/delete"] button').click();
+          await page.mouse.move(0, 0);
+          // Confirm is wider than the icon, scroll again so it isn't cut off
+          await page.evaluate(() => document.querySelectorAll('main .overflow-x-auto, main .overflow-auto').forEach(e => (e.scrollLeft = e.scrollWidth)));
+          await page.waitForTimeout(300);
+        },
+        crop: { from: 'main table tbody tr:first-of-type a[href^="/ftp/password/"]', to: 'main table tbody tr:first-of-type form[action="/ftp/delete"]', pad: 16 },
+      },
+      {
+        name: 'config',
+        alt: 'FileZilla and Cyberduck buttons in the Configuration column of an FTP account',
+        crop: { from: 'main table tbody tr:first-of-type a:has-text("Filezilla")', to: 'main table tbody tr:first-of-type a:has-text("Cyberduck")', pad: 12 },
+      },
+    ],
+  },
+  'files/files_more': {
+    url: '/files',
+    before: fmFixture,
+    shots: [
+      {
+        name: 'delete',
+        alt: 'Two selected files crossed out in the table, the first with the Skip the trash option and the Delete and Cancel buttons',
+        prepare: all(fmSelect('index.php', 'notes.txt'), fmAction('deleteButton')),
+        crop: { from: 'main table thead', to: 'tr[data-file="notes.txt"]', pad: 8 },
+      },
+      {
+        name: 'copy',
+        alt: 'Copy dialog for two selected files with a folder browser, the destination path and the Copy here button',
+        prepare: all(fmSelect('index.php', 'notes.txt'), fmAction('copyButton'), pickerReady),
+        crop: PICKER_CROP,
+      },
+      {
+        name: 'move',
+        alt: 'Move dialog opened inside a website folder, with the breadcrumb, its subfolders, the destination path and the Move here button',
+        prepare: all(fmSelect('index.php', 'notes.txt'), fmAction('moveButton'), pickerReady, async page => {
+          await page.locator('#fmPickerList button[data-path="files.tests.davpanel.com"]').click();
+          await page.waitForFunction(() => document.getElementById('fmPickerDest').value === '/files.tests.davpanel.com', null, { timeout: 10000 });
+          await page.waitForTimeout(400);
+        }),
+        crop: PICKER_CROP,
+      },
+      {
+        name: 'search',
+        alt: 'File Manager search box opened from its magnifying glass icon, with results for wp-config',
+        prepare: async page => {
+          await page.locator('#searchIcon').click();
+          // Cloudflare in front of the demo blocks the literal wp-config.php in a query string, so search for wp-config
+          await page.locator('#searchFilesInput').pressSequentially('wp-config', { delay: 60 });
+          await page.waitForFunction(() => document.querySelectorAll('#filteredFilesDropdown li').length > 0, null, { timeout: 15000 }).catch(() => {});
+          await page.waitForTimeout(800);
+        },
+        crop: { from: 'main', to: '#filteredFilesDropdown', fromTop: true, pad: 4 },
+      },
+    ],
+  },
+  'files/files_empty': {
+    url: '/files/test',
+    shots: [{ name: 'empty', alt: 'File Manager showing an empty folder with the No items found message', crop: 'content' }],
+  },
+  'files/files_modern': {
+    url: '/files?view=modern',
+    before: fmFixture,
+    shots: [
+      {
+        name: 'modern',
+        alt: 'File Manager in Modern button style with three items selected, the floating action bar at the bottom, and the account menu open showing the Buttons style switch',
+        prepare: async page => {
+          // open the account menu first, its click would otherwise clear the selection
+          await page.locator('#user-btn-info').click();
+          await page.waitForTimeout(500);
+          // ctrl-clicks that don't bubble, so the document-level deselect handler never sees them
+          await page.evaluate(() => {
+            const rows = [...document.querySelectorAll('tr.clickable-row')].slice(-3);
+            rows.forEach(r => r.dispatchEvent(new MouseEvent('click', { ctrlKey: true, bubbles: false })));
+          });
+          await page.waitForTimeout(600);
+        },
+        viewportHeight: 820,
+        // the floating action bar is wider than the default window
+        viewportWidth: 1440,
+      },
+    ],
+  },
+  // needs a server with Web Terminal enabled (not the demo):
+  // PANEL_URL=https://host:2083 node shoot.mjs containers/terminal_server
+  'containers/terminal_server': {
+    url: '/containers/terminal',
+    shots: [
+      {
+        name: 'select',
+        alt: 'Terminal page with the service dropdown opened, listing the running containers to connect to',
+        prepare: async page => {
+          // a native select's popup isn't captured in screenshots, so show its options expanded in place
+          await page.evaluate(() => {
+            const s = document.getElementById('service-select');
+            s.size = Math.min(s.options.length, 12);
+            s.style.height = 'auto';
+            s.focus();
+          });
+          await page.waitForTimeout(400);
+        },
+        crop: { from: 'main', to: '#service-select', fromTop: true, pad: 24, right: true },
+      },
+      {
+        name: 'shell',
+        url: '/containers/terminal/apache',
+        alt: 'Terminal connected to the apache container with a shell prompt and the shell dropdown',
+        prepare: async page => {
+          await page.waitForTimeout(4000);
+          await page.keyboard.type('ls /usr/local/apache2', { delay: 50 });
+          await page.keyboard.press('Enter');
+          await page.waitForTimeout(1500);
+        },
+        viewportHeight: 760,
+        crop: { content: 'main', maxHeight: 620 },
+      },
+    ],
+  },
+  // MongoDB isn't running on the demo, these need PANEL_URL of a server where it is
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs mongodb/databases
+  'mongodb/databases': {
+    url: '/mongodb',
+    before: onlyRows('#databases-table', ['shop_db']),
+    prepare: rename(MONGO_NAMES),
+    shots: [
+      { name: 'list', alt: 'MongoDB Databases page listing databases with their size and the Delete button', crop: { from: 'main', to: 'main table tbody tr:last-of-type', fromTop: true, pad: 24 } },
+      {
+        name: 'delete',
+        alt: 'Delete button of a MongoDB database turned into a Confirm button with a countdown after the first click',
+        prepare: async page => { await page.locator('main table tbody tr:first-of-type button:has-text("Delete")').click(); await page.waitForTimeout(300); await page.mouse.move(0, 0); },
+        crop: { from: 'main table thead', to: 'main table tbody tr:first-of-type', pad: 8 },
+      },
+      bulkShot('#databases-table', ['shop_db'], 'A MongoDB database selected with the bulk actions bar offering Export, Assign user, Remove user and Delete', { keep: ['shop_db'] }),
+    ],
+  },
+  'mongodb/new_db': {
+    url: '/mongodb/new',
+    shots: [{ name: 'form', alt: 'Create a MongoDB Database form with the database name field', prepare: fillVisible(['shop_db']), crop: { from: 'main', to: 'main button:has-text("Create Database")', fromTop: true, pad: 32 } }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs mongodb/users
+  'mongodb/users': {
+    url: '/mongodb/users',
+    before: onlyRows('#users-table', ['shop_admin']),
+    prepare: rename(MONGO_NAMES),
+    shots: [
+      { name: 'list', alt: 'MongoDB Users page listing users with their roles and the Change Password and Delete buttons', crop: { from: 'main', to: 'main table tbody tr:last-of-type', fromTop: true, pad: 24 } },
+      {
+        name: 'delete',
+        alt: 'Delete button of a MongoDB user turned into a Confirm button with a countdown after the first click',
+        prepare: async page => { await page.locator('main table tbody tr:last-of-type button:has-text("Delete")').click(); await page.waitForTimeout(300); await page.mouse.move(0, 0); },
+        crop: { from: 'main table thead', to: 'main table tbody tr:last-of-type', pad: 8 },
+      },
+      bulkShot('#users-table', ['shop_admin'], 'A MongoDB user selected with the bulk actions bar offering Change password, Add to database, Remove from database and Delete', { keep: ['shop_admin'] }),
+    ],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them: PANEL_URL=https://host:2083 node shoot.mjs mongodb/processlist
+  'mongodb/processlist': {
+    url: '/mongodb/processlist',
+    shots: [
+      { name: 'list', alt: 'MongoDB Running Queries table listing the current operations with their user, namespace, running time and a Kill button', crop: 'content' },
+      bulkShot('#processlist-table', 1, 'A running operation selected with the bulk actions bar offering Kill'),
+    ],
+  },
+  'mongodb/new_user': {
+    url: '/mongodb/user',
+    shots: [{ name: 'form', alt: 'Create MongoDB User form with the username and password fields', prepare: fillVisible(['shop_admin', PASSWORD]), crop: { from: 'main', to: 'main button:has-text("Create User")', fromTop: true, pad: 32 } }],
+  },
+  'mongodb/assign': {
+    url: '/mongodb/assign',
+    shots: [{ name: 'form', alt: 'Assign User to Database form with the user, database and role dropdowns', prepare: all(selectFirst(800), rename(MONGO_NAMES)), crop: { from: 'main', to: 'main button:has-text("Assign User to Database")', fromTop: true, pad: 32 } }],
+  },
+  'mongodb/remove': {
+    url: '/mongodb/remove',
+    shots: [{ name: 'form', alt: 'Remove User access from Database form with the user, database and role dropdowns', prepare: all(selectFirst(800), rename(MONGO_NAMES)), crop: { from: 'main', to: 'main button:has-text("Remove User from Database")', fromTop: true, pad: 32 } }],
+  },
+  'mongodb/password': {
+    url: '/mongodb/password/claudetestuser',
+    shots: [{ name: 'form', alt: 'Change MongoDB user password form with the new password field', prepare: all(rename(MONGO_NAMES), async page => { await page.locator('main input:visible').last().fill(PASSWORD); }), crop: 'content' }],
+  },
+  'mongodb/wizard': {
+    url: '/mongodb/wizard',
+    shots: [{ name: 'form', alt: 'MongoDB Database Wizard with steps to create a database, create a user with a password, and grant a role', prepare: fillVisible(['shop_db', 'shop_admin', PASSWORD]), crop: { from: 'main', to: 'main button:has-text("Create DB, User, and Grant Role")', fromTop: true, pad: 32 } }],
+  },
+};

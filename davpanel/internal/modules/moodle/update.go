@@ -1,0 +1,146 @@
+package moodle
+
+import (
+	"context"
+	"net/http"
+	"os/exec"
+	"path/filepath"
+	"strings"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/auth"
+	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
+	"gist.github.com/kangpcode/davpanel/internal/core/logger"
+	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"gist.github.com/kangpcode/davpanel/internal/modules/php"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+// unpackMoodleUpdateArchive is unpackMoodleArchive's update-time sibling: extracts the new packaged tarball to a scratch dir, then replaces every top-level entry in approotHostPath except config.php - the tarball only ships config-dist.php (a template), never a real config.php, but the update path must still not overwrite the live one install.go itself wrote to approot's root
+func unpackMoodleUpdateArchive(ctx context.Context, archivePath, approotHostPath string) error {
+	tmpDir := approotHostPath + ".update-tmp"
+	defer tenantfs.RemoveAll(tmpDir)
+	if err := tenantfs.MkdirAll(tmpDir, 0o755); err != nil {
+		return err
+	}
+	if err := tenantfs.ExtractTar(ctx, archivePath, tmpDir, 1); err != nil {
+		return err
+	}
+	return tenantfs.ReplaceContents(tmpDir, approotHostPath, "config.php")
+}
+
+// handleMoodleUpdate updates an existing Moodle install in place: maintenance mode on, download+replace the packaged tarball's code (preserving config.php), then run admin/cli/upgrade.php - Moodle's own documented manual-update procedure, streaming NDJSON progress like install does
+func handleMoodleUpdate(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/x-ndjson")
+	flusher, canFlush := w.(http.Flusher)
+	emit := func(v map[string]any) { web.WriteNDJSON(w, flusher, canFlush, v) }
+
+	selectedDomain := r.URL.Query().Get("domain")
+	if selectedDomain == "" {
+		emit(map[string]any{"error": "Missing required domain."})
+		return
+	}
+	domain := selectedDomain
+	if idx := strings.Index(selectedDomain, "/"); idx != -1 {
+		domain = selectedDomain[:idx]
+	}
+	if !a.CheckDomainBelongsToUser(ctx, userID, domain) {
+		emit(map[string]any{"error": "You do not own this domain."})
+		return
+	}
+
+	emit(map[string]any{"status": "Checking if existing installation processes are running.."})
+	if err := appkit.CreateLockFile(currentUsername); err != nil {
+		emit(map[string]any{"error": "Error creating lock file: " + err.Error()})
+		return
+	}
+	defer appkit.RemoveLockFile(currentUsername)
+
+	webServer := webserver.GetEnvFileValue(userContext, "WEB_SERVER")
+	isLitespeed := strings.Contains(strings.ToLower(webServer), "litespeed")
+	phpVersion := php.GetPHPVForDomain(ctx, a, userContext, domain)
+	phpContainer := webServer
+	if !isLitespeed {
+		phpContainer = "php-fpm-" + phpVersion
+	}
+
+	emit(map[string]any{"status": "Starting PHP container: " + phpContainer})
+	if !cmsapp.EnsureContainerRunning(ctx, userContext, phpContainer) {
+		emit(map[string]any{"error": "PHP container failed to start. Please check it from Services."})
+		return
+	}
+
+	version, latestErr := latestMoodleVersion(ctx)
+	if latestErr != nil {
+		emit(map[string]any{"error": "Could not determine latest Moodle version: " + latestErr.Error()})
+		return
+	}
+	slug := appkit.SiteSlug(selectedDomain)
+	htmlVolume := "/home/" + userContext + "/docker-data/volumes/" + userContext + "_html_data/_data/"
+	approotHostPath := filepath.Join(htmlVolume, slug+"_moodleapp")
+	approotContainerPath := "/var/www/html/" + slug + "_moodleapp"
+
+	archiveName := "moodle-" + version + ".tar.gz"
+	archiveDir := "/etc/davpanel/moodle/archives"
+	archivePath := filepath.Join(archiveDir, archiveName)
+	if _, statErr := tenantfs.Stat(archivePath); statErr != nil {
+		downloadURL := moodleArchiveURL(version)
+		emit(map[string]any{"status": "Downloading " + downloadURL})
+		_ = tenantfs.MkdirAll(archiveDir, 0o755)
+		if runErr := exec.CommandContext(ctx, "wget", "-q", "-O", archivePath, downloadURL).Run(); runErr != nil {
+			_ = tenantfs.Remove(archivePath)
+			emit(map[string]any{"error": "Error downloading Moodle " + version + ": " + runErr.Error()})
+			return
+		}
+	} else {
+		emit(map[string]any{"status": "Using existing archive " + archivePath})
+	}
+
+	emit(map[string]any{"status": "Enabling maintenance mode"})
+	maintOnArgv := podmanmanager.PodmanArgv(userContext, "exec", phpContainer, "php", approotContainerPath+"/admin/cli/maintenance.php", "--enable")
+	_, _ = podmanmanager.Command(ctx, userContext, maintOnArgv).CombinedOutput()
+
+	emit(map[string]any{"status": "Replacing core files (preserving config.php)"})
+	if unpackErr := unpackMoodleUpdateArchive(ctx, archivePath, approotHostPath); unpackErr != nil {
+		emit(map[string]any{"error": "Error extracting Moodle archive: " + unpackErr.Error()})
+		return
+	}
+
+	emit(map[string]any{"status": "Setting files permissions and owner to '" + userContext + "'"})
+	if uid, uidErr := podmanmanager.GetUID(userContext); uidErr == nil {
+		_ = tenantfs.ChownR(approotHostPath, uid, uid)
+	}
+
+	emit(map[string]any{"status": "Running admin/cli/upgrade.php"})
+	upgradeArgv := podmanmanager.PodmanArgv(userContext, "exec", phpContainer, "php", approotContainerPath+"/admin/cli/upgrade.php", "--non-interactive")
+	out, runErr := podmanmanager.Command(ctx, userContext, upgradeArgv).CombinedOutput()
+	if runErr != nil {
+		emit(map[string]any{"error": "admin/cli/upgrade.php failed: " + strings.TrimSpace(string(out))})
+		maintOffArgv := podmanmanager.PodmanArgv(userContext, "exec", phpContainer, "php", approotContainerPath+"/admin/cli/maintenance.php", "--disable")
+		_, _ = podmanmanager.Command(ctx, userContext, maintOffArgv).CombinedOutput()
+		return
+	}
+
+	emit(map[string]any{"status": "Disabling maintenance mode"})
+	maintOffArgv := podmanmanager.PodmanArgv(userContext, "exec", phpContainer, "php", approotContainerPath+"/admin/cli/maintenance.php", "--disable")
+	_, _ = podmanmanager.Command(ctx, userContext, maintOffArgv).CombinedOutput()
+
+	if _, execErr := a.DB.ExecContext(ctx, "UPDATE sites SET version = ? WHERE site_name = ? AND type = 'moodle'", version, selectedDomain); execErr != nil {
+		emit(map[string]any{"error": "Update completed, but failed to record new version: " + execErr.Error()})
+		return
+	}
+
+	_ = logger.RecordUserAction(a.Config, currentUsername, "updated Moodle website "+selectedDomain, reqip.ClientIP(r))
+	emit(map[string]any{"status": "Update completed!", "version": version})
+}

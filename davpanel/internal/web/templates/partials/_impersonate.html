@@ -1,0 +1,25 @@
+{{define "impersonate"}}{{if .Impersonating}}
+<div class="bg-black text-white text-sm border-b border-gray-200 dark:border-gray-800 flex gap-4 w-full justify-center space-x-4 items-center px-4" id="impersonate-banner">
+    <p class="text-sm text-gray-100 dark:text-gray-500">{{.T.Get "You are currently impersonating user"}} '{{.CurrentUsername}}'</p>
+    <a id="admin-return-link" href="#" class="relative inline-flex items-center justify-center px-1 text-center text-sm font-medium shadow-sm transition-all duration-100 ease-in-out disabled:pointer-events-none disabled:shadow-none outline outline-offset-2 outline-0 focus-visible:outline-2 outline-blue-500 dark:outline-blue-500 dark:text-gray-50 dark:bg-gray-950 dark:hover:bg-gray-900/60 disabled:text-gray-400 disabled:dark:text-gray-600 gap-x-1.5 whitespace-nowrap bg-black text-white hover:bg-gray-800 sm:mt-0">{{.T.Get "Back to"}} <svg version="1.0" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet"><path d="M32 4 56 12v18c0 13-9 23-24 30C17 53 8 43 8 30V12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path fill="currentColor" fill-rule="evenodd" d="M23 19h8a13 13 0 0 1 0 26h-8Zm5 5v16h3a8 8 0 0 0 0-16Z"/><circle cx="47" cy="19" r="3" fill="currentColor"/></svg> {{.T.Get "DavAdmin"}}</a>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var currentHost = window.location.hostname;
+            var newPort = '{{.AdminPort}}';
+            var currentUsername = '{{.CurrentUsername}}';
+            var adminUrl = 'http://' + currentHost + ':' + newPort + '/users/' + encodeURIComponent(currentUsername);
+
+            var link = document.getElementById('admin-return-link');
+
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                fetch('/logout', { method: 'POST', headers: { 'X-CSRF-TOKEN': csrf_token } })
+                    .finally(() => {
+                        window.location.href = adminUrl;
+                    });
+            });
+        });
+    </script>
+</div>
+{{end}}{{end}}

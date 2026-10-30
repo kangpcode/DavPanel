@@ -1,0 +1,99 @@
+package diskusage
+
+import (
+	"net/http/httptest"
+	"strings"
+	"testing"
+
+	"gist.github.com/kangpcode/davpanel/internal/core/i18n"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+func baseLayout(mgr *i18n.Manager, path string) web.LayoutData {
+	userAllowed := map[string]bool{"dashboard": true, "disk_usage": true}
+	return web.LayoutData{
+		Title: "Test", BrandName: "Test Panel", CSRFToken: "test-csrf-token", PanelDir: "ltr",
+		NavGroups: web.BuildClassicSidebarNav(userAllowed, nil, path), UserAllowed: userAllowed,
+		UserAllowedJSON: web.UserAllowedList(userAllowed), CurrentUsername: "testuser",
+		RequestPath: path, AdminPort: "2087", T: mgr.Translator("en"),
+	}
+}
+
+func TestRenderDiskUsagePage(t *testing.T) {
+	mgr := i18n.NewManager(t.TempDir(), nil)
+	data := DiskUsagePageData{
+		LayoutData:  baseLayout(mgr, "/disk-usage/"),
+		Breadcrumbs: buildBreadcrumbs("disk-usage", "/disk-usage/sub/"),
+		Rows:        parseDuOutput("120M dir1\n45K dir2", "/disk-usage/"),
+		ShowUpLink:  true, UpLink: "/disk-usage",
+	}
+	w := httptest.NewRecorder()
+	if err := diskUsagePage.Render(w, 200, data); err != nil {
+		t.Fatalf("Render: %v", err)
+	}
+	body := w.Body.String()
+	for _, want := range []string{"dir1", "120M", "dir2", "Up One Level"} {
+		if !strings.Contains(body, want) {
+			t.Errorf("rendered disk usage page missing %q", want)
+		}
+	}
+}
+
+func TestParseDuOutput(t *testing.T) {
+	rows := parseDuOutput("120M dir with spaces\n45K other\n", "/disk-usage/")
+	if len(rows) != 2 {
+		t.Fatalf("expected 2 rows, got %d: %+v", len(rows), rows)
+	}
+	if rows[0].Directory != "dir with spaces" || rows[0].Count != "120M" {
+		t.Errorf("unexpected row[0]: %+v", rows[0])
+	}
+}
+
+func TestBuildBreadcrumbs(t *testing.T) {
+	crumbs := buildBreadcrumbs("disk-usage", "/disk-usage/a/b/")
+	if len(crumbs) != 2 || crumbs[0].Name != "a" || crumbs[1].Name != "b" {
+		t.Fatalf("unexpected breadcrumbs: %+v", crumbs)
+	}
+	if crumbs[1].Path != "/disk-usage/a/b" {
+		t.Errorf("unexpected path: %q", crumbs[1].Path)
+	}
+}
+
+// links were built from the decoded path, so a folder named a#b sent the browser to /disk-usage/a
+func TestParseDuOutputEscapesCurrentPath(t *testing.T) {
+	cases := map[string]string{
+		"/disk-usage/a#b/":  "/disk-usage/a%23b/sub/",
+		"/disk-usage/a?b/":  "/disk-usage/a%3Fb/sub/",
+		"/disk-usage/x%41/": "/disk-usage/x%2541/sub/",
+		"/disk-usage/é/":    "/disk-usage/%C3%A9/sub/",
+	}
+	for urlPath, want := range cases {
+		if rows := parseDuOutput("4.0K\tsub", urlPath); len(rows) != 1 || rows[0].Href != want {
+			t.Errorf("parseDuOutput under %q: %+v, want Href %q", urlPath, rows, want)
+		}
+	}
+}
+
+// a folder named " lead" used to link to /disk-usage/lead/
+func TestParseDuOutputKeepsLeadingSpaces(t *testing.T) {
+	rows := parseDuOutput("4.0K\t lead\n8.0K\tplain\n", "/disk-usage/")
+	if len(rows) != 2 || rows[0].Directory != " lead" || rows[0].Href != "/disk-usage/%20lead/" || rows[1].Directory != "plain" {
+		t.Fatalf("got %+v", rows)
+	}
+}
+
+// the File Manager link only showed under /disk-usage/files/, which isn't the File Manager's root
+func TestFileManagerLinkForDocroot(t *testing.T) {
+	cases := map[string]string{
+		"/disk-usage/docker-data/volumes/u_html_data/_data/":     "/files/site",
+		"/disk-usage/docker-data/volumes/u_html_data/_data/a b/": "/files/a%20b/site",
+		"/disk-usage/files/": "",
+		"/disk-usage/":       "",
+		"/disk-usage/docker-data/volumes/u_mysql_data/_data/": "",
+	}
+	for urlPath, want := range cases {
+		if rows := parseDuOutput("4.0K\tsite", urlPath); len(rows) != 1 || rows[0].FileManagerHref != want {
+			t.Errorf("under %q: %+v, want FileManagerHref %q", urlPath, rows, want)
+		}
+	}
+}

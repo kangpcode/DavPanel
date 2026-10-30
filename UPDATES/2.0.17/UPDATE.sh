@@ -1,0 +1,168 @@
+#!/bin/bash
+
+# davcli update runs this as wget -O - URL | bash, so a command below that reads stdin (apt-get, podman) would eat the rest of the script and bash would go on mid-line; the rest is saved to a file and run from there with stdin closed
+if [ -z "${BASH_SOURCE[0]:-}" ] || [ ! -f "${BASH_SOURCE[0]}" ]; then
+    self=$(mktemp) && cat > "$self" && OP_UPDATE_SELF="$self" exec bash "$self" "$@" </dev/null
+fi
+[ -n "${OP_UPDATE_SELF:-}" ] && trap 'rm -f "$OP_UPDATE_SELF"' EXIT
+
+# PHP2Shell (CVE-2026-109618, CVE-2026-109619): https://github.com/stefanpejcic/OpenPanel/issues/1203
+# 2.0.16 pulled shinsenter/php before upstream rebuilt 8.3 and 8.2 (and on servers that updated early, 8.5 and 8.4 too), and didn't cover phpMyAdmin and Roundcube
+# docker-update now checks the PHP version inside each image and skips the recreate, reporting a failure, while an image still has the old PHP
+DOCKER_UPDATE=/usr/local/davcli/docker/update.sh
+if [ ! -x "$DOCKER_UPDATE" ] || ! grep -q "^readonly PHP_FIXED=" "$DOCKER_UPDATE" || ! grep -q "^pull_image()" "$DOCKER_UPDATE"; then
+    echo "davcli docker-update has no PHP version check, PHP images not updated - run davcli update first, then run this update again."
+    exit 0
+fi
+# shellcheck disable=SC1091
+. /usr/local/davcli/lib/podman.sh
+
+# 2.0.16's shared store pulls used root's runroot, which unmounts every running root container's layer: they keep running, but their next restart or recreate fails ("executable file '/init' not found", "removing mount point ... directory not empty")
+# podman mount puts the layer back for a running container without stopping it, containers whose layer is still mounted are left alone
+podman ps --format '{{.Names}}' 2>/dev/null | while read -r name; do
+    merged=$(podman inspect -f '{{.GraphDriver.Data.MergedDir}}' "$name" 2>/dev/null </dev/null)
+    [ -n "$merged" ] || continue
+    awk -v m="$merged" '$2 == m { found = 1 } END { exit !found }' /proc/mounts && continue
+    echo "Remounting $name, its layer was unmounted by an earlier shared store pull..."
+    podman mount "$name" >/dev/null 2>&1 </dev/null || echo "Failed to remount $name, restart it with: podman stop $name && podman umount --force $name && podman start $name"
+done
+
+# Roundcube runs from the mail stack, which docker-update doesn't manage; its sqlite db (contacts, identities, settings) is in the container layer, so it's moved to the host first and kept from now on
+MAIL_DIR=/usr/local/mail/openmail
+MAIL_COMPOSE="$MAIL_DIR/compose.yml"
+RC_CONTAINER=davadmin_roundcube
+RC_DB_DIR="$MAIL_DIR/docker-data/roundcube/db"
+RC_PLUGIN_LINE="      - ./roundcube-plugins/autologin.php:/var/www/html/public_html/autologin.php:ro"
+update_roundcube() {
+    podman container exists "$RC_CONTAINER" || return 0
+    [ -f "$MAIL_COMPOSE" ] || return 0
+    if [ "$(podman inspect -f '{{.State.Status}}' "$RC_CONTAINER" 2>/dev/null)" != "running" ]; then
+        echo "Roundcube is not running, left alone - it gets updated by the next run of this update after it's started."
+        return 0
+    fi
+    command -v skopeo >/dev/null 2>&1 || { echo "skopeo is missing, Roundcube not updated - run davcli docker-update once to install it, then this update again."; return 0; }
+    local image current_id new_id version fixed
+    image=$(podman inspect -f '{{.ImageName}}' "$RC_CONTAINER" 2>/dev/null)
+    image="${image:-docker.io/roundcube/roundcubemail:latest}"
+
+    # the registry config has the exact PHP_VERSION for roundcube's php base image, nothing is pulled or recreated until upstream has the fix
+    . <(sed -n '/^readonly PHP_FIXED=/p;/^php_outdated() {/,/^}/p' "$DOCKER_UPDATE")
+    version=$(skopeo inspect --config "docker://$image" 2>/dev/null | jq -r '.config.Env[]? | select(startswith("PHP_VERSION=")) | sub("PHP_VERSION="; "")')
+    fixed=$(php_outdated "$version")
+    if [ -z "$version" ]; then
+        echo "Could not read the PHP version of $image from the registry, Roundcube not updated - run this update again later."
+        return 0
+    elif [ -n "$fixed" ]; then
+        echo "$image still has PHP $version (security fixes are in $fixed), Roundcube not updated - run this update again once it's rebuilt."
+        return 0
+    fi
+
+    current_id=$(podman inspect -f '{{.Image}}' "$RC_CONTAINER" 2>/dev/null)
+    echo "Pulling $image (PHP $version)..."
+    if ! podman pull -q "$image" >/dev/null 2>&1; then
+        echo "Failed to pull $image, Roundcube not updated."
+        return 0
+    fi
+    new_id=$(podman image inspect -f '{{.Id}}' "$image" 2>/dev/null)
+
+    if ! grep -qF ":/var/roundcube/db" "$MAIL_COMPOSE"; then
+        grep -qxF "$RC_PLUGIN_LINE" "$MAIL_COMPOSE" || { echo "Roundcube volumes in $MAIL_COMPOSE are not the default ones, not recreating it - its sqlite db would be lost."; return 0; }
+        echo "Moving the Roundcube database to $RC_DB_DIR..."
+        mkdir -p "$RC_DB_DIR"
+        if ! podman cp "$RC_CONTAINER:/var/roundcube/db/." "$RC_DB_DIR/"; then
+            echo "Failed to copy the Roundcube database out of the container, Roundcube not updated."
+            return 0
+        fi
+        # www-data in the roundcube image
+        chown -R 33:33 "$RC_DB_DIR"
+        cp -a "$RC_DB_DIR" "$RC_DB_DIR.bak-2.0.17"
+        cp -a "$MAIL_COMPOSE" "$MAIL_COMPOSE.bak-2.0.17"
+        sed -i "s|^$(printf '%s' "$RC_PLUGIN_LINE" | sed 's/[.[\*^$|]/\\&/g')\$|&\n      - ./docker-data/roundcube/db:/var/roundcube/db|" "$MAIL_COMPOSE"
+        grep -qF "./docker-data/roundcube/db:/var/roundcube/db" "$MAIL_COMPOSE" || { echo "Failed to add the Roundcube database volume to $MAIL_COMPOSE, Roundcube not updated."; return 0; }
+    elif [ "$current_id" = "$new_id" ]; then
+        echo "Roundcube already runs $image (PHP $version)."
+        return 0
+    fi
+
+    # podman-compose 1.0.6 recreates every service of a project whose compose file changed and ignores --no-deps, so the mail stack is taken down and started as a whole; mail is unavailable for about a minute
+    echo "Restarting the mail server with the new Roundcube..."
+    (cd "$MAIL_DIR" && timeout 120 podman-compose down) >/dev/null 2>&1
+    (cd "$MAIL_DIR" && timeout 300 podman-compose up -d) >/dev/null 2>&1
+    local name
+    for name in davadmin_mailserver "$RC_CONTAINER"; do
+        if [ "$(podman inspect -f '{{.State.Status}}' "$name" 2>/dev/null)" != "running" ]; then
+            echo "$name is not running after the restart, start the mail server with: davcli email-server restart"
+            return 0
+        fi
+    done
+    echo "Roundcube now runs PHP $(podman exec "$RC_CONTAINER" php -r 'echo PHP_VERSION;' 2>/dev/null)."
+}
+update_roundcube
+
+# openlitespeed/litespeed bring their own php (lsphp), a php version change in DavPanel pinned them to 1.8.5-lsphpXX / 6.3.5-lsphpXX whose lsphp has no security fixes: https://github.com/stefanpejcic/OpenPanel/issues/1203#issuecomment-6328047388
+# each account moves to the current release with the same lsphp branch, "latest" is pinned to the branch the container runs now since latest moved to lsphp 8.5; the background unit below recreates the running ones
+OLS_RELEASE=1.9.3
+LS_RELEASE=6.3.7
+litespeed_images=""
+for envf in /home/*/.env; do
+    [ -f "$envf" ] || continue
+    ctx=$(basename "$(dirname "$envf")")
+    ws=$(grep -m1 '^WEB_SERVER=' "$envf" | cut -d= -f2- | tr -d '"[:space:]')
+    case "$ws" in
+        openlitespeed) key=OPENLITESPEED_VERSION; release=$OLS_RELEASE ;;
+        litespeed) key=LITESPEED_VERSION; release=$LS_RELEASE ;;
+        *) continue ;;
+    esac
+    tag=$(grep -m1 "^$key=" "$envf" | cut -d= -f2- | tr -d '"[:space:]')
+    branch=""
+    if [[ "$tag" =~ ^[0-9.]+-lsphp([0-9]+)$ ]]; then
+        branch="${BASH_REMATCH[1]}"
+    else
+        # latest or empty: the branch the running container serves with
+        branch=$(podman_ctx "$ctx" exec "$ws" readlink -f /usr/local/lsws/fcgi-bin/lsphp 2>/dev/null </dev/null | grep -oE 'lsphp[0-9]+' | head -1 | grep -oE '[0-9]+')
+    fi
+    if [ -z "$branch" ]; then
+        echo "Could not tell which lsphp $ctx's $ws uses ($key=${tag:-empty}), left as it is - set $key=$release-lsphpXX in $envf by hand."
+        continue
+    fi
+    new="$release-lsphp$branch"
+    [ "$tag" = "$new" ] && continue
+    # the newer images have no ionCube loader, a site with ionCube encoded files would stop working
+    if timeout 120 grep -rlIq --include=*.php -m1 -E "ionCube Loader|ioncube_loader" "/home/$ctx/docker-data/volumes/${ctx}_html_data/_data" 2>/dev/null; then
+        echo "$ctx has ionCube encoded files and the $ws $new image has no ionCube loader, left on $key=${tag:-empty} - update it by hand."
+        continue
+    fi
+    echo "Moving $ctx's $ws from ${tag:-latest} to $new..."
+    [ -f "$envf.bak-2.0.17" ] || cp -a "$envf" "$envf.bak-2.0.17"
+    if grep -q "^$key=" "$envf"; then
+        # written in place so the file keeps its owner and mode
+        sed "s|^$key=.*|$key=\"$new\"|" "$envf" > /tmp/op_2017_env && cat /tmp/op_2017_env > "$envf"
+        rm -f /tmp/op_2017_env
+    else
+        printf '%s="%s"\n' "$key" "$new" >> "$envf"
+    fi
+    litespeed_images+="litespeedtech/$ws:$new "
+done
+litespeed_images=$(echo "$litespeed_images" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+
+# phpMyAdmin, the litespeed images above and every php version in use go through docker-update in their own unit: on a server with many accounts this takes longer than the 300 seconds davcli update gives this script, which got killed in the middle of it in 2.0.16
+# the unit first waits for a php update 2.0.16 started in the background, so two docker-update runs never overlap; php versions whose image isn't rebuilt yet are reported and left as they are, newest versions go first
+images=""
+if podman container exists phpmyadmin; then
+    pma_image=$(podman inspect -f '{{.ImageName}}' phpmyadmin 2>/dev/null)
+    images="${pma_image:-phpmyadmin:latest} "
+fi
+images+="$litespeed_images"
+images+=$(grep -hoE "^    image:[[:space:]]*['\"]?(docker\.io/)?shinsenter/php:[0-9.]+-fpm" /etc/davpanel/docker/compose/1.0/docker-compose.yml /home/*/docker-compose.yml 2>/dev/null \
+    | sed -E "s/^    image:[[:space:]]*['\"]?(docker\.io\/)?//" | sort -urV | tr '\n' ' ')
+if [ -n "${images// /}" ]; then
+    IMAGES_LOG=/var/log/davpanel/updates/2.0.17-images.log
+    mkdir -p "$(dirname "$IMAGES_LOG")"
+    IMAGES_RUN='while systemctl list-units --no-legend --plain "davpanel-php-update-*" 2>/dev/null | grep -q " active "; do echo "Waiting for the PHP update from 2.0.16 to finish..."; sleep 30; done; for image in '"$images"'; do echo "Updating $image..."; davcli docker-update "$image" -y || echo "Not all containers on $image were updated, run again later: davcli docker-update $image"; done; echo "Image update finished."'
+    echo "Updating phpMyAdmin and PHP images in the background ($images), follow it with: tail -f $IMAGES_LOG"
+    if ! systemd-run --unit="davpanel-image-update-$(date +%s)" --collect --quiet --setenv=HOME=/root \
+            -p StandardOutput="append:$IMAGES_LOG" -p StandardError="append:$IMAGES_LOG" \
+            /bin/bash -c "$IMAGES_RUN" 2>/dev/null; then
+        setsid nohup /bin/bash -c "$IMAGES_RUN" >> "$IMAGES_LOG" 2>&1 </dev/null &
+    fi
+fi

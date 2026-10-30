@@ -1,0 +1,45 @@
+package autoinstaller
+
+import (
+	"log"
+	"net/http"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/modules/dockertemplates"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+var autoinstallerPage = web.LoadPage("manager/autoinstaller.html")
+
+// AutoinstallerPageData is manager/autoinstaller.html's template context.
+type AutoinstallerPageData struct {
+	web.LayoutData
+	Domains []appctx.Domain
+	Counts  map[string]int
+
+	// UpsellAllowed/UpsellPlanName/UpsellURL back the disabled-tile hover tooltip: when a module key is in UpsellAllowed, the tile offers an upgrade CTA instead of the plain "contact your administrator" message
+	UpsellAllowed  map[string]bool
+	UpsellPlanName string
+	UpsellURL      string
+
+	DockerTemplates []dockertemplates.Template
+}
+
+func renderAutoinstallerPage(a *appctx.App, w http.ResponseWriter, r *http.Request, domains []appctx.Domain, counts map[string]int, upsell upsellData) {
+	layout, _, err := web.BuildLayoutData(a, w, r, "Install App")
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	data := AutoinstallerPageData{
+		LayoutData: layout, Domains: domains, Counts: counts,
+		UpsellAllowed: upsell.Allowed, UpsellPlanName: upsell.PlanName, UpsellURL: upsell.URL,
+	}
+	// only fetched for users who can actually run containers
+	if layout.UserAllowed["docker"] {
+		data.DockerTemplates = dockertemplates.Load(r.Context(), a)
+	}
+	if err := autoinstallerPage.Render(w, http.StatusOK, data); err != nil {
+		log.Printf("AUTOINSTALLER - template render error: %v", err)
+	}
+}

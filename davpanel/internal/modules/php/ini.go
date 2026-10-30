@@ -1,0 +1,106 @@
+package php
+
+import (
+	"fmt"
+	"net/http"
+	"strings"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/auth"
+	"gist.github.com/kangpcode/davpanel/internal/core/logger"
+	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+// HealthIssue is a {id, severity, message} toast issue, rendered client-side via reportHealthIssues()
+type HealthIssue struct {
+	ID       string `json:"id"`
+	Severity string `json:"severity"`
+	Message  string `json:"message"`
+}
+
+// handlePHPIniEditor edits the php.ini file for one PHP version, or just renders the version-picker form when versionSeg is "" (the bare /php/php_ini_editor route)
+func handlePHPIniEditor(a *appctx.App, w http.ResponseWriter, r *http.Request, versionSeg string) {
+	ctx := r.Context()
+	_, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	version := phpVersionFromIniSegment(versionSeg)
+	title := "PHP.INI Editor"
+	var phpIniContent, displayFilePath string
+	installedVersions := FetchPHPVersions(ctx, a, userContext)
+	service := ""
+
+	if version != "" {
+		phpIniFilePath := "/home/" + userContext + "/php.ini/" + version + ".ini"
+		webServer := webserver.GetEnvFileValue(userContext, "WEB_SERVER")
+
+		var containerToRestart, text string
+		if strings.Contains(strings.ToLower(webServer), "litespeed") {
+			service = strings.ToLower(webServer)
+			displayFilePath = "/usr/local/lsws/lsphp" + strings.ReplaceAll(version, ".", "") + "/etc/php/" + version + "/litespeed/php.ini"
+			containerToRestart = webServer
+			text = "LSPHP"
+		} else {
+			displayFilePath = "/etc/php/" + version + "/fpm/php.ini"
+			containerToRestart = "php-fpm-" + version
+			service = containerToRestart
+			text = "PHP-FPM"
+		}
+		title = "PHP " + version + " INI Editor"
+
+		content, readErr := tenantfs.ReadFile(phpIniFilePath)
+		if readErr != nil {
+			writeJSONError(w, http.StatusInternalServerError, readErr.Error())
+			return
+		}
+		phpIniContent = string(content)
+
+		if r.Method == http.MethodPost {
+			_ = r.ParseForm()
+			if newContent := web.FormText(r, "editor_content"); newContent != "" {
+				if writeErr := tenantfs.WriteFile(phpIniFilePath, []byte(newContent), 0o644); writeErr != nil {
+					web.FlashRedirect(a, w, r, "error", web.Tr(a, r, "Error saving %(text)s php.ini file!", "text", text), "/php/php"+version+".ini/editor")
+					return
+				}
+
+				var message string
+				isRunning := docker.ComposeContainer(ctx, userContext, containerToRestart, "status")
+				if isRunning && text == "PHP-FPM" && signalPHPFPMReload(ctx, userContext, containerToRestart) {
+					message = web.Tr(a, r, "PHP.INI file for %(text)s version %(version)s edited successfully, and %(container_to_restart)s service reloaded to apply.", "text", text, "version", version, "container_to_restart", containerToRestart)
+				} else if isRunning {
+					message = web.Tr(a, r, "PHP.INI file for %(text)s version %(version)s edited successfully, and %(container_to_restart)s service restarted to apply.", "text", text, "version", version, "container_to_restart", containerToRestart)
+					docker.ComposeContainer(ctx, userContext, containerToRestart, "stop")
+					docker.ComposeContainer(ctx, userContext, containerToRestart, "start")
+				} else {
+					message = web.Tr(a, r, "PHP.INI file for %(text)s version %(version)s edited successfully.", "text", text, "version", version)
+				}
+
+				web.Flash(a, w, r, "success", message)
+				ipAddress := reqip.ClientIP(r)
+				_ = logger.RecordUserAction(a.Config, currentUsername, "edited php.ini for PHP "+version, ipAddress)
+				http.Redirect(w, r, "/php/php"+version+".ini/editor", http.StatusFound)
+				return
+			}
+		}
+	}
+
+	var phpIniIssues []HealthIssue
+	if version != "" {
+		if syntaxError := checkPHPIniSyntax(ctx, userContext, version); syntaxError != "" {
+			phpIniIssues = append(phpIniIssues, HealthIssue{
+				ID:       "php-ini-syntax:" + version,
+				Severity: "error",
+				Message:  fmt.Sprintf("Syntax error in the PHP %s ini file: %s", version, syntaxError),
+			})
+		}
+	}
+
+	renderPHPIniEditorPage(a, w, r, version, service, title, displayFilePath, phpIniContent, installedVersions, phpIniIssues)
+}

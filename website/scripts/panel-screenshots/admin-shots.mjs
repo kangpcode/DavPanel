@@ -1,0 +1,1051 @@
+// DavAdmin screenshot manifest: one entry per docs/admin page, same conventions as shots.mjs
+export const BASE_URL = process.env.ADMIN_URL || 'https://demo.davpanel.com:2087';
+// a server other than the demo gets its own session file
+export const STATE_PATH = process.env.ADMIN_URL ? `.auth/admin_state_${new URL(process.env.ADMIN_URL).hostname}.json` : '.auth/admin_state.json';
+export const OUT_DIR = '../../static/img/davadmin-screenshots';
+// below 1200px the admin header's resource bar is pinned to the bottom of the screen
+export const VIEWPORT_WIDTH = 1280;
+
+import { rename, all, click, fill, fillVisible, selectFirst, maskIPs, hideNotices, hideText, markCard, tab, markSection, markSectionId, clickAlpine, bulkSelect, onlyRows, fitBulkBar, firstRows } from './helpers.mjs';
+
+// demo host names and addresses -> example ones
+const DEMO_NAMES = {
+  // second test server used for pages the demo can't show
+  '185.7.32.112': '203.0.113.10',
+  'stefan.davpanel.com': 'server.example.com',
+  'asdadsadsadasdas@': 'info@',
+  'asdadsadsdasdas@': 'info@',
+  'assaasas@': 'sales@',
+  'dsffds@': 'support@',
+  'newone@': 'john@',
+  'ftpdemo@static.test.rs': 'ftpuser@example.com',
+  'static-custom-root': 'example.com',
+  'example.test.rs': 'example.com',
+  'proba.com': 'example.org',
+  varnish2: 'lucas',
+  'sfdddfdf@': 'support@',
+  'shop.test.rs': 'shop.example.com',
+  'ols.test.rs': 'store.example.com',
+  ols_test_rs: 'store_example_com',
+  example_test_rs: 'example_com',
+  olstest: 'emma',
+  // bulk action fixtures on the test server
+  bulkuser: 'maria',
+  'bulk@example.com': 'maria@example.com',
+  'stefan@test.rs': 'john@example.com',
+  stefan: 'administrator',
+  tmpuser1: 'olivia',
+  'tmp1@example.com': 'olivia@example.com',
+  bulkadmin1: 'support_admin',
+  bulkadmin2: 'billing_admin',
+  bulkres1: 'webagency',
+  bulkres2: 'hostpro',
+  // reseller package fixtures on the test server
+  tstreseller29428: 'webagency',
+  tstreseller59185: 'hostpro',
+  probaproba: 'designstudio',
+  bulkplan1: 'Starter plan',
+  bulkplan2: 'Business plan',
+  'Bulk test': 'Small sites',
+  ecstatic_hofstadter9: 'owner',
+  'root@stefan': 'root@server',
+  'website-builder.tests.davpanel.com': 'portfolio.example.com',
+  'redirect.tests.davpanel.com': 'old.example.com',
+  'python.tests.davpanel.com': 'api.example.com',
+  'nodejs.tests.davpanel.com': 'app.example.com',
+  'files.tests.davpanel.com': 'files.example.com',
+  'php.tests.davpanel.com': 'shop.example.com',
+  'to-be-removed.com': 'example.net',
+  'anotheruser.com': 'maria-design.com',
+  testinguser: 'john',
+  anotheruser: 'maria',
+  dorotea: 'agency',
+  wpxss: 'shopowner',
+  'test@test.com': 'john@example.com',
+  musing_johnson7: 'owner',
+  'dorotea.': 'agency.',
+  'wp.tests.davpanel.com': 'blog.example.com',
+  'tests.davpanel.com': 'example.com',
+  'demo.davpanel.com': 'server.example.com',
+};
+
+// the dashboard fills news, system info and the chart over ajax after load
+const dashboardLoaded = async page => {
+  await page.waitForFunction(() => {
+    const news = document.getElementById('news-content');
+    const imgs = news ? [...news.querySelectorAll('img')] : [];
+    const host = document.getElementById('system-hostname');
+    return imgs.length > 0 && imgs.every(i => i.complete && i.naturalWidth > 0) && host && host.textContent.trim().length > 0;
+  }, null, { timeout: 30000 }).catch(() => {});
+  await page.waitForLoadState('networkidle').catch(() => {});
+  await page.waitForTimeout(3000);
+};
+
+// runs on every shot after its own prepare(), so selectors there can still use the real names
+// API keys and tokens shown in settings fields
+const maskSecrets = async page => {
+  await page.evaluate(() => {
+    document.querySelectorAll('main input, main textarea').forEach(i => {
+      if (/AIza[\w-]{20,}|\b(sk|pk|key|tok)[_-][\w-]{16,}/.test(i.value)) i.value = i.value.replace(/AIza[\w-]{20,}/g, 'AIzaSy-your-api-key').replace(/\b(sk|pk|key|tok)[_-][\w-]{16,}/g, '$1_xxxxxxxxxxxxxxxx');
+    });
+  });
+};
+
+// rows selected with the bulk actions bar put back under the table, same as the panel's bulkShot in shots.mjs
+// action opens that action's confirm step, field picks what to change on inputs like the plan Update, value fills the input
+const bulkShot = (table, keys, alt, { name = 'bulk', keep, rows, wait, action, field, value } = {}) => ({
+  name,
+  alt,
+  prepare: all(
+    ...(wait ? [async page => { await page.waitForTimeout(wait); }] : []),
+    ...(keep ? [onlyRows(table, keep)] : []),
+    ...(rows ? [firstRows(table, rows)] : []),
+    bulkSelect(keys),
+    ...(action ? [click(`[data-bulk-action="${action}"]`)] : []),
+    ...(field ? [async page => { await page.selectOption('#bulk-actions-bar select[aria-label="What to change"]', field); await page.waitForTimeout(300); }] : []),
+    ...(value != null ? [async page => {
+      const el = page.locator(`[data-bulk-input="${action}"]`);
+      if ((await el.evaluate(e => e.tagName)) === 'SELECT') await el.selectOption(value);
+      else await el.fill(value);
+    }] : []),
+    fitBulkBar(table),
+  ),
+  crop: { from: `${table} thead`, to: '#bulk-actions-bar' },
+});
+
+// /domains/ratelimit loads usage after the page, refresh it so the cached numbers don't lag behind the test traffic
+const rlUsage = async page => {
+  await page.locator('main button:has-text("Refresh")').click();
+  await page.waitForFunction(() => !document.body.innerText.includes('Reading access logs'), null, { timeout: 30000 }).catch(() => {});
+  await page.waitForTimeout(600);
+};
+
+// the test server's postfwd.cf has one rule twice and no live counters, drop the copy and give the rows a believable hourly count
+const dlRows = async page => {
+  await page.evaluate(() => {
+    const seen = new Set();
+    const usage = { 'example.test.rs': 37, 'ols.test.rs': 86 };
+    document.querySelectorAll('#domain_limits_table tbody tr[data-domain]').forEach(tr => {
+      const d = tr.dataset.domain;
+      if (seen.has(d)) { tr.nextElementSibling?.remove(); tr.remove(); return; }
+      seen.add(d);
+      if (usage[d] != null) Alpine.$data(tr).current = usage[d];
+    });
+    const left = seen.size;
+    const footer = [...document.querySelectorAll('main p')].find(p => p.textContent.includes('Showing'));
+    if (footer) footer.innerHTML = `Showing <span class="font-medium text-gray-900 dark:text-gray-50">${left}</span> of ${left}`;
+  });
+  await page.waitForTimeout(300);
+};
+
+// the test server has one throwaway database, show a few realistic ones instead
+const dbRows = async page => {
+  await page.evaluate(() => {
+    const tbody = document.querySelector('#databases_table tbody');
+    const first = tbody && tbody.querySelector('tr:has(td + td)');
+    if (!first) return;
+    const set = (row, name, tables, size) => {
+      const cells = row.querySelectorAll('td');
+      const old = cells[0].textContent.trim();
+      cells[0].textContent = name;
+      cells[3].textContent = tables;
+      cells[4].textContent = size;
+      row.querySelectorAll('[title]').forEach(el => el.title = el.title.split(old).join(name));
+    };
+    const extra = [['shop', '58', '41.3 MB'], ['crm', '24', '6.8 MB']];
+    for (const [name, tables, size] of extra) set(tbody.appendChild(first.cloneNode(true)), name, tables, size);
+    set(first, 'wp_blog', '12', '3.2 MB');
+    const h2 = document.querySelector('main h2');
+    if (h2) h2.innerHTML = '<b>3</b> databases across <b>1</b> user, <b>51.3 MB</b> in total.';
+  });
+};
+
+// wait for the DNS checks to come back over ajax
+const deliverabilityRows = async page => {
+  await page.waitForSelector('#deliverability_table tbody tr.group', { timeout: 30000 }).catch(() => {});
+  await page.waitForTimeout(500);
+};
+
+export const globalPrepare = all(rename(DEMO_NAMES, 'body'), maskIPs('main'), hideNotices, maskSecrets);
+
+export const pages = {
+  'accounts/users': {
+    url: '/users',
+    shots: [
+      { name: 'list', alt: 'Users page listing DavPanel accounts with their status, plan, memory, CPU, disk and inodes usage and the Impersonate button', crop: 'content' },
+      {
+        name: 'columns',
+        alt: 'Show Columns menu of the Users table with a toggle for each column, including 2FA and Passkeys',
+        prepare: click('#dropdownToggleButton', 600),
+        crop: { from: '#dropdownToggleButton', to: '#dropdownToggle', pad: 12 },
+      },
+      { name: 'new', url: '/user/new', alt: 'Create New user form with username, email, password, webserver, database type and hosting plan', prepare: fillVisible(['john', 'john@example.com']), crop: 'content' },
+      { name: 'stats', url: '/users/testinguser#stats', alt: 'Overview tab of a user with gauges for storage, inodes, CPU and memory usage and the View Past Usage button', prepare: async page => { await page.waitForTimeout(2500); }, crop: { from: 'main', to: '#get_docker_history_usage', fromTop: true, pad: 24 } },
+      {
+        name: 'history',
+        url: '/users/testinguser',
+        alt: 'Past resource usage table of a user with the date, CPU and memory usage and the number of tasks',
+        prepare: async page => {
+          await page.waitForTimeout(1500);
+          await page.locator('#get_docker_history_usage').click();
+          await page.waitForTimeout(2500);
+        },
+        crop: { from: 'main h4:text-is("Last updated:")', to: '#docker_stats_history tbody tr:nth-of-type(6)', pad: 16, right: true },
+      },
+      {
+        name: 'info',
+        url: '/users/testinguser',
+        alt: 'User details on the Overview tab: username, email, plan, locale, 2FA status, IP address, location, server, docker context and setup time',
+        prepare: async page => { await page.waitForTimeout(2000); },
+        crop: { from: 'main span:text-is("Username:")', to: 'main span:text-is("Setup time:")', pad: 16, right: true },
+      },
+      {
+        name: 'transfer',
+        url: '/users/testinguser#export',
+        alt: 'Transfer to another server form on the Export tab with the remote server, SSH credentials and the Live Transfer option',
+        prepare: async page => {
+          await page.waitForTimeout(2000);
+          await page.locator('main button:has-text("Transfer to another server")').click();
+          await page.waitForTimeout(600);
+        },
+        crop: 'content',
+      },
+      { name: 'services', url: '/users/testinguser#services', alt: 'Services tab listing the user containers with their CPU and memory usage, PIDs and actions', prepare: async page => { await page.waitForTimeout(2500); }, crop: { from: 'main', to: `main [x-show="activeTab === 'services'"] table tbody tr:nth-of-type(6)`, fromTop: true } },
+      { name: 'storage', url: '/users/testinguser#storage', alt: 'Storage tab with the user volumes, containers and images from docker system df', prepare: async page => { await page.waitForTimeout(2500); }, crop: { content: 'main', maxHeight: 1000 } },
+      { name: 'permissions', url: '/users/testinguser#permissions', alt: 'Permissions tab where the enabled DavPanel features follow the plan or are set per user', prepare: async page => { await page.waitForTimeout(2500); }, crop: { from: 'main', to: `main [x-show="activeTab === 'permissions'"] table tbody tr:nth-of-type(6)`, fromTop: true } },
+      { name: 'activity', url: '/users/testinguser#activity', alt: 'Activity Log tab with the date and the action performed', prepare: async page => { await page.waitForTimeout(2500); }, crop: { from: 'main', to: `main [x-show="activeTab === 'activity'"] table tbody tr:nth-of-type(8)`, fromTop: true } },
+      { name: 'logins', url: '/users/testinguser#logins', alt: 'Login Log tab with the date, country and IP address of each login', prepare: async page => { await page.waitForTimeout(2500); }, crop: { from: 'main', to: `main [x-show="activeTab === 'logins'"] table tbody tr:nth-of-type(8)`, fromTop: true } },
+      { name: 'edit', url: '/users/testinguser#edit', alt: 'Edit tab with the username, email, password, IP address, reseller and hosting package fields', prepare: async page => { await page.waitForTimeout(2500); }, crop: { from: 'main', to: `main [x-show="activeTab === 'edit'"] a[href="/users"]`, fromTop: true, pad: 24 } },
+      { name: 'export', url: '/users/testinguser#export', alt: 'Export tab with the Generate full account backup option and the list of existing backups', prepare: async page => { await page.waitForTimeout(2500); }, crop: 'content' },
+      { name: 'suspend', url: '/users/testinguser#suspend', alt: 'Suspend tab asking to type the username before suspending the account', prepare: all(async page => { await page.waitForTimeout(2500); }, fillVisible(['testinguser'])), crop: 'content' },
+      { name: 'delete', url: '/users/testinguser#delete', alt: 'Delete tab asking to type the username before deleting the account permanently', prepare: all(async page => { await page.waitForTimeout(2500); }, fillVisible(['testinguser'])), crop: 'content' },
+    ],
+  },
+  '001_dashboard': {
+    url: '/dashboard',
+    prepare: dashboardLoaded,
+    shots: [
+      { name: 'window', alt: 'DavAdmin dashboard with the summary bar and the User Activity, Latest News, System Information and Resource Usage widgets', viewportHeight: 860 },
+      { name: 'summary', alt: 'Summary bar with the number of nodes, containers, users, domains, websites, packages and emails', crop: { from: '#tour-quick-summary', pad: 12 } },
+      { name: 'activity', alt: 'User Activity widget with the latest actions of all DavPanel users', crop: { from: '#tour-user-activity', pad: 12 } },
+      { name: 'news', alt: 'Latest News widget with articles from the DavPanel blog', prepare: async page => { await page.waitForTimeout(2000); }, crop: { from: '#tour-latest-news', pad: 12 } },
+      { name: 'sysinfo', alt: 'System Information widget with hostname, IPv4 address, OS, DavPanel version, server time, kernel, CPU, uptime, processes and package updates', crop: { from: '#tour-system-info', pad: 12 } },
+      { name: 'usage', alt: 'Resource Usage widget with a chart of CPU and RAM usage over the last hour and the View history link', prepare: async page => { await page.waitForTimeout(7000); }, viewportHeight: 1600, crop: { from: '#tour-usage-graphs', pad: 12 } },
+      { name: 'tasks', alt: 'Tasks widget with the currently running background tasks and the View all link', crop: { from: '#tour-tasks', pad: 12 } },
+      {
+        name: 'shortcuts',
+        alt: 'Keyboard shortcuts dialog opened with Ctrl + K, listing the key combinations for DavAdmin pages',
+        prepare: async page => {
+          await page.evaluate(() => document.activeElement?.blur());
+          await page.keyboard.press('Control+k');
+          await page.waitForTimeout(800);
+          await page.evaluate(() => [...document.querySelectorAll('[x-show="showHelp"] *')].find(e => e.hasAttribute('@click.outside')).setAttribute('data-shot', 'dialog'));
+        },
+        viewportHeight: 860,
+        crop: { from: '[data-shot=dialog]', clamp: false, pad: 0 },
+      },
+      {
+        name: 'sse',
+        alt: 'Resource usage bar in the top-right corner of DavAdmin with the load tooltip open',
+        prepare: async page => {
+          await page.waitForTimeout(2500);
+          await page.locator('#sse_load').hover();
+          await page.waitForTimeout(700);
+        },
+        viewportHeight: 700,
+        crop: { from: 'header a[role=tab] >> nth=0', to: '#tooltip-sse_load', clamp: false, pad: 12, right: true },
+      },
+      {
+        name: 'search',
+        alt: 'Search box in the DavAdmin sidebar with matching pages, users and websites',
+        prepare: async page => {
+          await page.locator('#searchInput').pressSequentially('wp', { delay: 80 });
+          await page.waitForTimeout(2500);
+        },
+        viewportHeight: 860,
+        crop: { from: '#sidebar', clamp: false, height: 620 },
+      },
+      { name: 'menu', alt: 'DavAdmin sidebar menu with the Accounts, Hosting Plans, Domains, Emails, Services, Security, Settings and Advanced sections', viewportHeight: 900, crop: { from: '#sidebar', clamp: false } },
+    ],
+  },
+  '001_dashboard_dark': {
+    url: '/dashboard',
+    init: () => localStorage.setItem('color-theme', 'dark'),
+    prepare: dashboardLoaded,
+    shots: [{ name: 'window', alt: 'DavAdmin dashboard in dark mode', viewportHeight: 860 }],
+  },
+  '002_notifications': {
+    url: '/notifications',
+    shots: [{ name: 'list', alt: 'Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(10)', fromTop: true } }],
+  },
+  license: {
+    url: '/license',
+    // the demo shows the real license owner, key and billing email
+    prepare: async page => {
+      await page.evaluate(() => {
+        const w = document.createTreeWalker(document.querySelector('main'), NodeFilter.SHOW_TEXT);
+        for (let n; (n = w.nextNode()); ) {
+          n.textContent = n.textContent
+            .replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, 'billing@example.com')
+            .replace(/(Owner:\s*)?Dhafa Nazula Permadi/g, (m, o) => (o || '') + 'John Doe');
+        }
+        document.querySelectorAll('main input').forEach(i => { if (/^enterprise/i.test(i.value)) i.value = 'enterprise-0123456789abcdef'; });
+      });
+    },
+    shots: [
+      { name: 'key', alt: 'License key section with the key field, the Save key, Re-Verify and Downgrade buttons and the license details', crop: { from: 'main', to: 'main :text("Valid IP")', fromTop: true, pad: 60, right: true } },
+      { name: 'support', alt: 'Contact Support section with the Generate report button', crop: { from: 'main h2:has-text("Contact Support")', to: '#tour-generate-report-btn', pad: 24, right: true } },
+    ],
+  },
+  'accounts/administrators': {
+    url: '/administrators',
+    shots: [
+      { name: 'list', alt: 'Administrators page listing DavAdmin users with their status, role, 2FA, passkeys and last login', crop: 'content' },
+      {
+        name: 'menu',
+        alt: 'Edit menu of an administrator with the Rename and Change Password options',
+        prepare: click('main button#administrator', 600),
+        crop: { from: 'main table thead', to: '#dropdown-administrator', pad: 12 },
+      },
+      { name: 'new', alt: 'Create New administrator form with the username and password fields', prepare: all(click('#tour-create-admin-btn', 600), fillVisible(['support_admin'])), crop: 'content' },
+      { name: 'rename', url: '/administrators/rename/administrator', alt: 'Rename administrator form with the new username field and the Change Username button', crop: 'content' },
+      { name: 'password', url: '/administrators/password/administrator', alt: 'Change Password form for an administrator', crop: 'content' },
+    ],
+  },
+  'accounts/resellers': {
+    url: '/resellers',
+    shots: [{ name: 'list', alt: 'Resellers page with the reseller table columns and the Enable Resellers button', crop: 'content' }],
+  },
+  'plans/hosting_plans': {
+    url: '/plans',
+    shots: [
+      { name: 'list', alt: 'User Packages page listing hosting plans with their memory, CPU, disk, inodes, port speed and other limits', crop: { from: 'main', to: 'main table tbody tr:last-of-type', fromTop: true, pad: 24 } },
+      { name: 'menu', alt: 'Row menu of a hosting plan that is in use, with the Edit option', prepare: click('main button#\\31', 600), crop: { from: 'main table thead', to: '#dropdown-1', pad: 12, right: true } },
+      { name: 'new', url: '/plans/new', alt: 'New Package form with name, description, disk, inodes, CPU, memory, port speed, domains, websites, databases, email, FTP and feature set fields', prepare: fill({ 'input[name=name]': 'Business plan', 'input[name=description]': 'For small business sites', 'input[name=disk_limit]': '20', 'input[name=inodes_limit]': '500000', 'input[name=cpu]': '2', 'input[name=ram]': '4', 'input[name=bandwidth]': '200', 'input[name=domains_limit]': '5', 'input[name=websites_limit]': '10', 'input[name=db_limit]': '10', 'input[name=email_limit]': '50', 'input[name=max_email_quota]': '5G', 'input[name=max_hourly_email]': '200', 'input[name=ftp_limit]': '10' }), crop: 'content' },
+      { name: 'edit', url: '/plans/1', alt: 'Edit plan page with the limits of an existing hosting package', crop: 'content' },
+      { name: 'usage', url: '/users?plan=Standard%20plan', alt: 'Users page filtered to the users on one hosting plan', crop: 'content' },
+    ],
+  },
+  'plans/feature-manager': {
+    url: '/features',
+    shots: [
+      { name: 'index', alt: 'Feature Manager page with the Create and Manage sections', crop: 'content' },
+      { name: 'edit', url: '/features/default', alt: 'Feature set edit page listing features with a toggle, name, description and type, and the Enable All, Disable All and Save buttons', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(10)', fromTop: true } },
+    ],
+  },
+  'domains/domains': {
+    url: '/domains',
+    shots: [
+      { name: 'list', alt: 'Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(10)', fromTop: true } },
+      {
+        name: 'add',
+        alt: 'Add Domain form with the domain name and the user to add it to',
+        prepare: all(click('#tour-add-domain-btn', 600), fillVisible(['mycoffeeshop.com'])),
+        crop: { from: 'main', to: 'main table thead', fromTop: true },
+      },
+      {
+        name: 'actions',
+        alt: 'Actions menu of a domain with Edit DNS Zone, Manage SSL, Edit Virtual Host, Edit Apache Config, Edit Caddyfile, Suspend domain and Delete domain',
+        prepare: async page => {
+          await page.evaluate(() => document.querySelectorAll('main .overflow-x-auto, main .overflow-auto').forEach(e => (e.scrollLeft = e.scrollWidth)));
+          await page.locator('main tbody button[data-dropdown-toggle]').first().click();
+          await page.waitForTimeout(600);
+        },
+        crop: { from: 'main table thead', to: 'main [id^="dropdown-"]:visible >> nth=0', pad: 12, right: true },
+      },
+      {
+        name: 'suspend',
+        alt: 'Suspend Domain dialog with the Reason dropdown, an optional comment for the user and the Suspend button',
+        prepare: async page => {
+          await page.evaluate(() => document.querySelectorAll('main .overflow-x-auto, main .overflow-auto').forEach(e => (e.scrollLeft = e.scrollWidth)));
+          await page.locator('main tbody tr:has(button:has-text("Suspend domain")) button[data-dropdown-toggle]').first().click();
+          await page.waitForTimeout(400);
+          await page.locator('main button:has-text("Suspend domain") >> visible=true').first().click();
+          await page.waitForTimeout(600);
+          await page.evaluate(() => document.querySelectorAll('main [id^="dropdown-"]').forEach(d => d.classList.add('hidden')));
+          await page.selectOption('#suspend_template', 'dmca');
+          await page.fill('#suspend_comment', 'Complaint #4821 from the copyright holder');
+        },
+        viewportHeight: 820,
+        crop: { from: 'main h3:has-text("Suspend Domain")', to: 'main [x-show="showSuspendModal"] button[type=submit]', clamp: false, pad: 10 },
+      },
+      {
+        // ADMIN_URL=https://host:2087 node shoot.mjs --admin domains/domains, with php.tests.davpanel.com suspended by admin
+        name: 'suspended',
+        alt: 'Domains list with one domain marked Suspended by admin and its reason Copyright / DMCA Violation below the badge',
+        prepare: onlyRows('#domains_table', ['wp.tests.davpanel.com', 'php.tests.davpanel.com', 'nodejs.tests.davpanel.com']),
+        crop: { from: 'main table thead', to: 'main table tbody tr:last-of-type', pad: 8 },
+      },
+      {
+        name: 'delete',
+        alt: 'Delete domain confirmation asking to type the domain name before deleting it permanently',
+        prepare: async page => {
+          await page.evaluate(() => document.querySelectorAll('main .overflow-x-auto, main .overflow-auto').forEach(e => (e.scrollLeft = e.scrollWidth)));
+          await page.locator('main tbody button[data-dropdown-toggle]').first().click();
+          await page.waitForTimeout(400);
+          await page.locator('main button:has-text("Delete domain") >> visible=true').first().click();
+          await page.waitForTimeout(600);
+          await page.evaluate(() => document.querySelectorAll('main [id^="dropdown-"]').forEach(d => d.classList.add('hidden')));
+        },
+        viewportHeight: 820,
+        crop: { from: 'main h3:has-text("Delete Domain"), main h2:has-text("Delete Domain")', to: 'main [x-show="showDeleteModal"] input:visible', clamp: false, pad: 10 },
+      },
+    ],
+  },
+  'domains/dns': {
+    url: '/domains/dns',
+    shots: [
+      { name: 'select', alt: 'DNS Zone Editor with the domain dropdown', crop: 'content' },
+      { name: 'edit', url: '/domains/dns/wp.tests.davpanel.com', alt: 'DNS Zone Editor showing the zone file of a domain with the Save button', crop: { content: 'main', maxHeight: 820 } },
+    ],
+  },
+  'domains/dns_templates': {
+    url: '/domains/zone-templates',
+    shots: [{ name: 'page', alt: 'Edit Zone Templates page with the IPv4 and IPv6 zone templates and the Restore Default and Save Files buttons', crop: { content: 'main', maxHeight: 900 } }],
+  },
+  'domains/file_templates': {
+    url: '/domains/file-templates',
+    shots: [
+      { name: 'default', alt: 'Default Page template editor with a live preview of the page shown on new domains', prepare: markSection('Default Page'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'suspended-website', alt: 'Suspended Website template editor with a live preview', prepare: markSection('Suspended Website'), crop: { from: '[data-shot=section]', pad: 16 } },
+      {
+        name: 'suspension-reasons',
+        alt: 'Suspension Reasons with the Copyright / DMCA Violation reason open showing its name, Delete button, HTML and live preview, and the Add suspension reason row',
+        prepare: async page => {
+          await markSection('Suspension Reasons')(page);
+          await page.evaluate(() => { const d = document.querySelector('[data-shot=section] details'); if (d) d.open = true; });
+          await page.waitForTimeout(600);
+        },
+        crop: { from: '[data-shot=section]', pad: 16 },
+      },
+      { name: 'suspended-user', alt: 'Suspended User template editor with a live preview', prepare: markSection('Suspended User'), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  'domains/vhost_templates': {
+    url: '/domains/vhost-templates',
+    shots: [
+      { name: 'apache', alt: 'Apache VirtualHost template editor', prepare: markSection('Apache VirtualHost'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'nginx', alt: 'Nginx VirtualHost template editor', prepare: markSection('Nginx VirtualHost'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'openresty', alt: 'OpenResty VirtualHost template editor', prepare: markSection('OpenResty VirtualHost'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'varnish', alt: 'Varnish template editor', prepare: markSection('Varnish Template'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'caddy', alt: 'Caddy VHosts template editor', prepare: markSection('Caddy VHosts'), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  'domains/dns-cluster': {
+    url: '/domains/dns-cluster',
+    shots: [{ name: 'page', alt: 'DNS Cluster Management page with the Enable DNS Clustering button', crop: 'content' }],
+  },
+  'security/2fa': {
+    url: '/security/2fa',
+    // the demo shows a live setup secret and its QR code
+    prepare: async page => {
+      await page.evaluate(() => {
+        document.querySelectorAll('main img[alt="2FA QR code"]').forEach(i => (i.style.filter = 'blur(7px)'));
+        const w = document.createTreeWalker(document.querySelector('main'), NodeFilter.SHOW_TEXT);
+        for (let n; (n = w.nextNode()); ) n.textContent = n.textContent.replace(/\b[A-Z2-7]{16,}\b/g, 'JBSWY3DPEHPK3PXP');
+      });
+    },
+    shots: [{ name: 'page', alt: 'Two-Factor Authentication page with the QR code to scan, the secret key and the field for the authentication code', crop: 'content' }],
+  },
+  'security/basic_auth': {
+    url: '/security/basic_auth',
+    shots: [{ name: 'page', alt: 'Basic Authentication page with the Enable dropdown and the username and password fields', prepare: fillVisible(['admin']), crop: 'content' }],
+  },
+  'security/firewall': {
+    url: '/security/firewall',
+    shots: [{ name: 'csf', alt: 'Sentinel Security and Firewall (CSF) page with the firewall status and server information actions', crop: { content: 'main', maxHeight: 900 } }],
+  },
+  'security/imunify': {
+    url: '/security/imunify/',
+    shots: [{ name: 'not-running', alt: 'ImunifyAV page telling that the GUI is not running yet, with the command to start it', crop: 'content' }],
+  },
+  'security/passkeys': {
+    url: '/security/passkeys',
+    shots: [{ name: 'page', alt: 'Passkeys page with the registered passkeys and the Add a passkey form', prepare: fillVisible(['Work laptop']), crop: 'content' }],
+  },
+  'security/waf': {
+    url: '/security/waf',
+    shots: [
+      { name: 'page', alt: 'WAF page with the CorazaWAF Enable dropdown and the number of active rule sets', crop: 'content' },
+      { name: 'rules', url: '/security/waf/rules', alt: 'WAF rule sets page listing each rule set with its number of rules, status and the View and Disable actions', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(10)', fromTop: true } },
+    ],
+  },
+  'backups/system': {
+    url: '/backups/system',
+    shots: [
+      { name: 'backups', url: '/backups/system#backups', alt: 'System Backups page on the Backups tab with the Run Backup Now button', crop: 'content' },
+      { name: 'runs', url: '/backups/system#runs', alt: 'Runs tab of System Backups with the log of past backup runs', crop: 'content' },
+      { name: 'settings', url: '/backups/system#settings', alt: 'Settings tab of System Backups with the destination directory and retention in days', crop: 'content' },
+    ],
+  },
+  'backups/user': {
+    url: '/backups/user',
+    shots: [
+      { name: 'settings', url: '/backups/user#settings', alt: 'User Backups Settings tab with the backup schedule dropdown', crop: 'content' },
+      { name: 'configuration', url: '/backups/user#configuration', alt: 'User Backups Configuration tab with the default backup.env editor and the Restore Default button', crop: 'content' },
+      { name: 'runs', url: '/backups/user#runs', alt: 'User Backups Runs tab with the log of past backup runs', crop: 'content' },
+    ],
+  },
+  'services/status': {
+    url: '/services',
+    shots: [
+      { name: 'list', alt: 'Services page listing system services with their status, version, real name, type, port, monitoring and actions', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(12)', fromTop: true } },
+      { name: 'edit', url: '/services/edit', alt: 'Edit Services page for changing which services are shown and monitored', crop: { content: 'main', maxHeight: 900 } },
+    ],
+  },
+  'services/ftp': {
+    url: '/services/ftp',
+    shots: [
+      { name: 'accounts', alt: 'FTP page on the Accounts tab with the FTP service status and the table of FTP accounts', crop: 'content' },
+      { name: 'configuration', url: '/services/ftp/settings', alt: 'FTP Configuration tab with the FTP server settings', crop: 'content' },
+    ],
+  },
+  'services/limits': {
+    url: '/services/limits',
+    shots: [{ name: 'page', alt: 'Service Limits page with CPU and memory limits for each system service', crop: { content: 'main', maxHeight: 1000 } }],
+  },
+  'services/logs': {
+    url: '/services/logs',
+    prepare: async page => {
+      // pick the first log that actually has content on the demo
+      const sel = page.locator('main select').first();
+      const opts = await sel.locator('option').evaluateAll(os => os.map(o => o.value).filter(Boolean));
+      for (const o of opts) {
+        await sel.selectOption(o);
+        await page.waitForTimeout(2000);
+        const t = await page.evaluate(() => (document.querySelector('main pre, main code, main textarea')?.innerText || '').trim());
+        if (t.length > 200 && !/not found|Select a log/i.test(t)) break;
+      }
+    },
+    shots: [{ name: 'page', alt: 'Log Viewer with a log file selected, its content, and the Delete and Download buttons', crop: { content: 'main', maxHeight: 900 } }],
+  },
+  'services/podman': {
+    url: '/services/podman',
+    shots: [
+      { name: 'info', alt: 'Podman page on the Info tab with the output of podman info', crop: { content: 'main', maxHeight: 800 } },
+      { name: 'images', alt: 'Podman Images tab listing container images with their tag, size and actions', prepare: clickAlpine("tab = 'images'", 2500), crop: { content: 'main', maxHeight: 900 } },
+      { name: 'volumes', alt: 'Podman Volumes tab listing volumes', prepare: clickAlpine("tab = 'volumes'", 2500), crop: { content: 'main', maxHeight: 900 } },
+      { name: 'diskusage', alt: 'Podman Disk Usage tab with the space used by images, containers and volumes', prepare: clickAlpine("tab = 'diskusage'", 2500), crop: { content: 'main', maxHeight: 900 } },
+    ],
+  },
+  'settings/general': {
+    url: '/settings/general',
+    shots: [
+      { name: 'domain', alt: 'Domain section of General Settings with the hostname field', prepare: markSectionId('Domain'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'ssl', alt: 'SSL section of General Settings with the current SSL status and the Manage SSL button', prepare: markSectionId('SSL'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'ports', alt: 'Ports section of General Settings with the DavAdmin and DavPanel ports', prepare: markSectionId('Ports'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'redirect', alt: 'Redirect section of General Settings with the /davpanel redirect name', prepare: markSectionId('Redirect'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'debug', alt: 'Debugging (Dev Mode) section of General Settings with the Dev mode toggle', prepare: markSectionId('Debugging'), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  'settings/davpanel': {
+    url: '/settings/open-panel',
+    shots: [
+      { name: 'branding', alt: 'Branding section with the brand name, logo, favicon and logout URL', prepare: markSectionId('Branding'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'nameservers', alt: 'Nameservers section with the ns1 to ns4 fields', prepare: markSectionId('Nameservers'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'users', alt: 'Users section with toggles for what DavPanel users can change', prepare: markSectionId('Users'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'display', alt: 'Display section with the DavPanel interface options', prepare: markSectionId('Display'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'filemanager', alt: 'File Manager section with the file manager options', prepare: markSectionId('File Manager'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'databases', alt: 'Databases section with the database options', prepare: markSectionId('Databases'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'security', alt: 'Security section with the DavPanel login and session options', prepare: markSectionId('Security'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'statistics', alt: 'Statistics section with the resource usage and statistics options', prepare: markSectionId('Statistics'), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  // the AI Assistant section is shot on a test server with ADMIN_URL until the demo has it
+  'settings/davpanel-ai': {
+    as: 'settings/davpanel',
+    url: '/settings/open-panel',
+    shots: [{ name: 'ai', alt: 'AI Assistant section with what the assistant can do, the provider, API key, model, limits and the usage per user this month', prepare: markSectionId('AI Assistant'), crop: { from: '[data-shot=section]', pad: 16 } }],
+  },
+  'settings/modules': {
+    url: '/settings/modules',
+    shots: [{ name: 'page', alt: 'Modules page with a card per module showing its path, type, description and Activate toggle', crop: { content: 'main', maxHeight: 1000 } }],
+  },
+  'settings/defaults': {
+    url: '/settings/defaults',
+    shots: [
+      { name: 'page', alt: 'Edit Defaults page with the default webserver, database, Varnish cache, PHP version and autostart services for new users', crop: { content: 'main', maxHeight: 1100 } },
+      { name: 'services', alt: 'Service limits on the Edit Defaults page for new user accounts', prepare: markSectionId('Services'), crop: { from: '[data-shot=section]', pad: 16, height: 900 } },
+    ],
+  },
+  'settings/custom_code': {
+    url: '/settings/custom-code',
+    shots: [
+      { name: 'css', alt: 'Custom CSS editor with the Insert Example button', prepare: markSectionId('Custom CSS'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'js', alt: 'Custom JS editor', prepare: markSectionId('Custom JS'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'header', alt: 'Code in Header editor for the head tag of every DavPanel page', prepare: markSectionId('Code in Header'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'footer', alt: 'Code in Footer editor', prepare: markSectionId('Code in Footer'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'section', alt: 'Custom Section editor for the DavPanel dashboard', prepare: markSectionId('Custom Section'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'plugins', alt: 'WordPress Plugins Set editor', prepare: markSectionId('WordPress Plugins Set'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'themes', alt: 'WordPress Themes Set editor', prepare: markSectionId('WordPress Themes Set'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'after', alt: 'After update script editor', prepare: markSectionId('After update'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'before', alt: 'Before startup script editor', prepare: markSectionId('Before startup'), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  'settings/locales': {
+    url: '/settings/locales',
+    shots: [{ name: 'list', alt: 'Languages page listing locales with their provider, install status, default and Set as Default buttons', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(12)', fromTop: true } }],
+  },
+  'settings/notifications': {
+    url: '/settings/notifications',
+    shots: [
+      { name: 'email', alt: 'Email section with the address for notifications and daily usage reports', prepare: markSectionId('email'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'webhook', alt: 'Webhook section with the webhook URL field', prepare: markSectionId('webhook_url'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'services', alt: 'Services section with a toggle per monitored service', prepare: markSectionId('services'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'thresholds', alt: 'Resource Usage section with the load, CPU, memory, disk and swap thresholds', prepare: markSectionId('thresholds'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'server', alt: 'Server actions section with toggles for reboot, OOM, DNS and other server events', prepare: markSectionId('server-actions'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'users', alt: 'User actions section with toggles for account and domain change notifications', prepare: markSectionId('user-actions'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'ssh', alt: 'SSH Allowlist section with the allowed IP addresses', prepare: markSectionId('ssh_allowlist'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'smtp', alt: 'SMTP section with the mail server settings and the Test SMTP connection button', prepare: markSectionId('smtp'), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  'settings/php': {
+    url: '/settings/php',
+    shots: [
+      { name: 'default', alt: 'Default version section linking to the User Defaults page', prepare: markSectionId('Default version'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'options', alt: 'Available Options section with the PHP options users can edit', prepare: markSectionId('Available Options'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'ini', alt: 'Default PHP.INI Files section with a php.ini per PHP version and Restore Default and Save buttons', prepare: markSectionId('Default PHP.INI Files'), crop: { from: '[data-shot=section]', pad: 16 } },
+      {
+        name: 'ini-open',
+        alt: 'Default PHP.INI Files section with the PHP 8.5 INI file expanded in an editable text area',
+        prepare: all(async page => {
+          await page.locator('main button:has-text("PHP 8.5 INI")').click();
+          await page.waitForTimeout(1500);
+        }, markSectionId('Default PHP.INI Files')),
+        viewportHeight: 3400,
+        crop: { from: 'main button:has-text("PHP 8.5 INI")', pad: 16, right: true, height: 560 },
+      },
+    ],
+  },
+  'settings/updates': {
+    url: '/settings/updates',
+    shots: [
+      { name: 'current', alt: 'Current version section with the installed and latest version and the changelog link', prepare: markSectionId('Current version'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'auto', alt: 'Auto Updates section with the update preference dropdown', prepare: markSectionId('Auto Updates'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'logs', alt: 'Update Logs section listing the update log files', prepare: markSectionId('Update Logs'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'rollback', alt: 'Rollback section for returning to a previous version', prepare: markSectionId('Rollback'), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  'settings/api': {
+    url: '/settings/api',
+    shots: [{ name: 'page', alt: 'API Access page showing API access as disabled with the Enable API access button', crop: 'content' }],
+  },
+  'advanced/crons': {
+    url: '/server/crons',
+    shots: [{ name: 'page', alt: 'Scheduler page listing DavPanel system jobs with their cron schedule fields and command', crop: { content: 'main', maxHeight: 1000 } }],
+  },
+  'advanced/migrate': {
+    url: '/server/migrate',
+    shots: [{ name: 'form', alt: 'Server Migration form with the remote host, username and password fields and the Start Migration button', prepare: fillVisible(['203.0.113.50', 'root']), crop: 'content' }],
+  },
+  'advanced/processes': {
+    url: '/server/processes',
+    shots: [{ name: 'list', alt: 'Process Manager listing system processes with their PID, owner, priority, CPU and memory usage, command, and Trace and Kill links', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(14)', fromTop: true } }],
+  },
+  'advanced/reboot': {
+    url: '/server/reboot',
+    shots: [{ name: 'page', alt: 'Server Reboot page explaining graceful and forceful reboots, with the reboot type dropdown and the Reboot Server button', crop: 'content' }],
+  },
+  'advanced/resource-usage': {
+    url: '/server/resource-usage',
+    shots: [
+      { name: 'page', alt: 'Resource Usage page with the Load, RAM, CPU, Disk and Network tabs and a live chart of the average load', prepare: async page => { await page.waitForTimeout(4000); }, viewportHeight: 900, crop: { content: 'main', maxHeight: 700 } },
+      { name: 'history', url: '/server/resource-usage/history', alt: 'Resource usage history with charts and a table of past snapshots', prepare: async page => { await page.waitForTimeout(4000); }, viewportHeight: 1400, crop: { content: 'main', maxHeight: 1000 } },
+    ],
+  },
+  'advanced/ssh': {
+    url: '/server/ssh',
+    shots: [
+      { name: 'basic', alt: 'SSH Access page on the Basic tab with the SSH port, root login, password and public key authentication settings', crop: 'content' },
+      { name: 'advanced', alt: 'SSH Access Advanced tab with the sshd configuration editor', prepare: clickAlpine("tab = 'advanced'", 1200), crop: { content: 'main', maxHeight: 900 } },
+    ],
+  },
+  'advanced/swap': {
+    url: '/server/swap',
+    shots: [{ name: 'page', alt: 'Swap page with the current swap usage, the swap size field with Apply, and the Drop Swap button', crop: 'content' }],
+  },
+  'advanced/timezone': {
+    url: '/server/timezone',
+    shots: [{ name: 'page', alt: 'Change TimeZone page with the current timezone and the timezone dropdown', crop: 'content' }],
+  },
+  'advanced/cpanel': {
+    url: '/import/cpanel',
+    shots: [
+      { name: 'page', alt: 'Account Imports page with the import logs and the Import Account button', crop: 'content' },
+      { name: 'form', url: '/user/import', alt: 'Import Account from backup form opened from the Import Account button', crop: 'content' },
+    ],
+  },
+  '000_intro': {
+    url: '/login',
+    anonymous: true,
+    // the demo prefills its real credentials
+    prepare: fill({ 'input[name=username]': 'admin', 'input[name=password]': '' }),
+    shots: [{ name: 'login', alt: 'DavAdmin login form with the username and password fields, Remember me, passkey sign-in and the Switch to DavPanel button', viewportHeight: 760 }],
+  },
+  // the pages below need a full server (Super Admin login, mail server running):
+  // ADMIN_URL=https://host:2087 node shoot.mjs --admin emails/emails ...
+  'emails/emails': {
+    url: '/emails/accounts',
+    // the test accounts have no quota or usage, show a realistic mix instead
+    prepare: async page => {
+      await page.waitForTimeout(1500);
+      await page.evaluate(() => {
+        const quotas = [['18M', '~', 0], ['256K', '100M', 0.25], ['4G', '400G', 1], ['1M', '10G', 0.01]];
+        document.querySelectorAll('main tbody tr').forEach((row, i) => {
+          const q = quotas[i];
+          const cell = row.querySelector('td[x-data*="pct"]');
+          if (!q || !cell) return;
+          cell.querySelector('span').textContent = `( ${q[0]} / ${q[1]} ) [${Math.round(q[2])}%]`;
+          // keep a visible sliver on the bar for non-zero usage
+          cell.querySelector('div > div').style.width = (q[2] > 0 ? Math.max(q[2], 2) : 0) + '%';
+        });
+      });
+    },
+    shots: [
+      { name: 'list', alt: 'Emails page listing email accounts with their quota usage, webmail button and actions menu', crop: 'content' },
+      {
+        name: 'menu',
+        alt: 'Actions menu of an email account with Change Password, Set Quota, Restrictions and Delete Account',
+        prepare: async page => {
+          await page.locator('main tbody td div[x-data] > button').first().click();
+          await page.waitForTimeout(600);
+        },
+        crop: { from: 'main table thead', to: 'main tbody div[x-show="open"]:visible >> nth=0', pad: 12, right: true },
+      },
+    ],
+  },
+  'emails/queue': {
+    url: '/emails/queue',
+    shots: [{ name: 'page', alt: 'Email Queue page with the queued messages table and the Refresh button', crop: 'content' }],
+  },
+  'emails/settings': {
+    url: '/emails/settings',
+    shots: [
+      { name: 'status', alt: 'MailServer Status section with the running status and the Start, Restart and Stop buttons', prepare: markSection('MailServer Status'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'accounts', alt: 'Accounts section with the total number of email accounts on the server', prepare: markSection('Accounts'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'webmail', alt: 'Webmail section with the webmail status, client dropdown and webmail domain', prepare: markSection('Webmail'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'storage', alt: 'Storage section with the email storage location', prepare: markSection('Storage'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'services', alt: 'Enable Services section with toggles for the mail server services', prepare: markSection('Enable Services'), crop: { from: '[data-shot=section]', pad: 16 } },
+      { name: 'relay', alt: 'Relay Hosts section for sending mail through an external relay', prepare: markSection('Relay Hosts'), crop: { from: '[data-shot=section]', pad: 16 } },
+    ],
+  },
+  'emails/summary': {
+    url: '/emails/reports',
+    shots: [{ name: 'page', alt: 'Mail Reports page with a calendar per month and the number of daily summary reports', crop: { content: 'main', maxHeight: 900 } }],
+  },
+  'security/blacklist-useragents': {
+    url: '/security/blacklist-useragents',
+    shots: [{ name: 'page', alt: 'Blacklist user agents page with the Enable dropdown and the list of blocked user agents', crop: { content: 'main', maxHeight: 800 } }],
+  },
+  'security/disable-admin': {
+    url: '/security/disable-admin',
+    shots: [{ name: 'page', alt: 'Disable DavAdmin page with the Cancel and Confirm buttons', crop: 'content' }],
+  },
+  'advanced/root-password': {
+    url: '/server/root-password',
+    shots: [{ name: 'form', alt: 'Change Root Password form with the password field and its requirements', crop: 'content' }],
+  },
+  'advanced/terminal': {
+    url: '/terminal',
+    prepare: async page => {
+      await page.waitForTimeout(3000);
+      await page.keyboard.type('uptime', { delay: 60 });
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(1500);
+    },
+    shots: [{ name: 'page', alt: 'Web Terminal with a root shell on the server and the shell dropdown', viewportHeight: 760, crop: { content: 'main', maxHeight: 620 } }],
+  },
+  'settings/api_server': {
+    url: '/settings/api',
+    shots: [
+      { name: 'enabled', alt: 'API Access page with API access enabled, the Download spec and Disable API access buttons, and the interactive DavAdmin API reference', crop: { from: 'main', to: 'main button:has-text("Authorize")', fromTop: true, pad: 24, right: true } },
+      {
+        name: 'try',
+        alt: 'An API endpoint expanded in the API reference after Try it out and Execute, with the curl command, request URL and server response',
+        prepare: async page => {
+          const op = page.locator('.opblock-get').first();
+          await op.locator('.opblock-summary').click();
+          await page.waitForTimeout(600);
+          await op.locator('button.try-out__btn').click();
+          await page.waitForTimeout(400);
+          await op.locator('button.execute').click();
+          await page.waitForTimeout(2500);
+          await op.evaluate(e => e.setAttribute('data-shot', 'op'));
+        },
+        crop: { from: '[data-shot=op]', pad: 8 },
+      },
+    ],
+  },
+  'advanced/demo-mode_server': {
+    url: '/server/demo-mode',
+    shots: [{ name: 'page', alt: 'Demo Mode page with the option to lock DavPanel and DavAdmin in read-only mode and the Enable Demo Mode button', crop: 'content' }],
+  },
+  'advanced/ssh_server': {
+    url: '/server/ssh',
+    shots: [{ name: 'keys', alt: 'SSH Access Authorized Keys tab listing an authorized public key with its Remove button and the field to add a new key', prepare: clickAlpine("tab = 'keys'", 1200), crop: 'content' }],
+  },
+  // bulk actions are new in 2.0.12, until the demo has them these retake the table shots on a test server:
+  // ADMIN_URL=https://host:2087 node shoot.mjs --admin accounts/users_server ...
+  'accounts/users_server': {
+    as: 'accounts/users',
+    url: '/users',
+    shots: [
+      { name: 'list', alt: 'Users page listing DavPanel accounts with their status, plan, memory, CPU, disk and inodes usage and the Impersonate button', crop: 'content' },
+      {
+        name: 'columns',
+        alt: 'Show Columns menu of the Users table with a toggle for each column, including 2FA and Passkeys',
+        prepare: click('#dropdownToggleButton', 600),
+        crop: { from: '#dropdownToggleButton', to: '#dropdownToggle', pad: 12 },
+      },
+      {
+        name: 'filters',
+        alt: 'Users page with the Package filter open, listing All packages and each hosting plan in use',
+        prepare: click('#planFilterButton', 600),
+        crop: { from: 'main input[type=search], main input[placeholder^="Search"]', to: '#planFilter', pad: 16, right: true },
+      },
+      bulkShot('#exiting_users', ['testinguser', 'bulkuser'], 'Two users selected with the bulk actions bar offering Suspend, Unsuspend, Change plan, Change password, Change email, Change IP, Disable 2FA, Delete Passkeys, Generate backup and Delete'),
+      bulkShot('#exiting_users', ['testinguser', 'bulkuser'], 'Change plan step of the bulk actions bar with a dropdown of hosting plans for two selected users', { name: 'bulk-plan', action: 'plan' }),
+      { name: 'services', url: '/users/testinguser#services', alt: 'Services tab listing the user containers with their CPU and memory usage, PIDs and actions', prepare: async page => { await page.waitForTimeout(2500); }, crop: { from: 'main', to: `main [x-show="activeTab === 'services'"] table tbody tr:nth-of-type(6)`, fromTop: true } },
+      { ...bulkShot('#user_services_table', ['apache', 'cron'], 'Two services of a user selected with the bulk actions bar offering Start, Stop, Restart, Edit CPU, Edit RAM and Edit PIDs', { name: 'services-bulk', rows: 6, wait: 2500 }), url: '/users/testinguser#services' },
+    ],
+  },
+  'accounts/administrators_server': {
+    as: 'accounts/administrators',
+    url: '/administrators',
+    shots: [
+      { name: 'list', alt: 'Administrators page listing DavAdmin users with their status, role, 2FA, passkeys and last login', crop: 'content' },
+      bulkShot('#exiting_users', ['bulkadmin1', 'bulkadmin2'], 'Two administrators selected with the bulk actions bar offering Suspend, Unsuspend and Delete'),
+    ],
+  },
+  'accounts/resellers_server': {
+    as: 'accounts/resellers',
+    url: '/resellers',
+    shots: [
+      { name: 'list', alt: 'Resellers page listing reseller accounts with their status, plans, limits and actions', crop: 'content' },
+      bulkShot('#exiting_users', ['bulkres1', 'bulkres2'], 'Two resellers selected with the bulk actions bar offering Suspend, Unsuspend and Delete'),
+      { name: 'package', url: '/resellers/update/tstreseller29428', alt: 'Edit Plans & Limits page of a reseller with the Reseller Package picker and the Apply Package button above the custom limits', crop: { from: 'main', to: '#max_disk_blocks ~ small', fromTop: true, pad: 24 } },
+    ],
+  },
+  // reseller packages are new in 2.0.16, the test server has reseller_starter and reseller_business with one reseller on reseller_starter
+  // ADMIN_URL=https://host:2087 node shoot.mjs --admin plans/reseller_packages_server accounts/resellers_server:list,package
+  'plans/reseller_packages_server': {
+    as: 'plans/reseller_packages',
+    url: '/plans/resellers',
+    shots: [
+      { name: 'list', alt: 'Reseller Packages page listing packages with their max accounts, max disk, number of user packages and resellers on each', crop: 'content' },
+      { name: 'menu', alt: 'Edit menu of a reseller package with the Edit and Delete options', prepare: click('main button#rp-reseller_business', 600), crop: { from: 'main table thead', to: '#dropdown-rp-reseller_business', pad: 12, right: true } },
+      { name: 'new', alt: 'Create New reseller package form with name, description, max accounts, max disk usage and the user packages resellers can assign', prepare: all(click('main a:has-text("Create New")', 500), fill({ '#rp_name': 'reseller_pro', '#rp_description': '60 accounts, 400 GB', '#rp_max_accounts': '60', '#rp_max_disk_gb': '400' }), click('main button[role=checkbox]', 200)), crop: { from: 'main', to: 'main form button[type=submit]', fromTop: true, pad: 24 } },
+      { name: 'edit', url: '/plans/resellers/reseller_starter', alt: 'Edit page of a reseller package listing the resellers on it, with its limits and allowed user packages', crop: 'content' },
+    ],
+  },
+  'plans/hosting_plans_server': {
+    as: 'plans/hosting_plans',
+    url: '/plans',
+    shots: [
+      { name: 'list', alt: 'User Packages page listing hosting plans with their memory, CPU, disk, inodes, port speed and other limits', crop: { from: 'main', to: 'main table tbody tr:last-of-type', fromTop: true, pad: 24 } },
+      bulkShot('#exiting_users', ['bulkplan1', 'bulkplan2'], 'Two hosting plans selected with the bulk actions bar offering Update and Delete'),
+      bulkShot('#exiting_users', ['bulkplan1', 'bulkplan2'], 'Update step of the bulk actions bar with the limit to change set to CPU (cores) and the new value', { name: 'bulk-update', action: 'update', field: 'cpu', value: '2' }),
+    ],
+  },
+  'domains/domains_server': {
+    as: 'domains/domains',
+    url: '/domains',
+    shots: [
+      { name: 'list', alt: 'Domains page listing all domains with their status, PHP version, webserver, SSL, WAF and owner', crop: { from: 'main', to: 'main table tbody tr:last-of-type', fromTop: true, pad: 24 } },
+      bulkShot('#domains_table', ['example.test.rs', 'ols.test.rs'], 'Two domains selected with the bulk actions bar offering Change PHP version, HSTS, WAF, Rate limit, Cloudflare, Suspend, Unsuspend and Delete'),
+      bulkShot('#domains_table', ['example.test.rs', 'ols.test.rs'], 'Change PHP version step of the bulk actions bar with a dropdown of the installed PHP versions', { name: 'bulk-php', action: 'php' }),
+    ],
+  },
+  // Rate Limiting and Domain Limits (new in 2.0.16) aren't on the demo yet, the test server has a 300/6000 default and custom limits on one domain
+  // ADMIN_URL=https://host:2087 node shoot.mjs --admin domains/ratelimit_server emails/domain-limits_server
+  'domains/ratelimit_server': {
+    as: 'domains/ratelimit',
+    url: '/domains/ratelimit',
+    shots: [
+      { name: 'list', alt: "Rate Limiting page with the current server default, the Server Default button and each domain's setting, limits and usage over the last 24 hours", prepare: rlUsage, viewportWidth: 1440, crop: { from: 'main', to: '#ratelimit_table tbody tr:last-of-type', fromTop: true, pad: 24 } },
+      {
+        name: 'default',
+        alt: 'Server Default form open with the requests per minute per visitor IP and per domain and the Save default button',
+        prepare: all(rlUsage, click('main a:has-text("Server Default")', 500)),
+        crop: { from: 'main', to: 'main form[action="/domains/ratelimit"] p', fromTop: true, pad: 20 },
+      },
+      {
+        name: 'edit',
+        alt: 'Rate limit window of a domain with Server default, Custom limits and No limits, its usage over the last 24 hours and the most blocked IP addresses',
+        prepare: all(rlUsage, async page => {
+          await page.locator('#ratelimit_table tbody tr:has-text("example.test.rs") button:has-text("Edit")').click();
+          await page.waitForTimeout(500);
+        }, rename({ '127.0.0.1': '198.51.100.23' }, 'body')),
+        viewportHeight: 820,
+        crop: { from: 'div[x-show="edit"] form h3', to: 'div[x-show="edit"] form button[type=submit]', clamp: false, pad: 10 },
+      },
+      { ...bulkShot('#ratelimit_table', ['example.test.rs', 'ols.test.rs'], 'Two domains selected with the bulk actions bar offering Use server default, Custom limits and No limits'), prepare: all(rlUsage, bulkShot('#ratelimit_table', ['example.test.rs', 'ols.test.rs'], '').prepare), viewportWidth: 1440 },
+      { ...bulkShot('#ratelimit_table', ['example.test.rs', 'ols.test.rs'], 'Custom limits step of the bulk actions bar with 600 requests per minute per IP and 20000 per domain entered', { name: 'bulk-custom', action: 'custom', value: '600/20000' }), prepare: all(rlUsage, bulkShot('#ratelimit_table', ['example.test.rs', 'ols.test.rs'], '', { action: 'custom', value: '600/20000' }).prepare), viewportWidth: 1440 },
+    ],
+  },
+  'emails/domain-limits_server': {
+    as: 'emails/domain-limits',
+    url: '/emails/domain-limits',
+    shots: [
+      { name: 'list', alt: 'Domain Limits page with the emails sent this hour against the hourly limit of each domain, its owner and Postfwd rule', prepare: dlRows, crop: { from: 'main', to: 'main p:has-text("Showing")', fromTop: true, pad: 16 } },
+      { name: 'restore', alt: 'Restore from plan section with All users or one user to restore the hourly limits for', prepare: all(dlRows, click('main a:has-text("Restore from plan")', 500)), crop: { from: 'main', to: 'main p:has-text("custom limits set here are replaced")', fromTop: true, pad: 20 } },
+      { name: 'remove', alt: 'Remove rules section with All users or one user and the Remove button', prepare: all(dlRows, click('main a:has-text("Remove rules")', 500)), crop: { from: 'main', to: 'main p:has-text("until the rules are restored")', fromTop: true, pad: 20 } },
+      { ...bulkShot('#domain_limits_table', ['example.test.rs', 'ols.test.rs'], 'Two domains selected with the bulk actions bar offering Set limit, Restore from plan and Remove rules'), prepare: all(dlRows, bulkShot('#domain_limits_table', ['example.test.rs', 'ols.test.rs'], '').prepare) },
+      { ...bulkShot('#domain_limits_table', ['example.test.rs', 'ols.test.rs'], 'Set limit step of the bulk actions bar with 250 emails per hour entered for two selected domains', { name: 'bulk-limit', action: 'limit', value: '250' }), prepare: all(dlRows, bulkShot('#domain_limits_table', ['example.test.rs', 'ols.test.rs'], '', { action: 'limit', value: '250' }).prepare) },
+    ],
+  },
+  // FTP owners and quotas (new in 2.0.15) aren't on the demo yet
+  'services/ftp_server': {
+    as: 'services/ftp',
+    url: '/services/ftp',
+    shots: [
+      { name: 'accounts', alt: 'FTP page on the Accounts tab with the FTP service status and the table of FTP accounts with their owner, path and quota', crop: 'content' },
+      {
+        name: 'quota',
+        alt: 'FTP Accounts tab with the quota field of an account open',
+        prepare: async page => {
+          await page.locator('#ftp_accounts_table tbody tr:nth-of-type(2) button:has-text("Set quota")').click();
+          await page.waitForTimeout(300);
+        },
+        crop: { from: '#ftp_accounts_table thead', to: '#ftp_accounts_table tbody tr:last-of-type', pad: 8 },
+      },
+      bulkShot('#ftp_accounts_table', ['backup@example.test.rs', 'designer@example.test.rs'], 'Two FTP accounts selected with the bulk actions bar offering Set quota and Remove quota'),
+    ],
+  },
+  'services/status_server': {
+    as: 'services/status',
+    url: '/services',
+    shots: [
+      { name: 'list', alt: 'Services page listing system services with their status, version, real name, type, port, monitoring and actions', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(12)', fromTop: true } },
+      bulkShot('#exiting_users', ['docker:davpanel_dns', 'system:cron'], 'Two services selected with the bulk actions bar offering Start, Stop and Restart', { rows: 6 }),
+    ],
+  },
+  'advanced/processes_server': {
+    as: 'advanced/processes',
+    url: '/server/processes',
+    shots: [
+      { name: 'list', alt: 'Process Manager listing system processes with a checkbox, PID, owner, priority, CPU and memory usage, command, and Trace and Kill links', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(14)', fromTop: true } },
+      bulkShot('#processes_table', 2, 'Two processes selected with the bulk actions bar offering Kill', { rows: 6 }),
+    ],
+  },
+  '002_notifications_server': {
+    as: '002_notifications',
+    url: '/notifications',
+    shots: [
+      { name: 'list', alt: 'Notifications page listing recorded system alerts with the time, notification and details, and the Edit Settings, Pause notifications, Acknowledge All and Delete All buttons', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(10)', fromTop: true } },
+      bulkShot('#notifications_table', 2, 'Two notifications selected with the bulk actions bar offering Mark as read and Delete', { rows: 6 }),
+    ],
+  },
+  'backups/system_server': {
+    as: 'backups/system',
+    url: '/backups/system#backups',
+    shots: [
+      { name: 'backups', alt: 'System Backups page on the Backups tab with the Run Backup Now button and the list of backup archives', crop: 'content' },
+      bulkShot('#system_backups_table', 2, 'Two system backup archives selected with the bulk actions bar offering Delete'),
+    ],
+  },
+  // the Rules/Domains/Logs tabs are new in 2.0.15, shot on the test server until the demo has them:
+  // ADMIN_URL=http://host:2087 node shoot.mjs --admin security/waf_server
+  'security/waf_server': {
+    as: 'security/waf',
+    url: '/security/waf',
+    shots: [
+      { name: 'page', alt: 'Web Firewall Overview tab with the module status, domains per mode, active rule sets and recently stopped requests', crop: { from: 'main', to: 'main form#waf-status-form', fromTop: true, pad: 24 } },
+      { name: 'crs', alt: 'OWASP Core Rule Set section with the installed version, the up to date status and the Check for updates button', crop: { from: 'main div.grid:has(> div > #crs)', pad: 16 } },
+      { name: 'profiles', alt: 'App profiles section listing each CRS exclusion plugin with its status, the number of domains using it and the Re-download button', crop: { from: 'main div.grid:has(> div > #profiles)', pad: 16 } },
+      { name: 'activity', alt: 'Most hit domains and the rules triggered most across all domains on the server', crop: { from: 'main div.grid:has(> div > #activity)', pad: 16 } },
+      { name: 'rules', url: '/security/waf/rules', alt: 'WAF Rules tab listing each rule set with its number of rules, status and the View and Disable actions', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(10)', fromTop: true } },
+      { ...bulkShot('#waf_sets', ['REQUEST-911-METHOD-ENFORCEMENT', 'REQUEST-913-SCANNER-DETECTION'], 'Two WAF rule sets selected with the bulk actions bar offering Enable and Disable', { rows: 6 }), url: '/security/waf/rules' },
+      {
+        name: 'server-wide',
+        url: '/security/waf/rules',
+        alt: 'Disabled on all domains section with the rule IDs and tags turned off server-wide and the Save button',
+        prepare: fill({ '#global_rules': '920350 942100', '#global_tags': 'attack-xss' }),
+        crop: { from: 'main section:has(#server-wide)', pad: 16 },
+      },
+      { name: 'domains', url: '/security/waf/domains', alt: 'WAF Domains tab listing every domain with its user, mode, protection level and number of disabled rules, with the user filter and Manage and Logs actions', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(10)', fromTop: true } },
+      { name: 'domain', url: '/security/waf/rules/drupal.tests.davpanel.com', alt: 'WAF settings of a single domain with its mode, level, app profiles and the disabled rule IDs and tags', crop: 'content' },
+      { name: 'user', url: '/security/waf/rules/testinguser', alt: 'WAF settings for all domains of a user with the mode for all domains, the rule ID to disable or enable on all of them and the table of the user domains', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(6)', fromTop: true } },
+      { name: 'logs', url: '/security/waf/logs', alt: 'WAF Logs tab with the user filter, the blocked, would block and flagged totals and the domains hit the most', crop: { from: 'main', to: '#waf-domains tbody tr:nth-of-type(6)', fromTop: true, pad: 16 } },
+      { name: 'logs-rules', url: '/security/waf/logs', viewportWidth: 1500, alt: 'Rules triggered table with the reason, hits, blocked requests, domains, paths and the Disable server-wide action', crop: { from: '#waf-rules > div', to: '#waf-rules tbody tr:nth-of-type(6)', pad: 8, right: true } },
+      { name: 'logs-ips', url: '/security/waf/logs', alt: 'Top IP addresses table with the hits and blocked requests of each address', crop: { from: '#waf-ips > h2', to: '#waf-ips tbody tr:nth-of-type(5)', pad: 8, right: true } },
+      { name: 'logs-requests', url: '/security/waf/logs', viewportWidth: 1500, alt: 'Latest requests table with the time, domain, IP address, request, status, result and the rules that matched', crop: { from: '#waf-events > h2', to: '#waf-events tbody tr:nth-of-type(8)', pad: 8, right: true } },
+      { name: 'logs-domain', url: '/security/waf/logs/drupal.tests.davpanel.com', alt: 'WAF logs of a single domain with the Manage rules and Clear logs buttons and the rules triggered with Disable for domain and Disable server-wide actions', crop: { from: 'main', to: '#waf-rules tbody tr:last-of-type', fromTop: true, pad: 8 } },
+    ],
+  },
+  'settings/locales_server': {
+    as: 'settings/locales',
+    url: '/settings/locales',
+    shots: [
+      { name: 'list', alt: 'Languages page listing locales with their provider, install status, default and Set as Default buttons', crop: { from: 'main', to: 'main table tbody tr:nth-of-type(12)', fromTop: true } },
+      bulkShot('#tour-locales-table', ['de-de', 'es-es'], 'Two locales selected with the bulk actions bar offering Install, Update and Delete', { rows: 6 }),
+    ],
+  },
+  // Databases and Email Deliverability are new in 2.0.17, shot on the test server:
+  // ADMIN_URL=https://host:2087 node shoot.mjs --admin databases/mysql_server databases/postgresql_server databases/mongodb_server emails/deliverability_server emails/emails_server:add
+  'databases/mysql_server': {
+    as: 'databases/mysql',
+    url: '/databases',
+    shots: [
+      { name: 'list', alt: 'Databases page on the MySQL tab listing every database with its owner, MySQL or MariaDB type, number of tables, size and the Terminal, phpMyAdmin, Export and Import actions', prepare: dbRows, crop: { from: 'main', to: '#databases_table tbody tr:last-of-type', fromTop: true, pad: 16 } },
+      {
+        name: 'export',
+        alt: 'Export menu of a database with SQL and Gzip downloads',
+        prepare: all(dbRows, click('#databases_table tbody tr:first-of-type button:has-text("Export")', 300)),
+        crop: { from: '#databases_table thead', to: '#databases_table form[action="/databases/export"]:visible', pad: 12, right: true },
+      },
+      {
+        name: 'import',
+        alt: 'Import dialog of a database with the file picker for a .sql or .sql.gz dump and the Import button',
+        prepare: all(dbRows, click('#databases_table tbody tr:first-of-type button:has-text("Import")', 300), rename({ sdffdsd: 'wp_blog' }, 'body')),
+        viewportHeight: 900,
+        crop: { from: 'div[x-show="imp.open"] > div', pad: 16, clamp: false },
+      },
+    ],
+  },
+  'databases/postgresql_server': {
+    as: 'databases/postgresql',
+    url: '/databases/postgresql',
+    shots: [{ name: 'list', alt: 'Databases page on the PostgreSQL tab with the Refresh button and the table of PostgreSQL databases from running services', crop: 'content' }],
+  },
+  'databases/mongodb_server': {
+    as: 'databases/mongodb',
+    url: '/databases/mongodb',
+    shots: [{ name: 'list', alt: 'Databases page on the MongoDB tab with the Refresh button and the table of MongoDB databases from running services', crop: 'content' }],
+  },
+  'emails/deliverability_server': {
+    as: 'emails/deliverability',
+    url: '/emails/deliverability',
+    shots: [
+      { name: 'list', alt: 'Email Deliverability page with the number of domains that need DNS changes and the DKIM, SPF, DMARC and overall status of every domain', prepare: deliverabilityRows, crop: { from: 'main', to: '#deliverability_table tbody tr:last-of-type', fromTop: true, pad: 16 } },
+      {
+        name: 'details',
+        alt: 'Details of a domain with the current and expected DKIM, SPF and DMARC records',
+        prepare: all(deliverabilityRows, click('#deliverability_table tbody tr.group td:first-child', 400)),
+        crop: { from: '#deliverability_table thead', to: '#deliverability_table tbody tr.group:nth-of-type(4)', pad: 8 },
+      },
+    ],
+  },
+  'emails/emails_server': {
+    as: 'emails/emails',
+    url: '/emails/accounts',
+    shots: [
+      { name: 'list', alt: 'Emails page listing email accounts with their quota usage, webmail button and actions menu', prepare: async page => { await page.waitForTimeout(1500); }, crop: 'content' },
+      bulkShot('#email_accounts_table', ['info@example.test.rs', 'sales@example.test.rs'], 'Two email accounts selected with the bulk actions bar offering Change password, Set quota, Remove quota, Restrict sending, Restrict receiving, Allow sending, Allow receiving and Delete', { wait: 1500 }),
+      {
+        name: 'add',
+        alt: 'Add Email form with the username, a domain picked from the existing domains, its owner, the password with Generate and Show, the storage quota and Send welcome email',
+        prepare: all(click('main a:has-text("Add Email")', 400), async page => { await page.locator('main form[action="/emails/new"] select[name=domain]').selectOption({ index: 1 }); }, fill({ '#new_email_username': 'info', '#new_email_password': 'Xk7pQ2vLm9TzR4wd' }), click('main form[action="/emails/new"] button:has-text("Show")', 200)),
+        crop: { from: 'main', to: 'main form[action="/emails/new"] button[type=submit]', fromTop: true, pad: 20 },
+      },
+    ],
+  },
+  'advanced/crons_server': {
+    as: 'advanced/crons',
+    url: '/server/crons',
+    shots: [
+      { name: 'page', alt: 'Scheduler page listing DavPanel system jobs with their cron schedule fields and command', crop: { content: 'main', maxHeight: 1000 } },
+      bulkShot('#crons_table', 2, 'Two cron jobs selected with the bulk actions bar offering Change schedule, Disable, Logging on and Logging off', { rows: 6 }),
+    ],
+  },
+};

@@ -1,0 +1,54 @@
+package domains
+
+import (
+	"net/http"
+	"os/exec"
+	"regexp"
+	"strings"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/auth"
+	"gist.github.com/kangpcode/davpanel/internal/core/logger"
+	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+// same check davcli domains-cloudflare status does
+var cloudflareOnlyRE = regexp.MustCompile(`^import[ \t]+cloudflare-only([ \t]|$)`)
+
+// handleDomainCloudflare restricts a domain to Cloudflare IPs or lifts that, via davcli domains-cloudflare
+func handleDomainCloudflare(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, _ := auth.UserID(r)
+	_ = r.ParseForm()
+	domainName := r.Form.Get("domain_name")
+
+	if domainName == "" || strings.HasSuffix(domainName, ".onion") {
+		web.FlashRedirect(a, w, r, "error", "Invalid request. Domain name must be provided.", "/domains")
+		return
+	}
+	if !a.CheckDomainBelongsToUser(ctx, userID, domainName) {
+		http.Error(w, "You do not own this domain.", http.StatusForbidden)
+		return
+	}
+
+	action, done, logMsg := "disable", "Cloudflare restriction removed for %(domain)s.", "removed Cloudflare-only restriction for "
+	if r.Form.Get("cloudflare_action") == "enable" {
+		action, done, logMsg = "enable", "%(domain)s is now reachable only through Cloudflare.", "restricted to Cloudflare-only "
+	}
+
+	out, cmdErr := exec.CommandContext(ctx, "davcli", "domains-cloudflare", action, domainName).CombinedOutput()
+	invalidateRewriteCondCache(ctx, a, domainName)
+	if cmdErr != nil {
+		msg := strings.TrimSpace(string(out))
+		if msg == "" {
+			msg = cmdErr.Error()
+		}
+		web.FlashRedirect(a, w, r, "error", msg, "/domains")
+		return
+	}
+
+	currentUsername, _, _ := injected(a, ctx, userID)
+	_ = logger.RecordUserAction(a.Config, currentUsername, logMsg+domainName, reqip.ClientIP(r))
+	web.FlashRedirect(a, w, r, "success", web.Tr(a, r, done, "domain", domainName), "/domains")
+}

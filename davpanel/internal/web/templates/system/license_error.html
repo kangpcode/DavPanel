@@ -1,0 +1,23 @@
+{{define "layout"}}<!-- START templates/system/license_error.html -->
+
+<script src="{{static "vendor/tailwindcss/tailwindcss-browser-v4.js"}}"></script>
+
+<div class="relative grid min-h-screen grid-cols-[1fr_2.5rem_auto_2.5rem_1fr] grid-rows-[1fr_1px_auto_1px_1fr] bg-white [--pattern-fg:var(--color-gray-950)]/5 dark:bg-gray-950 dark:[--pattern-fg:var(--color-white)]/10">
+  <div class="col-start-3 row-start-3 flex max-w-lg flex-col bg-gray-100 p-2 dark:bg-white/10">
+    <div class="rounded-xl bg-white p-10 text-sm/7 text-gray-700 dark:bg-gray-950 dark:text-gray-300">
+<a href="https://davpanel.com?utm=license_invalid_davadmin" class="mb-11.5 text-lg flex items-center justify-center space-x-2 font-bold">
+  <svg class="h-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24" preserveAspectRatio="xMidYMid meet" version="1.0" viewBox="0 0 64 64"><path d="M32 4 56 12v18c0 13-9 23-24 30C17 53 8 43 8 30V12Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><path fill="currentColor" fill-rule="evenodd" d="M23 19h8a13 13 0 0 1 0 26h-8Zm5 5v16h3a8 8 0 0 0 0-16Z"/><circle cx="47" cy="19" r="3" fill="currentColor"/></svg>
+  <span>DavPanel</span>
+</a>
+      <div class="space-y-6">
+        <p>{{.T.Get "DavPanel Enterprise license key is invalid!"}}</p>
+      </div>
+      <hr class="my-6 w-full border-(--pattern-fg)" />
+      <p class="font-semibold">
+        <a href="https://my.davpanel.com/index.php?rp=/store/davpanel/enterprise-license?utm=license_invalid_davadmin" class="text-gray-950 underline decoration-sky-400 underline-offset-3 hover:decoration-2 dark:text-white">{{.T.Get "Verify License"}}</a>
+      </p>
+    </div>
+  </div>
+</div>
+<!-- END templates/system/license_error.html -->
+{{end}}

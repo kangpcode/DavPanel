@@ -1,0 +1,111 @@
+package php
+
+import (
+	"encoding/json"
+	"net/http"
+	"strings"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/auth"
+	"gist.github.com/kangpcode/davpanel/internal/core/apiregistry"
+	"gist.github.com/kangpcode/davpanel/internal/core/logger"
+	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+// RegisterOptionsAPI wires the PHP options API route onto mux.
+func RegisterOptionsAPI(mux *http.ServeMux, a *appctx.App) {
+	apiregistry.Handle(mux, a, "php_options", "GET /api/php/{version}/options", func(w http.ResponseWriter, r *http.Request) { apiPHPOptions(a, w, r) })
+	apiregistry.Handle(mux, a, "php_options", "PUT /api/php/{version}/options", func(w http.ResponseWriter, r *http.Request) { apiPHPOptions(a, w, r) })
+	apiregistry.Handle(mux, a, "php_options", "GET /api/php/{version}/options/recommendations", func(w http.ResponseWriter, r *http.Request) {
+		r.SetPathValue("phpversion", r.PathValue("version"))
+		handlePHPOptionsRecommendations(a, w, r)
+	})
+}
+
+func apiPHPContainer(userContext, version string) string {
+	ws := strings.ToLower(webserver.GetEnvFileValue(userContext, "WEB_SERVER"))
+	if strings.Contains(ws, "litespeed") {
+		return ws
+	}
+	return "php-fpm-" + version
+}
+
+// apiPHPOptions gets or updates the php.ini options for one PHP version.
+func apiPHPOptions(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	_, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	version := r.PathValue("version")
+	availableKeys := loadKeysFromFile(userContext)
+
+	if r.Method == http.MethodGet {
+		content, readErr := tenantfs.ReadFile("/home/" + userContext + "/php.ini/" + version + ".ini")
+		if readErr != nil {
+			web.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": readErr.Error()})
+			return
+		}
+		currentConfig := configEntriesToMap(parseConfigContent(string(content)))
+		web.WriteJSON(w, http.StatusOK, map[string]any{
+			"version": version, "available_keys": availableKeys, "current_config": currentConfig,
+		})
+		return
+	}
+
+	// PUT
+	var body map[string]any
+	_ = json.NewDecoder(r.Body).Decode(&body)
+	newConfig := map[string]string{}
+	var providedKeys []string
+	for _, key := range availableKeys {
+		if v, ok := body[key]; ok && v != nil {
+			newConfig[key] = strings.TrimSpace(toStringValue(v))
+			providedKeys = append(providedKeys, key)
+		}
+	}
+	if len(newConfig) == 0 {
+		web.WriteJSON(w, http.StatusBadRequest, map[string]any{"error": "Provide at least one key from: " + strings.Join(availableKeys, ", ")})
+		return
+	}
+
+	if writeErr := updatePHPConfigFile(userContext, version, providedKeys, newConfig); writeErr != nil {
+		web.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Could not save PHP " + version + " configuration: " + writeErr.Error()})
+		return
+	}
+	_ = logger.RecordUserAction(a.Config, currentUsername, "edited PHP "+version+" configuration using PHP Selector", reqip.ClientIP(r))
+	container := apiPHPContainer(userContext, version)
+	if strings.HasPrefix(container, "php-fpm-") && signalPHPFPMReload(ctx, userContext, container) {
+		web.WriteJSON(w, http.StatusOK, map[string]any{
+			"message": "Options updated and " + container + " reloaded", "version": version, "updated": newConfig,
+		})
+		return
+	}
+	if result := docker.RestartContainer(ctx, userContext, container); !result.Success {
+		web.WriteJSON(w, http.StatusOK, map[string]any{
+			"message": "Options updated, but " + container + " failed to restart. Try restarting it manually from Services.", "version": version, "updated": newConfig,
+		})
+		return
+	}
+
+	web.WriteJSON(w, http.StatusOK, map[string]any{
+		"message": "Options updated and " + container + " restarted", "version": version, "updated": newConfig,
+	})
+}
+
+func toStringValue(v any) string {
+	switch t := v.(type) {
+	case string:
+		return t
+	case json.Number:
+		return t.String()
+	default:
+		b, _ := json.Marshal(v)
+		return string(b)
+	}
+}

@@ -1,0 +1,280 @@
+import clsx from "clsx";
+import React, { SVGProps } from "react";
+
+export const TopAnnouncement = () => {
+    return (
+        <div
+            className={clsx(
+                "w-full h-12",
+                "relative",
+                "bg-top-announcement",
+                "not-prose",
+                "font-inter",
+                "z-top-announcement",
+            )}
+        >
+            <div
+                className={clsx(
+                    "hidden lg:flex",
+                    "w-full h-full",
+                    "max-w-screen",
+                    "overflow-hidden",
+                    "border-b border-solid border-[#47ebeb26]",
+                    "top-announcement-mask",
+                )}
+            >
+                <div
+                    className={clsx(
+                        "w-[1280px] h-full",
+                        "mx-auto",
+                        "flex",
+                        "justify-between",
+                    )}
+                >
+                    <div
+                        className={clsx(
+                            "w-[calc(50%-300px)] h-full",
+                            "relative",
+                        )}
+                    >
+                        <GlowSmall
+                            style={{
+                                animationDelay: "1.5s",
+                            }}
+                            className={clsx(
+                                "absolute",
+                                "top-[2px]",
+                                "right-[220px]",
+                            )}
+                            id={"1"}
+                        />
+                        <GlowSmall
+                            style={{
+                                animationDelay: "1s",
+                            }}
+                            className={clsx(
+                                "absolute",
+                                "rotate-180",
+                                "top-[8px] right-[100px]",
+                            )}
+                            id={"2"}
+                        />
+                        <GlowBig
+                            className={clsx("absolute", "right-[10px]")}
+                            id={"3"}
+                        />
+                    </div>
+
+                    <div
+                        className={clsx(
+                            "w-[calc(50%-300px)] h-full",
+                            "relative",
+                        )}
+                    >
+                        <GlowSmall
+                            style={{
+                                animationDelay: "2s",
+                            }}
+                            className={clsx(
+                                "absolute",
+                                "rotate-180",
+                                "top-[6px] right-[180px]",
+                            )}
+                            id={"4"}
+                        />
+                        <GlowSmall
+                            style={{
+                                animationDelay: "0.5s",
+                            }}
+                            className={clsx(
+                                "delay-[1300]",
+                                "absolute",
+                                "top-[2px]",
+                                "right-[40px]",
+                            )}
+                            id={"5"}
+                        />
+
+                        <GlowBig
+                            className={clsx("absolute", "right-[-70px]")}
+                            id={"6"}
+                        />
+                    </div>
+                </div>
+            </div>
+            <Text />
+        </div>
+    );
+};
+
+
+const CART_URL =
+    "https://my.davpanel.com/cart.php?a=add&pid=1&billingcycle=annually&skipconfig=1";
+
+const messages = [
+    {
+        text: (
+            <>
+                🎉 <span className="font-semibold">Enterprise for €149.50/year</span>: pay for 10 months, get 12.
+                That's <span className="font-semibold">€12.46/mo</span> per server.
+            </>
+        ),
+        href: `${CART_URL}&utm_content=free-months`,
+        cta: "Get 2 Months Free",
+    },
+    {
+        text: (
+            <>
+                🧪 Try <span className="font-semibold">DavPanel Enterprise free for 30 days</span>. Every feature,
+                no card required.
+            </>
+        ),
+        href: "/trial?utm_content=trial-30d",
+        cta: "Start Free Trial",
+    },
+    {
+        text: (
+            <>
+                🚀 Running Community Edition?{" "}
+                <span className="font-semibold">Upgrade to Enterprise</span> for user isolation, resource limits,
+                white-label & priority support.
+            </>
+        ),
+        href: "/enterprise?utm_content=ce-upgrade",
+        cta: "See What You Get",
+    },
+    {
+        text: (
+            <>
+                💸 Tired of per-account pricing?{" "}
+                <span className="font-semibold">One flat price per server</span>, unlimited accounts. From €12.46/mo.
+            </>
+        ),
+        href: `${CART_URL}&utm_content=flat-price`,
+        cta: "Switch to DavPanel",
+    },
+    {
+        text: (
+            <>
+                🔒 <span className="font-semibold">Price locked for life</span> on annual Enterprise. Today's rate
+                is the one you'll keep paying.
+            </>
+        ),
+        href: `${CART_URL}&utm_content=price-lock`,
+        cta: "Lock In €149.50/yr",
+    },
+];
+
+const Text = () => {
+    // Pick after hydration so the pre-rendered HTML and the client agree
+    // (Math.random() during SSR caused a mismatch and text flicker).
+    const [randomMessage, setRandomMessage] = React.useState(messages[0]);
+
+    React.useEffect(() => {
+        setRandomMessage(messages[Math.floor(Math.random() * messages.length)]);
+    }, []);
+
+    return (
+        <a
+            href={randomMessage.href}
+            rel="noreferrer"
+            className={clsx(
+                "relative lg:absolute",
+                "px-2 lg:px-0",
+                "top-0",
+                "left-[50%]",
+                "translate-x-[-50%]",
+                "bg-top-announcement-text",
+                "h-full w-full",
+                "flex items-center justify-center",
+                "text-white",
+                "text-xs sm:text-sm",
+                "text-center",
+                "no-underline",
+                "hover:no-underline",
+                "hover:text-white",
+                "not-prose",
+            )}
+        >
+            <div className="ml-2 not-prose">
+                {randomMessage.text}
+                <span
+                    className={clsx(
+                        "text-refine-cyan-alt hover:text-refine-cyan-alt",
+                        "font-semibold",
+                        "ml-2"
+                    )}
+                >
+                    {randomMessage.cta}
+                </span>
+            </div>
+        </a>
+    );
+};
+
+
+const GlowSmall = (props: SVGProps<SVGSVGElement>) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={80}
+        height={40}
+        fill="none"
+        {...props}
+        className={clsx(
+            "animate-top-announcement-glow",
+            "opacity-1",
+            props.className,
+        )}
+    >
+        <circle cx={40} r={40} fill={`url(#${props.id}-a)`} fillOpacity={0.5} />
+        <defs>
+            <radialGradient
+                id={`${props.id}-a`}
+                cx={0}
+                cy={0}
+                r={1}
+                gradientTransform="matrix(0 40 -40 0 40 0)"
+                gradientUnits="userSpaceOnUse"
+            >
+                <stop stopColor="#47EBEB" />
+                <stop offset={1} stopColor="#47EBEB" stopOpacity={0} />
+            </radialGradient>
+        </defs>
+    </svg>
+);
+
+const GlowBig = (props: SVGProps<SVGSVGElement>) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={120}
+        height={48}
+        fill="none"
+        {...props}
+        className={clsx(
+            "animate-top-announcement-glow",
+            "opacity-1",
+            props.className,
+        )}
+    >
+        <circle
+            cx={60}
+            cy={24}
+            r={60}
+            fill={`url(#${props.id}-a)`}
+            fillOpacity={0.5}
+        />
+        <defs>
+            <radialGradient
+                id={`${props.id}-a`}
+                cx={0}
+                cy={0}
+                r={1}
+                gradientTransform="matrix(0 60 -60 0 60 24)"
+                gradientUnits="userSpaceOnUse"
+            >
+                <stop stopColor="#47EBEB" />
+                <stop offset={1} stopColor="#47EBEB" stopOpacity={0} />
+            </radialGradient>
+        </defs>
+    </svg>
+);

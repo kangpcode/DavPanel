@@ -1,0 +1,39 @@
+package backups
+
+import (
+	"fmt"
+	"net/http"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+// adminManagedMarkerPath is the per-account switch that hands backup destination/settings management to the admin - the account can still list and restore backups but can't view or change where/how they're stored. Lives under core/users like krompir.lock and every other per-account marker, not /home, since it's provisioned via DavAdmin's /etc/davpanel/skeleton/ template (copied into core/users/<username>/ by davcli's user-add) rather than backup.env's direct /home copy
+func adminManagedMarkerPath(userContext string) string {
+	return fmt.Sprintf("%s%s/admin.backups", coreUsersRoot, userContext)
+}
+
+// coreUsersRoot holds the per-account config dirs, tests point it at a temp dir
+var coreUsersRoot = "/etc/davpanel/davpanel/core/users/"
+
+// AdminManagedBackups reports whether backup destinations/settings are admin-managed for this account: locked whenever adminManagedMarkerPath exists
+func AdminManagedBackups(userContext string) bool {
+	_, err := tenantfs.Stat(adminManagedMarkerPath(userContext))
+	return err == nil
+}
+
+func init() {
+	web.BackupsAdminManaged = AdminManagedBackups
+	web.BackupDestinationConfigured = func(userContext string) bool { return ActiveBackupTarget(userContext) != "" }
+}
+
+// respondBackupsAdminManaged is what handleBackupSettings/handleBackupTarget return instead of their normal view/update when AdminManagedBackups is true, for both the HTML page and the JSON API
+func respondBackupsAdminManaged(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	msg := "Backup destinations and settings are managed by your administrator. You can still list and restore backups."
+	if r.URL.Query().Get("output") == "json" {
+		web.WriteJSON(w, http.StatusForbidden, map[string]string{"error": msg})
+		return
+	}
+	web.FlashRedirect(a, w, r, "error", msg, "/backups/list")
+}

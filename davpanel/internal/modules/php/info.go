@@ -1,0 +1,85 @@
+package php
+
+import (
+	"context"
+	"net/http"
+	"os/exec"
+	"strings"
+	"time"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/auth"
+	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	"gist.github.com/kangpcode/davpanel/internal/modules/docker"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+// handlePHPInfo renders `php -i` output for one PHP version, starting its container first if needed
+func handlePHPInfo(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	_, _, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	version := phpVersionFromSegment(r.PathValue("phpversion"))
+	title := "PHP INFO"
+	var phpInfoContent string
+	installedVersions := FetchPHPVersions(ctx, a, userContext)
+	service := ""
+
+	if version != "" {
+		// the version picks which container gets started, so only ones the account has
+		if !usableVersion(ctx, a, userContext, version) {
+			web.FlashRedirect(a, w, r, "error", "Invalid or unavailable PHP version.", "/php/domains")
+			return
+		}
+		webServer := webserver.GetEnvFileValue(userContext, "WEB_SERVER")
+		if strings.Contains(strings.ToLower(webServer), "litespeed") {
+			service = strings.ToLower(webServer)
+		} else {
+			service = "php-fpm-" + version
+		}
+		title = "PHP " + version + " Info"
+
+		if !docker.IsServiceRunning(ctx, userContext, service) {
+			result := docker.StartOrStopContainer(ctx, userContext, service, "activate", "run")
+			if !result.Success || !docker.IsServiceRunning(ctx, userContext, service) {
+				web.FlashRedirect(a, w, r, "error", web.Tr(a, r, "Failed to start PHP %(service)s: %(message)s", "service", service, "message", result.Message), "/php/domains")
+				return
+			}
+		}
+
+		argv := podmanmanager.PodmanArgv(userContext, "exec", service, "php",
+			"-d", "memory_limit=-1",
+			"-d", "open_basedir=none",
+			"-d", "disable_functions=",
+			"-d", "display_errors=0",
+			"-d", "error_log=/dev/null",
+			"-i")
+		cctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+		defer cancel()
+		cmd := podmanmanager.Command(cctx, userContext, argv)
+		var stderr strings.Builder
+		cmd.Stderr = &stderr
+		out, runErr := cmd.Output()
+		if runErr != nil {
+			msg := stderr.String()
+			if msg == "" {
+				if ee, ok := runErr.(*exec.ExitError); ok {
+					msg = string(ee.Stderr)
+				} else {
+					msg = runErr.Error()
+				}
+			}
+			// this is an html page, a raw json error used to replace it
+			web.FlashRedirect(a, w, r, "error", web.Tr(a, r, "Could not read PHP %(version)s info: %(message)s", "version", version, "message", strings.TrimSpace(msg)), "/php/domains")
+			return
+		}
+		phpInfoContent = strings.TrimSpace(string(out))
+	}
+
+	renderPHPInfoPage(a, w, r, version, service, title, phpInfoContent, installedVersions)
+}

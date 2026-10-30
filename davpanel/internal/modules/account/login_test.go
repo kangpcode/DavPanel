@@ -1,0 +1,65 @@
+package account
+
+import (
+	"reflect"
+	"testing"
+)
+
+func TestLocaleOptions(t *testing.T) {
+	got := localeOptions([]string{"en", "de", "zh", "uk", "sr"})
+	want := []localeOption{
+		{Code: "en", FlagCode: "gb", Native: "English", English: "English"},
+		{Code: "de", FlagCode: "de", Native: "Deutsch", English: "German"},
+		{Code: "zh", FlagCode: "cn", Native: "中文", English: "Chinese"},
+		{Code: "uk", FlagCode: "ua", Native: "Українська", English: "Ukrainian"},
+		{Code: "sr", FlagCode: "rs", Native: "Српски", English: "Serbian"},
+	}
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("localeOptions() = %+v, want %+v", got, want)
+	}
+}
+
+func TestFirstNonEmpty(t *testing.T) {
+	if got := firstNonEmpty("", "", "c"); got != "c" {
+		t.Errorf("firstNonEmpty = %q, want c", got)
+	}
+	if got := firstNonEmpty("a", "b"); got != "a" {
+		t.Errorf("firstNonEmpty = %q, want a", got)
+	}
+	if got := firstNonEmpty("", ""); got != "" {
+		t.Errorf("firstNonEmpty = %q, want empty", got)
+	}
+}
+
+func TestValidAutologinUsername(t *testing.T) {
+	valid := []string{"john", "john.doe", "john_doe-2"}
+	invalid := []string{"john doe", "john/doe", "../etc/passwd", ""}
+
+	for _, u := range valid {
+		if !validAutologinUsername.MatchString(u) {
+			t.Errorf("expected %q to be a valid autologin username", u)
+		}
+	}
+	for _, u := range invalid {
+		if validAutologinUsername.MatchString(u) {
+			t.Errorf("expected %q to be rejected", u)
+		}
+	}
+}
+
+func TestSafeLocalPath(t *testing.T) {
+	for p, want := range map[string]bool{
+		"/website?domain=example.com": true,
+		"/dashboard":                  true,
+		"":                            false,
+		"//evil.com":                  false,
+		"/\\evil.com":                 false,
+		"https://evil.com":            false,
+		"website":                     false,
+		"/a\r\nSet-Cookie: x":         false,
+	} {
+		if got := safeLocalPath(p); got != want {
+			t.Errorf("safeLocalPath(%q) = %v, want %v", p, got, want)
+		}
+	}
+}

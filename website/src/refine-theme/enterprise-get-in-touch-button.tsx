@@ -1,0 +1,120 @@
+import Link from "@docusaurus/Link";
+import clsx from "clsx";
+import React, { FC, SVGProps } from "react";
+
+export const ENTERPRISE_PURCHASE_URL =
+    "https://my.davpanel.com/index.php?rp=/store/openpanel/enterprise-license";
+export const ENTERPRISE_TRIAL_URL = "/trial";
+
+// Checkout happens off-site (my.davpanel.com), so there's no on-site
+// "thank you" page to drop the Ads event snippet on - fire the conversion
+// when someone clicks through to start a trial or purchase instead. Navigation
+// is held until the conversion ping is sent (or gtag gives up), otherwise the
+// browser can unload the page before the beacon goes out.
+const GOOGLE_ADS_CONVERSION_LABEL = "AW-18287005046/755wCL2tiMkcEPaa9o9E";
+
+export const gtagReportConversion = (url?: string) => {
+    const navigate = () => {
+        if (typeof url !== "undefined" && typeof window !== "undefined") {
+            window.location.href = url;
+        }
+    };
+
+    if (typeof window === "undefined" || typeof window.gtag === "undefined") {
+        navigate();
+        return false;
+    }
+
+    window.gtag("event", "conversion", {
+        send_to: GOOGLE_ADS_CONVERSION_LABEL,
+        event_callback: navigate,
+    });
+
+    return false;
+};
+
+type Props = {
+    className?: string;
+    linkClassName?: string;
+    label?: string;
+    href?: string;
+    eventName?: string;
+};
+
+export const EnterpriseGetInTouchButton: FC<Props> = (props) => {
+    const label = props.label ?? "Purchase license";
+    const href = props.href ?? ENTERPRISE_PURCHASE_URL;
+
+    return (
+        <div
+            className={clsx(
+                "flex",
+                "items-center",
+                "justify-start",
+                "gap-4",
+                "landing-lg:gap-6",
+                props.className,
+            )}
+        >
+            <Link
+                href={href}
+                target="_self"
+                rel="noopener noreferrer"
+                onClick={(e) => {
+                    e.preventDefault();
+                    if (
+                        props.eventName &&
+                        typeof window !== "undefined" &&
+                        typeof window.gtag !== "undefined"
+                    ) {
+                        window.gtag("event", props.eventName);
+                    }
+                    gtagReportConversion(href);
+                }}
+                className={clsx(
+                    "self-start",
+                    "rounded-full",
+                    "!text-gray-0 dark:!text-gray-900",
+                    "bg-refine-blue dark:bg-refine-cyan-alt",
+                    "transition-[filter]",
+                    "duration-150",
+                    "ease-in-out",
+                    "hover:brightness-110",
+                    "py-3",
+                    "pl-7 pr-8",
+                    "landing-md:px-8",
+                    "landing-lg:pl-7 landing-lg:pr-8",
+                    "flex",
+                    "items-center",
+                    "justify-center",
+                    "gap-2",
+                    "hover:!no-underline",
+                    props.linkClassName,
+                )}
+            >
+                <GetInTouchIcon />
+                <span className={clsx("text-base", "font-semibold")}>
+                    {label}
+                </span>
+            </Link>
+        </div>
+    );
+};
+
+const GetInTouchIcon = (props: SVGProps<SVGSVGElement>) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={16}
+        height={16}
+        fill="none"
+        {...props}
+        className={clsx("text-gray-0 dark:text-gray-900", props.className)}
+    >
+        <path
+            fill="currentColor"
+            fillRule="evenodd"
+            d="M3.604 1.004a2.58 2.58 0 0 0-2.864.588A2.65 2.65 0 0 0 .217 4.48l1.519 3.517-1.52 3.524a2.65 2.65 0 0 0 .525 2.888 2.58 2.58 0 0 0 2.863.587l10.8-4.571A2.63 2.63 0 0 0 16 8a2.63 2.63 0 0 0-1.596-2.425l-10.8-4.571Zm-1.713 1.7a.98.98 0 0 1 1.09-.227l10.8 4.572c.37.156.619.528.619.951 0 .423-.25.795-.62.951l-10.8 4.572a.98.98 0 0 1-1.089-.226l-.558.54.558-.54a1.05 1.05 0 0 1-.205-1.142L3.132 8.8H6a.8.8 0 0 0 0-1.6H3.134L1.686 3.846a1.05 1.05 0 0 1 .205-1.142Z"
+            clipRule="evenodd"
+        />
+    </svg>
+);

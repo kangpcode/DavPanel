@@ -1,0 +1,668 @@
+package wordpress
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"regexp"
+	"sort"
+	"strings"
+	"time"
+
+	appctx "gist.github.com/kangpcode/davpanel/internal/app"
+	"gist.github.com/kangpcode/davpanel/internal/auth"
+	"gist.github.com/kangpcode/davpanel/internal/core/appkit"
+	"gist.github.com/kangpcode/davpanel/internal/core/cmsclone"
+	"gist.github.com/kangpcode/davpanel/internal/core/logger"
+	"gist.github.com/kangpcode/davpanel/internal/core/mysqlmanager"
+	"gist.github.com/kangpcode/davpanel/internal/core/paths"
+	"gist.github.com/kangpcode/davpanel/internal/core/podmanmanager"
+	"gist.github.com/kangpcode/davpanel/internal/core/reqip"
+	"gist.github.com/kangpcode/davpanel/internal/core/tenantfs"
+	"gist.github.com/kangpcode/davpanel/internal/core/webserver"
+	"gist.github.com/kangpcode/davpanel/internal/modules/cmsapp"
+	"gist.github.com/kangpcode/davpanel/internal/web"
+)
+
+// ---------------------- CLONE ---------------------- //
+
+// handleCloneWordPress mirrors clone_wordpress().
+func handleCloneWordPress(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	lockPath := appkit.LockFilePath(currentUsername)
+	if info, statErr := tenantfs.Stat(lockPath); statErr == nil && time.Since(info.ModTime()) < 5*time.Minute {
+		web.WriteJSON(w, http.StatusOK, map[string]string{"message": "Abort, another WordPress clone process is currently running."})
+		return
+	}
+	// the lock used to be checked but never taken, so two clones could run at once
+	if lockErr := appkit.CreateLockFile(currentUsername); lockErr != nil {
+		web.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Error creating lock file: " + lockErr.Error()})
+		return
+	}
+	defer appkit.RemoveLockFile(currentUsername)
+
+	injectedData, _ := a.InjectData(ctx, userID)
+	planID, _ := injectedData["hosting_plan"].(int)
+	plan, _ := a.QueryPlanDetailsByID(ctx, planID)
+	websitesLimit := web.AtoiDefault(plan.WebsitesLimit, 0)
+	websiteCount, _ := appkit.CountUserWebsites(a, userID)
+	if websitesLimit != 0 && websiteCount >= websitesLimit {
+		web.WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "You have reached the maximum number of sites allowed" + plan.UpgradeMessage()})
+		return
+	}
+
+	providedDomain := r.FormValue("source_domain")
+	dstDomain := r.FormValue("target_domain")
+	srcDB := r.FormValue("source_db")
+	srcFolder := r.FormValue("source_folder")
+	dstFolder := r.FormValue("subdirectory")
+
+	dstDB := mysqlmanager.WithPrefix(a.Config, userContext, strings.ToLower(web.FormOr(r, "target_db", "wp_clone_"+generateRandomString(6))))
+	dstDBUser := mysqlmanager.WithPrefix(a.Config, userContext, strings.ToLower(web.FormOr(r, "target_db_user", dstDB)))
+	dstDBUserPassword := web.FormOr(r, "target_db_user_password", generateRandomString(16))
+
+	if providedDomain == "" || dstDomain == "" || srcDB == "" || srcFolder == "" {
+		web.WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "Missing required form fields"})
+		return
+	}
+
+	srcDomain := strings.Split(providedDomain, "/")[0]
+	// without this a clone could attach a sites row to another account's domain
+	if !a.CheckDomainBelongsToUser(ctx, userID, srcDomain) || !a.CheckDomainBelongsToUser(ctx, userID, dstDomain) {
+		http.Error(w, "You do not own this domain.", http.StatusForbidden)
+		return
+	}
+
+	var domainID int
+	var docroot, phpVersion string
+	row := a.DB.QueryRowContext(ctx, "SELECT domain_id, docroot, php_version FROM domains WHERE domain_url = ?", dstDomain)
+	if scanErr := row.Scan(&domainID, &docroot, &phpVersion); scanErr != nil {
+		web.WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "Destination domain not found in database"})
+		return
+	}
+
+	dstDomainWithSubdir := dstDomain
+	if dstFolder != "" {
+		docroot = filepath.Join(docroot, dstFolder)
+		dstDomainWithSubdir = dstDomain + "/" + dstFolder
+	}
+
+	if !validateDomain(srcDomain) || !validateDomain(dstDomain) || !validateDB(srcDB) || !validateDB(dstDB) ||
+		!validateDB(dstDBUser) || !cmsclone.ValidDocroot(srcFolder) || !cmsclone.ValidDocroot(docroot) {
+		web.WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "Invalid input or unsafe docroot"})
+		return
+	}
+
+	webServer := webserver.GetEnvFileValue(userContext, "WEB_SERVER")
+	isLitespeed := strings.Contains(strings.ToLower(webServer), "litespeed")
+	phpContainer := webServer
+	if !isLitespeed {
+		phpContainer = "php-fpm-" + phpVersion
+	}
+
+	dumpCmd, mysqlVersion, dumpCmdErr := cmsclone.SelectDumpCommand(userContext)
+	if dumpCmdErr != nil {
+		web.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": dumpCmdErr.Error()})
+		return
+	}
+
+	const wwwBaseDirectory = "/var/www/html/"
+	baseDirectory := "/home/" + userContext + "/docker-data/volumes/" + userContext + "_html_data/_data/"
+	srcPath := strings.Replace(filepath.Clean(srcFolder), wwwBaseDirectory, baseDirectory, 1)
+	dstPath := strings.Replace(filepath.Clean(docroot), wwwBaseDirectory, baseDirectory, 1)
+
+	if info, statErr := tenantfs.Stat(srcPath); statErr != nil || !info.IsDir() {
+		web.WriteJSON(w, http.StatusNotFound, map[string]string{"error": "Source folder not found: " + srcFolder})
+		return
+	}
+
+	if mkErr := tenantfs.MkdirAll(dstPath, 0o755); mkErr != nil {
+		web.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to copy WordPress files: " + mkErr.Error()})
+		return
+	}
+
+	for _, item := range wordpressFiles {
+		srcItem := filepath.Join(srcPath, item)
+		dstItem := filepath.Join(dstPath, item)
+		info, statErr := tenantfs.Stat(srcItem)
+		if statErr != nil {
+			continue
+		}
+		var cpErr error
+		if info.IsDir() {
+			_ = tenantfs.MkdirAll(dstItem, 0o755)
+			cpErr = tenantfs.CopyDir(srcItem, dstItem)
+		} else {
+			_ = tenantfs.MkdirAll(filepath.Dir(dstItem), 0o755)
+			cpErr = tenantfs.CopyFile(srcItem, dstItem, info.Mode().Perm())
+		}
+		if cpErr != nil {
+			web.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to copy WordPress files: " + cpErr.Error()})
+			return
+		}
+	}
+	cmsclone.ChownRecursive(ctx, userContext, dstPath)
+
+	// the old inline dump wrapped db names in backticks inside bash -c, which ran them as commands and left the clone's database empty
+	if _, dbErr := cmsclone.CreateDatabaseAndDump(ctx, userContext, mysqlVersion, dumpCmd, srcDB, dstDB, dstDBUser, dstDBUserPassword); dbErr != nil {
+		if cmsclone.DumpStageFailed(dbErr) {
+			web.WriteJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "step": "command_failed"})
+		} else {
+			web.WriteJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "details": dbErr.Error()})
+		}
+		return
+	}
+
+	wpConfigFile := filepath.Join(dstPath, "wp-config.php")
+	content, readErr := tenantfs.ReadFile(wpConfigFile)
+	if readErr != nil {
+		web.WriteJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "details": readErr.Error()})
+		return
+	}
+	strContent := string(content)
+	strContent = cloneDBNameRE.ReplaceAllString(strContent, "define('DB_NAME', '"+cmsapp.EscapePHPSingleQuoted(dstDB)+"');")
+	strContent = cloneDBUserRE.ReplaceAllString(strContent, "define('DB_USER', '"+cmsapp.EscapePHPSingleQuoted(dstDBUser)+"');")
+	strContent = cloneDBPasswordRE.ReplaceAllString(strContent, "define('DB_PASSWORD', '"+cmsapp.EscapePHPSingleQuoted(dstDBUserPassword)+"');")
+	if writeErr := tenantfs.WriteFile(wpConfigFile, []byte(strContent), 0o644); writeErr != nil {
+		web.WriteJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "details": writeErr.Error()})
+		return
+	}
+
+	if !strings.Contains(strContent, dstDB) {
+		web.WriteJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "step": "Failed to set DB_NAME constant in " + docroot})
+		return
+	}
+
+	wpBase := podmanmanager.BuildWPCLIBaseCommand(userContext, phpContainer)
+	searchReplaceArgv := append(append([]string{}, wpBase...), "search-replace",
+		"https://"+providedDomain, "https://"+dstDomainWithSubdir, "--all-tables", "--skip-columns=guid",
+		"--path="+docroot, "--skip-themes", "--allow-root")
+	_ = podmanmanager.Command(ctx, userContext, searchReplaceArgv).Run()
+
+	rewriteFlushArgv := append(append([]string{}, wpBase...), "rewrite", "flush", "--hard", "--path="+docroot, "--skip-themes", "--allow-root")
+	_ = podmanmanager.Command(ctx, userContext, rewriteFlushArgv).Run()
+
+	cacheFlushArgv := append(append([]string{}, wpBase...), "cache", "flush", "--path="+docroot, "--skip-themes", "--allow-root")
+	_ = podmanmanager.Command(ctx, userContext, cacheFlushArgv).Run()
+
+	if isLitespeed {
+		_ = webserver.ReloadWebserver(context.Background(), userContext, webServer)
+	}
+
+	_ = a.Cache.Delete(ctx, fmt.Sprintf("get_user_websites:%d", userID))
+
+	adminEmail := web.FormOr(r, "admin_email", "admin@"+dstDomain)
+	wpVersion := web.FormOr(r, "wordpress_version", "latest")
+	if _, insertErr := a.DB.ExecContext(ctx, `
+		INSERT INTO sites (site_name, domain_id, admin_email, version, type)
+		VALUES (?, ?, ?, ?, ?)
+		ON DUPLICATE KEY UPDATE domain_id = VALUES(domain_id), admin_email = VALUES(admin_email), version = VALUES(version), type = VALUES(type)`,
+		dstDomainWithSubdir, domainID, adminEmail, wpVersion, "wordpress"); insertErr != nil {
+		web.WriteJSON(w, http.StatusInternalServerError, map[string]any{"status": "error", "details": insertErr.Error()})
+		return
+	}
+
+	_ = logger.RecordUserAction(a.Config, currentUsername, "cloned WordPress website from "+providedDomain+" to "+dstDomainWithSubdir, reqip.ClientIP(r))
+
+	web.WriteJSON(w, http.StatusOK, map[string]any{
+		"status": "success", "source": providedDomain, "target": dstDomainWithSubdir,
+		"source_path": srcPath, "target_path": dstPath, "target_db": dstDB,
+	})
+}
+
+var (
+	cloneDBNameRE     = regexp.MustCompile(`define\(\s*'DB_NAME'\s*,\s*'.*?'\s*\);`)
+	cloneDBUserRE     = regexp.MustCompile(`define\(\s*'DB_USER'\s*,\s*'.*?'\s*\);`)
+	cloneDBPasswordRE = regexp.MustCompile(`define\(\s*'DB_PASSWORD'\s*,\s*'.*?'\s*\);`)
+)
+
+// ---------------------- REMOVE ---------------------- //
+
+// handleRemoveWordPress mirrors remove_wordpress().
+func handleRemoveWordPress(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	id := r.FormValue("id")
+
+	var siteName, docroot string
+	row := a.DB.QueryRowContext(ctx, `
+		SELECT sites.site_name, domains.docroot
+		FROM sites
+		JOIN domains ON domains.domain_url = SUBSTRING_INDEX(sites.site_name, '/', 1)
+		WHERE sites.id = ?`, id)
+	if scanErr := row.Scan(&siteName, &docroot); scanErr != nil {
+		web.FlashRedirect(a, w, r, "error", "No data found for the provided site ID", "/sites")
+		return
+	}
+
+	parts := strings.Split(siteName, "/")
+	selectedDomain := parts[0]
+	subdirectory := parts[1:]
+
+	if docroot == "" {
+		web.FlashRedirect(a, w, r, "error", "WordPress installation not found in the database", "/sites")
+		return
+	}
+	// rows from before install validated the subdirectory can still hold ..
+	if _, subErr := paths.CleanSubdir(strings.Join(subdirectory, "/")); subErr != nil {
+		web.FlashRedirect(a, w, r, "error", subErr.Error(), "/sites")
+		return
+	}
+
+	realInstallPath := strings.TrimPrefix(docroot, "/var/www/html/")
+	if len(subdirectory) > 0 {
+		realInstallPath = filepath.Join(append([]string{realInstallPath}, subdirectory...)...)
+	}
+
+	if !a.CheckDomainBelongsToUser(ctx, userID, selectedDomain) {
+		http.Error(w, "You do not own this domain.", http.StatusForbidden)
+		return
+	}
+
+	volume := "/home/" + userContext + "/docker-data/volumes/" + userContext + "_html_data/_data/" + realInstallPath
+	wpConfigFile := filepath.Join(volume, "wp-config.php")
+	content, _ := tenantfs.ReadFile(wpConfigFile)
+
+	dbNameMatch := removeDBNameRE.FindStringSubmatch(string(content))
+	dbUserMatch := removeDBUserRE.FindStringSubmatch(string(content))
+
+	if dbNameMatch != nil && dbUserMatch != nil && droppableDB(dbNameMatch[1]) && validWPConfigName(dbUserMatch[1]) {
+		dbName, dbUser := dbNameMatch[1], dbUserMatch[1]
+		_, _ = mysqlmanager.Exec(ctx, userContext, "DROP DATABASE IF EXISTS `"+dbName+"`", "")
+		_, _ = mysqlmanager.Exec(ctx, userContext, "DROP USER IF EXISTS '"+dbUser+"'@'%'", "")
+		appkit.InvalidateMySQLCaches(ctx, a, userContext, currentUsername)
+	} else {
+		web.Flash(a, w, r, "warning", "Database name or user in wp-config.php is missing or unsafe, so the database was kept")
+	}
+
+	var toDelete []string
+	for _, item := range wordpressFiles {
+		itemPath := filepath.Join(volume, item)
+		if _, statErr := tenantfs.Stat(itemPath); statErr == nil {
+			toDelete = append(toDelete, itemPath)
+		}
+	}
+	for _, p := range toDelete {
+		_ = tenantfs.RemoveAll(p)
+	}
+
+	if _, delErr := a.DB.ExecContext(ctx, "DELETE FROM sites WHERE id = ?", id); delErr != nil {
+		message := "An error occurred during WordPress uninstall."
+		web.Flash(a, w, r, "error", message)
+		_, _ = w.Write([]byte(message))
+		return
+	}
+
+	_ = a.Cache.Delete(ctx, fmt.Sprintf("get_user_websites:%d", userID))
+	_ = logger.RecordUserAction(a.Config, currentUsername, "uninstalled WordPress website for "+selectedDomain, reqip.ClientIP(r))
+
+	message := "WordPress uninstalled successfully!"
+	web.Flash(a, w, r, "success", message)
+	_, _ = w.Write([]byte(message))
+}
+
+var (
+	removeDBNameRE = regexp.MustCompile(`define\(\s*'DB_NAME'\s*,\s*'([^']+)'`)
+	removeDBUserRE = regexp.MustCompile(`define\(\s*'DB_USER'\s*,\s*'([^']+)'`)
+)
+
+// ---------------------- DETACH ---------------------- //
+
+// handleDetachWordPress mirrors detach_wordpress().
+func handleDetachWordPress(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, currentUsername, _, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	id := r.FormValue("id")
+	if id == "" {
+		web.FlashRedirect(a, w, r, "error", "Missing site ID.", "/sites")
+		return
+	}
+
+	var siteName string
+	row := a.DB.QueryRowContext(ctx, `
+		SELECT sites.site_name
+		FROM sites
+		JOIN domains ON domains.domain_url = SUBSTRING_INDEX(sites.site_name, '/', 1)
+		WHERE sites.id = ?
+		LIMIT 1`, id)
+	if scanErr := row.Scan(&siteName); scanErr != nil {
+		web.FlashRedirect(a, w, r, "error", "No data found for the provided site ID", "/sites")
+		return
+	}
+
+	domainName := strings.Split(siteName, "/")[0]
+	if !a.CheckDomainBelongsToUser(ctx, userID, domainName) {
+		http.Error(w, "You do not own this domain.", http.StatusForbidden)
+		return
+	}
+
+	if _, delErr := a.DB.ExecContext(ctx, "DELETE FROM sites WHERE id = ?", id); delErr != nil {
+		message := "An error occurred during WordPress detachment. Please try again."
+		web.Flash(a, w, r, "error", message)
+		_, _ = w.Write([]byte("An error occurred during WordPress detachment."))
+		return
+	}
+
+	_ = logger.RecordUserAction(a.Config, currentUsername, "detached WordPress website", reqip.ClientIP(r))
+	_ = a.Cache.Delete(ctx, fmt.Sprintf("get_user_websites:%d", userID))
+	web.Flash(a, w, r, "success", "WordPress installation detached from Manager.")
+	_, _ = w.Write([]byte("WordPress detachment completed successfully!"))
+}
+
+// ---------------------- SHARED SCAN/RELOAD HELPERS ---------------------- //
+
+func getDomainID(ctx context.Context, a *appctx.App, domainName string) (int, bool) {
+	var domainID int
+	row := a.DB.QueryRowContext(ctx, "SELECT domain_id FROM domains WHERE domain_url = ?", domainName)
+	if err := row.Scan(&domainID); err != nil {
+		return 0, false
+	}
+	return domainID, true
+}
+
+func checkSiteAlreadyExistsForUser(ctx context.Context, a *appctx.App, siteName string) bool {
+	var id int
+	row := a.DB.QueryRowContext(ctx, "SELECT id FROM sites WHERE site_name = ?", siteName)
+	return row.Scan(&id) == nil
+}
+
+// walkForWPConfig walks base looking for wp-config.php files, never descending into skipDirs - mirrors os.walk(base_directory) with dirs[:] = [d for d in dirs if d not in SKIP_DIRS].
+func walkForWPConfig(base string, onFound func(dir string)) {
+	_ = tenantfs.WalkDir(base, func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return nil
+		}
+		if d.IsDir() {
+			if skipDirs[d.Name()] {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if d.Name() == "wp-config.php" {
+			onFound(filepath.Dir(path))
+		}
+		return nil
+	})
+}
+
+// walkUserWPInstalls finds wp-config.php files in the account's html volume and passes each install's path as the php container sees it
+func walkUserWPInstalls(userContext string, onFound func(containerRoot string)) {
+	baseDirectory := "/home/" + userContext + "/docker-data/volumes/" + userContext + "_html_data/_data"
+	walkForWPConfig(baseDirectory+"/", func(root string) {
+		onFound(containerPathForHostRoot(baseDirectory, root))
+	})
+}
+
+func containerPathForHostRoot(baseDirectory, root string) string {
+	return "/var/www/html" + strings.TrimPrefix(root, baseDirectory)
+}
+
+func phpContainerForUser(userContext string) string {
+	webServer := webserver.GetEnvFileValue(userContext, "WEB_SERVER")
+	if strings.Contains(strings.ToLower(webServer), "litespeed") {
+		return webServer
+	}
+	defaultVersion := webserver.GetEnvFileValue(userContext, "DEFAULT_PHP_VERSION")
+	return "php-fpm-" + defaultVersion
+}
+
+// ---------------------- RELOAD DATA ---------------------- //
+
+// handleReloadWordPressData mirrors reload_wordpress_data_in_wpmanager().
+func handleReloadWordPressData(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, _, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	phpContainer := phpContainerForUser(userContext)
+	wpBase := podmanmanager.BuildWPCLIBaseCommand(userContext, phpContainer)
+
+	// used to walk the panel's own /var/www/html instead of the account's volume, so it never found anything
+	walkUserWPInstalls(userContext, func(root string) {
+		siteURLArgv := append(append([]string{}, wpBase...), "--skip-themes", "--allow-root", "--path="+root, "option", "get", "siteurl")
+		out, _ := podmanmanager.Command(ctx, userContext, siteURLArgv).Output()
+		siteURL := strings.TrimSpace(string(out))
+		siteName := strings.TrimPrefix(strings.TrimPrefix(siteURL, "http://"), "https://")
+
+		domainName := siteName
+		if idx := strings.Index(siteName, "/"); idx != -1 {
+			domainName = siteName[:idx]
+		}
+
+		if !a.CheckDomainBelongsToUser(ctx, userID, domainName) {
+			return
+		}
+		if !checkSiteAlreadyExistsForUser(ctx, a, siteName) {
+			return
+		}
+
+		emailArgv := append(append([]string{}, wpBase...), "--skip-themes", "--allow-root", "--path="+root, "option", "get", "admin_email")
+		emailOut, emailErr := podmanmanager.Command(ctx, userContext, emailArgv).Output()
+		adminEmail := strings.TrimSpace(string(emailOut))
+		if emailErr != nil || !strings.Contains(adminEmail, "@") {
+			return
+		}
+
+		versionArgv := append(append([]string{}, wpBase...), "--skip-themes", "--allow-root", "--path="+root, "core", "version")
+		versionOut, versionErr := podmanmanager.Command(ctx, userContext, versionArgv).Output()
+		if versionErr != nil {
+			return
+		}
+		version := strings.TrimSpace(string(versionOut))
+
+		if _, execErr := a.DB.ExecContext(ctx, "UPDATE sites SET admin_email = ?, version = ? WHERE site_name = ?", adminEmail, version, siteName); execErr != nil {
+			return
+		}
+		_ = a.Cache.Delete(ctx, fmt.Sprintf("get_user_websites:%d", userID))
+	})
+
+	_, _ = w.Write([]byte("Scan completed. Found installations:\n\n"))
+}
+
+// ---------------------- SCAN ---------------------- //
+
+// handleScanWordPress mirrors scan_wordpress().
+func handleScanWordPress(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+
+	lockPath := appkit.LockFilePath(currentUsername)
+	if info, statErr := tenantfs.Stat(lockPath); statErr == nil {
+		if time.Since(info.ModTime()) < time.Minute {
+			_, _ = w.Write([]byte("Scan skipped. WordPress installation is currently running."))
+			return
+		}
+		_ = tenantfs.Remove(lockPath)
+	}
+
+	_ = logger.RecordUserAction(a.Config, currentUsername, "initiated scan for WordPress installations", reqip.ClientIP(r))
+
+	wwwBaseDirectory := "/var/www/html/"
+	baseDirectory := "/home/" + userContext + "/docker-data/volumes/" + userContext + "_html_data/_data/"
+	phpContainer := phpContainerForUser(userContext)
+	wpBase := podmanmanager.BuildWPCLIBaseCommand(userContext, phpContainer)
+
+	type found struct {
+		configFile, domain, email, version string
+	}
+	var installations []found
+
+	walkForWPConfig(baseDirectory, func(root string) {
+		containerRoot := strings.Replace(root, baseDirectory, wwwBaseDirectory, 1)
+		configFilePath := strings.TrimPrefix(containerRoot, "/")
+
+		siteURLArgv := append(append([]string{}, wpBase...), "--skip-themes", "--allow-root", "--path="+containerRoot, "option", "get", "siteurl")
+		out, runErr := podmanmanager.Command(ctx, userContext, siteURLArgv).Output()
+		if runErr != nil {
+			return
+		}
+		lines := strings.Split(strings.TrimSpace(string(out)), "\n")
+		siteURL := ""
+		for _, l := range lines {
+			if strings.TrimSpace(l) != "" {
+				siteURL = strings.TrimSpace(l)
+			}
+		}
+		siteName := strings.TrimPrefix(strings.TrimPrefix(siteURL, "http://"), "https://")
+		domainName := siteName
+		if idx := strings.Index(siteName, "/"); idx != -1 {
+			domainName = siteName[:idx]
+		}
+
+		// siteurl comes from the site's own database, so the folder part gets the same check installs do
+		if !a.CheckDomainBelongsToUser(ctx, userID, domainName) || !validSiteName(siteName) {
+			return
+		}
+		if checkSiteAlreadyExistsForUser(ctx, a, siteName) {
+			return
+		}
+
+		emailArgv := append(append([]string{}, wpBase...), "--skip-themes", "--allow-root", "--path="+containerRoot, "option", "get", "admin_email")
+		emailOut, emailErr := podmanmanager.Command(ctx, userContext, emailArgv).Output()
+		adminEmail := strings.TrimSpace(string(emailOut))
+		if emailErr != nil || !strings.Contains(adminEmail, "@") {
+			return
+		}
+
+		versionArgv := append(append([]string{}, wpBase...), "--skip-themes", "--allow-root", "--path="+containerRoot, "core", "version")
+		versionOut, versionErr := podmanmanager.Command(ctx, userContext, versionArgv).Output()
+		if versionErr != nil {
+			return
+		}
+		version := strings.TrimSpace(string(versionOut))
+
+		domainID, _ := getDomainID(ctx, a, domainName)
+		if _, insertErr := a.DB.ExecContext(ctx, "INSERT INTO sites (site_name, domain_id, admin_email, version, type) VALUES (?, ?, ?, ?, ?)",
+			siteName, domainID, adminEmail, version, "WordPress"); insertErr != nil {
+			return
+		}
+		_ = a.Cache.Delete(ctx, fmt.Sprintf("get_user_websites:%d", userID))
+
+		installations = append(installations, found{configFile: configFilePath, domain: domainName, email: adminEmail, version: version})
+	})
+
+	var summary strings.Builder
+	summary.WriteString("Scan completed. Found installations:\n\n")
+	for _, inst := range installations {
+		summary.WriteString("WordPress installation: " + inst.configFile + "\n")
+		summary.WriteString("WordPress Version: " + inst.version + "\n\n")
+	}
+	_, _ = w.Write([]byte(summary.String()))
+}
+
+// ---------------------- SECURE ---------------------- //
+
+var wpManagerRuleRE = regexp.MustCompile(`\bwp_manager_\w+\b`)
+
+// handleWordPressSecure mirrors wordpress_secure().
+func handleWordPressSecure(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, currentUsername, _, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	providedDomain := r.PathValue("provided_domain")
+
+	if r.Method == http.MethodGet {
+		if providedDomain == "" {
+			out, runErr := exec.CommandContext(ctx, "davcli", "websites-secure", "--list-available-rules").CombinedOutput()
+			if runErr != nil {
+				web.WriteJSON(w, http.StatusInternalServerError, map[string]string{"error": "Failed to list available rules: " + string(out)})
+				return
+			}
+			rules := wpManagerRuleRE.FindAllString(string(out), -1)
+			if rules == nil {
+				rules = []string{}
+			}
+			sort.Strings(rules)
+			web.WriteJSON(w, http.StatusOK, rules)
+			return
+		}
+
+		domain := strings.Split(providedDomain, "/")[0]
+		if !a.CheckDomainBelongsToUser(ctx, userID, domain) {
+			http.Error(w, "You do not own this domain.", http.StatusForbidden)
+			return
+		}
+
+		configPath := "/etc/davpanel/caddy/domains/" + domain + ".conf"
+		content, readErr := tenantfs.ReadFile(configPath)
+		if readErr != nil {
+			web.WriteJSON(w, http.StatusNotFound, map[string]string{"error": "Config file not found"})
+			return
+		}
+		matches := wpManagerRuleRE.FindAllString(string(content), -1)
+		seen := map[string]bool{}
+		unique := []string{}
+		for _, m := range matches {
+			if !seen[m] {
+				seen[m] = true
+				unique = append(unique, m)
+			}
+		}
+		sort.Strings(unique)
+		web.WriteJSON(w, http.StatusOK, unique)
+		return
+	}
+
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	domain := strings.Split(providedDomain, "/")[0]
+	if !a.CheckDomainBelongsToUser(ctx, userID, domain) {
+		http.Error(w, "You do not own this domain.", http.StatusForbidden)
+		return
+	}
+	_ = r.ParseForm()
+	var validRules []string
+	for key := range r.PostForm {
+		if apiWPManagerRuleFullRE.MatchString(key) {
+			validRules = append(validRules, key)
+		}
+	}
+
+	argv := []string{"davcli", "websites-secure", domain}
+	var logAction string
+	if len(validRules) > 0 {
+		logAction = "enabled hardened rules for domain " + domain + " using WP Manager"
+		argv = append(argv, "--rules="+strings.Join(validRules, " "))
+	} else {
+		logAction = "disabled hardened rules for domain " + domain + " using WP Manager"
+		argv = append(argv, "--disable-all")
+	}
+
+	if runErr := exec.CommandContext(ctx, argv[0], argv[1:]...).Run(); runErr == nil {
+		_ = logger.RecordUserAction(a.Config, currentUsername, logAction, reqip.ClientIP(r))
+		web.Flash(a, w, r, "success", "Hardening rules have been successfully applied to the website")
+	} else {
+		web.Flash(a, w, r, "error", "Failed to apply hardening rules to the website - please try again")
+	}
+
+	http.Redirect(w, r, "/website?domain="+providedDomain, http.StatusFound)
+}
