@@ -46,7 +46,7 @@ readonly DAVADMIN_RESTART_FLAG="/root/davadmin_restart_needed"
 readonly UPDATE_LOCK="/var/lock/davpanel_update.lock"
 readonly UPDATE_MAX_RUNTIME=1800 # update gets killed and its lock counts as stale after 30min
 NO_RESTART=false
-readonly CONFIG_REPO_URL="https://github.com/kangpcode/davpanel-configuration/archive/refs/heads/main.tar.gz"
+source /usr/local/davcli/lib/releases.sh
 
 # ---------------------- COLOR CODES ---------------------- #
 readonly RED='\033[0;31m'
@@ -202,25 +202,11 @@ get_local_version() {
 
 # ---------------------- GET AVAILABLE ---------------------- #
 get_remote_version() {
-    local beta="${1:-false}"
-    local tags
-    if [[ "$IMAGE_NAME" == ghcr.io/* ]]; then
-        local repository="${IMAGE_NAME#ghcr.io/}" token
-        token=$(curl -fsSG --data-urlencode "scope=repository:$repository:pull" --data-urlencode 'service=ghcr.io' https://ghcr.io/token | jq -er '.token') || return 1
-        tags=$(curl -fsS -H "Authorization: Bearer $token" "https://ghcr.io/v2/$repository/tags/list" | jq -er '.tags[]') || return 1
-    else
-        tags=$(curl -fsS "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags" | jq -er '.results[].name') || return 1
-    fi
-
-    if [[ -z "$tags" ]]; then
-        return 1
-    fi
-
-    if [[ "$beta" == "true" ]]; then
-        echo "$tags" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-beta$' | sed 's/-beta$//' | sort -V | tail -n 1
-    else
-        echo "$tags" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1
-    fi
+    local -a args=(latest)
+    [[ "${1:-false}" != true ]] || args+=(--beta)
+    local version
+    version=$(python3 /usr/local/share/davpanel/scripts/release_manager.py "${args[@]}") || return 1
+    if [[ "${1:-false}" == true ]]; then echo "${version%-beta}"; else echo "$version"; fi
 }
 
 # ---------------------- COMPARE, DUH! ---------------------- #
@@ -454,35 +440,26 @@ run_custom_postupdate_script() {
 
 # ---------------------- RUNS AFTER UPDATE ---------------------- #
 update_modules() {
-    local no_log="${1:-}"
-    local msg="Updating DavAdmin modules"
-    # shellcheck disable=SC2015  # echo can't meaningfully fail here; used as if/else shorthand
-    [[ "$no_log" == "--no-log" ]] && echo "$msg" || log "$msg"
-    local url="https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davadmin/config/features.json"
-
+    local source
+    source=$(davpanel_release_source) || return 1
     local features="/etc/davpanel/davadmin/config/features.json"
-    local tmp="${features}.tmp"
-    local http_code
-    http_code=$(curl -sS --connect-timeout 10 --max-time 60 --retry 2 -o "$tmp" -w "%{http_code}" "$url" 2>/dev/null)
-    if [[ "$http_code" == "200" ]] && jq empty "$tmp" &>/dev/null; then
-        mv -f "$tmp" "$features"
-    else
-        rm -f "$tmp"
-        log_warn "Failed to download features from github (HTTP ${http_code:-000}), keeping current file"
-        return 1
-    fi
+    jq empty "$source/configuration/davadmin/config/features.json" || return 1
+    install -m 644 "$source/configuration/davadmin/config/features.json" "${features}.tmp" || return 1
+    mv -f "${features}.tmp" "$features"
 }
 
 
 update_compose_template() {
     local file="$1"
     local dir="/etc/davpanel/docker/compose/1.0"
-    local url="https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/docker/compose/1.0/$file"
+    local source
+    source=$(davpanel_release_source) || return 1
+    local url="$source/configuration/docker/compose/1.0/$file"
     local tmp
     tmp=$(mktemp)
 
     log_info "Updating $dir/$file"
-    if wget --timeout=10 --tries=1 -q -O "$tmp" "$url" && [[ -s "$tmp" ]]; then
+    if cp "$url" "$tmp" && [[ -s "$tmp" ]]; then
         mkdir -p "$dir"
         # keep a copy in case the new template breaks something
         [[ -f "$dir/$file" ]] && cp -f "$dir/$file" "$dir/$file.bak" && log_info "Previous file saved as $dir/$file.bak"
@@ -648,7 +625,7 @@ compose_config_valid() {
 
 update_php() {
     require_command podman-compose
-    local repo_url="https://github.com/kangpcode/davpanel-configuration/archive/refs/heads/main.tar.gz"
+
     local template_dir="/etc/davpanel/docker/compose/1.0"
     local ts tmp_dir src versions
     ts=$(date +%Y%m%d_%H%M%S)
@@ -656,14 +633,10 @@ update_php() {
 
     print_header "Updating PHP"
 
-    # 1. fresh copy of the configuration repo
-    log_info "Downloading configuration files from github"
-    if ! wget --timeout=30 --tries=2 -q -O "$tmp_dir/cfg.tar.gz" "$repo_url" || ! tar -xzf "$tmp_dir/cfg.tar.gz" -C "$tmp_dir"; then
-        log_error "Failed to download $repo_url"
-        rm -rf "$tmp_dir"
-        return 1
-    fi
-    src=$(find "$tmp_dir" -mindepth 1 -maxdepth 1 -type d | head -n1)
+    local release_source
+    release_source=$(davpanel_release_source) || { rm -rf "$tmp_dir"; return 1; }
+    cp -a "$release_source/configuration" "$tmp_dir/configuration" || return 1
+    src="$tmp_dir/configuration"
     if [[ ! -d "$src/php" || ! -f "$src/docker/compose/1.0/docker-compose.yml" || ! -f "$src/docker/compose/1.0/.env" ]]; then
         log_error "Downloaded archive is missing php/ or docker/compose/1.0/ files"
         rm -rf "$tmp_dir"
@@ -778,64 +751,19 @@ update_php() {
 }
 
 update_locales() {
-    local no_log="${1:-}"
-    local msg="Updating installed locales"
-    # shellcheck disable=SC2015  # echo can't meaningfully fail here; used as if/else shorthand
-    [[ "$no_log" == "--no-log" ]] && echo "$msg" || log "$msg"
-
-    local babel_translations="/etc/davpanel/davpanel/translations"
-    local github_repo="kangpcode/davpanel-translations"
-
-    if [[ ! -d "$babel_translations" ]]; then
-        # shellcheck disable=SC2015  # echo can't meaningfully fail here; used as if/else shorthand
-        [[ "$no_log" == "--no-log" ]] && echo "[!] No translations directory found, skipping" || log "[!] No translations directory found, skipping"
-        return 0
-    fi
-
-    local updated=0
-    local failed=0
-
-    # remote folders have region codes (sr-rs, pt-br) while local ones are just the language
-    local remote_locales
-    remote_locales=$(curl -s --max-time 15 "https://api.github.com/repos/${github_repo}/contents" | grep -oE '"name": *"[a-z]{2}-[a-z]{2}"' | grep -oE '[a-z]{2}-[a-z]{2}')
-
-    for po_file in "$babel_translations"/*/LC_MESSAGES/messages.po; do
-        [[ -f "$po_file" ]] || continue
-
-        local two_letter
-        two_letter=$(echo "$po_file" | awk -F'/' '{for(i=1;i<=NF;i++) if($i=="translations") print $(i+1)}')
-
-        local formatted_locale
-        formatted_locale=$(grep -m1 "^${two_letter}-" <<< "$remote_locales")
-        [[ -n "$formatted_locale" ]] || formatted_locale="${two_letter}-${two_letter}"
-        local url="https://raw.githubusercontent.com/${github_repo}/main/${formatted_locale}/messages.po"
-
-        # default wget retries 20x with 15min read timeout, that hung updates with several locales #1199
-        local tmp_po="${po_file}.tmp"
-        local http_code
-        http_code=$(curl -sS --connect-timeout 10 --max-time 60 --retry 2 -o "$tmp_po" -w "%{http_code}" "$url" 2>/dev/null)
-        if [[ "$http_code" == "200" ]] && grep -q '^msgid' "$tmp_po" 2>/dev/null; then
-            mv -f "$tmp_po" "$po_file"
-            (( updated++ ))
-            log_info "Updated locale: $formatted_locale"
-        elif [[ "$http_code" == "404" ]]; then
-            rm -f "$tmp_po"
-            log_warn "No remote locale found for: $formatted_locale (skipping)"
-        else
-            rm -f "$tmp_po"
-            log_warn "Failed to download locale: $formatted_locale (HTTP ${http_code:-000})"
-            (( failed++ ))
-        fi
+    local source catalog target language
+    source=$(davpanel_release_source) || return 1
+    mkdir -p /usr/local/share/davpanel/translations
+    cp -a "$source/translations/." /usr/local/share/davpanel/translations/ || return 1
+    for target in /etc/davpanel/davpanel/translations/*/LC_MESSAGES/messages.po; do
+        [[ -f "$target" ]] || continue
+        language="${target%/LC_MESSAGES/messages.po}"; language="${language##*/}"
+        catalog=$(find "$source/translations" -mindepth 2 -maxdepth 2 -path "*/${language}-*/messages.po" | sort | head -n1)
+        [[ -n "$catalog" ]] || continue
+        grep -q '^msgid' "$catalog" || return 1
+        install -m 644 "$catalog" "${target}.tmp" && mv -f "${target}.tmp" "$target" || return 1
     done
-
-    if [[ $updated -gt 0 ]]; then
-        redis_drop_key davpanel_cache_app.get_available_locales &>/dev/null
-    fi
-
-    local summary="Locales updated: $updated, failed: $failed"
-    # shellcheck disable=SC2015  # echo can't meaningfully fail here; used as if/else shorthand
-    [[ "$no_log" == "--no-log" ]] && echo "[✔] $summary" || log "[✔] $summary"
-    [[ $failed -eq 0 ]]
+    redis_drop_key davpanel_cache_app.get_available_locales
 }
 
 # ---------------------- UPDATES TRANSLATIONS ONLY, THEN RESTARTS DAVPANEL ---------------------- #
@@ -929,6 +857,7 @@ update_system() {
 # ---------------------- MAIN UPDATE FUNCTION - THIS IS WHERE MAGIC HAPPENS ---------------------- #
 run_update_immediately() {
     local version="$1"
+    export DAVPANEL_UPDATE_VERSION="$version"
     local log_dir="/var/log/davpanel/updates"
     
     # ---------------------- 1. PREPARATION
@@ -957,8 +886,8 @@ run_update_immediately() {
 	
     # ---------------------- 4. DOWNLOAD NEW IMAGE FROM DOCKER HUB
     log "Updating DavPanel container image"
-    if ! timeout 60 podman image pull "${IMAGE_NAME}:${version}" 2>&1 | tee -a "$log_file"; then
-        log_error "Failed to pull image or command timed out: podman image pull ${IMAGE_NAME}:${version}"
+    if ! (set -o pipefail; davpanel_release_image "$version" 2>&1 | tee -a "$log_file"); then
+        log_error "Failed to build the verified release image ${IMAGE_NAME}:${version}"
         notification_delete_title "DavPanel update started"
         write_notification critical "DavPanel update failed!" "DavPanel failed to update to version $version." "$log_file"
         log "Update failed!"
@@ -1093,7 +1022,8 @@ update_davpanel() {
             sed -i "s/^VERSION=.*/VERSION=\"${base_version}-beta\"/" /root/.env
         fi
     fi
-    podman-compose up -d davpanel --force-recreate --pull
+    davpanel_release_image "${DAVPANEL_UPDATE_VERSION:-}" || return 1
+    podman-compose up -d davpanel --force-recreate
     redis_drop_key davpanel_cache_app.get_davpanel_version &>/dev/null
 }
 
@@ -1112,16 +1042,17 @@ update_davadmin() {
             *)             admin_binary="$(uname -m)" ;;
         esac
 
-        remote_version=$(davcli update --check 2>/dev/null | jq -r '.latest_version' 2>/dev/null)
-        url="https://github.com/kangpcode/davadmin/releases/download/$remote_version/$admin_binary"
+        local source
+        source=$(davpanel_release_source) || return 1
+        url="$source/bin/$admin_binary"
         target_log="${log_file:-/dev/null}"
 
-        if ! curl -sSLI -o /dev/null -w "%{http_code}" "$url" | grep -q "^200$"; then
+        if [[ ! -x "$url" ]]; then
             update_error "No DavAdmin release found at $url, kept the previous DavAdmin"
             return 1
         elif [[ "$NO_RESTART" == "true" ]]; then
             # mv over the running binary is safe, the old one keeps running until restarted
-            if curl -sSL "$url" -o "/usr/local/davadmin/${admin_binary}.new" \
+            if install -m 755 "$url" "/usr/local/davadmin/${admin_binary}.new" \
                 && chmod +x "/usr/local/davadmin/${admin_binary}.new" \
                 && mv -f "/usr/local/davadmin/${admin_binary}.new" "/usr/local/davadmin/$admin_binary"; then
                 [[ -f "/tmp/report.html.backup" ]] && cp /tmp/report.html.backup /usr/local/davadmin/templates/emails/reports.html
@@ -1140,7 +1071,7 @@ update_davadmin() {
 			    target_log="'"$target_log"'"
 			    was_active=false
 			
-			    curl -sSL "$url" -o "/usr/local/davadmin/${admin_binary}.new" || exit 1
+			    install -m 755 "$url" "/usr/local/davadmin/${admin_binary}.new" || exit 1
 			    chmod +x "/usr/local/davadmin/${admin_binary}.new"
 			
 			    if systemctl is-active --quiet admin; then
@@ -1178,38 +1109,19 @@ update_davcli() {
     # shellcheck disable=SC2015
     [[ "$1" == "--no-log" ]] && echo "$message" || log "$message"
 
-    local url="https://github.com/kangpcode/davcli/archive/refs/heads/podman.tar.gz"
-    local target_log="${log_file:-/dev/null}"
-    # download next to /usr/local/davcli so the final swap is a same-filesystem mv
-    local tmp_dir new_dir
-    tmp_dir=$(mktemp -d /usr/local/.davcli_update.XXXXXX)
-    if wget --spider -q "$url" 2>/dev/null; then
-        log_info "Downloading terminal scripts from github: $url"
-        if timeout "$UPDATE_TIMEOUT" bash -c "wget --timeout=30 --tries=3 -q -O '$tmp_dir/davcli.tar.gz' '$url' && tar -xzf '$tmp_dir/davcli.tar.gz' -C '$tmp_dir'" &>> "$target_log" \
-            && new_dir=$(find "$tmp_dir" -mindepth 1 -maxdepth 1 -type d | head -n1) \
-            && [[ -f "$new_dir/davcli" ]]; then
-            # only replace the old scripts once the new ones are fully downloaded and extracted
-            find "$new_dir" -type f -name '*.sh' -exec chmod +x {} +
-            rm -rf /usr/local/davcli.old
-            mv /usr/local/davcli /usr/local/davcli.old 2>/dev/null
-            if mv "$new_dir" /usr/local/davcli; then
-                rm -rf /usr/local/davcli.old
-                log_info "[✔] Terminal commands updated successfully"
-            else
-                mv /usr/local/davcli.old /usr/local/davcli 2>/dev/null
-                update_error "Failed to replace /usr/local/davcli, kept the previous version, run: davcli update --cli"
-            fi
-        else
-            local exit_code=$?
-            if [[ $exit_code -eq 124 ]]; then
-                update_error "Updating terminal commands timed out after ${UPDATE_TIMEOUT} seconds, kept the previous version, run: davcli update --cli"
-            else
-                update_error "Updating terminal commands failed with exit code $exit_code, kept the previous version, run: davcli update --cli"
-            fi
-        fi
-    else
-        update_error "Failed to reach github, terminal commands not updated, run: davcli update --cli"
+    local source tmp_dir new_dir
+    source=$(davpanel_release_source) || return 1
+    tmp_dir=$(mktemp -d /usr/local/.davcli_update.XXXXXX) || return 1
+    new_dir="$tmp_dir/davcli"
+    if ! cp -a "$source/davcli" "$new_dir"; then rm -rf "$tmp_dir"; return 1; fi
+    mv /usr/local/davcli "$tmp_dir/previous" || { rm -rf "$tmp_dir"; return 1; }
+    if ! mv "$new_dir" /usr/local/davcli; then
+        mv "$tmp_dir/previous" /usr/local/davcli
+        rm -rf "$tmp_dir"
+        return 1
     fi
+    mkdir -p /usr/local/share/davpanel/scripts
+    cp -a "$source/scripts/." /usr/local/share/davpanel/scripts/ || return 1
     rm -rf "$tmp_dir"
 
 	# (re)install bash tab-completion for davcli
@@ -1316,15 +1228,11 @@ check_update() {
 # downloads davpanel-configuration once per run and sets CONFIG_SRC to the extracted repo
 fetch_configuration_repo() {
     [[ -n "${CONFIG_SRC:-}" && -d "$CONFIG_SRC" ]] && return 0
-    CONFIG_TMP=$(mktemp -d)
-    log_info "Downloading configuration files from github"
-    if ! wget --timeout=30 --tries=2 -q -O "$CONFIG_TMP/cfg.tar.gz" "$CONFIG_REPO_URL" || ! tar -xzf "$CONFIG_TMP/cfg.tar.gz" -C "$CONFIG_TMP"; then
-        log_error "Failed to download $CONFIG_REPO_URL"
-        rm -rf "$CONFIG_TMP"
-        CONFIG_TMP=""
-        return 1
-    fi
-    CONFIG_SRC=$(find "$CONFIG_TMP" -mindepth 1 -maxdepth 1 -type d | head -n1)
+    local source
+    source=$(davpanel_release_source) || return 1
+    CONFIG_TMP=$(mktemp -d) || return 1
+    cp -a "$source/configuration" "$CONFIG_TMP/configuration" || return 1
+    CONFIG_SRC="$CONFIG_TMP/configuration"
 }
 
 # overwrites /etc/davpanel/$1 (file or dir) with the copy from github, local-only files are kept

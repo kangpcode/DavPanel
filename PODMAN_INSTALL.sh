@@ -465,6 +465,8 @@ download_files() {
 
     [[ "$REPAIR" == true ]] && rm -rf "$ETC_DIR" /usr/local/davcli /usr/local/davadmin/
     mkdir -p "$ETC_DIR" /usr/local/davadmin /usr/local/davcli /usr/local/share/davpanel
+    mkdir -p /usr/local/share/davpanel/scripts
+    cp -a "$LOCAL_SOURCE_DIR/scripts/." /usr/local/share/davpanel/scripts/ || die 1 'Cannot install the GitHub release manager.'
     cp -a "$LOCAL_SOURCE_DIR/configuration/." "$ETC_DIR" || die 1 "Cannot copy local configuration."
     install -m 600 /dev/null "${ETC_DIR}environment"
     for name in DAVPANEL_LICENSE_API DAVPANEL_PHP_VERSIONS_API; do
