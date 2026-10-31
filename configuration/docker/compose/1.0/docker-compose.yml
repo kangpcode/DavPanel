@@ -160,7 +160,7 @@ services:
       - www
 
   tor:
-    image: openpanel/torwebsite:${TOR_VERSION:-latest}
+    image: ghcr.io/kangpcode/davpanel-tor:${TOR_VERSION:-latest}
     container_name: tor
     healthcheck:
       disable: true

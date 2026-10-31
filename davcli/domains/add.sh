@@ -846,6 +846,7 @@ setup_tor_for_user() {
     [[ "$VARNISH" == true ]] && proxy_ws="varnish" || proxy_ws="$WEB_SERVER"
 
     printf 'HiddenServiceDir /var/lib/tor/%s/\nHiddenServicePort 80 %s:80\n\n' "$folder_name" "$proxy_ws" >> "$tor_dir/torrc"
+    [[ -z "$uid" ]] || chown -R "$uid:$uid" "$tor_dir"
 
     log ".onion files saved in $folder_name"
 }

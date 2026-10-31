@@ -210,11 +210,10 @@ pflogsumm_get_data() {
 
 	cd /tmp || { echo "Error: Failed to enter /tmp in order to generate a summary report." >&2; exit 1; }
 
-	# 1. clone from git
-	rm -rf PFLogSumm-HTML-GUI
-	git clone --branch podman --single-branch https://github.com/stefanpejcic/PFLogSumm-HTML-GUI.git > /dev/null 2>&1
-	ln -s $MAILSERVER_ENV /usr/local/mail/davmail/.env > /dev/null 2>&1
- 	podman cp PFLogSumm-HTML-GUI/pflogsummUIReport.sh davadmin_mailserver:/opt/pflogsummUIReport.sh > /dev/null 2>&1
+    local report_script="/usr/local/share/davpanel/mailserver/reporting/pflogsummUIReport.sh"
+    [[ -f "$report_script" ]] || { echo "The bundled mail reporter is missing." >&2; return 1; }
+    ln -sf "$MAILSERVER_ENV" /usr/local/mail/davmail/.env
+    podman cp "$report_script" davadmin_mailserver:/opt/pflogsummUIReport.sh || return 1
 	echo "Generating email statistics reports.. This can take a while."
 	podman exec davadmin_mailserver sh -c "mkdir -p /usr/local/davadmin/static/reports" > /dev/null 2>&1
 	podman cp /usr/local/davadmin/templates/emails/data davadmin_mailserver:/usr/local/davadmin/static/reports/data > /dev/null 2>&1

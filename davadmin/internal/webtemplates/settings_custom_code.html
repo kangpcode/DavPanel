@@ -34,7 +34,7 @@
 
 {{if .HasEnterprise}}
 
-<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('custom_css', 'https://gist.githubusercontent.com/stefanpejcic/cc4e4d64ea7ce3fce65139fe40294cd3/raw/135c671f830480de2430abb025c730f0ea8b197c/custom.css')">
+<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('custom_css', '/static/examples/custom_css.txt')">
     <div>
         <h2 id="custom-css" class="scroll-mt-10 font-semibold text-gray-900 dark:text-gray-50">Custom CSS</h2>
         <p class="mt-1 text-sm leading-6 text-gray-500">Add custom CSS to all pages in DavPanel UI. <a href="https://davpanel.com/docs/admin/settings/custom_code/#custom-css" target="_blank" class="inline-flex items-center gap-1 text-indigo-600 hover:underline hover:underline-offset-4 dark:text-indigo-400">Learn more<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon size-4 shrink-0"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg></a></p>
@@ -153,7 +153,7 @@
 <div class="mx-auto my-6 flex w-full items-center justify-between gap-3 text-sm text-gray-500 dark:text-gray-500"><div class="h-[1px] w-full bg-gray-200 dark:bg-gray-800"></div></div>
 
 
-<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('custom_section', 'https://gist.githubusercontent.com/stefanpejcic/7e1463fa537368e234ddf49e10acacd8/raw/53462f99659c3ad6d8ce200eca6c03f8991fce87/file.json')">
+<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('custom_section', '/static/examples/custom_section.txt')">
 
     <div>
         <h2 id="custom-section" class="scroll-mt-10 font-semibold text-gray-900 dark:text-gray-50">Custom Section</h2>
@@ -235,7 +235,7 @@
 
 {{end}}
 
-<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('wp_plugins', 'https://gist.githubusercontent.com/stefanpejcic/1040e7cece67f0dca6915fcda218bb90/raw/c2a5f3ca65fbff72d8ac3bd92f98498f3b34e6ce/plugins_set.example')">
+<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('wp_plugins', '/static/examples/wp_plugins.txt')">
 
     <div>
         <h2 id="wp-plugins" class="scroll-mt-10 font-semibold text-gray-900 dark:text-gray-50">WordPress Plugins Set</h2>
@@ -278,7 +278,7 @@
 <div class="mx-auto my-6 flex w-full items-center justify-between gap-3 text-sm text-gray-500 dark:text-gray-500"><div class="h-[1px] w-full bg-gray-200 dark:bg-gray-800"></div></div>
 
 
-<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('wp_themes', 'https://gist.githubusercontent.com/stefanpejcic/04a01da4810811676e944aa197f2f4b5/raw/5451b86294c487ac55fc9b7585aa1724fa042a04/themes_set.example')">
+<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('wp_themes', '/static/examples/wp_themes.txt')">
 
     <div>
         <h2 id="wp-themes" class="scroll-mt-10 font-semibold text-gray-900 dark:text-gray-50">WordPress Themes Set</h2>
@@ -321,7 +321,7 @@
 <div class="mx-auto my-6 flex w-full items-center justify-between gap-3 text-sm text-gray-500 dark:text-gray-500"><div class="h-[1px] w-full bg-gray-200 dark:bg-gray-800"></div></div>
 
 
-<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('post_update', 'https://gist.githubusercontent.com/stefanpejcic/2d15c48418c9955bd11507f14236d6f7/raw/8c42055ba75901e942d36ca1e53d24b42e93de4a/davpanel_run_after_update.sh')">
+<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('post_update', '/static/examples/post_update.txt')">
 
     <div>
         <h2 id="after_update" class="scroll-mt-10 font-semibold text-gray-900 dark:text-gray-50">After update</h2>
@@ -362,7 +362,7 @@
 
 <div class="mx-auto my-6 flex w-full items-center justify-between gap-3 text-sm text-gray-500 dark:text-gray-500"><div class="h-[1px] w-full bg-gray-200 dark:bg-gray-800"></div></div>
 
-<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('pre_startup', 'https://gist.githubusercontent.com/stefanpejcic/e3ce1b8b12603667da7e9e43fd610da6/raw/61039660a849c56fd1fc48b3de42c749afb9d06f/davpanel_run_on_startup.sh')">
+<div class="grid grid-cols-1 gap-x-14 gap-y-8 md:grid-cols-3" x-data="restoreComponentFor('pre_startup', '/static/examples/pre_startup.txt')">
 
     <div>
         <h2 id="after_update" class="scroll-mt-10 font-semibold text-gray-900 dark:text-gray-50">Before startup</h2>
@@ -405,14 +405,14 @@
 
 
 <script>
-function restoreComponentFor(id, githubFile) {
+function restoreComponentFor(id, exampleFile) {
   return {
     loading: false,
     async restoreDefault() {
       this.loading = true;
       try {
-        const res = await fetch(githubFile);
-        if (!res.ok) throw new Error('Failed to fetch default configuration from GitHub');
+        const res = await fetch(exampleFile);
+        if (!res.ok) throw new Error('Failed to fetch bundled example');
         const text = await res.text();
         const textarea = document.getElementById(id);
         if (textarea) {

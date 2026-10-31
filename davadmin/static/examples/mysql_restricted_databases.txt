@@ -1,0 +1,1 @@
+information_schema performance_schema mysql phpmyadmin sys mariadb.sys

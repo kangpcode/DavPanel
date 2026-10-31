@@ -502,6 +502,8 @@ prepare_local_images() {
     rm -rf "$context"
     podman build --platform "linux/$arch" -t ghcr.io/kangpcode/davpanel-caddy-coraza:latest "$LOCAL_SOURCE_DIR/caddy" || die 1 "Caddy/Coraza image build failed."
     podman build --platform "linux/$arch" -t ghcr.io/kangpcode/davpanel-ftp:latest "$LOCAL_SOURCE_DIR/vsftpd" || die 1 "FTP image build failed."
+    podman --root "$SHARED_STORE" build --platform "linux/$arch" -t ghcr.io/kangpcode/davpanel-tor:latest "$LOCAL_SOURCE_DIR/tor" || die 1 'Tor image build failed.'
+    open_shared_store
 }
 
 download_config() {

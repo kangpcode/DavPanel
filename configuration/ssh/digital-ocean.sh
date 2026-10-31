@@ -79,14 +79,7 @@ user_count=$(sqlite3 "$DB_PATH" "SELECT COUNT(*) FROM user;" 2>/dev/null)
 
 # If the user table doesn't exist or no users are found, create a new user
 if [[ $? -ne 0 || $user_count -eq 0 ]]; then
-    # Download the shell script to generate a random username
-    wget -O /tmp/generate.sh https://gist.githubusercontent.com/stefanpejcic/905b7880d342438e9a2d2ffed799c8c6/raw/a1cdd0d2f7b28f4e9c3198e14539c4ebb9249910/random_username_generator_docker.sh > /dev/null 2>&1
-
-    # Source the shell script to use its functions
-    source /tmp/generate.sh
-
-    # Generate a random username
-    new_username="$random_name"
+    new_username="admin_$(openssl rand -hex 4)"
 
     # Generate a random password of 16 characters
     new_password=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 16)

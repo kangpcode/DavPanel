@@ -39,7 +39,7 @@ python3 "$ROOT/scripts/preflight.py" --root "$ROOT" --arch "$ARCH" --require-art
 tar -czf "$ROOT/dist/davpanel-$VERSION-linux-$ARCH.tar.gz" \
     --exclude='node_modules' --exclude='__pycache__' --exclude='.git' --exclude='.expo' \
     -C "$ROOT" davpanel davadmin davcli configuration translations mailserver vsftpd mobile tests integrations \
-    caddy scripts components.lock.json install.sh PODMAN_INSTALL.sh INSTALL.md AUDIT.md REBRANDING.md LICENSE NOTICE.md README.md \
+    caddy tor scripts UPDATES benchmarks .devcontainer components.lock.json bootstrap.sh install.sh PODMAN_INSTALL.sh INSTALL.md DEVELOPMENT.md PLATFORMS.md BENCHMARKS.md AUDIT.md REBRANDING.md LICENSE NOTICE.md README.md \
     -C "$OUT" bin VERSION SHA256SUMS BUILD.json
 (cd "$ROOT/dist" && sha256sum "davpanel-$VERSION-linux-$ARCH.tar.gz" > "davpanel-$VERSION-linux-$ARCH.tar.gz.sha256")
 python3 "$ROOT/scripts/make_installer.py" "$ROOT/dist/davpanel-$VERSION-linux-$ARCH.tar.gz" "$ROOT/dist/davpanel-$VERSION-linux-$ARCH.run"

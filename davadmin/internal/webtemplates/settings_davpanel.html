@@ -876,7 +876,7 @@ Select how action buttons are shown on 'File Manager' page
             </div>
 
 
-            <div class="col-span-full" x-data="restoreComponentFor('filemanager_edit_extensions', 'https://gist.githubusercontent.com/stefanpejcic/ae44ec0444b1bf7eb38b6aad97dc6c74/raw/a76f8a2f9ff2a8462fff60f62ccac82cb3619376/filemanager_edit_extensions.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="filemanager_edit_extensions">Enable View and Edit options for (textual) extensions:</label>
+            <div class="col-span-full" x-data="restoreComponentFor('filemanager_edit_extensions', '/static/examples/filemanager_edit_extensions.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="filemanager_edit_extensions">Enable View and Edit options for (textual) extensions:</label>
                 <div class="relative w-full mt-2 flex-grow flex items-center">
                     <input class="relative block w-full appearance-none truncate rounded border px-2.5 py-2 shadow-sm outline-none transition sm:text-sm border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-950 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:dark:border-gray-700 disabled:dark:bg-gray-800 disabled:dark:text-gray-500 [&amp;::--webkit-search-cancel-button]:hidden [&amp;::-webkit-search-cancel-button]:hidden [&amp;::-webkit-search-decoration]:hidden" id="filemanager_edit_extensions" name="filemanager_edit_extensions" required value="{{.ConfigData.Get "FILES" "filemanager_edit_extensions" ""}}" type="text"><span class="ml-2 text-sm text-gray-600 dark:text-gray-400">    <button
       type="button"
@@ -893,7 +893,7 @@ Select how action buttons are shown on 'File Manager' page
     </button></span></div>
             </div>
 
-            <div class="col-span-full" x-data="restoreComponentFor('filemanager_image_extensions', 'https://gist.githubusercontent.com/stefanpejcic/ae44ec0444b1bf7eb38b6aad97dc6c74/raw/a76f8a2f9ff2a8462fff60f62ccac82cb3619376/filemanager_image_extensions.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="filemanager_image_extensions">Enable View option for (base64 image) extensions:</label>
+            <div class="col-span-full" x-data="restoreComponentFor('filemanager_image_extensions', '/static/examples/filemanager_image_extensions.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="filemanager_image_extensions">Enable View option for (base64 image) extensions:</label>
                 <div class="relative w-full mt-2 flex-grow flex items-center">
                     <input class="relative block w-full appearance-none truncate rounded border px-2.5 py-2 shadow-sm outline-none transition sm:text-sm border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-950 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:dark:border-gray-700 disabled:dark:bg-gray-800 disabled:dark:text-gray-500 [&amp;::--webkit-search-cancel-button]:hidden [&amp;::-webkit-search-cancel-button]:hidden [&amp;::-webkit-search-decoration]:hidden" id="filemanager_image_extensions" name="filemanager_image_extensions" required value="{{.ConfigData.Get "FILES" "filemanager_image_extensions" ""}}" type="text"><span class="ml-2 text-sm text-gray-600 dark:text-gray-400"><button
       type="button"
@@ -911,7 +911,7 @@ Select how action buttons are shown on 'File Manager' page
             </div>
 
 
-            <div class="col-span-full" x-data="restoreComponentFor('filemanager_archives_extensions', 'https://gist.githubusercontent.com/stefanpejcic/ae44ec0444b1bf7eb38b6aad97dc6c74/raw/a76f8a2f9ff2a8462fff60f62ccac82cb3619376/filemanager_archives_extensions.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="filemanager_archives_extensions">Enable Extract and Archive options for (archives) extensions:</label>
+            <div class="col-span-full" x-data="restoreComponentFor('filemanager_archives_extensions', '/static/examples/filemanager_archives_extensions.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="filemanager_archives_extensions">Enable Extract and Archive options for (archives) extensions:</label>
                 <div class="relative w-full mt-2 flex-grow flex items-center">
                     <input class="relative block w-full appearance-none truncate rounded border px-2.5 py-2 shadow-sm outline-none transition sm:text-sm border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-950 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:dark:border-gray-700 disabled:dark:bg-gray-800 disabled:dark:text-gray-500 [&amp;::--webkit-search-cancel-button]:hidden [&amp;::-webkit-search-cancel-button]:hidden [&amp;::-webkit-search-decoration]:hidden" id="filemanager_archives_extensions" name="filemanager_archives_extensions" required value="{{.ConfigData.Get "FILES" "filemanager_archives_extensions" ""}}" type="text"><span class="ml-2 text-sm text-gray-600 dark:text-gray-400">    <button
       type="button"
@@ -965,7 +965,7 @@ Select how action buttons are shown on 'File Manager' page
                 {{if .DavpanelRAMMB}}<p x-show="v !== '' && Number(v) * 1024 > {{.DavpanelRAMMB}}" x-cloak class="mt-1 text-xs text-amber-600 dark:text-amber-500">This is more than the {{.DavpanelRAM}} RAM limit of the DavPanel container, so imports this big can fail. Recommended: lower it or <a href="/services/limits" class="font-medium underline hover:no-underline">raise the DavPanel RAM limit</a> to at least <span x-text="Math.ceil(Number(v)) + ' GB'"></span>.</p>{{end}}
             </div>
 
-            <div class="col-span-full" x-data="restoreComponentFor('mysql_restricted_usernames', 'https://gist.githubusercontent.com/stefanpejcic/7bbed6780d3fab0ba8621ad821f27bc5/raw/37582ec67ea055522a07bb8365d4acca6b89d18a/mysql_restricted_usernames.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="mysql_restricted_usernames">Restricted MySQL (system) users:</label>
+            <div class="col-span-full" x-data="restoreComponentFor('mysql_restricted_usernames', '/static/examples/mysql_restricted_usernames.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="mysql_restricted_usernames">Restricted MySQL (system) users:</label>
                 <div class="relative w-full mt-2 flex-grow flex items-center">
                     <input class="relative block w-full appearance-none truncate rounded border px-2.5 py-2 shadow-sm outline-none transition sm:text-sm border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-950 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:dark:border-gray-700 disabled:dark:bg-gray-800 disabled:dark:text-gray-500 [&amp;::--webkit-search-cancel-button]:hidden [&amp;::-webkit-search-cancel-button]:hidden [&amp;::-webkit-search-decoration]:hidden" id="mysql_restricted_usernames" name="mysql_restricted_usernames" required value="{{.ConfigData.Get "DATABASES" "mysql_restricted_usernames" ""}}" type="text"><span class="ml-2 text-sm text-gray-600 dark:text-gray-400">    <button
       type="button"
@@ -982,7 +982,7 @@ Select how action buttons are shown on 'File Manager' page
     </button></span></div>
             </div>
 
-            <div class="col-span-full" x-data="restoreComponentFor('mysql_restricted_databases', 'https://gist.githubusercontent.com/stefanpejcic/7bbed6780d3fab0ba8621ad821f27bc5/raw/37582ec67ea055522a07bb8365d4acca6b89d18a/mysql_restricted_databases.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="mysql_restricted_databases">Restricted MySQL (system) databases:</label>
+            <div class="col-span-full" x-data="restoreComponentFor('mysql_restricted_databases', '/static/examples/mysql_restricted_databases.txt')"><label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium" for="mysql_restricted_databases">Restricted MySQL (system) databases:</label>
                 <div class="relative w-full mt-2 flex-grow flex items-center">
                     <input class="relative block w-full appearance-none truncate rounded border px-2.5 py-2 shadow-sm outline-none transition sm:text-sm border-gray-300 dark:border-gray-800 text-gray-900 dark:text-gray-50 placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-950 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400 disabled:dark:border-gray-700 disabled:dark:bg-gray-800 disabled:dark:text-gray-500 [&amp;::--webkit-search-cancel-button]:hidden [&amp;::-webkit-search-cancel-button]:hidden [&amp;::-webkit-search-decoration]:hidden" id="mysql_restricted_databases" name="mysql_restricted_databases" required value="{{.ConfigData.Get "DATABASES" "mysql_restricted_databases" ""}}" type="text"><span class="ml-2 text-sm text-gray-600 dark:text-gray-400">    <button
       type="button"
@@ -1467,14 +1467,14 @@ When enabled, a session cookie is rejected if the request's IP address doesn't m
 
 
 <script>
-function restoreComponentFor(id, githubFile) {
+function restoreComponentFor(id, exampleFile) {
   return {
     loading: false,
     async restoreDefault() {
       this.loading = true;
       try {
-        const res = await fetch(githubFile);
-        if (!res.ok) throw new Error('Failed to fetch default configuration from GitHub');
+        const res = await fetch(exampleFile);
+        if (!res.ok) throw new Error('Failed to fetch bundled example');
         const text = await res.text();
         const input = document.getElementById(id);
         if (input) input.value = text;
