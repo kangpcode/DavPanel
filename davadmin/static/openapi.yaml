@@ -83,7 +83,9 @@ paths:
           $ref: '#/components/responses/Error'
       security: []
     post:
-      summary: Log in with username/password and obtain a JWT Bearer token, valid for 15 minutes.
+      summary: Log in with username/password and obtain a JWT Bearer token, valid for 15 minutes. Inactive
+        accounts are rejected. Accounts with TOTP enabled must supply totp_code; missing or invalid codes
+        return HTTP 401 with twofa_required=true.
       description: '**Access:** No authentication (this is the login/health-check endpoint itself).'
       operationId: post_root
       tags:
@@ -101,9 +103,13 @@ paths:
                 password:
                   type: string
                   example: secret
+                totp_code:
+                  type: string
+                  example: '123456'
               example:
                 username: admin
                 password: secret
+                totp_code: '123456'
       responses:
         '200':
           description: Success.
