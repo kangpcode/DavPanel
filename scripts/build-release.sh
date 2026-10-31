@@ -34,7 +34,7 @@ PY
 tar -czf "$ROOT/dist/davpanel-$VERSION-linux-$ARCH.tar.gz" \
     --exclude='node_modules' --exclude='__pycache__' --exclude='.git' --exclude='.expo' \
     -C "$ROOT" davpanel davadmin davcli configuration translations mailserver vsftpd mobile tests integrations \
-    caddy scripts components.lock.json PODMAN_INSTALL.sh INSTALL.md LICENSE NOTICE.md README.md \
+    caddy scripts components.lock.json PODMAN_INSTALL.sh INSTALL.md AUDIT.md REBRANDING.md LICENSE NOTICE.md README.md \
     -C "$OUT" bin VERSION SHA256SUMS BUILD.json
 (cd "$ROOT/dist" && sha256sum "davpanel-$VERSION-linux-$ARCH.tar.gz" > "davpanel-$VERSION-linux-$ARCH.tar.gz.sha256")
 echo "Built $ROOT/dist/davpanel-$VERSION-linux-$ARCH.tar.gz"

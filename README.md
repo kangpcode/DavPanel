@@ -9,6 +9,8 @@
 > [INSTALL.md](INSTALL.md). A production deployment on a clean server is a
 > separate validation step; external billing and mobile builds need their own environments.
 
+Current validation results and outstanding release gates are recorded in [AUDIT.md](AUDIT.md).
+
 **DavPanel** is a web hosting control panel built around containers. Every user gets a fully isolated environment: dedicated web server, dedicated database, private network, and scoped file storage - delivering VPS-grade security on shared hardware.
 
 ![davpanel screenshot](website/static/img/landing/davpanel-illustration-dark.svg)
