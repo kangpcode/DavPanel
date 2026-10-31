@@ -90,11 +90,11 @@
     },
     {
       "from": "/blog/tags/openadmin",
-      "to": "/blog/tags/davadmin/"
+      "to": "/blog/tags/dav-admin/"
     },
     {
       "from": "/blog/tags/openpanel",
-      "to": "/blog/tags/davpanel/"
+      "to": "/blog/tags/dav-panel/"
     },
     {
       "from": "/blog/wordpress-hosting-with-openpanel",
@@ -454,7 +454,7 @@
     },
     {
       "from": "/docs/1.X.X/articles/opencli/opencli",
-      "to": "/docs/1.X.X/articles/davcli/davcli/"
+      "to": "/docs/1.X.X/articles/davcli/"
     },
     {
       "from": "/docs/1.X.X/articles/opencli/php",
@@ -914,7 +914,7 @@
     },
     {
       "from": "/docs/2.0.10/articles/opencli/opencli",
-      "to": "/docs/2.0.10/articles/davcli/davcli/"
+      "to": "/docs/2.0.10/articles/davcli/"
     },
     {
       "from": "/docs/2.0.10/articles/opencli/php",
@@ -1406,7 +1406,7 @@
     },
     {
       "from": "/docs/articles/opencli/opencli",
-      "to": "/docs/articles/davcli/davcli/"
+      "to": "/docs/articles/davcli/"
     },
     {
       "from": "/docs/articles/opencli/php",

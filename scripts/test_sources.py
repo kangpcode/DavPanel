@@ -85,6 +85,36 @@ class SourceAuditTests(unittest.TestCase):
         self.assertTrue(errors)
         self.assertTrue(any("CLI wrappers" in error for error in errors))
 
+    def test_installer_stops_after_a_failed_step(self):
+        installer = Path(__file__).resolve().parents[1] / "PODMAN_INSTALL.sh"
+        script = '''source "$1"
+enable_trapping() { :; }
+setup_scroll_area() { :; }
+draw_progress_bar() { :; }
+destroy_scroll_area() { :; }
+failed_step() { return 17; }
+unexpected_step() { echo UNEXPECTED; }
+STEPS=(failed_step unexpected_step)
+run_installation
+'''
+        result = subprocess.run(["bash", "-c", script, "bash", str(installer)],
+                                capture_output=True, text=True, cwd=self.root)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Installation step failed: failed_step", result.stderr)
+        self.assertNotIn("UNEXPECTED", result.stdout)
+
+    def test_optional_install_steps_can_be_skipped_successfully(self):
+        installer = Path(__file__).resolve().parents[1] / "PODMAN_INSTALL.sh"
+        script = '''source "$1"
+PACKAGE_MANAGER=apt-get
+sync_el_deps || exit 1
+IMUNIFY_AV=false
+configure_imunifyav || exit 1
+'''
+        result = subprocess.run(["bash", "-c", script, "bash", str(installer)],
+                                capture_output=True, text=True, cwd=self.root)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -130,13 +130,14 @@ bash scripts/build-release.sh --arch=amd64
 bash PODMAN_INSTALL.sh --preflight
 ```
 
-Run the installer as root only on the clean target hosting server. Public domain
-install commands below depend on infrastructure that is not published by this checkout.
+Run the installer as root only on the clean target hosting server. Hosted domains
+and remote release services are separate infrastructure targets.
 
 
-Install on any supported VPS or dedicated server with a single command:
+After building a release, validate it and run the local installer on the clean target server:
 ```bash
-bash <(curl -sSL https://davpanel.com)
+bash PODMAN_INSTALL.sh --preflight
+sudo bash PODMAN_INSTALL.sh --selfsigned
 ```
 
 For full installation options and configuration flags: [https://davpanel.com/install](https://davpanel.com/install)

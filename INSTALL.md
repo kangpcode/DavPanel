@@ -34,7 +34,8 @@ sudo bash PODMAN_INSTALL.sh --selfsigned
 ```
 
 `--preflight` is read-only and works without root. It verifies all source digests,
-the binary architecture, executable bits and release checksums. It does not
+the binary architecture, executable bits, release checksums, source build provenance
+and the shared config/service identifiers. It does not
 certify a running hosting installation. `--help` lists the installer options.
 Use `--source-dir=/absolute/path` when the inputs are in another directory.
 For a repository checkout, the installer finds binaries under `dist/linux-<arch>/bin`.

@@ -9,8 +9,9 @@ import (
 
 func TestDefaultsMetadataUsesConfiguredEndpointAndSurvivesOutage(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, `{"data":{"8.4":{"isLatestVersion":true}}}`)
+		io.WriteString(w, `{"data":{"8.4":{"name":"8.4","isLatestVersion":true}}}`)
 	}))
+	t.Cleanup(srv.Close)
 	t.Setenv("DAVPANEL_PHP_VERSIONS_API", srv.URL)
 	data, err := fetchDefaultsPHPWatch()
 	if err != nil || !data["8.4"].IsLatestVersion {

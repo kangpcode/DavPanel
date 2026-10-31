@@ -1,7 +1,9 @@
 kangpcode:
   name: Dhafa Nazula Permadi
-  title: Co-Founder and CEO of DavPanel
-  image_url: /img/stefan_pejcic.jpeg
+  title: DavPanel developer and maintainer
+  image_url: /img/generic-profile.png
+  url: https://github.com/kangpcode
+  page: true
 
 radovan_jecmenica:
   name: Radovan Jecmenica

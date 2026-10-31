@@ -36,5 +36,6 @@ tar -czf "$ROOT/dist/davpanel-$VERSION-linux-$ARCH.tar.gz" \
     -C "$ROOT" davpanel davadmin davcli configuration translations mailserver vsftpd mobile tests integrations \
     caddy scripts components.lock.json PODMAN_INSTALL.sh INSTALL.md LICENSE NOTICE.md README.md \
     -C "$OUT" bin VERSION SHA256SUMS BUILD.json
+(cd "$ROOT/dist" && sha256sum "davpanel-$VERSION-linux-$ARCH.tar.gz" > "davpanel-$VERSION-linux-$ARCH.tar.gz.sha256")
 echo "Built $ROOT/dist/davpanel-$VERSION-linux-$ARCH.tar.gz"
 echo "Validate: bash PODMAN_INSTALL.sh --preflight"

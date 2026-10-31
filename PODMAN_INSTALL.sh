@@ -333,7 +333,7 @@ wait_for_pkg_lock() {
 
 sync_el_deps() {
     # https://github.com/stefanpejcic/OpenPanel/issues/1060
-    [[ "$PACKAGE_MANAGER" =~ ^(dnf|yum)$ ]] || return
+    [[ "$PACKAGE_MANAGER" =~ ^(dnf|yum)$ ]] || return 0
     echo "Syncing system libraries to avoid RHEL dependency-metadata gaps (systemd/openssl-libs)..."
     run $PACKAGE_MANAGER distro-sync -y
 }
@@ -757,7 +757,7 @@ setup_compose() {
     until mariadb -e "SELECT 1" &>/dev/null || (( waited >= 180 )); do
         sleep 2; (( waited += 2 ))
     done
-    (( waited < 180 )) && ok "MySQL service started." || warn "MySQL is still not answering after 180s, check: podman logs davpanel_mysql"
+    (( waited < 180 )) && ok "MySQL service started." || die 1 "MySQL is not answering after 180s; check: podman logs davpanel_mysql"
 
     ln -sf / /hostfs 2>/dev/null || true
 }
@@ -1034,7 +1034,9 @@ configure_premium() {
 }
 
 configure_imunifyav() {
-    [[ "$IMUNIFY_AV" == true ]] && run /usr/local/bin/davcli imunify install && run /usr/local/bin/davcli imunify start
+    if [[ "$IMUNIFY_AV" == true ]]; then
+        run /usr/local/bin/davcli imunify install && run /usr/local/bin/davcli imunify start
+    fi
 }
 
 # davadmin controls the debian unit names (ssh, cron) but EL only ships sshd and crond, alias them or the services and ssh pages fail with "unit not found"
@@ -1110,7 +1112,7 @@ setup_swap() {
 }
 
 hetzner_fix() {
-    [[ -f /etc/hetzner-build ]] || return
+    [[ -f /etc/hetzner-build ]] || return 0
     echo "Hetzner detected — adding Cloudflare DNS resolvers..."
     mv /etc/resolv.conf /etc/resolv.conf.bak
     printf "nameserver 1.1.1.1\nnameserver 1.0.0.1\n" > /etc/resolv.conf
@@ -1122,6 +1124,16 @@ clean_cache() { run $PACKAGE_MANAGER clean all 2>/dev/null || true; }
 start_system_containers() {
     podman image exists "ghcr.io/kangpcode/davpanel:$PANEL_VERSION" || die 1 "The local panel image is missing."
     podman-compose -f /root/docker-compose.yml up -d davpanel || die 1 "DavPanel containers failed to start."
+    local attempt
+    for attempt in {1..30}; do
+        if podman exec davpanel curl -kfsS --max-time 3 https://127.0.0.1:2083/healthz 2>/dev/null | grep -qx ok \
+            || podman exec davpanel curl -fsS --max-time 3 http://127.0.0.1:2083/healthz 2>/dev/null | grep -qx ok; then
+            ok "DavPanel health check passed."
+            return 0
+        fi
+        sleep 2
+    done
+    die 1 "DavPanel health check failed; check: podman logs davpanel"
 }
 
 run_housekeeping_parallel() {
@@ -1164,8 +1176,7 @@ create_admin_account() {
     if [[ "$SET_ADMIN_USERNAME" == true ]]; then
         new_username="$custom_username"
     else
-        # shellcheck disable=SC1091,SC2154
-        wget --inet4-only --timeout=3 --tries=2 -q -O /tmp/generate.sh https://raw.githubusercontent.com/stefanpejcic/random-username-generator/refs/heads/main/generator.sh 2>/dev/null && source /tmp/generate.sh && new_username="$random_name" || new_username="admin"
+        new_username="admin_$(openssl rand -hex 4)"
     fi
 
     if [[ "$SET_ADMIN_PASSWORD" == true && "$custom_password" =~ ^[A-Za-z0-9]{5,30}$ ]]; then
@@ -1233,19 +1244,6 @@ clean_notifications() {
     echo > /var/log/davpanel/admin/notifications.log
 }
 
-setup_progress_bar() {
-    local url="https://raw.githubusercontent.com/pollev/bash_progress_bar/master/progress_bar.sh"
-    if command -v curl &>/dev/null; then
-        curl -4 --max-time 5 -s "$url" -o progress_bar.sh >/dev/null 2>&1
-    elif command -v wget &>/dev/null; then
-        wget --timeout=5 --tries=3 --inet4-only "$url" -O progress_bar.sh >/dev/null 2>&1
-    else
-        echo "Neither wget nor curl found."; exit 1
-    fi
-    [[ -f progress_bar.sh ]] || { echo "Failed to download progress_bar.sh"; exit 1; }
-    # shellcheck disable=SC1091
-    source progress_bar.sh
-}
 
 STEPS=(
     update_package_manager
@@ -1274,17 +1272,16 @@ STEPS=(
 )
 
 run_installation() {
-    enable_trapping
-    setup_scroll_area
     local total=${#STEPS[@]} current=0
     for step in "${STEPS[@]}"; do
+        echo "[$((current + 1))/$total] $step"
         s=$(date +%s)
         "$step" || die 1 "Installation step failed: $step"
         e=$(date +%s)
         echo "[TIMING] $step: $((e-s))s" >> "$LOG_FILE"
-        (( current++ )); draw_progress_bar $(( current * 100 / total ))
+        (( current++ ))
     done
-    destroy_scroll_area
+    return 0
 }
 
 installer_main() {
@@ -1322,7 +1319,6 @@ installer_main() {
         detect_installed_panels
         echo -e "Starting DavPanel installation process..."
         start=$(date +%s)
-        setup_progress_bar
         _build_pkg_cache
         run_installation
         duration=$(($(date +%s) - start))
