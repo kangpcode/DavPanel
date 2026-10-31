@@ -1,0 +1,19 @@
+{
+  "name": "DavPanel development",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/go:1": { "version": "1.27.3", "installGoTools": false },
+    "ghcr.io/devcontainers/features/node:2": { "version": "24" },
+    "ghcr.io/devcontainers/features/python:1": { "version": "3.12" },
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {}
+  },
+  "postCreateCommand": "bash scripts/dev.sh check",
+  "forwardPorts": [3000],
+  "portsAttributes": { "3000": { "label": "DavPanel documentation", "onAutoForward": "notify" } },
+  "otherPortsAttributes": { "onAutoForward": "ignore" },
+  "remoteUser": "vscode",
+  "customizations": {
+    "vscode": { "extensions": ["golang.Go", "ms-python.python"] },
+    "codespaces": { "openFiles": ["DEVELOPMENT.md"] }
+  }
+}
