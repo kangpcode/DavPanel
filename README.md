@@ -124,6 +124,17 @@ DavPanel is a truly [OS-agnostic](https://www.techtarget.com/whatis/definition/a
 
 ## Installation
 
+On a clean VPS, copy the standalone release and install with one command:
+
+```bash
+sudo bash davpanel-2.0.19-linux-amd64.run
+```
+
+The `.run` contains the binaries and verified component sources. Use `--preflight`
+for a read-only check, or `--domain=panel.example.com` with working DNS for public
+TLS. Without a domain, the installer uses a self-signed certificate for IP access.
+See [INSTALL.md](INSTALL.md) for ARM64, source builds and current publication status.
+
 Build this fork from its local sources; use [INSTALL.md](INSTALL.md) for the complete procedure.
 
 ```bash

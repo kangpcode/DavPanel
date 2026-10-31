@@ -25,6 +25,34 @@ service dependency have been removed. Optional installer steps return success
 when skipped, required step failures stop installation, and the installer checks
 MySQL availability and the running panel's health before completing.
 
+## Additional fixes for the standalone installer
+
+- `install.sh` and the release builder now produce a self-extracting `.run`.
+  A single `sudo bash <release>.run` verifies and installs the bundled release.
+  Payload corruption, archive traversal, duplicate members and special files are
+  rejected before executing the bundled installer. `--preflight` changes no services.
+- Both Go modules select Go 1.27.3. The original Go 1.27.0 compiler triggered
+  standard-library findings; rescanning with the patched compiler reports no
+  reachable vulnerabilities in either module. Each scan still reports one issue
+  in an imported package and one module issue without a vulnerable call path;
+  this does not establish that the complete system has no vulnerabilities.
+- Browser SSO and JWT credential login both enforce TOTP for enabled accounts.
+  SSO redemption rejects changed TOTP settings; disabled/deleted accounts cannot
+  retain bare-token API access. The mobile app opens interactive login for 2FA.
+- Unverified Enterprise-shaped keys no longer bypass panel validation. Admin
+  offline grace caches are private, bound to the key/IP, and cannot override an
+  explicit expiry response. The license endpoint remains configurable.
+- Redis socket directories use mode 0700 with the image's Redis UID/GID.
+  Sentinel preserves those permissions through systemd-tmpfiles.
+- The firewall helper uses bundled source. Invalid ports, usernames and domains
+  are rejected before installation; install logs are kept root-readable at a
+  fixed absolute path. No terminal is required to display generated credentials.
+- MySQL credentials are stored mode 0600. The metadata database now uses
+  MariaDB 11.4 because the inherited `10-focal` tag resolved to MariaDB 10.7.3.
+- Completion checks include the admin service, core containers, optional DNS,
+  the Redis socket and the panel health endpoint. These checks run on the target
+  server; they are not a substitute for the clean-VPS acceptance test below.
+
 ## Validation
 
 | Check | Result |
@@ -32,7 +60,7 @@ MySQL availability and the running panel's health before completing.
 | DavPanel `go test ./...` | Passed |
 | DavAdmin `go test ./...` | Passed |
 | Source integrity and shared runtime contracts | Passed for all 16 components |
-| Release/installer regression tests | 9 passed |
+| Release/installer regression tests | 17 passed |
 | Component Bash/PHP syntax | 141 Bash scripts and 22 PHP files passed |
 | Local panel, Caddy/Coraza and FTP image builds | Passed on linux/amd64 |
 | Panel container `/healthz` and `/login` | Passed with dummy configuration and no external network |
@@ -41,6 +69,8 @@ MySQL availability and the running panel's health before completing.
 | Release extraction and `--preflight` | Passed independently of the build checkout |
 | DavAdmin API endpoint export | Passed from the built binary |
 | Mobile TypeScript `tsc --noEmit` | Passed |
+| Redis restricted socket directory | Passed in an isolated Redis container |
+| Go runtime dependency scan on Go 1.27.3 | No reachable vulnerabilities reported for both modules |
 | Website production build | Passed after fixing six invalid redirect targets and the React peer dependency |
 
 The container smoke test proves startup and login rendering. It does not exercise
@@ -58,12 +88,6 @@ The disposable smoke container was removed after the check.
 - Published domains, standalone fork releases and registry availability are
   separate deployment tasks. The local source installation does not require
   those component releases. Remote updating still requires published artifacts.
-- Existing `davpanel/internal/app/license.go` accepts Enterprise-shaped key
-  prefixes in `LicenseCheckPasses` before consulting `LicenseValid`. This
-  inherited behavior was retained; license enforcement is not certified here.
-- Existing `davadmin/internal/handlers/api_login.go` permits password-only SSO
-  without a TOTP challenge, as its implementation comment states. Review that
-  behavior before claiming that all admin session flows enforce two-factor auth.
 - npm advisory scans reported **24 website findings** (21 high, 3 low) and
   **16 mobile findings** (3 high, 9 moderate, 4 low), including transitive tooling
   dependencies. Examples are the website's pinned `follow-redirects` and the

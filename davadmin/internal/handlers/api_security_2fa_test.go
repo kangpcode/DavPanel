@@ -121,7 +121,7 @@ func TestAPISecurity2FAStatusReportsEnabled(t *testing.T) {
 	}
 }
 
-func TestAPISecurity2FAStatusUnknownUserIs404(t *testing.T) {
+func TestAPISecurity2FAStatusRejectsDeletedTokenUser(t *testing.T) {
 	srv, db, token := newAPISecurity2FATestServer(t, "user")
 	db.DeleteUser("alice")
 
@@ -131,8 +131,8 @@ func TestAPISecurity2FAStatusUnknownUserIs404(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusNotFound {
-		t.Fatalf("expected 404 for a deleted user, got %d", resp.StatusCode)
+	if resp.StatusCode != http.StatusUnauthorized {
+		t.Fatalf("expected 401 for a deleted token user, got %d", resp.StatusCode)
 	}
 }
 
@@ -211,10 +211,8 @@ func TestAPISecurity2FAEnableMissingFieldsIs400(t *testing.T) {
 	}
 }
 
-func TestAPISecurity2FAEnableValidatesCodeBeforeUserLookup(t *testing.T) {
-	// An invalid code must be reported even if the calling token's user has
-	// been deleted in the meantime -- code verification happens before the
-	// user row is fetched.
+func TestAPISecurity2FAEnableRejectsDeletedUserBeforeValidatingCode(t *testing.T) {
+	// Deleted accounts must be rejected before their request body is processed.
 	srv, db, token := newAPISecurity2FATestServer(t, "user")
 	db.DeleteUser("alice")
 
@@ -225,12 +223,12 @@ func TestAPISecurity2FAEnableValidatesCodeBeforeUserLookup(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusBadRequest {
-		t.Fatalf("expected 400 (invalid code) rather than 404 (missing user), got %d", resp.StatusCode)
+	if resp.StatusCode != http.StatusUnauthorized {
+		t.Fatalf("expected a deleted token user to be rejected before enrollment, got %d", resp.StatusCode)
 	}
 	body, _ := io.ReadAll(resp.Body)
-	if !strings.Contains(string(body), "Invalid authentication code") {
-		t.Fatalf("expected the invalid-code message, got %s", body)
+	if !strings.Contains(string(body), "Missing or inactive token user") {
+		t.Fatalf("expected the inactive-account message, got %s", body)
 	}
 }
 

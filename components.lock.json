@@ -20,7 +20,7 @@
       "upstream_commit": "27529b74722b42f5d61ba78cd40ad0ded811f65e",
       "fork_url": "https://github.com/kangpcode/davadmin",
       "storage": "vendored",
-      "tree_sha256": "6b144f313e7562af3ffc14c3048f266021c7d97bab26934b4e695ef373ce6754",
+      "tree_sha256": "0e62b6b9c48bc0f010b186808d4e786a2953f30200ac45fc01bbc85d8beeee49",
       "file_count": 808
     },
     {
@@ -40,7 +40,7 @@
       "upstream_commit": "80287619ed47ff5935ec5a1371b4b06036015911",
       "fork_url": "https://github.com/kangpcode/davpanel-configuration",
       "storage": "vendored",
-      "tree_sha256": "1031104e37a1322fd831dff4d15a897f9c151d086dc8b88407ed4593c2926041",
+      "tree_sha256": "52c524a4d6fd2356b4791a26291f5c7f32d829083b73926702814e372dc9cf89",
       "file_count": 235
     },
     {
