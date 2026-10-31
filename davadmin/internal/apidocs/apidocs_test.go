@@ -14,7 +14,7 @@ func TestTextListsEveryEndpoint(t *testing.T) {
 		"# Authentication\n",
 		"Endpoint: GET /api/whoami\n",
 		"curl -X GET 'https://server.example.com:2087/api/whoami' -H \"Authorization: Bearer TOKEN_HERE\"",
-		"curl -X POST 'https://server.example.com:2087/api/' -H \"Content-Type: application/json\" -d '{\"username\":\"admin\",\"password\":\"secret\"}'",
+		"curl -X POST 'https://server.example.com:2087/api/' -H \"Content-Type: application/json\" -d '{\"username\":\"admin\",\"password\":\"secret\",\"totp_code\":\"123456\"}'",
 	} {
 		if !strings.Contains(text, want) {
 			t.Errorf("missing %q", want)
