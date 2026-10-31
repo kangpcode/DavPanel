@@ -442,7 +442,7 @@ enable_coraza_waf() {
     # 1. download rules
     echo "Downloading Coraza rules.."
     # download to a temp file so a failed download doesn't leave an empty rules file behind
-    if wget --timeout=15 --tries=3 --inet4-only https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/caddy/coraza_rules.conf -O /etc/davpanel/caddy/coraza_rules.conf.tmp && [[ -s /etc/davpanel/caddy/coraza_rules.conf.tmp ]]; then
+    if wget --timeout=15 --tries=3 --inet4-only https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/caddy/coraza_rules.conf -O /etc/davpanel/caddy/coraza_rules.conf.tmp && [[ -s /etc/davpanel/caddy/coraza_rules.conf.tmp ]]; then
         # written into the existing file, caddy sees it through a single-file bind mount and a reload has to find the new rules
         cat /etc/davpanel/caddy/coraza_rules.conf.tmp > /etc/davpanel/caddy/coraza_rules.conf
         rm -f /etc/davpanel/caddy/coraza_rules.conf.tmp

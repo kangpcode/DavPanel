@@ -1,1 +1,7 @@
-{}
+{
+  "section_title": "DavPanel resources",
+  "section_position": "bottom",
+  "items": [
+    {"label": "Source and releases", "url": "https://github.com/kangpcode/DavPanel", "icon": "bi bi-github"}
+  ]
+}

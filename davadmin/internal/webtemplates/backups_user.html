@@ -160,7 +160,7 @@ function backupsUserRunNow() {
     </div>
 
     <!-- CONFIGURATION -->
-    <div x-show="tab === 'configuration'" x-cloak role="tabpanel" x-data="{ ...restoreComponentFor('backup_env', 'https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/backups/backup.env'), advanced: false, destination: '' }" data-destination="{{.BackupEnvForm.Destination}}" x-init="destination = $el.dataset.destination">
+    <div x-show="tab === 'configuration'" x-cloak role="tabpanel" x-data="{ ...restoreComponentFor('backup_env', 'https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/backups/backup.env'), advanced: false, destination: '' }" data-destination="{{.BackupEnvForm.Destination}}" x-init="destination = $el.dataset.destination">
 
         <div class="flex items-center justify-end gap-2 pb-4">
             <button type="button" @click="advanced = true; restoreDefault()" class="inline-flex items-center rounded border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700" :disabled="loading">

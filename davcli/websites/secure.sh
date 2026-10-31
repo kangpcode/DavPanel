@@ -63,7 +63,7 @@ if [[ ! -f "$WP_MANAGER_RULES" ]]; then
     sed_in_place "$CADDY_FILE" "/$MARKER/i $RULE_LINE"
   fi
   
-  curl -s -L "https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/caddy/templates/wp.rules" -o "$WP_MANAGER_RULES"
+  curl -s -L "https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/caddy/templates/wp.rules" -o "$WP_MANAGER_RULES"
   if [[ ! -f "$WP_MANAGER_RULES" ]]; then
     echo "Error: rules file not found: $WP_MANAGER_RULES"
     exit 1

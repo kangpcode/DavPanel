@@ -28,6 +28,8 @@ def probe(label, url, samples, timeout):
             times.append((time.perf_counter() - start) * 1000)
         except (OSError, ValueError) as error:
             failures.append(type(error).__name__)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
     return {"product": label, "url": url, "attempts": samples, "successful": len(times),
             "failures": len(failures), "p50_ms": statistics.median(times) if times else None,
             "p95_ms": sorted(times)[math.ceil(len(times) * 0.95) - 1] if times else None,

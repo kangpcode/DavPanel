@@ -236,7 +236,7 @@
     </div>
 </div>
 
-<div class="col-span-full md:col-span-3" x-data="restoreComponentFor('forbidden_usernames', 'https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davadmin/config/forbidden_usernames.txt')">
+<div class="col-span-full md:col-span-3" x-data="restoreComponentFor('forbidden_usernames', 'https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/davadmin/config/forbidden_usernames.txt')">
     <label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium flex items-center gap-1" for="forbidden_usernames">
         Forbidden usernames
         <span @mouseenter="tooltip = true" @mouseleave="tooltip = false" class="relative cursor-pointer">
@@ -264,7 +264,7 @@
     </div>
 </div>
 
-<div class="col-span-full md:col-span-3" x-data="restoreComponentFor('restricted_domains', 'https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davpanel/conf/domain_restriction.txt')">
+<div class="col-span-full md:col-span-3" x-data="restoreComponentFor('restricted_domains', 'https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/davpanel/conf/domain_restriction.txt')">
     <label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium flex items-center gap-1" for="restricted_domains">
         Restricted domains
         <button
@@ -543,7 +543,7 @@ When enabled, users will see a 'How-to' widget in their DavPanel Dashboard, with
 </div>
 
 {{if $.HasEnterprise}}
-<div class="col-span-full" x-show="how_to_guides" x-data="restoreComponentFor('howto_guides', 'https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davpanel/conf/knowledge_base_articles.json')">
+<div class="col-span-full" x-show="how_to_guides" x-data="restoreComponentFor('howto_guides', 'https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/davpanel/conf/knowledge_base_articles.json')">
     <label class="text-sm leading-none text-gray-900 dark:text-gray-50 font-medium flex items-center gap-1" for="howto_guides" id="howto-guides">
         How-to Articles
         <button

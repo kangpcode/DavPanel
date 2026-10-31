@@ -32,6 +32,28 @@ func withScratchLocalesPaths(t *testing.T) {
 	})
 }
 
+func TestLocaleCatalogListingUsesBundledRelease(t *testing.T) {
+	previous := BundledLocalesDir
+	BundledLocalesDir = t.TempDir()
+	t.Cleanup(func() { BundledLocalesDir = previous })
+	for _, locale := range []string{"id-id", "en-us", "scripts"} {
+		path := filepath.Join(BundledLocalesDir, locale)
+		if err := os.MkdirAll(path, 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(filepath.Join(path, "messages.po"), []byte("msgid \"Hello\"\nmsgstr \"Hello\"\n"), 0644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	items, status, err := localesFetchFolders()
+	if err != nil || status != http.StatusOK || len(items) != 2 {
+		t.Fatalf("items=%v status=%d error=%v", items, status, err)
+	}
+	if items[0].Name != "en-us" || items[1].Name != "id-id" || len(items[0].Sha) != 40 {
+		t.Fatalf("unexpected catalog names or content digest: %v", items)
+	}
+}
+
 func withScratchLocalesFetch(t *testing.T, items []githubContentItem, status int, err error) {
 	t.Helper()
 	orig := localesFetchFolders

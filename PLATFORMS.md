@@ -1,7 +1,7 @@
 # DavPanel platform support
 
 DavPanel's hosting runtime needs Linux, systemd, cgroups, kernel namespaces,
-rootless Podman and filesystem quotas. A browser or a development environment
+rootless Podman, Python 3.9+ and filesystem quotas. A browser or a development environment
 does not provide all of those host capabilities.
 
 | Environment | Available path | Verification status |

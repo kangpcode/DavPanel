@@ -839,6 +839,7 @@ setup_tor_for_user() {
     local uid
     uid=$(stat -c '%u' "/home/$context" 2>/dev/null)
     [[ -n "$uid" ]] && chown "$uid:$uid" "$tor_dir" || true
+    touch "$tor_dir/torrc"
     chmod 0600 "$tor_dir/torrc"
 
     get_varnish_for_user
@@ -847,6 +848,7 @@ setup_tor_for_user() {
 
     printf 'HiddenServiceDir /var/lib/tor/%s/\nHiddenServicePort 80 %s:80\n\n' "$folder_name" "$proxy_ws" >> "$tor_dir/torrc"
     [[ -z "$uid" ]] || chown -R "$uid:$uid" "$tor_dir"
+    chmod 0700 "$tor_dir" "$tor_dir/hidden_service" "$tor_dir/$folder_name"
 
     log ".onion files saved in $folder_name"
 }

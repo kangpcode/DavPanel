@@ -20,7 +20,7 @@ The release builder compiles static Linux panel/admin binaries, checks shared
 runtime config paths, and produces a source installation archive plus checksums.
 `BUILD.json` binds the binaries to source-tree digests, allowing preflight to
 reject stale binaries. The release installer uses local inputs and builds its
-panel, Caddy/Coraza and FTP images; the missing `encoded-*` input and Gunicorn
+panel, Caddy/Coraza, FTP and Tor images; the missing `encoded-*` input and Gunicorn
 service dependency have been removed. Optional installer steps return success
 when skipped, required step failures stop installation, and the installer checks
 MySQL availability and the running panel's health before completing.
@@ -53,6 +53,26 @@ MySQL availability and the running panel's health before completing.
   the Redis socket and the panel health endpoint. These checks run on the target
   server; they are not a substitute for the clean-VPS acceptance test below.
 
+## GitHub, platforms and comparison
+
+GitHub releases are now the single update source for panel/admin binaries, CLI,
+configuration, translations and bundled migration scripts. Downloads verify SHA-256
+and rerun source/binary preflight before installed files can be replaced. The
+installer no longer queries the placeholder statistics API to choose its version.
+Locale installation and reporting helpers use bundled source. Reset/default
+configuration URLs use this monorepo rather than unpublished component forks.
+
+The Codespaces/dev-container configuration and `scripts/dev.sh` provide source
+checks, Go tests, vulnerability scanning, release builds and documentation preview.
+A hosted Codespace has not been launched here. `PLATFORMS.md` records the actual
+Linux hosting boundary, experimental distributions and workstation development.
+Native Windows/macOS hosting and universal OS support are not implemented.
+
+`BENCHMARKS.md` compares all six products against current official documentation
+and supplies a reproducible measurement procedure. `benchmarks/collect.py`
+collects raw HTTP measurements from operator-supplied test endpoints. No competitor
+performance scores have been invented or measured in this workspace.
+
 ## Validation
 
 | Check | Result |
@@ -60,16 +80,17 @@ MySQL availability and the running panel's health before completing.
 | DavPanel `go test ./...` | Passed |
 | DavAdmin `go test ./...` | Passed |
 | Source integrity and shared runtime contracts | Passed for all 16 components |
-| Release/installer regression tests | 17 passed |
-| Component Bash/PHP syntax | 141 Bash scripts and 22 PHP files passed |
-| Local panel, Caddy/Coraza and FTP image builds | Passed on linux/amd64 |
+| Installer, release manager, update failure and benchmark regression tests | 27 passed |
+| Component Bash/PHP syntax | 148 Bash scripts and 22 PHP files passed |
+| Local panel, Caddy/Coraza, FTP and Tor image builds | Passed on linux/amd64; Tor configuration validated |
 | Panel container `/healthz` and `/login` | Passed with dummy configuration and no external network |
 | Caddy module check | `http.handlers.waf` and `http.handlers.rate_limit` present |
 | FTP image inputs | vsftpd, pidproxy and startup script present |
-| Release extraction and `--preflight` | Passed independently of the build checkout |
+| Release extraction and `--preflight` | Standalone amd64 installer passed outside the checkout; arm64 archive passed architecture/source/binary verification without native execution |
 | DavAdmin API endpoint export | Passed from the built binary |
 | Mobile TypeScript `tsc --noEmit` | Passed |
 | Redis restricted socket directory | Passed in an isolated Redis container |
+| Metadata schema on MariaDB 11.4.13 | Five tables and two bundled plans initialized in an isolated container |
 | Go runtime dependency scan on Go 1.27.3 | No reachable vulnerabilities reported for both modules |
 | Website production build | Passed after fixing six invalid redirect targets and the React peer dependency |
 
@@ -88,10 +109,10 @@ The disposable smoke container was removed after the check.
 - Published domains, standalone fork releases and registry availability are
   separate deployment tasks. The local source installation does not require
   those component releases. Remote updating still requires published artifacts.
-- npm advisory scans reported **24 website findings** (21 high, 3 low) and
+- npm advisory scans reported **26 website findings** (0 high/critical, 23 moderate, 3 low) and
   **16 mobile findings** (3 high, 9 moderate, 4 low), including transitive tooling
-  dependencies. Examples are the website's pinned `follow-redirects` and the
-  Expo CLI's nested Zod 3 dependency. These counts include propagated dependency
+  dependencies. The website's `follow-redirects` findings were patched; the
+  Expo CLI's nested Zod 3 dependency remains among the mobile findings. These counts include propagated dependency
   findings and do not establish exploitability in a deployed panel. They remain
   open; no forced framework downgrades or incompatible dependency overrides were
   applied. npm dependencies are excluded from the server installation archive.

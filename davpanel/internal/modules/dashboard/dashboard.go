@@ -760,7 +760,7 @@ func howToLinksForDashboard(a *appctx.App, ctx context.Context) ([]map[string]an
 
 func fetchRemoteKBData() map[string]any {
 	client := &http.Client{Timeout: time.Second}
-	resp, err := client.Get("https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davpanel/conf/knowledge_base_articles.json")
+	resp, err := client.Get("https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/davpanel/conf/knowledge_base_articles.json")
 	if err != nil {
 		return nil
 	}

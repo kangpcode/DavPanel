@@ -255,7 +255,7 @@ update_check() {
     remote_version=$(get_remote_version)
     
     if [[ -z "$remote_version" ]]; then
-        write_notification_for_update_check warning "Update check failed" "Failed connecting to Docker Hub"
+        write_notification_for_update_check warning "Update check failed" "Failed connecting to GitHub Releases"
         echo '{"error": "Error fetching remote version"}' >&2
         exit 1
     fi
@@ -768,9 +768,9 @@ update_locales() {
 
 # ---------------------- UPDATES TRANSLATIONS ONLY, THEN RESTARTS DAVPANEL ---------------------- #
 update_translations() {
-    update_locales --no-log
+    update_locales --no-log || return 1
     log_info "Restarting DavPanel service"
-    podman restart davpanel &>/dev/null 2>&1
+    podman restart davpanel &>/dev/null 2>&1 || return 1
     log_info "[✔] Translations updated and DavPanel restarted"
 }
 
@@ -781,60 +781,28 @@ run_version_specific_scripts_in_range() {
     local from_version="$1"
     local to_version="$2"
 
-    local from_major from_minor from_patch
-    local to_major to_minor to_patch
-
-    IFS='.' read -r from_major from_minor from_patch <<< "$from_version"
-    IFS='.' read -r to_major to_minor to_patch <<< "$to_version"
-
+    local source version
+    source=$(davpanel_release_source) || return 1
     log_info "Running version-specific scripts from $from_version to $to_version"
-
-    local maj min pat
-    for (( maj=from_major; maj<=to_major; maj++ )); do
-        local min_start=0
-        local min_end=999
-        [[ $maj -eq from_major ]] && min_start=$from_minor
-        [[ $maj -eq to_major ]]   && min_end=$to_minor
-
-        for (( min=min_start; min<=min_end; min++ )); do
-            local pat_start=0
-            local pat_end=999
-            [[ $maj -eq from_major && $min -eq from_minor ]] && pat_start=$(( from_patch + 1 ))
-            [[ $maj -eq to_major   && $min -eq to_minor   ]] && pat_end=$to_patch
-
-            for (( pat=pat_start; pat<=pat_end; pat++ )); do
-                run_version_specific_script "${maj}.${min}.${pat}"
-            done
-        done
-    done
+    [[ -d "$source/UPDATES" ]] || return 0
+    while IFS= read -r version; do
+        [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || continue
+        if [[ $(compare_versions "$version" "$from_version") -gt 0 && $(compare_versions "$version" "$to_version") -le 0 ]]; then
+            run_version_specific_script "$version" || return 1
+        fi
+    done < <(find "$source/UPDATES" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort -V)
+    return 0
 }
 
 run_version_specific_script() {
-    local version="$1"
-    local url="https://raw.githubusercontent.com/kangpcode/DavPanel/refs/heads/main/UPDATES/$version/UPDATE.sh"
-    log_info "Checking for version-specific update script"
-    if wget --spider -q "$url" 2>/dev/null; then
-        log_info "Downloading and executing version-specific script: $url"
-        # run from a file with stdin closed: piped into bash, a command in the script that reads stdin (apt-get) ate the rest of it and bash went on mid-line
-        local script exit_code
-        script=$(mktemp)
-        if ! wget --timeout=15 --tries=2 -q -O "$script" "$url"; then
-            update_error "Failed to download the $version update script, run it with: wget -O - $url | bash"
-        else
-            timeout "$UPDATE_TIMEOUT" bash "$script" </dev/null &>> "$log_file"
-            exit_code=$?
-            if [[ $exit_code -eq 0 ]]; then
-                log_info "[✔] Version-specific script executed successfully"
-            elif [[ $exit_code -eq 124 ]]; then
-                update_error "The $version update script timed out after ${UPDATE_TIMEOUT} seconds and its remaining steps did not run, run it again: wget -O - $url | bash"
-            else
-                update_error "The $version update script failed with exit code $exit_code, run it again: wget -O - $url | bash"
-            fi
-        fi
-        rm -f "$script"
-    else
-        log_info "[✔] No version-specific script"
-    fi
+    local version="$1" source script
+    source=$(davpanel_release_source) || return 1
+    script="$source/UPDATES/$version/UPDATE.sh"
+    [[ -f "$script" ]] || return 0
+    timeout "$UPDATE_TIMEOUT" bash "$script" </dev/null &>> "$log_file" || {
+        update_error "The verified migration for $version failed; inspect $log_file before retrying."
+        return 1
+    }
 }
 
 
@@ -882,7 +850,7 @@ run_update_immediately() {
     write_notification info "DavPanel update started" "Started update to version $version." "$log_file"
 
     # ---------------------- 3. DOWNLOAD BASH SCRIPTS FROM GITHUB (must be befor davpanel image update)
-    update_davcli
+    update_davcli || { update_error 'Failed to update DavCLI; update stopped.'; return 1; }
 	
     # ---------------------- 4. DOWNLOAD NEW IMAGE FROM DOCKER HUB
     log "Updating DavPanel container image"
@@ -893,7 +861,7 @@ run_update_immediately() {
         log "Update failed!"
         return 1
     else
-        log "[✔] image ${IMAGE_NAME}:${version} downloaded successfully"
+        log "[✔] image ${IMAGE_NAME}:${version} built successfully"
 
         log "Updating version in /root/.env"
         if [[ -f /root/.env ]]; then
@@ -925,10 +893,10 @@ run_update_immediately() {
     update_modules || update_error "Failed to update /etc/davpanel/davadmin/config/features.json, run: davcli update --modules"
 
     # ---------------------- 7. DOWNLOAD DAVADMIN FILES FROM GITHUB
-    update_davadmin
+    update_davadmin || update_error 'Failed to schedule the DavAdmin update.'
 
     # ---------------------- 8. RUN VERSION-SPECIFIC FILES IF EXIST
-    run_version_specific_scripts_in_range "$local_version" "$version"
+    run_version_specific_scripts_in_range "$local_version" "$version" || update_error 'A version migration failed.'
 
     # ---------------------- 9. REGENERATE LOGROTATE CONFIGS
     # logrotate.d files are only written by server-logrotate, so its fixes never reach existing servers otherwise
@@ -1006,25 +974,20 @@ verify_davadmin_running() {
 }
 
 update_davpanel() {
-    cd /root || return
-    if [[ "$BETA" == "true" ]]; then
-        require_command jq
-        local base_version
-        base_version=$(get_remote_version true)
-
-        if [[ -z "$base_version" ]]; then
-            log_error "Could not find a beta image on Docker Hub for ${IMAGE_NAME}"
-            return 1
-        fi
-
-        log_info "Latest beta version found: ${base_version}-beta"
-        if [[ -f /root/.env ]]; then
-            sed -i "s/^VERSION=.*/VERSION=\"${base_version}-beta\"/" /root/.env
-        fi
+    local version="${DAVPANEL_UPDATE_VERSION:-}"
+    if [[ -z "$version" ]]; then
+        version=$(get_remote_version "${BETA:-false}") || return 1
+        [[ "${BETA:-false}" != true ]] || version="${version}-beta"
     fi
-    davpanel_release_image "${DAVPANEL_UPDATE_VERSION:-}" || return 1
-    podman-compose up -d davpanel --force-recreate
-    redis_drop_key davpanel_cache_app.get_davpanel_version &>/dev/null
+    davpanel_release_image "$version" || return 1
+    sed -i "s/^VERSION=.*/VERSION=\"$version\"/" /root/.env
+    if [[ "$NO_RESTART" == true ]]; then
+        echo 'Restart needed' > "$DAVPANEL_RESTART_FLAG"
+    else
+        (cd /root && podman-compose up -d davpanel --force-recreate) || return 1
+    fi
+    redis_drop_key davpanel_cache_app.get_davpanel_version || true
+    return 0
 }
 
 update_davadmin() {
@@ -1096,7 +1059,7 @@ update_davadmin() {
 			            } >> "$target_log" 2>&1
 			        fi
 			    fi
-			'
+			' || return 1
         fi
 
         echo "[✔] DavAdmin update triggered (applying in background)" || log "[✔] DavAdmin update triggered (applying in background)"
@@ -1134,7 +1097,10 @@ update_davcli() {
 		fi
 	fi
 
-	[[ "$1" == "--no-log" ]] && podman restart davpanel &>/dev/null 2>&1
+	if [[ "$1" == "--no-log" && "$NO_RESTART" != true ]]; then
+        podman restart davpanel &>/dev/null 2>&1 || return 1
+    fi
+    return 0
 }
 
 # runs the update in a child that doesn't inherit the lock fd, otherwise conmon of containers it starts keeps the lock forever
@@ -1225,7 +1191,7 @@ check_update() {
 
 
 # ---------------------- CONFIGURATION FILES FROM GITHUB ---------------------- #
-# downloads davpanel-configuration once per run and sets CONFIG_SRC to the extracted repo
+# Use one verified monorepo release for all component updates.
 fetch_configuration_repo() {
     [[ -n "${CONFIG_SRC:-}" && -d "$CONFIG_SRC" ]] && return 0
     local source
@@ -1307,6 +1273,7 @@ update_cron() {
 # ---------------------- RUNS CHECK OR STARTS UPDATE ---------------------- #
 main() {
     local modes=()
+    local result=0 step_result
     for arg in "$@"; do
         case "$arg" in
             --check|--force|--admin|--panel|--cli|--translations|--system|--modules|--compose|--env|--php|--wp|--ols|--apache|--clamav|--phpmyadmin|--postgres|--skeleton|--ssh|--varnish|--cron)
@@ -1345,9 +1312,15 @@ main() {
             varnish) update_config_path varnish ;;
             cron) update_cron ;;
         esac
+        step_result=$?
+        if [[ $step_result -ne 0 ]]; then
+            result=$step_result
+            break
+        fi
     done
 
     [[ -n "${CONFIG_TMP:-}" ]] && rm -rf "$CONFIG_TMP"
+    return "$result"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
@@ -1363,6 +1336,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         exit $?
     fi
     main "$@"
+    exit $?
 fi
 
 exit 0

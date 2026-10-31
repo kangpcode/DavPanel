@@ -76,12 +76,14 @@ _davcli_wp_secure_rules() {
     grep -oP '^\(\K[a-z0-9_]+' "$rules_file" | grep '^wp_manager_'
 }
 
-# mirrors what `davcli locale` (with no args) lists itself: the directory
-# names in the davpanel-translations repo, fetched live via the GitHub API
+# Use the same bundled locale names as davcli locale.
 _davcli_available_locales() {
-    command -v jq &>/dev/null || return
-    curl -s --max-time 3 "https://api.github.com/repos/kangpcode/davpanel-translations/contents" 2>/dev/null \
-        | jq -r '.[] | select(.type=="dir" and (.name|test("^\\.")|not)) | .name' 2>/dev/null
+    local catalog
+    for catalog in /usr/local/share/davpanel/translations/*/messages.po; do
+        [[ -f "$catalog" ]] || continue
+        catalog="${catalog%/messages.po}"
+        printf '%s\n' "${catalog##*/}"
+    done
 }
 
 # notification parameter names are just the keys defined in notifications.ini

@@ -13,7 +13,7 @@ sudo bash davpanel-2.0.19-linux-amd64.run
 For AArch64, use the `linux-arm64.run` release. The file includes both panel
 binaries, the 16 component sources and installation inputs; no Go compiler,
 manual archive extraction or separate build step is required on the target.
-The installer verifies its payload SHA-256, rejects archive path traversal and
+The installer requires Python 3.9+ as `python3`. It verifies its payload SHA-256, rejects archive path traversal and
 links, checks the component/source/binary digests and architecture, then starts
 the hosting installation. It installs Python 3 if absent. It still downloads OS
 packages, base container images and external firewall/WAF dependencies.
@@ -33,11 +33,19 @@ single command is `sudo bash install.sh`. A checkout without binaries needs Go
 and builds them automatically; the standalone `.run` avoids that requirement.
 The full installation log is `/var/log/davpanel/install.log`, readable only by root.
 
-The public repository was checked during this work and still points at the old
-commit. These local artifacts have not been uploaded. A public download command
-requires publishing the new source and release first. The release workflow builds,
-audits and attaches amd64/arm64 installers only after a release is explicitly
-published; manual workflow runs produce downloadable CI artifacts.
+These local artifacts have not been uploaded. After publishing the new source
+and release, install online with:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && sudo bash /tmp/davpanel-bootstrap.sh
+```
+
+The bootstrap fetches the latest stable GitHub release for the host CPU and
+checks its installer checksum. It fails if no complete release is available.
+The release workflow builds,
+audits and attaches amd64/arm64 installers. Run it manually with `publish` enabled
+to create a draft, upload both architectures and checksums, then publish the
+complete release. With `publish` disabled it produces downloadable CI artifacts.
 
 The checkout includes all 16 component sources. `components.lock.json` records
 their upstream commits and SHA-256 digests after fork changes. They are ordinary
@@ -65,8 +73,8 @@ local builder.
 ## Validate and install
 
 Copy the release archive to a **clean dedicated Linux server**, extract it, and
-enter its directory. Supported systems follow the installer: Ubuntu, Debian,
-AlmaLinux, Rocky Linux, CentOS and Oracle Linux, amd64 or arm64.
+enter its directory. Installer branches cover Debian/Ubuntu and several RPM
+systems; actual verification limits and CPU support are in [PLATFORMS.md](PLATFORMS.md).
 
 ```bash
 sha256sum -c SHA256SUMS
@@ -82,7 +90,7 @@ Use `--source-dir=/absolute/path` when the inputs are in another directory.
 For a repository checkout, the installer finds binaries under `dist/linux-<arch>/bin`.
 
 The installer copies the local configuration, CLI, translations, mail helpers and
-importers. It builds the panel, Caddy/Coraza and FTP container images locally,
+importers. It builds the panel, Caddy/Coraza, FTP and Tor container images locally,
 using the release binary for the panel image, then configures system services.
 Internet access is needed for OS packages and base/third-party container images.
 The build does not require `api.davpanel.com` or standalone `kangpcode/*` releases.
@@ -95,9 +103,15 @@ with working DNS to obtain public TLS certificates.
 
 ## Updates and hosted services
 
-Standalone remote updates need published DavPanel images and DavAdmin releases.
-Until those exist, build a reviewed release and test its upgrade on a disposable
-server. Do not use the clean-server installer to upgrade a populated server.
+Remote updates read `kangpcode/DavPanel` GitHub releases. The release manager
+downloads the versioned archive plus checksum, validates its sources and static
+binaries, and builds the panel image locally. CLI, admin, configuration,
+translations and migration scripts come from that same release. No standalone
+component repository or published DavPanel registry image is required. The
+private cache is `/var/cache/davpanel/releases`. `davcli update --check` checks
+metadata; `davcli update --force` uses the configured update workflow. Upgrade
+execution on a populated system remains an acceptance-test gate. Do not use the
+clean-server installer to upgrade a populated server.
 
 Community installation uses no Enterprise key. An Enterprise key still requires
 a working authorized license service. Set `DAVPANEL_LICENSE_API` consistently for

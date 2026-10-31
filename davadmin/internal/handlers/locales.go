@@ -1,5 +1,4 @@
-// This file implements installing, updating and deleting translation
-// locales (fetched from a GitHub repo listing) and setting the default one.
+// Manage the locale catalogs bundled with the installed DavPanel release.
 package handlers
 
 import (
@@ -30,11 +29,8 @@ type Locales struct {
 	PublicIP string
 }
 
-// LocalesGithubURL / TranslationsDir / DefaultLocaleFilePath are the
-// GitHub repo tree, local translations directory, and default-locale
-// marker file used by the locale installer.
 var (
-	LocalesGithubURL      = "https://api.github.com/repos/kangpcode/davpanel-translations/git/trees/main?recursive=1"
+	BundledLocalesDir     = "/usr/local/share/davpanel/translations"
 	TranslationsDir       = "/etc/davpanel/davpanel/translations"
 	DefaultLocaleFilePath = "/etc/davpanel/davpanel/default_locale"
 )
@@ -68,43 +64,23 @@ type localeRow struct {
 	RemoteSha string `json:"-"`
 }
 
-// localesFetchFolders is injectable so tests never make a real GitHub API
-// call, matching the caddyFetchMetrics/getDockerLogRun pattern used
-// elsewhere.
 var localesFetchFolders = func() ([]githubContentItem, int, error) {
-	resp, err := http.Get(LocalesGithubURL)
+	entries, err := os.ReadDir(BundledLocalesDir)
 	if err != nil {
 		return nil, 0, err
 	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil, resp.StatusCode, nil
-	}
-	var tree struct {
-		Tree []struct {
-			Path string `json:"path"`
-			Type string `json:"type"`
-			Sha  string `json:"sha"`
-		} `json:"tree"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&tree); err != nil {
-		return nil, resp.StatusCode, err
-	}
-	// one recursive tree call gives both the top-level dirs and each messages.po sha
-	shas := map[string]string{}
 	var items []githubContentItem
-	for _, e := range tree.Tree {
-		if e.Type == "tree" && !strings.Contains(e.Path, "/") {
-			items = append(items, githubContentItem{Name: e.Path, Type: "dir"})
+	for _, entry := range entries {
+		if !entry.IsDir() || !localeDirRe.MatchString(entry.Name()) {
+			continue
 		}
-		if dir, ok := strings.CutSuffix(e.Path, "/messages.po"); ok && e.Type == "blob" {
-			shas[dir] = e.Sha
+		path := filepath.Join(BundledLocalesDir, entry.Name(), "messages.po")
+		sha := gitBlobSha(path)
+		if sha != "" {
+			items = append(items, githubContentItem{Name: entry.Name(), Type: "dir", Sha: sha})
 		}
 	}
-	for i := range items {
-		items[i].Sha = shas[items[i].Name]
-	}
-	return items, resp.StatusCode, nil
+	return items, http.StatusOK, nil
 }
 
 // localesInstallRun is injectable so tests never shell out to a real
@@ -160,11 +136,11 @@ func readDefaultLocale() string {
 	return "en"
 }
 
-// loadLocaleRows fetches the GitHub listing and cross-references it against what's installed locally.
+// Compare installed locales with the bundled release catalogs.
 func loadLocaleRows() ([]localeRow, string, error) {
 	items, status, err := localesFetchFolders()
 	if err != nil || status != http.StatusOK {
-		return nil, "", fmt.Errorf("Failed to fetch data from GitHub: %d", status)
+		return nil, "", fmt.Errorf("Failed to read bundled locale catalogs: %d", status)
 	}
 
 	defaultLocaleBase := readDefaultLocale()

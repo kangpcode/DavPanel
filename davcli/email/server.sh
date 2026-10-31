@@ -32,7 +32,6 @@
 # ======================================================================
 # Configuration
 readonly APP="davcli email-server"                             # this script
-readonly GITHUB_REPO="https://github.com/kangpcode/DavMail" # download files
 readonly DIR="/usr/local/mail/davmail"                         # compose.yaml directory
 readonly MAILSERVER_ENV="/usr/local/mail/davmail/mailserver.env"
 readonly MAILSERVER_COMPOSE_FILE="/usr/local/mail/davmail/compose.yml"
@@ -358,7 +357,7 @@ configure_csfcheck_exposed_ports_for_container() {
 # INSTALL
 install_mailserver(){
 	section "INSTALLING MAILSERVER"
-	dbg "Downloading from $GITHUB_REPO"
+	dbg "Using bundled mailserver source"
 
 	run mkdir -p /usr/local/mail/
 	confirm_and_clean_existing_dir
@@ -640,8 +639,8 @@ case "${1:-}" in
 
 		# TODO: remove afer 1.8
 		COMPOSE_FILE="$DIR/compose.yml"
-		URL_POSTFIX="https://raw.githubusercontent.com/kangpcode/DavMail/refs/heads/main/postfwd/postfix-main.cf"
-		URL_POSTFWD="https://raw.githubusercontent.com/kangpcode/DavMail/refs/heads/main/postfwd/postfwd.cf"
+		URL_POSTFIX="https://raw.githubusercontent.com/kangpcode/DavPanel/main/mailserver/postfwd/postfix-main.cf"
+		URL_POSTFWD="https://raw.githubusercontent.com/kangpcode/DavPanel/main/mailserver/postfwd/postfwd.cf"
 		
 		if [ ! -d "$DIR/postfwd" ]; then
 			mkdir -p "$DIR/postfwd"

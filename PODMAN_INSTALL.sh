@@ -248,7 +248,7 @@ detect_os_and_package_manager() {
 
 get_server_ipv4() {
     local ip
-    ip=$(curl --silent --max-time 2 -4 "https://ip.davpanel.com" || curl --silent --max-time 2 -4 "https://ifconfig.me/ip")
+    ip=$(curl --silent --max-time 2 -4 "https://api.ipify.org" || curl --silent --max-time 2 -4 "https://ifconfig.me/ip")
     [[ -z "$ip" ]] && ip=$(ip -4 addr show scope global | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | head -n1)
     [[ "$ip" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ ]] || warn "Could not determine a valid public IPv4 address."
     SERVER_IPV4_ADDRESS="$ip"
@@ -256,10 +256,6 @@ get_server_ipv4() {
 
 set_panel_version() {
     if [[ "$CUSTOM_VERSION" == false ]]; then
-        local response
-        response=$(curl --max-time 1 -4 -s "https://api.davpanel.com/v2/statistics/" || true)
-        PANEL_VERSION=$(echo "$response" | grep -oP '"latest_version":"\K[^"]+' || true)
-        [[ "$PANEL_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || PANEL_VERSION="$DEFAULT_PANEL_VERSION"
         PANEL_VERSION="$DEFAULT_PANEL_VERSION"
     fi
 }
@@ -678,6 +674,9 @@ prefetch_shared_images() {
 
         for img in "${images[@]}"; do
             [[ -z "$img" || "$img" == *'${'* ]] && continue
+            if [[ "$img" == ghcr.io/kangpcode/davpanel-tor:* ]] && podman --root "$SHARED_STORE" image exists "$img"; then
+                continue
+            fi
             if podman --root "$SHARED_STORE" pull "$img" >/dev/null 2>&1; then
                 echo "[$(date +%T)] prefetch OK:   $img" >> "$LOG_FILE"
             else

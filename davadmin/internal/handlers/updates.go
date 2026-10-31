@@ -7,8 +7,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
 	"os"
+	"os/exec"
 	"regexp"
 	"sort"
 	"strconv"
@@ -58,77 +58,39 @@ var dockerTagVersionRe = regexp.MustCompile(`^(\d{1,3}|\d{1,2}(\.\d{1,2}){1,2})$
 // injectable so tests never make real network calls or shell out to real
 // binaries, matching the caddyFetchMetrics/localesFetchFolders pattern.
 var updatesFetchTagsRun = func() ([]string, error) {
-	return fetchRegistryTags("https://ghcr.io", "kangpcode/davpanel")
+	return fetchGitHubReleaseTags("https://api.github.com/repos/kangpcode/DavPanel/releases?per_page=100")
+}
+
+func fetchGitHubReleaseTags(endpoint string) ([]string, error) {
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Get(endpoint)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("GitHub release request returned %d", resp.StatusCode)
+	}
+	var releases []struct {
+		Tag        string `json:"tag_name"`
+		Draft      bool   `json:"draft"`
+		Prerelease bool   `json:"prerelease"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&releases); err != nil {
+		return nil, err
+	}
+	tags := make([]string, 0, len(releases))
+	for _, release := range releases {
+		version := strings.TrimPrefix(release.Tag, "v")
+		if !release.Draft && !release.Prerelease && dockerTagVersionRe.MatchString(version) {
+			tags = append(tags, version)
+		}
+	}
+	return tags, nil
 }
 
 var updatesDockerHubTagsRun = func() ([]string, error) {
 	return updatesFetchTagsRun()
-}
-
-func fetchRegistryTags(registry, repository string) ([]string, error) {
-	client := &http.Client{Timeout: 10 * time.Second}
-	query := url.Values{"scope": {"repository:" + repository + ":pull"}, "service": {"ghcr.io"}}
-	resp, err := client.Get(registry + "/token?" + query.Encode())
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("registry token request returned %d", resp.StatusCode)
-	}
-	var token struct {
-		Token string `json:"token"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&token); err != nil {
-		return nil, err
-	}
-	if token.Token == "" {
-		return nil, fmt.Errorf("registry returned an empty token")
-	}
-	req, err := http.NewRequest(http.MethodGet, registry+"/v2/"+repository+"/tags/list", nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Authorization", "Bearer "+token.Token)
-	tags, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer tags.Body.Close()
-	if tags.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("registry tag request returned %d", tags.StatusCode)
-	}
-	var result struct {
-		Tags []string `json:"tags"`
-	}
-	if err := json.NewDecoder(tags.Body).Decode(&result); err != nil {
-		return nil, err
-	}
-	return result.Tags, nil
-}
-
-func fetchTagNames(url string) ([]string, error) {
-	resp, err := http.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status %d", resp.StatusCode)
-	}
-	var parsed struct {
-		Results []struct {
-			Name string `json:"name"`
-		} `json:"results"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&parsed); err != nil {
-		return nil, err
-	}
-	names := make([]string, 0, len(parsed.Results))
-	for _, t := range parsed.Results {
-		names = append(names, t.Name)
-	}
-	return names, nil
 }
 
 var updatesFallbackVersionRun = func() (string, error) {
@@ -136,10 +98,7 @@ var updatesFallbackVersionRun = func() (string, error) {
 }
 
 var updatesPullImageRun = func(version string) error {
-	cmd, err := podman.Command("default", "pull", "ghcr.io/kangpcode/davpanel:"+version)
-	if err != nil {
-		return err
-	}
+	cmd := exec.Command("python3", "/usr/local/share/davpanel/scripts/release_manager.py", "image", "--version", version)
 	cmd.Dir = "/root"
 	return cmd.Run()
 }

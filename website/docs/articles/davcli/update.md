@@ -1,11 +1,18 @@
 # Update 
 
-For this fork, published container tags are read from GHCR using registry token
-authentication. Remote updates require published `ghcr.io/kangpcode/davpanel`
-images and standalone fork release artifacts. Until publication, follow the
-local source build procedure in the repository's `INSTALL.md`; the clean-server
-installer is not an upgrade command for existing accounts.
+Updates use the published releases of [kangpcode/DavPanel](https://github.com/kangpcode/DavPanel/releases).
+The release manager verifies the architecture-specific archive and its checksum,
+then validates its source and binary provenance before using it. The same release
+contains DavCLI, DavAdmin binaries, configuration, translations and migrations.
+The panel image is built locally from that verified binary; separate fork
+repositories and pre-published DavPanel registry images are unnecessary.
 
+The root-owned release cache is `/var/cache/davpanel/releases`. `--check` needs
+GitHub access but does not download the full archive. A release must be published
+with its archive and checksum before it can be installed. Source development and
+clean-server installation are documented in the repository's `INSTALL.md`.
+Component failures stop the remaining requested modes and return a nonzero exit
+status. Test upgrades and migrations on a disposable server before production.
 
 `davcli update` command is used to check if new update is available and to update.
 
@@ -37,19 +44,14 @@ davcli update
 ===== Starting update to version 2.0.12 =====
 [INFO] Update log: /var/log/davpanel/updates/2.0.12.log
 ---- Updating DavCLI ----
-[INFO] Downloading terminal scripts from github: https://github.com/kangpcode/davcli/archive/refs/heads/podman.tar.gz
-[INFO] [✔] Terminal commands updated successfully
+...
 ---- Updating DavPanel container image ----
 ...
----- [✔] image ghcr.io/kangpcode/davpanel:2.0.12 downloaded successfully ----
+---- [✔] image ghcr.io/kangpcode/davpanel:2.0.12 built successfully ----
 ---- Updating version in /root/.env ----
 ---- Restarting DavPanel service ----
 ...
 ---- Cleaning up previous images ----
----- Updating installed locales ----
-[INFO] Updated locale: de-de
-[INFO] Updated locale: sr-rs
----- [✔] Locales updated: 2, failed: 0 ----
 ---- Updating DavAdmin modules ----
 ---- Updating DavAdmin ----
 ---- [✔] DavAdmin update triggered (applying in background) ----
@@ -71,7 +73,7 @@ davcli update --force --no-restart
 ```bash
 # davcli update --force --no-restart
 ...
----- [✔] image ghcr.io/kangpcode/davpanel:2.0.18 downloaded successfully ----
+---- [✔] image ghcr.io/kangpcode/davpanel:2.0.18 built successfully ----
 ---- Updating version in /root/.env ----
 ---- [!] Skipping DavPanel restart, restart the 'davpanel' container to apply the new version ----
 ...
@@ -120,19 +122,14 @@ davcli update --force
 ===== Starting update to version 2.0.12 =====
 [INFO] Update log: /var/log/davpanel/updates/2.0.12.log
 ---- Updating DavCLI ----
-[INFO] Downloading terminal scripts from github: https://github.com/kangpcode/davcli/archive/refs/heads/podman.tar.gz
-[INFO] [✔] Terminal commands updated successfully
+...
 ---- Updating DavPanel container image ----
 ...
----- [✔] image ghcr.io/kangpcode/davpanel:2.0.12 downloaded successfully ----
+---- [✔] image ghcr.io/kangpcode/davpanel:2.0.12 built successfully ----
 ---- Updating version in /root/.env ----
 ---- Restarting DavPanel service ----
 ...
 ---- Cleaning up previous images ----
----- Updating installed locales ----
-[INFO] Updated locale: de-de
-[INFO] Updated locale: sr-rs
----- [✔] Locales updated: 2, failed: 0 ----
 ---- Updating DavAdmin modules ----
 ---- Updating DavAdmin ----
 ---- [✔] DavAdmin update triggered (applying in background) ----
@@ -145,7 +142,7 @@ davcli update --force
 
 ## Admin
 
-Update only DavAdmin UI *(`/usr/local/admin/` from [kangpcode/davadmin](https://github.com/stefanpejcic/openadmin))*:
+Update only DavAdmin UI *(`/usr/local/davadmin/` from the verified DavPanel release)*:
 ```bash
 davcli update --admin
 ```
@@ -162,7 +159,7 @@ Updating DavAdmin
 
 ## Panel
 
-Update only DavPanel UI *(container image from [davpanel/davpanel-ui](https://hub.docker.com/r/davpanel/davpanel))*:
+Update only DavPanel UI *(locally built image from the verified DavPanel release)*:
 ```bash
 davcli update --panel
 ```
@@ -179,7 +176,7 @@ davpanel
 
 ## Terminal
 
-Update only DavCLI *(`/usr/local/davcli/` from [kangpcode/davcli](https://github.com/stefanpejcic/opencli))*:
+Update only DavCLI *(`/usr/local/davcli/` from the verified DavPanel release)*:
 ```bash
 davcli update --cli
 ```
@@ -190,29 +187,24 @@ davcli update --cli
 ```bash
 # davcli update --cli
 Updating DavCLI
-[INFO] Downloading terminal scripts from github: https://github.com/kangpcode/davcli/archive/refs/heads/podman.tar.gz
-[INFO] [✔] Terminal commands updated successfully
+...
 ```
 </details>
 
 ## Locales
 
-Update only translation files *(locale files from [kangpcode/davpanel-translations](https://github.com/stefanpejcic/openpanel-translations))*:
+Update only translation files *(locale files bundled in the verified DavPanel release)*:
 ```bash
 davcli update --translations
 ```
 
-Each locale download is tried up to 3 times with a 60 second limit per try, a locale that can't be downloaded is counted as failed and keeps its current file, and the update continues.
+Installed locales are refreshed from the release catalogs. If validation or copying fails, the restart is not attempted and the command fails.
 
 <details>
   <summary>Example output</summary>
 
 ```bash
 # davcli update --translations
-Updating installed locales
-[INFO] Updated locale: de-de
-[INFO] Updated locale: sr-rs
-[✔] Locales updated: 2, failed: 0
 [INFO] Restarting DavPanel service
 [INFO] [✔] Translations updated and DavPanel restarted
 ```
@@ -245,7 +237,7 @@ You'll be asked to confirm before packages are updated. A full server backup is 
 
 ## Modules
 
-Update only the DavAdmin modules/features list *(`/etc/davpanel/davadmin/config/features.json` from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration))*:
+Update only the DavAdmin modules/features list *(`/etc/davpanel/davadmin/config/features.json` from the verified release configuration)*:
 ```bash
 davcli update --modules
 ```
@@ -310,7 +302,7 @@ davcli update --php
 ```bash
 # davcli update --php
 ===== Updating PHP =====
-[INFO] Downloading configuration files from github
+...
 [INFO] PHP versions on github: 5.6 7.0 7.1 7.2 7.3 7.4 8.0 8.1 8.2 8.3 8.4 8.5
 [INFO] Overwriting /etc/davpanel/php/
 [INFO] [✔] /etc/davpanel/php/ updated
@@ -331,7 +323,7 @@ davcli update --php
 </details>
 
 This will:
-- replace `/etc/davpanel/php/` (ini files, ionCube loaders, composer) with the latest files from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration),
+- replace `/etc/davpanel/php/` (ini files, ionCube loaders, composer) with the latest files from the verified release configuration,
 - add any missing `php-fpm-X.Y` services to `docker-compose.yml` and their `PHP_FPM_X_Y_*` limits to `.env`,
 - add missing PHP mounts (php.ini, ionCube) to the OpenLiteSpeed service,
 - add missing ionCube mounts to existing `php-fpm-X.Y` services (e.g. when a loader for a PHP version becomes available),
@@ -343,7 +335,7 @@ Running containers are not restarted. New mounts take effect the next time the u
 
 ## Service files
 
-These options download the latest files for a single service from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration) and overwrite the files in `/etc/davpanel/`. Files that exist only on your server are kept. Several options can be combined, the files are downloaded only once.
+These options download the latest files for a single service from the verified release configuration and overwrite the files in `/etc/davpanel/`. Files that exist only on your server are kept. Several options can be combined, the files are downloaded only once.
 
 ### WP-CLI
 
@@ -357,14 +349,14 @@ davcli update --wp
 
 ```bash
 # davcli update --wp
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/wordpress/wp-cli.phar updated
 ```
 </details>
 
 ### OpenLiteSpeed
 
-Update OpenLiteSpeed files *(`/etc/davpanel/openlitespeed/` from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration/tree/main/openlitespeed))*:
+Update OpenLiteSpeed files *(`/etc/davpanel/openlitespeed/` from the verified release configuration)*:
 ```bash
 davcli update --ols
 ```
@@ -374,14 +366,14 @@ davcli update --ols
 
 ```bash
 # davcli update --ols
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/openlitespeed updated
 ```
 </details>
 
 ### Apache
 
-Update Apache files *(`/etc/davpanel/apache/` from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration/tree/main/apache))*:
+Update Apache files *(`/etc/davpanel/apache/` from the verified release configuration)*:
 ```bash
 davcli update --apache
 ```
@@ -391,7 +383,7 @@ davcli update --apache
 
 ```bash
 # davcli update --apache
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/apache updated
 ```
 </details>
@@ -408,7 +400,7 @@ davcli update --clamav
 
 ```bash
 # davcli update --clamav
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/clamav updated
 [INFO] Removing clamav container
 [INFO] Deleting image docker.io/clamav/clamav:1.4
@@ -425,7 +417,7 @@ If the container is not running, only the files are updated:
 
 ```bash
 # davcli update --clamav
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/clamav updated
 [INFO] clamav container is not running, skipping image update
 ```
@@ -443,7 +435,7 @@ davcli update --phpmyadmin
 
 ```bash
 # davcli update --phpmyadmin
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/mysql/phpmyadmin updated
 [INFO] Removing phpmyadmin container
 [INFO] Deleting image docker.io/library/phpmyadmin:latest
@@ -455,7 +447,7 @@ davcli update --phpmyadmin
 
 ### PostgreSQL
 
-Update PostgreSQL files *(`/etc/davpanel/postgres/` from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration/tree/main/postgres))*:
+Update PostgreSQL files *(`/etc/davpanel/postgres/` from the verified release configuration)*:
 ```bash
 davcli update --postgres
 ```
@@ -465,14 +457,14 @@ davcli update --postgres
 
 ```bash
 # davcli update --postgres
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/postgres updated
 ```
 </details>
 
 ### Skeleton
 
-Update the files copied to new user accounts *(`/etc/davpanel/skeleton/` from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration/tree/main/skeleton))*:
+Update the files copied to new user accounts *(`/etc/davpanel/skeleton/` from the verified release configuration)*:
 ```bash
 davcli update --skeleton
 ```
@@ -482,14 +474,14 @@ davcli update --skeleton
 
 ```bash
 # davcli update --skeleton
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/skeleton updated
 ```
 </details>
 
 ### SSH
 
-Update SSH files *(`/etc/davpanel/ssh/` from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration/tree/main/ssh))*:
+Update SSH files *(`/etc/davpanel/ssh/` from the verified release configuration)*:
 ```bash
 davcli update --ssh
 ```
@@ -499,14 +491,14 @@ davcli update --ssh
 
 ```bash
 # davcli update --ssh
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/ssh updated
 ```
 </details>
 
 ### Varnish
 
-Update Varnish files *(`/etc/davpanel/varnish/` from [kangpcode/davpanel-configuration](https://github.com/stefanpejcic/openpanel-configuration/tree/main/varnish))*:
+Update Varnish files *(`/etc/davpanel/varnish/` from the verified release configuration)*:
 ```bash
 davcli update --varnish
 ```
@@ -516,7 +508,7 @@ davcli update --varnish
 
 ```bash
 # davcli update --varnish
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/varnish updated
 ```
 </details>
@@ -533,7 +525,7 @@ davcli update --cron
 
 ```bash
 # davcli update --cron
-[INFO] Downloading configuration files from github
+...
 [INFO] [✔] /etc/davpanel/cron updated
 [INFO] [✔] /etc/cron.d/davpanel updated
 ```

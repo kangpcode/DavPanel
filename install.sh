@@ -25,8 +25,14 @@ EOF
 }
 
 ensure_python() {
-    command -v python3 >/dev/null && return 0
-    [[ "$read_only" == false ]] || { echo 'Python 3 is required for read-only verification.' >&2; return 1; }
+    if command -v python3 >/dev/null; then
+        python3 -c 'import sys; sys.exit(sys.version_info < (3, 9))' || {
+            echo 'Python 3.9 or newer must be available as python3; use a current server distribution.' >&2
+            return 1
+        }
+        return 0
+    fi
+    [[ "$read_only" == false ]] || { echo 'Python 3.9+ is required for read-only verification.' >&2; return 1; }
     [[ "$EUID" == 0 ]] || { echo 'Run this installer with sudo.' >&2; return 1; }
     echo 'Installing Python 3 for release verification...'
     if command -v apt-get >/dev/null; then
@@ -37,9 +43,13 @@ ensure_python() {
     elif command -v yum >/dev/null; then
         yum install -y python3
     else
-        echo 'Install Python 3 using your distribution package manager.' >&2
+        echo 'Install Python 3.9+ using your distribution package manager.' >&2
         return 1
     fi
+    python3 -c 'import sys; sys.exit(sys.version_info < (3, 9))' || {
+        echo 'The distribution installed an obsolete Python; Python 3.9+ is required.' >&2
+        return 1
+    }
 }
 
 extract_payload() {
@@ -117,7 +127,7 @@ installer_bootstrap() {
     else
         python3 "$source_dir/scripts/preflight.py" --root "$source_dir"
         if ! python3 "$source_dir/scripts/preflight.py" --root "$source_dir" --require-artifacts; then
-            command -v go >/dev/null || { echo 'Use the standalone .run installer, or install Go 1.26+ to build this checkout.' >&2; return 1; }
+            command -v go >/dev/null || { echo 'Use the standalone .run installer, or install Go 1.27.3+ to build this checkout.' >&2; return 1; }
             bash "$source_dir/scripts/build-release.sh"
         fi
         [[ "$has_domain" == true ]] || forwarded+=(--selfsigned)

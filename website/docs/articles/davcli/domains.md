@@ -160,6 +160,10 @@ Domain example.com added successfully
 
 ### Onion (Tor) domains
 
+The DavPanel Tor image is built from the bundled `tor/` source during installation.
+Hidden service configuration and keys are owned by the tenant UID; no OpenPanel
+image is required.
+
 When adding a `.onion` domain, you can pass an existing hidden service key pair instead of generating a new one:
 
 ```bash

@@ -238,7 +238,7 @@
 							modules: [],
 							userAllowed: {{.UserAllowedJSON}},
 							init() {
-								fetch('https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davadmin/config/features.json')
+								fetch('https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/davadmin/config/features.json')
 									.then(res => res.json())
 									.then(data => {
 										this.modules = data;

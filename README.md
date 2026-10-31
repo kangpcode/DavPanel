@@ -11,6 +11,33 @@
 
 Current validation results and outstanding release gates are recorded in [AUDIT.md](AUDIT.md).
 
+## Install and develop
+
+From a built release on a clean Linux server:
+
+```bash
+sudo bash davpanel-2.0.19-linux-amd64.run
+```
+
+After publishing the new source and release assets to GitHub, the online command is:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && sudo bash /tmp/davpanel-bootstrap.sh
+```
+
+The bootstrap selects amd64/arm64 and verifies the installer checksum. This online
+command requires published release assets; the current local work is not a public
+release. See [INSTALL.md](INSTALL.md) for payload verification and options.
+
+Open the repository in GitHub Codespaces or a Dev Container for development;
+run `bash scripts/dev.sh check` and `bash scripts/dev.sh test`. See
+[DEVELOPMENT.md](DEVELOPMENT.md), the [platform matrix](PLATFORMS.md), and the
+[competitor comparison and benchmark procedure](BENCHMARKS.md).
+
+Public source, release inputs, update metadata and sanitized benchmark results
+belong in this GitHub repository. Server credentials, customer databases and
+backups stay on the server or an operator-configured backup destination.
+
 **DavPanel** is a web hosting control panel built around containers. Every user gets a fully isolated environment: dedicated web server, dedicated database, private network, and scoped file storage - delivering VPS-grade security on shared hardware.
 
 ![davpanel screenshot](website/static/img/landing/davpanel-illustration-dark.svg)

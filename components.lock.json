@@ -20,8 +20,8 @@
       "upstream_commit": "27529b74722b42f5d61ba78cd40ad0ded811f65e",
       "fork_url": "https://github.com/kangpcode/davadmin",
       "storage": "vendored",
-      "tree_sha256": "0e62b6b9c48bc0f010b186808d4e786a2953f30200ac45fc01bbc85d8beeee49",
-      "file_count": 808
+      "tree_sha256": "d817564d761281cd380dd4707f550c9194ef0d43f976ce5ee98eb6e40ea69a93",
+      "file_count": 819
     },
     {
       "path": "integrations/whmcs",
@@ -40,7 +40,7 @@
       "upstream_commit": "80287619ed47ff5935ec5a1371b4b06036015911",
       "fork_url": "https://github.com/kangpcode/davpanel-configuration",
       "storage": "vendored",
-      "tree_sha256": "52c524a4d6fd2356b4791a26291f5c7f32d829083b73926702814e372dc9cf89",
+      "tree_sha256": "896ee3f0fd35a7df5048f71cd01eb3d6f71aa9e480e8a201750081c13c68fdd8",
       "file_count": 235
     },
     {
@@ -110,8 +110,8 @@
       "upstream_commit": "f67cd910c57e13bd25bf564313ff0a71c049846e",
       "fork_url": "https://github.com/kangpcode/davcli",
       "storage": "vendored",
-      "tree_sha256": "1f8392d6a87aa2e7110100af204b78d108b5c16a2364d8aa2bdd3efb662126c9",
-      "file_count": 126
+      "tree_sha256": "39d65a09f937308279e3e5a3f2059216bcb3aeb7372d7059248406d9e9a0b78f",
+      "file_count": 127
     },
     {
       "path": "mailserver",
@@ -120,8 +120,8 @@
       "upstream_commit": "1c9ca188d3358c4bd6ebc7918dedce59311f0211",
       "fork_url": "https://github.com/kangpcode/DavMail",
       "storage": "vendored",
-      "tree_sha256": "916fe8791ba9c7a0d51f646a1935bbfe66cc90a36168ae61583338db0a7ff9b3",
-      "file_count": 13
+      "tree_sha256": "c8bc914d6c619100bf421e1d2a67a5e9e1b05a323f9cc7d1fe1c6a157557c8bf",
+      "file_count": 16
     },
     {
       "path": "vsftpd",

@@ -106,7 +106,7 @@
         async restoreDefault() {
           this.loading = true;
           const version = '{{$v.Label}}';
-          const url = `https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/php/ini/${version}.ini`;
+          const url = `https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/php/ini/${version}.ini`;
           try {
             const res = await fetch(url);
             if (!res.ok) throw new Error('Failed to fetch default configuration from Github');

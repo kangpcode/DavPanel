@@ -44,9 +44,9 @@ var (
 	DefaultsEnvPath               = "/etc/davpanel/docker/compose/1.0/.env"
 	DefaultsComposeFilePath       = "/etc/davpanel/docker/compose/1.0/docker-compose.yml"
 	DefaultsAutostartServicesPath = "/etc/davpanel/docker/compose/1.0/autostart.services"
-	DefaultsRemoteComposeURL      = "https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/docker/compose/1.0/docker-compose.yml"
-	DefaultsRemoteEnvURL          = "https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/docker/compose/1.0/.env"
-	DefaultsRemoteAutostartURL    = "https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/docker/compose/1.0/autostart.services"
+	DefaultsRemoteComposeURL      = "https://raw.githubusercontent.com/kangpcode/DavPanel/refs/heads/main/configuration/docker/compose/1.0/docker-compose.yml"
+	DefaultsRemoteEnvURL          = "https://raw.githubusercontent.com/kangpcode/DavPanel/refs/heads/main/configuration/docker/compose/1.0/.env"
+	DefaultsRemoteAutostartURL    = "https://raw.githubusercontent.com/kangpcode/DavPanel/refs/heads/main/configuration/docker/compose/1.0/autostart.services"
 	DefaultsTmpDir                = "/tmp/user_defaults"
 )
 

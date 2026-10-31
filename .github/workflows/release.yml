@@ -1,15 +1,16 @@
 name: Build verified installers
 on:
   workflow_dispatch:
-  release:
-    types: [published]
+    inputs:
+      publish:
+        description: Publish installers after both architecture builds pass
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     strategy:
       matrix:
         arch: [amd64, arm64]
@@ -44,13 +45,30 @@ jobs:
             dist/*-linux-${{ matrix.arch }}.run.sha256
             dist/*-linux-${{ matrix.arch }}.tar.gz
             dist/*-linux-${{ matrix.arch }}.tar.gz.sha256
-      - name: Attach artifacts to an explicitly published release
-        if: github.event_name == 'release'
+  publish:
+    if: inputs.publish
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: davpanel-linux-*
+          merge-multiple: true
+          path: release-artifacts
+      - name: Publish a complete release
         env:
           GH_TOKEN: ${{ github.token }}
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-          RELEASE_ARCH: ${{ matrix.arch }}
         run: |
           version=$(tr -d '[:space:]' < davpanel/version)
-          [[ "${RELEASE_TAG#v}" == "$version" ]] || { echo 'Release tag and source version differ.' >&2; exit 1; }
-          gh release upload "$RELEASE_TAG" dist/*-linux-"$RELEASE_ARCH".run dist/*-linux-"$RELEASE_ARCH".run.sha256 dist/*-linux-"$RELEASE_ARCH".tar.gz dist/*-linux-"$RELEASE_ARCH".tar.gz.sha256
+          tag="v$version"
+          if git ls-remote --tags origin "refs/tags/$tag" | grep -q .; then
+            git fetch origin "refs/tags/$tag:refs/tags/$tag"
+            [[ "$(git rev-parse "$tag^{}")" == "$GITHUB_SHA" ]] || { echo 'Version tag points at different source.' >&2; exit 1; }
+          fi
+          (cd release-artifacts && sha256sum --check *.sha256)
+          gh release create "$tag" --target "$GITHUB_SHA" --draft --title "DavPanel $version" --notes 'DavPanel installers for Linux amd64 and arm64. See INSTALL.md, PLATFORMS.md and AUDIT.md for verification and deployment limits.'
+          gh release upload "$tag" release-artifacts/*
+          gh release edit "$tag" --draft=false

@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	SourceURL = "https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/docker/templates/applications.yml"
+	SourceURL = "https://raw.githubusercontent.com/kangpcode/DavPanel/main/configuration/docker/templates/applications.yml"
 	// the configuration repo is checked out in /etc/davpanel, used when github can't be reached
 	localPath = "/etc/davpanel/docker/templates/applications.yml"
 	cacheKey  = "docker_templates"

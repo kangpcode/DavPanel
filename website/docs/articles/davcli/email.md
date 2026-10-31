@@ -479,7 +479,7 @@ davcli email-server logs -f
 
 ### pflogsumm
 
-Generate HTML reports from mail logs:
+Generate HTML reports from mail logs with the bundled reporting helper (no runtime source clone):
 ```bash
 davcli email-server pflogsumm
 ```
