@@ -79,14 +79,8 @@ func (a *APILogin) HandleAPILogin(w http.ResponseWriter, r *http.Request) {
 		writeJSONError(w, http.StatusForbidden, "User is not active")
 		return
 	}
-	if user.TOTPEnabled {
-		valid, _ := totp.ValidateCustom(strings.TrimSpace(body.TOTPCode), user.TOTPSecret.String, time.Now(), totp.ValidateOpts{
-			Period: 30, Skew: 1, Digits: otp.DigitsSix, Algorithm: otp.AlgorithmSHA1,
-		})
-		if !valid {
-			writeJSONStatus(w, http.StatusUnauthorized, map[string]interface{}{"error": "A valid authentication code is required", "twofa_required": true})
-			return
-		}
+	if !requireAPISecondFactor(w, user, body.TOTPCode) {
+		return
 	}
 
 	token, err := newSSOToken()
@@ -111,6 +105,19 @@ func (a *APILogin) HandleAPILogin(w http.ResponseWriter, r *http.Request) {
 		"login_path": "/login/sso/" + token,
 		"expires_in": int(ssoTokenTTL.Seconds()),
 	})
+}
+
+func requireAPISecondFactor(w http.ResponseWriter, user *admindb.User, code string) bool {
+	if !user.TOTPEnabled {
+		return true
+	}
+	valid, _ := totp.ValidateCustom(strings.TrimSpace(code), user.TOTPSecret.String, time.Now(), totp.ValidateOpts{
+		Period: 30, Skew: 1, Digits: otp.DigitsSix, Algorithm: otp.AlgorithmSHA1,
+	})
+	if !valid {
+		writeJSONStatus(w, http.StatusUnauthorized, map[string]interface{}{"error": "A valid authentication code is required", "twofa_required": true})
+	}
+	return valid
 }
 
 // HandleSSOLogin handles GET /login/sso/{token}. The token is popped on

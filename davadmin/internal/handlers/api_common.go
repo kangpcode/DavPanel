@@ -79,7 +79,7 @@ func (a *APIAuth) actingAPIUser(r *http.Request) *admindb.User {
 		return nil
 	}
 	user, err := a.DB.UserByUsername(username)
-	if err != nil {
+	if err != nil || !user.IsActive {
 		return nil
 	}
 	return user
@@ -136,14 +136,7 @@ func APIUsernameFromContext(r *http.Request) string {
 	return username
 }
 
-// RequireAPIToken only validates that the bearer token itself is present
-// and well-formed -- no acting-user DB lookup and no role check. This
-// mirrors a bare @jwt_required() route: most of them (e.g. /api/whoami)
-// never touch the acting user's DB row at all, just the JWT's identity
-// claim, so requiring the row to still exist here would reject requests
-// Python happily serves. Handlers that do need the full acting user (a
-// minority of the bare-decorated routes) resolve it themselves via
-// ActingAPIUserOr404, same as their Python counterparts do inline.
+// RequireAPIToken checks the signed token and the current account state.
 func (a *APIAuth) RequireAPIToken(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		username, ok := parseAPIToken(r, a.SecretKey)
@@ -151,7 +144,11 @@ func (a *APIAuth) RequireAPIToken(next http.HandlerFunc) http.HandlerFunc {
 			writeJSONError(w, http.StatusUnauthorized, "Missing or invalid token")
 			return
 		}
-		user, _ := a.DB.UserByUsername(username)
+		user, err := a.DB.UserByUsername(username)
+		if err != nil || !user.IsActive {
+			writeJSONError(w, http.StatusUnauthorized, "Missing or inactive token user")
+			return
+		}
 		next(w, withAPIUser(withAPIUsername(r, username), user))
 	}
 }

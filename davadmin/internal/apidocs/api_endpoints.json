@@ -15,10 +15,11 @@
         "method": "POST",
         "path": "/api/",
         "auth": "none",
-        "description": "Log in with username/password and obtain a JWT Bearer token, valid for 15 minutes.",
+        "description": "Log in with username/password and obtain a JWT Bearer token, valid for 15 minutes. Inactive accounts are rejected. Accounts with TOTP enabled must supply totp_code; missing or invalid codes return HTTP 401 with twofa_required=true.",
         "body": {
           "username": "admin",
-          "password": "secret"
+          "password": "secret",
+          "totp_code": "123456"
         },
         "response": {
           "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -37,10 +38,11 @@
         "method": "POST",
         "path": "/api/login",
         "auth": "none",
-        "description": "Log in with username/password and obtain a one-time SSO token, redeemable once at GET /login/sso/{token} (expires after 2 minutes) for a real browser session cookie and a redirect to /dashboard. For integrations (e.g. a WHMCS \"Login to Panel\" button) that need to open an actual admin session instead of just an API token - avoids posting credentials to the CSRF-protected /login form, which an auto-submitting cross-origin form can't get past.",
+        "description": "Log in with username/password and obtain a one-time SSO token, redeemable once at GET /login/sso/{token} (expires after 2 minutes) for a real browser session cookie and a redirect to /dashboard. For integrations (e.g. a WHMCS \"Login to Panel\" button) that need to open an actual admin session instead of just an API token - avoids posting credentials to the CSRF-protected /login form, which an auto-submitting cross-origin form can't get past. Accounts with TOTP enabled must also send totp_code; missing or invalid codes return HTTP 401 with twofa_required=true. SSO tokens are rejected if TOTP settings change before redemption.",
         "body": {
           "username": "admin",
-          "password": "secret"
+          "password": "secret",
+          "totp_code": "123456"
         },
         "response": {
           "token": "5f2c...",

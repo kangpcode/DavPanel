@@ -28,7 +28,7 @@ REPO_ROOT = os.path.dirname(SCRIPT_DIR)
 APIDOCS = os.path.join(REPO_ROOT, "internal", "apidocs", "api_endpoints.json")
 
 APP_OUT = os.path.join(REPO_ROOT, "static", "openapi.yaml")
-WEBSITE_OUT = os.path.join(os.path.dirname(REPO_ROOT), "DavPanel", "website", "static", "davadmin-openapi.yaml")
+WEBSITE_OUT = os.path.join(os.path.dirname(REPO_ROOT), "website", "static", "davadmin-openapi.yaml")
 
 with open(APIDOCS) as f:
     groups = json.load(f)

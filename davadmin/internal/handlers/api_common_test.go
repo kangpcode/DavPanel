@@ -147,26 +147,17 @@ func TestRequireAPITokenAllowsValidTokenAndSetsContext(t *testing.T) {
 	}
 }
 
-// TestRequireAPITokenAllowsTokenForDeletedUser locks in the loosened
-// RequireAPIToken behavior: a bare @jwt_required() route in the original
-// (e.g. /api/whoami) never looks up the acting user's DB row at all, so a
-// still-valid token for a since-deleted user must still reach the
-// handler -- APIUserFromContext is simply nil, and callers that need the
-// identity use APIUsernameFromContext instead.
-func TestRequireAPITokenAllowsTokenForDeletedUser(t *testing.T) {
+// Removing an account revokes its API access.
+func TestRequireAPITokenRejectsTokenForDeletedUser(t *testing.T) {
 	a := &APIAuth{DB: newAPITestDB(t), SecretKey: "test-secret"}
 	token, err := createAPIToken("ghost", "test-secret")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	var gotUser *admindb.User
-	var gotUsername string
 	called := false
 	h := a.RequireAPIToken(func(w http.ResponseWriter, r *http.Request) {
 		called = true
-		gotUser = APIUserFromContext(r)
-		gotUsername = APIUsernameFromContext(r)
 	})
 
 	req := httptest.NewRequest("GET", "/api/whoami", nil)
@@ -174,14 +165,8 @@ func TestRequireAPITokenAllowsTokenForDeletedUser(t *testing.T) {
 	rec := httptest.NewRecorder()
 	h(rec, req)
 
-	if !called {
-		t.Fatalf("expected the handler to run for a valid token even without a matching DB user, got status %d", rec.Code)
-	}
-	if gotUser != nil {
-		t.Fatalf("expected a nil user for a deleted account, got %+v", gotUser)
-	}
-	if gotUsername != "ghost" {
-		t.Fatalf("expected username %q from context, got %q", "ghost", gotUsername)
+	if called || rec.Code != http.StatusUnauthorized {
+		t.Fatalf("deleted user retained API access: called=%v status=%d", called, rec.Code)
 	}
 }
 

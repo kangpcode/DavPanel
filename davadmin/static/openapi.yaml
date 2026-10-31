@@ -152,7 +152,9 @@ paths:
         (expires after 2 minutes) for a real browser session cookie and a redirect to /dashboard. For
         integrations (e.g. a WHMCS "Login to Panel" button) that need to open an actual admin session
         instead of just an API token - avoids posting credentials to the CSRF-protected /login form, which
-        an auto-submitting cross-origin form can't get past.
+        an auto-submitting cross-origin form can't get past. Accounts with TOTP enabled must also send
+        totp_code; missing or invalid codes return HTTP 401 with twofa_required=true. SSO tokens are rejected
+        if TOTP settings change before redemption.
       description: '**Access:** No authentication (this is the login/health-check endpoint itself).'
       operationId: login
       tags:
@@ -170,9 +172,13 @@ paths:
                 password:
                   type: string
                   example: secret
+                totp_code:
+                  type: string
+                  example: '123456'
               example:
                 username: admin
                 password: secret
+                totp_code: '123456'
       responses:
         '200':
           description: Success.
@@ -1832,8 +1838,8 @@ paths:
       - bearerAuth: []
     patch:
       summary: Same handler as PUT /api/plans/{plan_id} -- partially or fully edits an existing plan via
-        'davcli plan-edit'. A reseller gets 404 for a plan outside their allowed_plans, and 403 when
-        trying to change or delete a plan that also has other owners' accounts on it.
+        'davcli plan-edit'. A reseller gets 404 for a plan outside their allowed_plans, and 403 when trying
+        to change or delete a plan that also has other owners' accounts on it.
       description: '**Access:** Administrator/user role, or a reseller limited to the plans assigned to
         them.'
       operationId: patch_plans_plan_id
@@ -2776,8 +2782,8 @@ paths:
       security:
       - bearerAuth: []
     post:
-      summary: Updates HTTP Basic Auth settings for DavAdmin (enabled flag, username, password); any
-        provided fields are written to config and DavAdmin is flagged for restart.
+      summary: Updates HTTP Basic Auth settings for DavAdmin (enabled flag, username, password); any provided
+        fields are written to config and DavAdmin is flagged for restart.
       description: '**Access:** Administrator or user role (the reseller role is blocked).'
       operationId: post_security_basic_auth
       tags:
@@ -2937,8 +2943,7 @@ paths:
                       terminal.
                 example:
                   success: true
-                  message: DavAdmin is now disabled and all further actions need to be performed via
-                    terminal.
+                  message: DavAdmin is now disabled and all further actions need to be performed via terminal.
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -5009,8 +5014,8 @@ paths:
       - bearerAuth: []
     post:
       summary: Updates general server settings (domain, ports, proxy backend, dev mode); applies only
-        the values that changed, writes DavPanel/DavAdmin restart-needed flag files as appropriate,
-        and reports which settings were changed.
+        the values that changed, writes DavPanel/DavAdmin restart-needed flag files as appropriate, and
+        reports which settings were changed.
       description: '**Access:** Administrator or user role (the reseller role is blocked).'
       operationId: post_settings_general
       tags:
@@ -5241,7 +5246,7 @@ paths:
                       version: "3"
                       services:
                         web:
-                          image: ghcr.io/kangpcode/davpanel
+                          image: davpanel/davpanel
                 example:
                   env: |
                     VARNISH="0"
@@ -5250,7 +5255,7 @@ paths:
                     version: "3"
                     services:
                       web:
-                        image: ghcr.io/kangpcode/davpanel
+                        image: davpanel/davpanel
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -5280,7 +5285,7 @@ paths:
                     version: "3"
                     services:
                       web:
-                        image: ghcr.io/kangpcode/davpanel
+                        image: davpanel/davpanel
               example:
                 env: |
                   VARNISH="1"
@@ -5289,7 +5294,7 @@ paths:
                   version: "3"
                   services:
                     web:
-                      image: ghcr.io/kangpcode/davpanel
+                      image: davpanel/davpanel
       responses:
         '200':
           description: Success.
@@ -5372,7 +5377,7 @@ paths:
                       version: "3"
                       services:
                         web:
-                          image: ghcr.io/kangpcode/davpanel
+                          image: davpanel/davpanel
                 example:
                   env: |
                     VARNISH="0"
@@ -5380,7 +5385,7 @@ paths:
                     version: "3"
                     services:
                       web:
-                        image: ghcr.io/kangpcode/davpanel
+                        image: davpanel/davpanel
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -5415,7 +5420,7 @@ paths:
                     version: "3"
                     services:
                       web:
-                        image: ghcr.io/kangpcode/davpanel
+                        image: davpanel/davpanel
               example:
                 env: |
                   VARNISH="1"
@@ -5423,7 +5428,7 @@ paths:
                   version: "3"
                   services:
                     web:
-                      image: ghcr.io/kangpcode/davpanel
+                      image: davpanel/davpanel
       responses:
         '200':
           description: Success.
@@ -5442,7 +5447,7 @@ paths:
                       version: "3"
                       services:
                         web:
-                          image: ghcr.io/kangpcode/davpanel
+                          image: davpanel/davpanel
                 example:
                   env: |
                     VARNISH="1"
@@ -5450,7 +5455,7 @@ paths:
                     version: "3"
                     services:
                       web:
-                        image: ghcr.io/kangpcode/davpanel
+                        image: davpanel/davpanel
         default:
           $ref: '#/components/responses/Error'
       security:
@@ -6666,8 +6671,8 @@ paths:
       - bearerAuth: []
   /api/license:
     get:
-      summary: Reads the currently configured license key by running `davcli license key --json` and
-        returns it verbatim (trimmed).
+      summary: Reads the currently configured license key by running `davcli license key --json` and returns
+        it verbatim (trimmed).
       description: '**Access:** Administrator or user role (the reseller role is blocked).'
       operationId: get_license
       tags:

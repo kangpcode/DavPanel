@@ -33,6 +33,7 @@ func (a *APIWelcome) ServeWelcome(w http.ResponseWriter, r *http.Request) {
 	var body struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
+		TOTPCode string `json:"totp_code"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		writeJSONError(w, http.StatusBadRequest, "Invalid JSON body")
@@ -42,6 +43,13 @@ func (a *APIWelcome) ServeWelcome(w http.ResponseWriter, r *http.Request) {
 	user, err := a.DB.UserByUsername(body.Username)
 	if err != nil || !auth.CheckPasswordHash(user.PasswordHash, body.Password) {
 		writeJSONError(w, http.StatusUnauthorized, "Invalid credentials")
+		return
+	}
+	if !user.IsActive {
+		writeJSONError(w, http.StatusForbidden, "User is not active")
+		return
+	}
+	if !requireAPISecondFactor(w, user, body.TOTPCode) {
 		return
 	}
 

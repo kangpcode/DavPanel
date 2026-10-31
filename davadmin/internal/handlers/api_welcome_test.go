@@ -6,8 +6,10 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/pquerna/otp/totp"
 
 	"github.com/kangpcode/davadmin/internal/auth"
 )
@@ -90,6 +92,60 @@ func TestServeWelcomePostWrongPasswordReturns401(t *testing.T) {
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusUnauthorized {
 		t.Fatalf("expected 401, got %d", resp.StatusCode)
+	}
+}
+
+func TestAPITokenLoginEnforcesTOTPAndActiveAccount(t *testing.T) {
+	a, srv, client := newAPIWelcomeTestServer(t)
+	const secret = "JBSWY3DPEHPK3PXP"
+	if err := a.DB.SetTOTP("alice", secret, true); err != nil {
+		t.Fatal(err)
+	}
+	resp, err := client.Post(srv.URL+"/api/", "application/json", strings.NewReader(`{"username":"alice","password":"correct-password"}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusUnauthorized {
+		t.Fatalf("password-only JWT login bypassed TOTP: %d", resp.StatusCode)
+	}
+	code, err := totp.GenerateCode(secret, time.Now())
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, _ := json.Marshal(map[string]string{"username": "alice", "password": "correct-password", "totp_code": code})
+	resp, err = client.Post(srv.URL+"/api/", "application/json", strings.NewReader(string(body)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	var result struct {
+		AccessToken string `json:"access_token"`
+	}
+	json.NewDecoder(resp.Body).Decode(&result)
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusOK || result.AccessToken == "" {
+		t.Fatal("valid TOTP did not issue a JWT")
+	}
+	if err := a.DB.SetActive("alice", false); err != nil {
+		t.Fatal(err)
+	}
+	req, _ := http.NewRequest(http.MethodGet, srv.URL+"/api/whoami", nil)
+	req.Header.Set("Authorization", "Bearer "+result.AccessToken)
+	revoked, err := client.Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	revoked.Body.Close()
+	if revoked.StatusCode != http.StatusUnauthorized {
+		t.Fatalf("inactive account kept its token: %d", revoked.StatusCode)
+	}
+	resp, err = client.Post(srv.URL+"/api/", "application/json", strings.NewReader(string(body)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != http.StatusForbidden {
+		t.Fatalf("inactive account issued a new JWT: %d", resp.StatusCode)
 	}
 }
 
