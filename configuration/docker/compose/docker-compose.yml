@@ -1,7 +1,7 @@
 services:
   # Database for DavPanel users, plans, websites and domains
   davpanel_mysql:
-    image: mariadb:10-focal
+    image: mariadb:11.4
     container_name: davpanel_mysql
     restart: always
     environment:

@@ -1,0 +1,56 @@
+name: Build verified installers
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.27.3'
+          cache-dependency-path: |
+            davpanel/go.sum
+            davadmin/go.sum
+      - name: Verify source and installer regressions
+        run: |
+          python3 scripts/audit_sources.py
+          python3 -m unittest discover -s scripts -p 'test_*.py'
+          bash -n install.sh PODMAN_INSTALL.sh scripts/build-release.sh
+      - name: Test and audit Go modules
+        run: |
+          for component in davpanel davadmin; do
+            (cd "$component" && go test ./... && go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...)
+          done
+      - name: Build installer
+        run: bash scripts/build-release.sh --arch=${{ matrix.arch }}
+      - name: Validate native installer
+        if: matrix.arch == 'amd64'
+        run: bash dist/davpanel-*-linux-amd64.run --preflight
+      - uses: actions/upload-artifact@v4
+        with:
+          name: davpanel-linux-${{ matrix.arch }}
+          path: |
+            dist/*-linux-${{ matrix.arch }}.run
+            dist/*-linux-${{ matrix.arch }}.run.sha256
+            dist/*-linux-${{ matrix.arch }}.tar.gz
+            dist/*-linux-${{ matrix.arch }}.tar.gz.sha256
+      - name: Attach artifacts to an explicitly published release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_ARCH: ${{ matrix.arch }}
+        run: |
+          version=$(tr -d '[:space:]' < davpanel/version)
+          [[ "${RELEASE_TAG#v}" == "$version" ]] || { echo 'Release tag and source version differ.' >&2; exit 1; }
+          gh release upload "$RELEASE_TAG" dist/*-linux-"$RELEASE_ARCH".run dist/*-linux-"$RELEASE_ARCH".run.sha256 dist/*-linux-"$RELEASE_ARCH".tar.gz dist/*-linux-"$RELEASE_ARCH".tar.gz.sha256

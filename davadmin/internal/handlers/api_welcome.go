@@ -61,10 +61,7 @@ func (a *APIWelcome) ServeWelcome(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, map[string]string{"access_token": token})
 }
 
-// ServeWhoami handles GET /api/whoami. Wrap with (*APIAuth).RequireAPIToken.
-// Reports the JWT identity directly rather than the resolved acting user:
-// this route never touches the admindb row, so it still answers even for
-// a token whose user has since been deleted.
+// ServeWhoami reports the active account resolved by RequireAPIToken.
 func (a *APIWelcome) ServeWhoami(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, map[string]string{"logged_in_as": APIUsernameFromContext(r)})
 }

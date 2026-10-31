@@ -6,7 +6,7 @@ two copies:
   - static/openapi.yaml (same-origin copy the in-app Swagger UI at
     /settings/api loads - a relative server URL so it resolves against
     whatever domain/port the panel is actually running on)
-  - ../DavPanel/website/static/davadmin-openapi.yaml (public docs site
+  - ../website/static/davadmin-openapi.yaml (public docs site
     download link, with an example.com placeholder server since it's
     downloaded standalone) -- only written if that path exists locally.
 

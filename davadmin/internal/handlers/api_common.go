@@ -110,19 +110,13 @@ func withAPIUser(r *http.Request, user *admindb.User) *http.Request {
 	return r.WithContext(context.WithValue(r.Context(), apiUserContextKey{}, user))
 }
 
-// withAPIUsername stashes the raw JWT subject on the request context,
-// available even when the acting user's DB row is gone (see
-// RequireAPIToken below) or was never looked up at all.
+// withAPIUsername makes the validated identity available to handlers and activity logs.
 func withAPIUsername(r *http.Request, username string) *http.Request {
 	activity.SetActor(r.Context(), username)
 	return r.WithContext(context.WithValue(r.Context(), apiUsernameContextKey{}, username))
 }
 
-// APIUserFromContext returns the acting user resolved by one of the
-// role-gating RequireAPI* middlewares below. Guaranteed non-nil under
-// those; under plain RequireAPIToken it's nil if the token's user no
-// longer exists in the DB -- use APIUsernameFromContext if only the raw
-// identity is needed.
+// APIUserFromContext returns the active account resolved by API authentication.
 func APIUserFromContext(r *http.Request) *admindb.User {
 	user, _ := r.Context().Value(apiUserContextKey{}).(*admindb.User)
 	return user

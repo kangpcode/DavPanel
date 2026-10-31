@@ -2,6 +2,43 @@
 
 Developer and maintainer: **Dhafa Nazula Permadi (kangpcode)**.
 
+## One-command installation
+
+Copy the standalone release installer to a clean target VPS and run:
+
+```bash
+sudo bash davpanel-2.0.19-linux-amd64.run
+```
+
+For AArch64, use the `linux-arm64.run` release. The file includes both panel
+binaries, the 16 component sources and installation inputs; no Go compiler,
+manual archive extraction or separate build step is required on the target.
+The installer verifies its payload SHA-256, rejects archive path traversal and
+links, checks the component/source/binary digests and architecture, then starts
+the hosting installation. It installs Python 3 if absent. It still downloads OS
+packages, base container images and external firewall/WAF dependencies.
+
+With no `--domain`, it uses a self-signed certificate for IP access. For a domain
+with working DNS, pass `--domain=panel.example.com` for public TLS. Run only on a
+clean dedicated server; the command changes system configuration and services.
+
+Read-only verification, including from a non-root account:
+
+```bash
+bash davpanel-2.0.19-linux-amd64.run --preflight
+```
+
+From an extracted release or a checkout with release binaries, the equivalent
+single command is `sudo bash install.sh`. A checkout without binaries needs Go
+and builds them automatically; the standalone `.run` avoids that requirement.
+The full installation log is `/var/log/davpanel/install.log`, readable only by root.
+
+The public repository was checked during this work and still points at the old
+commit. These local artifacts have not been uploaded. A public download command
+requires publishing the new source and release first. The release workflow builds,
+audits and attaches amd64/arm64 installers only after a release is explicitly
+published; manual workflow runs produce downloadable CI artifacts.
+
 The checkout includes all 16 component sources. `components.lock.json` records
 their upstream commits and SHA-256 digests after fork changes. They are ordinary
 vendored directories; no submodule initialization or unpublished fork repositories
@@ -10,16 +47,20 @@ is excluded from releases.
 
 ## Build a release
 
-On a build machine with Go 1.26 or newer, Python 3, Bash, tar and sha256sum:
+On a build machine with Go, Python 3, Bash, tar and sha256sum:
 
 ```bash
 python3 scripts/audit_sources.py
 bash scripts/build-release.sh --arch=amd64
 ```
 
+The Go modules select the patched Go 1.27.3 toolchain automatically. Keep
+toolchain auto-download enabled or provide a stable Go 1.27.3 or newer compiler.
 Use `--arch=arm64` for AArch64. This builds both panel binaries directly from
 source with CGO disabled and packages the runtime inputs and corresponding source
-in `dist/davpanel-<version>-linux-<arch>.tar.gz`. No images or files are published.
+in `dist/davpanel-<version>-linux-<arch>.tar.gz` and its self-extracting `.run`
+counterpart. Each has a `.sha256` file. No images or files are published by the
+local builder.
 
 ## Validate and install
 

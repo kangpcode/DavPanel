@@ -689,7 +689,7 @@ prefetch_shared_images() {
 setup_compose() {
     echo "Setting up Podman Compose and system containers..."
 
-    podman pull docker.io/library/mysql:latest >/dev/null 2>&1 &
+    podman pull docker.io/library/mariadb:11.4 >/dev/null 2>&1 &
     _MYSQL_PULL_PID=$!
 
     local test_output
@@ -743,6 +743,7 @@ setup_compose() {
     fi
 
     ln -s "${ETC_DIR}mysql/host_my.cnf" "$mysql_cnf"
+    chmod 600 /root/.env "${ETC_DIR}mysql/host_my.cnf" "${ETC_DIR}mysql/container_my.cnf" "$CONFIG_FILE"
     sed -i "s|password = .*|password = ${root_pw}|" "${ETC_DIR}mysql/host_my.cnf"
     sed -i "s|password = .*|password = ${root_pw}|" "${ETC_DIR}mysql/container_my.cnf"
 
