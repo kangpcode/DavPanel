@@ -1,0 +1,31 @@
+name: Validate DavPanel
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component: [davpanel, davadmin]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ matrix.component }}/go.mod
+          cache-dependency-path: ${{ matrix.component }}/go.sum
+      - run: go test ./...
+        working-directory: ${{ matrix.component }}
+      - run: CGO_ENABLED=0 go build ./...
+        working-directory: ${{ matrix.component }}
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/audit_sources.py
+      - run: python3 -m unittest discover -s scripts -p 'test_*.py'
+      - run: python3 scripts/preflight.py
+      - run: bash -n PODMAN_INSTALL.sh scripts/build-release.sh davcli/davcli

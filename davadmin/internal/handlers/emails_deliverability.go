@@ -20,7 +20,7 @@ import (
 
 // same files the user panel's /emails/deliverability compares DNS against
 var (
-	DKIMKeysBasePath = "/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys"
+	DKIMKeysBasePath = "/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys"
 	ZoneTemplatePath = "/etc/davpanel/bind9/zone_template.txt"
 )
 

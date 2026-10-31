@@ -38,7 +38,7 @@ CADDY_DIR="/etc/davpanel/caddy"
 CADDYFILE="${CADDY_DIR}/Caddyfile"
 RATELIMIT_CONF="${CADDY_DIR}/ratelimit.conf"
 DOMAIN_DIR="${CADDY_DIR}/domains"
-CADDY_IMAGE_DEFAULT="docker.io/ghcr.io/kangpcode/davpanel-caddy-coraza:latest"
+CADDY_IMAGE_DEFAULT="ghcr.io/kangpcode/davpanel-caddy-coraza:latest"
 
 # every rate limit line in a domain file, so they can be swapped as a set
 RL_LINE_RE='^[[:space:]]*(import[[:space:]]+ratelimit(_ip|_site)?([[:space:]].*)?|# ratelimit off)[[:space:]]*$'

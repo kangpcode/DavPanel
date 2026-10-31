@@ -424,7 +424,7 @@ EOF
 	if [[ $COMPOSE_START_MAIL -eq 1 ]]; then
             echo "Starting mailserver and webmail on ${REMOTE_HOST} server ..."
             sshpass -e ssh -o StrictHostKeyChecking=no "${REMOTE_USER}@${REMOTE_HOST}" \
-                "cd /usr/local/mail/openmail && podman-compose up -d mailserver roundcube >/dev/null 2>&1"
+                "cd /usr/local/mail/davmail && podman-compose up -d mailserver roundcube >/dev/null 2>&1"
 	fi
 
 	#todo: ftp, clamav 
@@ -532,9 +532,9 @@ if [[ $EXCLUDE_MAIL -eq 0 ]]; then
     key_value=$(grep "^key=" $PANEL_CONFIG_FILE | cut -d'=' -f2-)
 
 	if [ -n "$key_value" ]; then
-	    if [ -d /usr/local/mail/openmail ]; then
-	        echo "Syncing /usr/local/mail/openmail ..."
-	        "${RSYNC_CMD[@]}" /usr/local/mail/openmail/ "${REMOTE_USER}"@"${REMOTE_HOST}":/usr/local/mail/openmail/
+	    if [ -d /usr/local/mail/davmail ]; then
+	        echo "Syncing /usr/local/mail/davmail ..."
+	        "${RSYNC_CMD[@]}" /usr/local/mail/davmail/ "${REMOTE_USER}"@"${REMOTE_HOST}":/usr/local/mail/davmail/
 	        COMPOSE_START_MAIL=1
 	    fi
 
@@ -630,7 +630,7 @@ send_migration_summary() {
     user_count=$(q "SELECT COUNT(*) FROM users;")
     domain_count=$(q "SELECT COUNT(*) FROM domains;")
     site_count=$(q "SELECT COUNT(*) FROM sites;")
-    mail_count=$(grep -c '|' /usr/local/mail/openmail/docker-data/dms/config/postfix-accounts.cf 2>/dev/null || echo 0)
+    mail_count=$(grep -c '|' /usr/local/mail/davmail/docker-data/dms/config/postfix-accounts.cf 2>/dev/null || echo 0)
     ftp_count=$(cat /etc/davpanel/ftp/users/*/users.list 2>/dev/null | grep -c '|')
     home_size=$(du -sh /home 2>/dev/null | cut -f1)
     elapsed=$(( $(date +%s) - start_time ))

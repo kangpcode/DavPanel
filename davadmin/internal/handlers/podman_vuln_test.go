@@ -325,7 +325,7 @@ func TestPodmanDeleteImageRunFallsBackToPlainRmiWhenNotInSharedStore(t *testing.
 		case args[0] == "--root":
 			return "Error: deadbeef: image not known", fmt.Errorf("exit status 2")
 		case args[0] == "rmi":
-			return "Untagged: docker.io/ghcr.io/kangpcode/davpanel:2.0.0\nDeleted: deadbeef", nil
+			return "Untagged: ghcr.io/kangpcode/davpanel:2.0.0\nDeleted: deadbeef", nil
 		}
 		return "", fmt.Errorf("unexpected call: %v", args)
 	}

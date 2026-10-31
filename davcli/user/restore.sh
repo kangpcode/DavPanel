@@ -615,20 +615,20 @@ restore_ftp
 # ── 7) Email — skip existing mailboxes ───────────────────────────────────────
 restore_email() {
     local EMAILS_DIR="$WORK/emails"
-    local DMS_CONFIG="/usr/local/mail/openmail/docker-data/dms/config"
-    local POSTFWD_DST="/usr/local/mail/openmail/postfwd/postfwd.cf"
+    local DMS_CONFIG="/usr/local/mail/davmail/docker-data/dms/config"
+    local POSTFWD_DST="/usr/local/mail/davmail/postfwd/postfwd.cf"
 
     # DKIM keys
     if [[ -d "$EMAILS_DIR/dkim" && -n "$(ls -A "$EMAILS_DIR/dkim" 2>/dev/null)" ]]; then
-        local DKIM_DIR="/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys"
+        local DKIM_DIR="/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys"
         mkdir -p "$DKIM_DIR"
         cp -a "$EMAILS_DIR/dkim/." "$DKIM_DIR/"
         local table line
         for table in KeyTable SigningTable TrustedHosts; do
             [[ -s "$EMAILS_DIR/dkim_$table" ]] || continue
-            touch "/usr/local/mail/openmail/docker-data/dms/config/opendkim/$table"
+            touch "/usr/local/mail/davmail/docker-data/dms/config/opendkim/$table"
             while IFS= read -r line; do
-                grep -qxF "$line" "/usr/local/mail/openmail/docker-data/dms/config/opendkim/$table" || echo "$line" >> "/usr/local/mail/openmail/docker-data/dms/config/opendkim/$table"
+                grep -qxF "$line" "/usr/local/mail/davmail/docker-data/dms/config/opendkim/$table" || echo "$line" >> "/usr/local/mail/davmail/docker-data/dms/config/opendkim/$table"
             done < "$EMAILS_DIR/dkim_$table"
         done
         log "DKIM keys restored."
@@ -643,7 +643,7 @@ restore_email() {
         if [[ -n "$(podman inspect "$MAIL_CONTAINER" --format '{{.State.Status}}' 2>/dev/null)" ]]; then
             podman kill "$MAIL_CONTAINER" &>/dev/null; podman rm -f "$MAIL_CONTAINER" &>/dev/null; podman rm -f --storage "$MAIL_CONTAINER" &>/dev/null
         fi
-        [[ -d /usr/local/mail/openmail ]] && (cd /usr/local/mail/openmail && timeout 30 podman-compose up -d mailserver roundcube >/dev/null 2>&1) || true
+        [[ -d /usr/local/mail/davmail ]] && (cd /usr/local/mail/davmail && timeout 30 podman-compose up -d mailserver roundcube >/dev/null 2>&1) || true
         sleep 2
     fi
 

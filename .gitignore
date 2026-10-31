@@ -1,0 +1,8 @@
+/openpanel-main/
+/dist/
+**/node_modules/
+**/__pycache__/
+website/.docusaurus/
+website/build/
+mobile/.expo/
+*.log

@@ -29,7 +29,7 @@ const (
 // /tmp path.
 var (
 	// APIURL is the remote license-check endpoint.
-	APIURL = "https://api.davpanel.com/enterprise/index.php"
+	APIURL = licenseAPIURL()
 
 	// CacheFilePath is where the last successful check result is cached.
 	CacheFilePath = "/tmp/.davpanel_license_cache.json"
@@ -48,6 +48,13 @@ var backoffSchedule = []struct {
 }
 
 var tagRe = regexp.MustCompile(`<([a-zA-Z0-9_]+)>([^<]+)</([a-zA-Z0-9_]+)>`)
+
+func licenseAPIURL() string {
+	if endpoint := strings.TrimSpace(os.Getenv("DAVPANEL_LICENSE_API")); endpoint != "" {
+		return endpoint
+	}
+	return "https://api.davpanel.com/enterprise/index.php"
+}
 
 // Type classifies a license key as Community or Enterprise by its shape
 // alone (this part doesn't require a network call -- it's the

@@ -884,7 +884,7 @@ postfwd_setup() {
 
 generate_dkim() {
     [[ -n "$ENTERPRISE" ]] || return
-    local compose_file="/usr/local/mail/openmail/compose.yml"
+    local compose_file="/usr/local/mail/davmail/compose.yml"
     [[ -f "$compose_file" ]] || return
     log "Generating DKIM for the domain"
     davcli email-setup config dkim domain "$domain_name" >/dev/null 2>&1
@@ -895,7 +895,7 @@ generate_dkim() {
 		zone_file="$ZONE_FILE_DIR${domain_name}.zone"
 	fi
 
-	dkim_file="/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys/${domain_name}/mail.txt"
+	dkim_file="/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys/${domain_name}/mail.txt"
 	if [[ -f "$dkim_file" ]] && ! grep -q "mail\._domainkey" "$zone_file"; then
 	    {
 	        printf '\n'
@@ -911,7 +911,7 @@ generate_dkim() {
 create_mail_mountpoint() {
     [[ -n "$ENTERPRISE" ]] || return
 
-    local compose_file="/usr/local/mail/openmail/compose.yml"
+    local compose_file="/usr/local/mail/davmail/compose.yml"
     [[ -f "$compose_file" ]] || return
 
     local store_in
@@ -956,7 +956,7 @@ $volume_to_add
     }" "$compose_file"
 
     log "Reconfiguring mailserver in background"
-    nohup sh -c "cd /usr/local/mail/openmail/ && podman-compose up -d --force-recreate mailserver" </dev/null >/dev/null 2>&1 &
+    nohup sh -c "cd /usr/local/mail/davmail/ && podman-compose up -d --force-recreate mailserver" </dev/null >/dev/null 2>&1 &
 	disown
 }
 

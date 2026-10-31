@@ -330,7 +330,7 @@ postfwd_setup(){
 
 # key dir and KeyTable/SigningTable lines added by: email-setup config dkim domain
 delete_dkim() {
-	local dkim_dir="/usr/local/mail/openmail/docker-data/dms/config/opendkim"
+	local dkim_dir="/usr/local/mail/davmail/docker-data/dms/config/opendkim"
 	[[ -d "$dkim_dir/keys/$domain_name" ]] || return 0
 	log "Removing DKIM keys for the domain"
 	rm -rf "${dkim_dir:?}/keys/${domain_name:?}"
@@ -349,7 +349,7 @@ delete_dkim() {
 delete_mail_mountpoint(){
 	[[ -n "$key_value" ]] || return
 
-	COMPOSE_FILE="/usr/local/mail/openmail/compose.yml"
+	COMPOSE_FILE="/usr/local/mail/davmail/compose.yml"
 	[[ -f "$COMPOSE_FILE" ]] || return
 
     local store_in
@@ -378,7 +378,7 @@ delete_mail_mountpoint(){
 		}" "$COMPOSE_FILE"
 
 		log "Reloading mailserver to apply changes"
-		(cd /usr/local/mail/openmail/ && podman-compose up -d --force-recreate mailserver) > /dev/null 2>&1 & disown		
+		(cd /usr/local/mail/davmail/ && podman-compose up -d --force-recreate mailserver) > /dev/null 2>&1 & disown		
     fi
 }
 
@@ -426,7 +426,7 @@ delete_emails() {
 	fi
 
 	# regex aliases (default email address)
-	regex_aliases_file="/usr/local/mail/openmail/docker-data/dms/config/postfix-regex.cf"
+	regex_aliases_file="/usr/local/mail/davmail/docker-data/dms/config/postfix-regex.cf"
 	
 	if [ -f "$regex_aliases_file" ]; then
 		tmp_file="$(mktemp)"

@@ -3,11 +3,12 @@
 # Script Name: /usr/local/bin/davcli
 # Description: Makes all DavCLI commands available on the terminal.
 # Usage: davcli <COMMAND-NAME> <ATTRIBUTES>
-# Author: Dhafa Nazula Permadi
+# Author: Stefan Pejcic
+# Fork maintainer: Dhafa Nazula Permadi (kangpcode)
 # Created: 15.11.2023
 # Last Modified: 20.04.2026
-# Company: davpanel.com
-# Copyright (c) davpanel.com
+# Company: openpanel.com
+# Copyright (c) openpanel.com
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -101,19 +102,10 @@ handle_special_commands() {
     case "$command" in
         error) python3 "${SCRIPTS_DIR}/error.py" "$@"; exit 0 ;; # todo: handle python to go port
         locale)
-            # this installer runs as root, so pin it to a reviewed commit and verify its checksum instead of
-            # trusting whatever main currently points at. bump both when intentionally updating the installer.
-            local loc_sha="474f283e13e47c0407479814134f073165042b03"
-            local loc_sum="af48f9632fcff59f43486f2afc79804dceb0729b7be78c03e7a338f9e55791ca"
-            local loc_tmp; loc_tmp=$(mktemp) || exit 1
-            if ! curl -4sSL "https://raw.githubusercontent.com/kangpcode/davpanel-translations/${loc_sha}/install.sh" -o "$loc_tmp"; then
-                rm -f "$loc_tmp"; echo "Error: failed to download the locale installer." >&2; exit 1
-            fi
-            if [ "$(sha256sum < "$loc_tmp" | cut -d' ' -f1)" != "$loc_sum" ]; then
-                rm -f "$loc_tmp"; echo "Error: locale installer checksum mismatch - refusing to run." >&2; exit 1
-            fi
-            bash ${debug_flag:+"$debug_flag"} "$loc_tmp" "$@"; local loc_rc=$?
-            rm -f "$loc_tmp"; exit "$loc_rc" ;;
+            local installer="/usr/local/share/davpanel/translations/install.sh"
+            [[ -f "$installer" ]] || { echo "Error: local translations are missing; install a complete DavPanel release." >&2; exit 1; }
+            bash ${debug_flag:+"$debug_flag"} "$installer" "$@"
+            exit $? ;;
     esac
 }
 

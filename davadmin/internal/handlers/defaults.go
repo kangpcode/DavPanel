@@ -157,19 +157,18 @@ type phpVersionStatus struct {
 	EOLDate              string `json:"eolDate"`
 }
 
-// defaultsPHPWatchRun is injectable so tests never make a real HTTP call.
-// Only a *timeout* is treated as non-fatal here (falls back to an empty
-// map); any other transport error (DNS failure, connection refused, ...)
-// is returned uncaught, letting the caller surface a 500 -- that split is
-// intentional, not an oversight.
-var defaultsPHPWatchRun = func() (map[string]phpVersionStatus, error) {
+// Optional version badges must not prevent editing service defaults when the metadata service is unavailable.
+var defaultsPHPWatchRun = fetchDefaultsPHPWatch
+
+func fetchDefaultsPHPWatch() (map[string]phpVersionStatus, error) {
 	client := &http.Client{Timeout: 3 * time.Second}
-	resp, err := client.Get("https://api.davpanel.com/php-versions/")
+	endpoint := strings.TrimSpace(os.Getenv("DAVPANEL_PHP_VERSIONS_API"))
+	if endpoint == "" {
+		endpoint = "https://api.davpanel.com/php-versions/"
+	}
+	resp, err := client.Get(endpoint)
 	if err != nil {
-		if netErr, ok := err.(interface{ Timeout() bool }); ok && netErr.Timeout() {
-			return map[string]phpVersionStatus{}, nil
-		}
-		return nil, err
+		return map[string]phpVersionStatus{}, nil
 	}
 	defer resp.Body.Close()
 

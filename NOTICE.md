@@ -38,7 +38,7 @@ references:
 | `openpanel.config` | `davpanel.config` |
 | `OPENPANEL` session cookie | `DAVPANEL` session cookie |
 | Go module `gist.github.com/stefanpejcic/openpanel` | `github.com/kangpcode/davpanel` |
-| `docker.io/openpanel/*` images | `ghcr.io/kangpcode/*` images |
+| Panel, Caddy and FTP images | Locally built `ghcr.io/kangpcode/*` images |
 | `openpanel-screenshots` / `openadmin-screenshots` assets | `davpanel-screenshots` / `davadmin-screenshots` |
 
 Service endpoints that were hardcoded to the project's hosted API are also
@@ -51,7 +51,7 @@ overridable for self-hosting:
 | `DAVPANEL_LICENSE_API` | `https://api.davpanel.com/enterprise/index.php` | Enterprise license validation |
 
 The license-key verification and Enterprise feature gating are **not** removed,
-disabled or bypassed. Commercial terms remain those of the upstream EULA.
+disabled or bypassed. Each component remains subject to the license shipped beside its source.
 
 ## Third-party components
 
@@ -65,3 +65,17 @@ licenses and copyright holders. See the license file shipped with each component
 Some code comments and historical changelog entries intentionally still link to
 upstream OpenPanel issues, pull requests and commits. Those links are citations of
 the upstream history and are not an endorsement by, or affiliation with, OpenPanel, LLC.
+
+## Vendored component provenance
+
+Copyright (C) 2026 Dhafa Nazula Permadi (kangpcode), for DavPanel fork modifications.
+Original copyrights remain with the original authors. `components.lock.json` and
+each component's `FORK.md` identify the exact source commits. The current DavAdmin
+source carries GPL-3.0-or-later with the exception described in `davadmin/LICENSE`
+and `davadmin/COPYING`; these files are retained verbatim. Other components retain
+their own LICENSE/COPYING files and embedded notices. The root license reproduces
+the original hosting snapshot's terms and does not replace those component licenses.
+
+The optional Tor service still references its upstream `openpanel/torwebsite` image
+because its image build source is not included. Third-party service images and
+libraries keep their upstream names and licenses.

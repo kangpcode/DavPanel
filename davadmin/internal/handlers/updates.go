@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"sort"
@@ -57,11 +58,53 @@ var dockerTagVersionRe = regexp.MustCompile(`^(\d{1,3}|\d{1,2}(\.\d{1,2}){1,2})$
 // injectable so tests never make real network calls or shell out to real
 // binaries, matching the caddyFetchMetrics/localesFetchFolders pattern.
 var updatesFetchTagsRun = func() ([]string, error) {
-	return fetchTagNames("https://hub.docker.com/v2/repositories/davpanel/davpanel/tags?page_size=100")
+	return fetchRegistryTags("https://ghcr.io", "kangpcode/davpanel")
 }
 
 var updatesDockerHubTagsRun = func() ([]string, error) {
-	return fetchTagNames("https://hub.docker.com/v2/repositories/davpanel/davpanel/tags")
+	return updatesFetchTagsRun()
+}
+
+func fetchRegistryTags(registry, repository string) ([]string, error) {
+	client := &http.Client{Timeout: 10 * time.Second}
+	query := url.Values{"scope": {"repository:" + repository + ":pull"}, "service": {"ghcr.io"}}
+	resp, err := client.Get(registry + "/token?" + query.Encode())
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("registry token request returned %d", resp.StatusCode)
+	}
+	var token struct {
+		Token string `json:"token"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&token); err != nil {
+		return nil, err
+	}
+	if token.Token == "" {
+		return nil, fmt.Errorf("registry returned an empty token")
+	}
+	req, err := http.NewRequest(http.MethodGet, registry+"/v2/"+repository+"/tags/list", nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Authorization", "Bearer "+token.Token)
+	tags, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer tags.Body.Close()
+	if tags.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("registry tag request returned %d", tags.StatusCode)
+	}
+	var result struct {
+		Tags []string `json:"tags"`
+	}
+	if err := json.NewDecoder(tags.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+	return result.Tags, nil
 }
 
 func fetchTagNames(url string) ([]string, error) {
@@ -89,21 +132,7 @@ func fetchTagNames(url string) ([]string, error) {
 }
 
 var updatesFallbackVersionRun = func() (string, error) {
-	resp, err := http.Get("https://usage-api.davpanel.org/latest_version")
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("unexpected status %d", resp.StatusCode)
-	}
-	var parsed struct {
-		LatestVersion string `json:"latest_version"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&parsed); err != nil {
-		return "", err
-	}
-	return parsed.LatestVersion, nil
+	return "", fmt.Errorf("published DavPanel release metadata is unavailable")
 }
 
 var updatesPullImageRun = func(version string) error {

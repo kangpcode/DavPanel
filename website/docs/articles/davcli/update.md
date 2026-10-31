@@ -1,5 +1,12 @@
 # Update 
 
+For this fork, published container tags are read from GHCR using registry token
+authentication. Remote updates require published `ghcr.io/kangpcode/davpanel`
+images and standalone fork release artifacts. Until publication, follow the
+local source build procedure in the repository's `INSTALL.md`; the clean-server
+installer is not an upgrade command for existing accounts.
+
+
 `davcli update` command is used to check if new update is available and to update.
 
 Check if update is available:
@@ -30,11 +37,11 @@ davcli update
 ===== Starting update to version 2.0.12 =====
 [INFO] Update log: /var/log/davpanel/updates/2.0.12.log
 ---- Updating DavCLI ----
-[INFO] Downloading terminal scripts from github: https://github.com/stefanpejcic/opencli/archive/refs/heads/podman.tar.gz
+[INFO] Downloading terminal scripts from github: https://github.com/kangpcode/davcli/archive/refs/heads/podman.tar.gz
 [INFO] [✔] Terminal commands updated successfully
 ---- Updating DavPanel container image ----
 ...
----- [✔] image davpanel/davpanel:2.0.12 downloaded successfully ----
+---- [✔] image ghcr.io/kangpcode/davpanel:2.0.12 downloaded successfully ----
 ---- Updating version in /root/.env ----
 ---- Restarting DavPanel service ----
 ...
@@ -64,7 +71,7 @@ davcli update --force --no-restart
 ```bash
 # davcli update --force --no-restart
 ...
----- [✔] image davpanel/davpanel:2.0.18 downloaded successfully ----
+---- [✔] image ghcr.io/kangpcode/davpanel:2.0.18 downloaded successfully ----
 ---- Updating version in /root/.env ----
 ---- [!] Skipping DavPanel restart, restart the 'davpanel' container to apply the new version ----
 ...
@@ -113,11 +120,11 @@ davcli update --force
 ===== Starting update to version 2.0.12 =====
 [INFO] Update log: /var/log/davpanel/updates/2.0.12.log
 ---- Updating DavCLI ----
-[INFO] Downloading terminal scripts from github: https://github.com/stefanpejcic/opencli/archive/refs/heads/podman.tar.gz
+[INFO] Downloading terminal scripts from github: https://github.com/kangpcode/davcli/archive/refs/heads/podman.tar.gz
 [INFO] [✔] Terminal commands updated successfully
 ---- Updating DavPanel container image ----
 ...
----- [✔] image davpanel/davpanel:2.0.12 downloaded successfully ----
+---- [✔] image ghcr.io/kangpcode/davpanel:2.0.12 downloaded successfully ----
 ---- Updating version in /root/.env ----
 ---- Restarting DavPanel service ----
 ...
@@ -183,7 +190,7 @@ davcli update --cli
 ```bash
 # davcli update --cli
 Updating DavCLI
-[INFO] Downloading terminal scripts from github: https://github.com/stefanpejcic/opencli/archive/refs/heads/podman.tar.gz
+[INFO] Downloading terminal scripts from github: https://github.com/kangpcode/davcli/archive/refs/heads/podman.tar.gz
 [INFO] [✔] Terminal commands updated successfully
 ```
 </details>

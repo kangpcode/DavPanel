@@ -99,3 +99,7 @@ Delete license key:
 davcli license delete
 ```
 The key is removed and DavAdmin is restarted. The command prints no output.
+
+The fork CLI honors `DAVPANEL_LICENSE_API` for its license-check endpoint. The
+user panel and admin service support the same override; configure all three
+consistently. The override changes the service address, not feature entitlement.

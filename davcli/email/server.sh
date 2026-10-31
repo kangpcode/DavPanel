@@ -32,10 +32,10 @@
 # ======================================================================
 # Configuration
 readonly APP="davcli email-server"                             # this script
-readonly GITHUB_REPO="https://github.com/stefanpejcic/openmail" # download files
-readonly DIR="/usr/local/mail/openmail"                         # compose.yaml directory
-readonly MAILSERVER_ENV="/usr/local/mail/openmail/mailserver.env"
-readonly MAILSERVER_COMPOSE_FILE="/usr/local/mail/openmail/compose.yml"
+readonly GITHUB_REPO="https://github.com/kangpcode/DavMail" # download files
+readonly DIR="/usr/local/mail/davmail"                         # compose.yaml directory
+readonly MAILSERVER_ENV="/usr/local/mail/davmail/mailserver.env"
+readonly MAILSERVER_COMPOSE_FILE="/usr/local/mail/davmail/compose.yml"
 readonly DEFAULT_DOMAIN="example.net"
 readonly CONTAINER=davadmin_mailserver                         # DMS container name
 DEBUG=false
@@ -213,7 +213,7 @@ pflogsumm_get_data() {
 	# 1. clone from git
 	rm -rf PFLogSumm-HTML-GUI
 	git clone --branch podman --single-branch https://github.com/stefanpejcic/PFLogSumm-HTML-GUI.git > /dev/null 2>&1
-	ln -s $MAILSERVER_ENV /usr/local/mail/openmail/.env > /dev/null 2>&1
+	ln -s $MAILSERVER_ENV /usr/local/mail/davmail/.env > /dev/null 2>&1
  	podman cp PFLogSumm-HTML-GUI/pflogsummUIReport.sh davadmin_mailserver:/opt/pflogsummUIReport.sh > /dev/null 2>&1
 	echo "Generating email statistics reports.. This can take a while."
 	podman exec davadmin_mailserver sh -c "mkdir -p /usr/local/davadmin/static/reports" > /dev/null 2>&1
@@ -308,12 +308,12 @@ set_ssl_for_mailserver() {
     fi
 
     #echo "Restarting mailserver and webmail to apply new configuration"
-    #nohup sh -c "cd /usr/local/mail/openmail/ && podman-compose down ; cd /usr/local/mail/openmail/ && podman-compose up -d mailserver roundcube" </dev/null >nohup.out 2>nohup.err &
+    #nohup sh -c "cd /usr/local/mail/davmail/ && podman-compose down ; cd /usr/local/mail/davmail/ && podman-compose up -d mailserver roundcube" </dev/null >nohup.out 2>nohup.err &
  }
 
 
 confirm_and_clean_existing_dir() {
-	local target="/usr/local/mail/openmail"
+	local target="/usr/local/mail/davmail"
 
 	if [ -d "$target" ]; then
 		echo "Warning: $target already exists (leftover from a previous install attempt)."
@@ -363,7 +363,13 @@ install_mailserver(){
 
 	run mkdir -p /usr/local/mail/
 	confirm_and_clean_existing_dir
-	run bash -c "cd /usr/local/mail/ && git clone $GITHUB_REPO"
+	if [[ -d /usr/local/share/davpanel/mailserver ]]; then
+            mkdir -p "$DIR"
+            cp -a /usr/local/share/davpanel/mailserver/. "$DIR/" || return 1
+        else
+            echo "Error: local DavMail source is missing; install a complete DavPanel release." >&2
+            return 1
+        fi
 
 	for f in "$MAILSERVER_COMPOSE_FILE" "$MAILSERVER_ENV"; do
 		if [ ! -f "$f" ]; then
@@ -373,13 +379,13 @@ install_mailserver(){
 	done
 
 	# https://github.com/stefanpejcic/OpenPanel/discussions/1186
-	mkdir -p /usr/local/mail/openmail/docker-data/dms/config/
-	mv /usr/local/mail/openmail/dovecot.cf /usr/local/mail/openmail/docker-data/dms/config/dovecot.cf 
+	mkdir -p /usr/local/mail/davmail/docker-data/dms/config/
+	mv /usr/local/mail/davmail/dovecot.cf /usr/local/mail/davmail/docker-data/dms/config/dovecot.cf 
 	
 	set_ssl_for_mailserver
 	run mkdir -p /etc/davpanel/email/snappymail
-	ln -sf "$MAILSERVER_ENV" /usr/local/mail/openmail/.env
-	run bash -c "cd /usr/local/mail/openmail/ && timeout 60 podman-compose up -d mailserver roundcube"
+	ln -sf "$MAILSERVER_ENV" /usr/local/mail/davmail/.env
+	run bash -c "cd /usr/local/mail/davmail/ && timeout 60 podman-compose up -d mailserver roundcube"
 
 	# https://github.com/stefanpejcic/OpenPanel/issues/1041#issuecomment-5123435885
 	manage_service_entry add "Dovecot & Postfix" docker davadmin_mailserver
@@ -406,7 +412,7 @@ install_mailserver(){
 # START
 process_all_domains_and_start(){
 	CONFIG_DIR="/etc/davpanel/caddy/domains"
-	COMPOSE_FILE="/usr/local/mail/openmail/compose.yml"
+	COMPOSE_FILE="/usr/local/mail/davmail/compose.yml"
 	new_volumes="    volumes:\n      - ./docker-data/dms/mail-state/:/var/mail-state/\n      - ./var/log/mail/:/var/log/mail/\n      - ./docker-data/dms/config/:/tmp/docker-mailserver/\n      - /etc/davpanel/caddy/ssl/:/etc/davpanel/caddy/ssl/:ro\n"
 
 	cp "$COMPOSE_FILE" "$COMPOSE_FILE.bak"

@@ -36,7 +36,7 @@ if [ "$#" -lt 1 ]; then
 fi
 
 readonly CONTAINER=davadmin_mailserver
-readonly MAIL_DIR="/usr/local/mail/openmail"
+readonly MAIL_DIR="/usr/local/mail/davmail"
 readonly COMPOSE_FILE="$MAIL_DIR/compose.yml"
 readonly CONFIG_DIR="$MAIL_DIR/docker-data/dms/config"
 readonly ACCOUNTS_FILE="$CONFIG_DIR/postfix-accounts.cf"

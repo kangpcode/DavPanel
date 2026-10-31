@@ -98,7 +98,7 @@ func realControlService(serviceName, serviceType, action string) (bool, string) 
 
 	workingDir := "/root"
 	if serviceName == "davadmin_mailserver" || serviceName == "davadmin_roundcube" {
-		workingDir = "/usr/local/mail/openmail"
+		workingDir = "/usr/local/mail/davmail"
 		if _, err := os.Stat(workingDir); err != nil {
 			return false, "Error: Mail server is not installed! Emails are only available on DavPanel Enterprise version and can be enabled from Emails page."
 		}
@@ -573,7 +573,7 @@ func realManageService(serviceName, action string) (bool, string) {
 
 	workingDir := "/root"
 	if serviceName == "davadmin_mailserver" || serviceName == "davadmin_roundcube" {
-		workingDir = "/usr/local/mail/openmail"
+		workingDir = "/usr/local/mail/davmail"
 		if _, err := os.Stat(workingDir); err != nil {
 			return false, "Error: Mail server is not installed! Emails are only available on DavPanel Enterprise version and can be enabled from Emails page."
 		}

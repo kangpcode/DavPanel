@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	dkimKeysBasePath = "/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys"
+	dkimKeysBasePath = "/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys"
 	zoneTemplatePath = "/etc/davpanel/bind9/zone_template.txt"
 )
 

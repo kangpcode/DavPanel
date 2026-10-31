@@ -365,12 +365,12 @@ if [[ -f "$STAGE/db/domains.list" ]]; then
         [[ -f "/etc/davpanel/caddy/suspended_domains/$domain.conf" ]] && cp -a "/etc/davpanel/caddy/suspended_domains/$domain.conf" "$STAGE/caddy/suspended/" && log "${subprefix}├── Suspended"
         [[ -d "/etc/davpanel/caddy/ssl/acme-v02.api.letsencrypt.org-directory/$domain" ]] && cp -a "/etc/davpanel/caddy/ssl/acme-v02.api.letsencrypt.org-directory/$domain" "$STAGE/caddy/ssl/acme/" && log "${subprefix}├── Let's Encrypt SSL"
         [[ -d "/etc/davpanel/caddy/ssl/custom/$domain" ]] && cp -a "/etc/davpanel/caddy/ssl/custom/$domain" "$STAGE/caddy/ssl/custom/" && log "${subprefix}├── Custom SSL"
-        if [[ -d "/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys/$domain" ]]; then
-            cp -ra "/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys/$domain" "$STAGE/emails/dkim/" && log "${subprefix}├── DKIM"
+        if [[ -d "/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys/$domain" ]]; then
+            cp -ra "/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys/$domain" "$STAGE/emails/dkim/" && log "${subprefix}├── DKIM"
             for table in KeyTable SigningTable TrustedHosts; do
-                [[ -f "/usr/local/mail/openmail/docker-data/dms/config/opendkim/$table" ]] || continue
+                [[ -f "/usr/local/mail/davmail/docker-data/dms/config/opendkim/$table" ]] || continue
                 awk -v d="$domain" '{k=$1} k=="*@"d || k==d || k=="*."d || (length(k)>length(d) && substr(k, length(k)-length(d)-11)=="._domainkey."d)' \
-                    "/usr/local/mail/openmail/docker-data/dms/config/opendkim/$table" >> "$STAGE/emails/dkim_$table"
+                    "/usr/local/mail/davmail/docker-data/dms/config/opendkim/$table" >> "$STAGE/emails/dkim_$table"
             done
         fi
         [[ -f "/etc/davpanel/caddy/domains/$domain.conf" ]] && cp -a "/etc/davpanel/caddy/domains/$domain.conf" "$STAGE/caddy/domains/" && log "${subprefix}└── Caddyfile"
@@ -415,8 +415,8 @@ fi
 if [[ -s "$CORE_DIR/emails.yml" ]]; then
     log "Collecting email accounts information.."
 
-    readonly DMS_CONFIG="/usr/local/mail/openmail/docker-data/dms/config"
-    readonly POSTFWD_SRC="/usr/local/mail/openmail/postfwd/postfwd.cf"
+    readonly DMS_CONFIG="/usr/local/mail/davmail/docker-data/dms/config"
+    readonly POSTFWD_SRC="/usr/local/mail/davmail/postfwd/postfwd.cf"
 
     mkdir -p "$STAGE/emails"
 

@@ -1368,3 +1368,8 @@ Sep 24 10:12:07 mail postfix/smtp[1840]: 4XbLqK2mPz: to=<customer@gmail.com>, re
 ```
 </details>
 
+
+DavPanel source releases include DavMail helpers. `davcli email-server install`
+copies the installed source from `/usr/local/share/davpanel/mailserver` to
+`/usr/local/mail/davmail`. The mail containers still require their public base
+images and correctly configured DNS, ports and TLS.

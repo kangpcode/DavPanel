@@ -39,8 +39,8 @@ type Importer struct {
 // are the hardcoded paths used by the import/transfer tooling.
 var (
 	ImporterDavPanelImportLogDir = "/var/log/davpanel/admin/imports/"
-	ImporterTransferLogDir        = "/var/log/davpanel/admin/transfers/"
-	ImporterRestoreTempDir        = "/home/temprestoreditforopbackup"
+	ImporterTransferLogDir       = "/var/log/davpanel/admin/transfers/"
+	ImporterRestoreTempDir       = "/home/temprestoreditforopbackup"
 )
 
 // isPidRunning is true only if `ps -p PID` exits zero. Any failure
@@ -172,7 +172,7 @@ func (im *Importer) ServeImportUser(w http.ResponseWriter, r *http.Request) {
 var importerBackupPanelDisplayNames = map[string]string{
 	"cpanel":     "cPanel",
 	"cyberpanel": "CyberPanel",
-	"davpanel":  "DavPanel",
+	"davpanel":   "DavPanel",
 }
 
 // importerRestoreDavPanelBackupRun starts a fire-and-forget background
@@ -193,31 +193,18 @@ var importerRestoreDavPanelBackupRun = func(backupPath, reseller string) error {
 // clone failure is reported distinctly, under a "warning" category with
 // the git stderr), then fires off the import script in the background.
 var importerCloneAndRunImportScriptRun = func(displayName, backupPath, planName string) (cloneFailed bool, err error) {
-	tempDir := "/tmp/" + displayName + "-to-DavPanel/"
-	repoURL := "https://github.com/stefanpejcic/" + displayName + "-to-DavPanel"
-	importScript := filepath.Join(tempDir, "cp-import.sh")
-
-	if _, statErr := os.Stat(tempDir); statErr == nil {
-		_ = exec.Command("rm", "-rf", tempDir).Run()
+	component, ok := map[string]string{"cpanel": "cpanel-import", "cyberpanel": "cyberpanel-import"}[strings.ToLower(displayName)]
+	if !ok {
+		return true, fmt.Errorf("unsupported backup source: %s", displayName)
 	}
-
-	var stderr strings.Builder
-	cloneCmd := exec.Command("git", "clone", "--branch", "podman", repoURL, tempDir)
-	cloneCmd.Stderr = &stderr
-	if err := cloneCmd.Run(); err != nil {
-		msg := stderr.String()
-		if msg == "" {
-			// git itself never ran (e.g. not installed) so nothing landed
-			// on stderr -- fall back to the exec error rather than an
-			// empty message.
-			msg = err.Error()
-		}
-		return true, errors.New(msg)
+	importScript := filepath.Join("/usr/local/share/davpanel/integrations", component, "cp-import.sh")
+	if _, err := os.Stat(importScript); err != nil {
+		return true, fmt.Errorf("local DavPanel importer is missing: %w", err)
 	}
 
 	if _, err := startDetached("davpanel-"+strings.ToLower(displayName)+"-import", "", []string{"bash", importScript,
-		fmt.Sprintf("--backup-location='%s'", backupPath),
-		fmt.Sprintf("--plan-name='%s'", planName)}); err != nil {
+		"--backup-location=" + backupPath,
+		"--plan-name=" + planName}); err != nil {
 		return false, err
 	}
 	return false, nil

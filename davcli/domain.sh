@@ -34,7 +34,7 @@
 . /usr/local/davcli/lib/podman.sh
 readonly CADDY_FILE="/etc/davpanel/caddy/Caddyfile"
 readonly DOMAINS_DIR="/etc/davpanel/caddy/domains/"
-readonly MAILSERVER_ENV="/usr/local/mail/openmail/mailserver.env"
+readonly MAILSERVER_ENV="/usr/local/mail/davmail/mailserver.env"
 readonly FTP_COMPOSE_FILE="/etc/davpanel/ftp/compose.yml"
 readonly REDIRECTS_CONF="/etc/davpanel/caddy/redirects.conf"
 readonly DEFAULT_DOMAIN="example.net"
@@ -298,7 +298,7 @@ configure_mailserver() {
     fi
     
     log_debug "Restarting mailserver and webmail to apply new configuration"
-    nohup sh -c "cd /usr/local/mail/openmail/ && podman-compose down && podman-compose up -d mailserver roundcube" </dev/null >/dev/null 2>&1 &
+    nohup sh -c "cd /usr/local/mail/davmail/ && podman-compose down && podman-compose up -d mailserver roundcube" </dev/null >/dev/null 2>&1 &
 }
 
 

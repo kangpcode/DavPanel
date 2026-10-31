@@ -1,0 +1,12 @@
+FROM alpine:3.22
+LABEL org.opencontainers.image.title="DavPanel"
+LABEL org.opencontainers.image.authors="Dhafa Nazula Permadi (kangpcode)"
+LABEL org.opencontainers.image.source="https://github.com/kangpcode/DavPanel"
+RUN apk add --no-cache bash grep procps coreutils findutils wget curl mariadb-client zip unzip jq openssl podman podman-compose tzdata gawk tar gzip acl attr shadow quota-tools git git-daemon openssh-client
+COPY bin/davpanel /davpanel
+COPY davcli/davcli /usr/local/bin/davcli
+RUN chmod +x /davpanel /usr/local/bin/davcli
+ENV CONTAINER_HOST=unix:///run/podman/podman.sock
+ENV DOCKER_HOST=unix:///run/podman/podman.sock
+EXPOSE 2083
+CMD ["/davpanel"]

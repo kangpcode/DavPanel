@@ -86,9 +86,9 @@ BACKUP_PATHS=(
     "root/docker-compose.yml"
     "root/.env"
     "root/davpanel_run_after_update"
-    "usr/local/mail/openmail/compose.yml"
-    "usr/local/mail/openmail/.env"
-    "usr/local/mail/openmail/mailserver.env"
+    "usr/local/mail/davmail/compose.yml"
+    "usr/local/mail/davmail/.env"
+    "usr/local/mail/davmail/mailserver.env"
     "etc/cron.d/davpanel"
     # /etc/bind has the live named config and zone files -- etc/davpanel/bind9 below is just install-time templates
     "etc/bind"

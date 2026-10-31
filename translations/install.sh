@@ -12,20 +12,19 @@
 #
 ###
 
-github_repo="kangpcode/davpanel-translations"
-translations_dir="/etc/davpanel/davpanel/translations"
+translations_dir="${DAVPANEL_TRANSLATIONS_DIR:-/etc/davpanel/davpanel/translations}"
+catalog_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 cache_key="davpanel_cache_app.get_available_locales"
 
 if [ "$#" -lt 1 ]; then
-    if ! command -v jq >/dev/null 2>&1; then
-        echo "jq is required to list available locales."
-        exit 1
-    fi
-
     echo "Please provide at least one locale."
     echo
     echo "Available locales:"
-    curl -s "https://api.github.com/repos/$github_repo/contents" | jq -r '.[] | select(.type=="dir" and (.name|test("^[a-z]{2}-[a-z]{2}$"))) | .name'
+    for catalog in "$catalog_dir"/??-??/messages.po; do
+        [[ -f "$catalog" ]] || continue
+        locale_dir="${catalog%/messages.po}"
+        basename "$locale_dir"
+    done
     echo
     echo "Example:"
     echo "  davcli locale de-de"
@@ -52,10 +51,10 @@ for locale in "$@"; do
     two_letter="${formatted_locale%%-*}"
     target_dir="$translations_dir/$two_letter/LC_MESSAGES"
 
-    echo "Downloading $formatted_locale..."
-    tmp_file=$(mktemp)
-    if ! wget -q -O "$tmp_file" "https://raw.githubusercontent.com/$github_repo/main/$formatted_locale/messages.po" || [ ! -s "$tmp_file" ]; then
-        echo "Failed to download $formatted_locale"
+    echo "Installing $formatted_locale..."
+    tmp_file=$(mktemp) || exit 1
+    if [[ ! -s "$catalog_dir/$formatted_locale/messages.po" ]] || ! cp "$catalog_dir/$formatted_locale/messages.po" "$tmp_file"; then
+        echo "Locale $formatted_locale is not included in this release."
         rm -f "$tmp_file"
         failed=1
         continue

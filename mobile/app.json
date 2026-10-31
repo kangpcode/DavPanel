@@ -27,12 +27,6 @@
     "plugins": [
       "expo-secure-store",
       "./plugins/withReleaseSigning.js"
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "abcb9248-940c-4253-9cdd-450a54d3eadb"
-      }
-    },
-    "owner": "stefanpejcic"
+    ]
   }
 }

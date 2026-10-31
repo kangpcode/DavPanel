@@ -62,8 +62,8 @@ func LoadDovecotMasterPass() (string, error) {
 // / EmailsCaddyConfigDir are the hardcoded paths used by the mail server
 // integration.
 var (
-	EmailsMailComposeFile    = "/usr/local/mail/openmail/compose.yml"
-	EmailsMailserverEnvFile  = "/usr/local/mail/openmail/mailserver.env"
+	EmailsMailComposeFile    = "/usr/local/mail/davmail/compose.yml"
+	EmailsMailserverEnvFile  = "/usr/local/mail/davmail/mailserver.env"
 	EmailsCaddyRedirectsPath = "/etc/davpanel/caddy/redirects.conf"
 	EmailsCaddyConfigDir     = "/etc/davpanel/caddy/"
 	EmailsReportsDataDir     = "/usr/local/davadmin/templates/emails/data"
@@ -135,7 +135,7 @@ var emailsPodmanPsRun = func(filterArgs ...string) (string, error) {
 
 var emailsRestartMailserverRun = func() {
 	_ = exec.Command("/bin/bash", "-c",
-		"cd /usr/local/mail/openmail/ && podman-compose down mailserver && podman-compose up -d mailserver").Start()
+		"cd /usr/local/mail/davmail/ && podman-compose down mailserver && podman-compose up -d mailserver").Start()
 }
 
 // mailserver status is asked for on every email page, podman ps is ~50ms so it's reused for a few seconds
@@ -332,8 +332,8 @@ var emailsListAccountsRun = func() []emailQuota {
 
 // docker-mailserver's account and quota files, a changed mtime on either means the account list changed
 var (
-	EmailsAccountsFile = "/usr/local/mail/openmail/docker-data/dms/config/postfix-accounts.cf"
-	EmailsQuotasFile   = "/usr/local/mail/openmail/docker-data/dms/config/dovecot-quotas.cf"
+	EmailsAccountsFile = "/usr/local/mail/davmail/docker-data/dms/config/postfix-accounts.cf"
+	EmailsQuotasFile   = "/usr/local/mail/davmail/docker-data/dms/config/dovecot-quotas.cf"
 )
 
 // emailAccountsFromFile lists accounts without the container, quota usage is unknown so it's left empty

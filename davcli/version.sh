@@ -35,7 +35,7 @@ fi
 
 # used inside davpanel ui
 if [ -z "$version" ]; then
-    version=$(podman images --format "{{.Tag}}" "davpanel/davpanel" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
+    version=$(podman images --format "{{.Tag}}" "ghcr.io/kangpcode/davpanel" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
 fi
 
 if [ -n "$version" ]; then

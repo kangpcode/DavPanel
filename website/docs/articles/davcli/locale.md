@@ -1,4 +1,13 @@
+<!-- DavPanel fork: catalogs ship in the local installation package. -->
 # Locale
+
+DavPanel installs catalogs from the verified release under
+`/usr/local/share/davpanel/translations`. `davcli locale` lists included catalogs;
+`davcli locale sr-rs tr-tr` copies them into
+`/etc/davpanel/davpanel/translations/<language>/LC_MESSAGES/messages.po`.
+No GitHub download or remote installer execution is required. A locale missing
+from the release is reported as an error.
+
 
 List or install new locale(s) for DavPanel interface.
 
@@ -42,8 +51,7 @@ davcli locale sr-rs
 
 ```bash
 # davcli locale sr-rs
-Creating directory for sr-rs...
-Downloading locale...
+Installing sr-rs...
 
 Flushing cache...
 DONE
@@ -60,11 +68,9 @@ davcli locale sr-rs tr-tr
 
 ```bash
 # davcli locale sr-rs tr-tr
-Creating directory for sr-rs...
-Downloading locale...
+Installing sr-rs...
 
-Creating directory for tr-tr...
-Downloading locale...
+Installing tr-tr...
 
 Flushing cache...
 DONE

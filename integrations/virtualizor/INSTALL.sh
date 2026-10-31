@@ -2,8 +2,8 @@
 set -e
 
 readonly PANEL="davpanel"
-readonly GITHUB="stefanpejcic" # might be org eventually
-readonly REPOSITORY="DavPanel-Virtualizor"
+readonly GITHUB="kangpcode"
+readonly REPOSITORY="davpanel-virtualizor"
 readonly VIRTUALIZOR_PATH="/usr/local/virtualizor"
 
  
@@ -21,21 +21,8 @@ else
 fi
 
 
-#2. set cleanup
-cleanup() {
-    echo
-    echo "Cleaning up..."
-    rm -rf "/tmp/$REPOSITORY"
-}
-
-trap cleanup EXIT INT TERM
-
-
-#3. clone from github
-echo
-echo "Clonning $GITHUB/$REPOSITORY"
-cd /tmp
-git clone "https://github.com/$GITHUB/$REPOSITORY"
+# Use the integration bundled with this release.
+SOURCE_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 
 
 #4. https://youtu.be/tw429JGL5zo
@@ -45,7 +32,7 @@ SCRIPT="virt_${PANEL}.sh"
 IMAGE="virt_${PANEL}.png"
 JSON="${PANEL}_supported_os.json"
 
-cd "$REPOSITORY"
+cd "$SOURCE_DIR"
 cp "$SCRIPT" "$VIRTUALIZOR_PATH/hooks/$SCRIPT"
 cp "$IMAGE"  "$VIRTUALIZOR_PATH/enduser/themes/default/images/$IMAGE"
 cp "$JSON"   "$VIRTUALIZOR_PATH/$JSON"

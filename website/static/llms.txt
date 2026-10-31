@@ -1,21 +1,20 @@
 # DavPanel
 
-> DavPanel is a web hosting control panel built on Docker, forked from DavPanel. Every hosting user gets a fully isolated environment - dedicated web server, database, PHP-FPM, private network, and storage - delivering VPS-grade isolation on shared hardware. It ships as a free Community edition and a paid Enterprise edition for hosting providers, priced per server rather than per account.
+> DavPanel is a web hosting control panel built on Docker. Every hosting user gets a fully isolated environment - dedicated web server, database, PHP-FPM, private network, and storage - delivering VPS-grade isolation on shared hardware. It ships as a free Community edition and a paid Enterprise edition for hosting providers, priced per server rather than per account.
 
-This is the main DavPanel website. For technical documentation, see davpanel.com/docs. DavPanel is maintained by Dhafa Nazula Permadi (kangpcode) and is a rebranded fork of DavPanel by Dhafa Nazula Permadi and contributors.
+This is the main DavPanel website. For technical documentation, see davpanel.com/docs.
 
 ## About DavPanel
 
-DavPanel inherits DavPanel's architecture: started in 2023 as a LAMP-stack panel and moved to one Docker container per user service (web, database, mail), giving each hosting user real isolation without the overhead of a container per website.
+DavPanel started in 2023 as a LAMP-stack panel and moved to one Docker container per user service (web, database, mail), giving each hosting user real isolation without the overhead of a container per website.
 
 Key facts:
 - Free Community edition, plus Enterprise from a fixed €14.95/month per server - no per-account fees
 - One Docker container per user service: web server, database, PHP-FPM, mail
 - Supports Ubuntu, Debian, AlmaLinux, RockyLinux, and CentOS on AMD64 and ARM
-- REST API with 160+ endpoints, plus a native MCP server for AI agent management
+- REST API with 160+ endpoints, plus a native MCP server for AI agent management (since v1.7.65)
 - Billing automation for WHMCS, FOSSBilling, and Blesta
-- Not open source: the DavPanel UI and DavAdmin are distributed under the upstream EULA; davcli and configuration files are CC BY-NC (non-commercial)
-- Fork notice, identifier mapping, and upstream attribution: see NOTICE.md in the repository
+- Not open source: DavPanel UI and DavAdmin are distributed under a EULA; davcli and configuration files are CC BY-NC (non-commercial)
 
 ---
 
@@ -30,7 +29,7 @@ The core control panel: a Docker-isolated environment per hosting user, managed 
 
 ## Editions & Pricing
 
-DavPanel ships as a free Community edition and a paid Enterprise edition, priced per server rather than per hosting account. Billing-software integrations automate account provisioning. Enterprise licensing is provided under the upstream DavPanel EULA; this fork does not bypass the license check.
+DavPanel ships as a free Community edition and a paid Enterprise edition, priced per server rather than per hosting account. Billing-software integrations automate account provisioning.
 
 - [DavPanel Community Edition](https://davpanel.com/community/): DavPanel Community edition is a free web hosting control panel, suitable for VPS and private use.
 - [DavPanel Enterprise](https://davpanel.com/enterprise/): DavPanel Enterprise Edition provides robust user isolation and management features, designed for web hosting providers, all at a fixed price.
@@ -53,15 +52,15 @@ How DavPanel's Docker-per-user model differs from CloudLinux-based and tradition
 Where to get help, report bugs, or apply a patch, plus the license terms DavPanel is distributed under.
 
 - [Documentation](https://davpanel.com/docs/): DavPanel and DavAdmin documentation - installation, davcli commands, and server management.
-- [Security policy](https://github.com/kangpcode/DavPanel/security/policy): How to report a vulnerability privately.
 
 ---
 
 ## External Resources
 
 - [Blog](https://davpanel.com/blog): Release notes, feature announcements, and hosting how-tos.
-- [GitHub](https://github.com/kangpcode/DavPanel): Source repository, issue tracker, and CONTRIBUTING guide. The DavPanel UI and DavAdmin are distributed under the upstream EULA; davcli and configuration files are CC BY-NC.
-- [Upstream DavPanel](https://github.com/stefanpejcic/OpenPanel): Original project this fork is based on.
+- [GitHub](https://github.com/kangpcode/davpanel): Source repository, issue tracker, and CONTRIBUTING guide. DavPanel UI/DavAdmin are distributed under a EULA; davcli and configuration files are CC BY-NC.
+- [Discord](https://discord.com/invite/7bNY8fANqF): Community chat for support and discussion.
+- [Reddit](https://www.reddit.com/r/davpanel/): Community discussion board.
 
 ## Optional
 

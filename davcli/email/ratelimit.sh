@@ -28,7 +28,7 @@
 # THE SOFTWARE.
 ##################################################################################
 
-OUTPUT="/usr/local/mail/openmail/postfwd/postfwd.cf"
+OUTPUT="/usr/local/mail/davmail/postfwd/postfwd.cf"
 MYSQL_CMD="mariadb -N -s"
 SKIP_RELOAD=false
 

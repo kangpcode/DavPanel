@@ -177,7 +177,7 @@ func TestNewHandlerServesEmbeddedStaticAssets(t *testing.T) {
 	t.Cleanup(func() { admindb.Path = origPath })
 
 	origOverrideDir := handlers.GeneralOverrideDir
-	handlers.GeneralOverrideDir = t.TempDir() // isolate from the real /usr/local/admin
+	handlers.GeneralOverrideDir = t.TempDir() // isolate from the real /usr/local/davadmin
 	t.Cleanup(func() { handlers.GeneralOverrideDir = origOverrideDir })
 
 	adminDB, err := admindb.Open()

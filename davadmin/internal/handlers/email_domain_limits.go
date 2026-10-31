@@ -23,8 +23,8 @@ import (
 // paths and command used to read/write postfwd's rate-limit config, tail
 // the mail log, and invoke the rate-limit management script.
 var (
-	PostfwdConfigPath     = "/usr/local/mail/openmail/postfwd/postfwd.cf"
-	EmailsMailLogPath     = "/usr/local/mail/openmail/docker-data/dms/mail-logs/mail.log"
+	PostfwdConfigPath     = "/usr/local/mail/davmail/postfwd/postfwd.cf"
+	EmailsMailLogPath     = "/usr/local/mail/davmail/docker-data/dms/mail-logs/mail.log"
 	EmailsRatelimitScript = []string{"davcli", "email-ratelimit"}
 )
 

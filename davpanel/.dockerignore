@@ -1,0 +1,4 @@
+.git
+encoded-*
+node_modules
+*.log

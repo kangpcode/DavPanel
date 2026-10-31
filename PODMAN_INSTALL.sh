@@ -41,6 +41,7 @@ separate_panel_domain=""
 custom_username=""
 custom_password=""
 license_key=""
+LOCAL_SOURCE_DIR="${DAVPANEL_SOURCE_DIR:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)}"
 
 readonly DEFAULT_PANEL_VERSION="2.0.19"
 readonly CONTAINER_ENGINE="podman"
@@ -50,8 +51,6 @@ readonly LOG_FILE="davpanel_install.log"
 readonly SERVICES_DIR="/etc/systemd/system/"
 readonly CONFIG_FILE="${ETC_DIR}davpanel/conf/davpanel.config"
 
-exec > >(tee -a "$LOG_FILE") 2>&1
-echo "" > /root/davpanel_restart_needed
 
 ok()   { echo -e "[${GREEN} OK ${RESET}] $*"; }
 warn() { echo -e "[${YELLOW}  ! ${RESET}] $*"; }
@@ -93,6 +92,8 @@ line() { printf '%*s\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' -; }
 show_help() {
     cat <<EOF
 Available options:
+  --preflight                 Verify local source and release binaries without changing the host.
+  --source-dir=<path>          Source checkout or extracted release directory.
   --key=<key>                 License key for DavPanel Enterprise edition.
   --domain=<domain>           Domain for DavAdmin and DavPanel.
   --panel-domain=<domain>     Separate domain just for DavPanel UI.
@@ -128,6 +129,7 @@ validate_port() {
 parse_args() {
     while [[ $# -gt 0 ]]; do
         case $1 in
+            --source-dir=*)    LOCAL_SOURCE_DIR="${1#*=}" ;;
             --key=*)           SET_PREMIUM=true;         license_key="${1#*=}" ;;
             --domain=*)        SET_HOSTNAME_NOW=true;    new_hostname="${1#*=}" ;;
             --panel-domain=*)  SET_HOSTNAME_NOW=true;    separate_panel_domain="${1#*=}" ;;
@@ -437,41 +439,50 @@ check_kernel_modules_reboot() {
 }
 
 download_files() {
-    echo "Downloading DavPanel project repositories from Github..."
+    echo "Installing local DavPanel configuration and components..."
+    local arch="amd64" admin_binary binary_dir
+    [[ "$architecture" == "aarch64" ]] && arch="arm64"
+    admin_binary="davadmin-$arch"
+    binary_dir="$LOCAL_SOURCE_DIR/bin"
+    [[ -f "$binary_dir/$admin_binary" ]] || binary_dir="$LOCAL_SOURCE_DIR/dist/linux-$arch/bin"
 
     [[ "$REPAIR" == true ]] && rm -rf "$ETC_DIR" /usr/local/davcli /usr/local/davadmin/
-
-    local branch="110"
-    [[ "$architecture" == "aarch64" ]] && branch="armcpu"
-
-    # davpanel-configuration
-    echo "Downloading davpanel-configuration to $ETC_DIR"
-
-    local tmp_extract="/tmp/davpanel-configuration-extract"
-    rm -rf "$tmp_extract"
-    mkdir -p "$tmp_extract"
-    curl -sSL https://github.com/kangpcode/davpanel-configuration/archive/refs/heads/main.tar.gz -o /tmp/main.tar.gz && tar -xzf /tmp/main.tar.gz -C "$tmp_extract" --strip-components=1
-    mkdir -p "$ETC_DIR"
-    cp -a "${tmp_extract}/." "$ETC_DIR"
-    # cp -a drags the user_tmp_t label from /tmp along, put the normal /etc labels back
+    mkdir -p "$ETC_DIR" /usr/local/davadmin /usr/local/davcli /usr/local/share/davpanel
+    cp -a "$LOCAL_SOURCE_DIR/configuration/." "$ETC_DIR" || die 1 "Cannot copy local configuration."
+    install -m 600 /dev/null "${ETC_DIR}environment"
+    for name in DAVPANEL_LICENSE_API DAVPANEL_PHP_VERSIONS_API; do
+        [[ -n "${!name:-}" ]] && printf '%s=%s\n' "$name" "${!name}" >> "${ETC_DIR}environment"
+    done
+    cp -a "$LOCAL_SOURCE_DIR/davcli/." /usr/local/davcli/ || die 1 "Cannot copy local CLI."
+    install -m 755 "$binary_dir/$admin_binary" "/usr/local/davadmin/$admin_binary" || die 1 "Cannot install DavAdmin binary."
+    install -m 755 "$binary_dir/davpanel" /usr/local/share/davpanel/davpanel || die 1 "Cannot stage DavPanel binary."
+    for component in translations mailserver; do
+        mkdir -p "/usr/local/share/davpanel/$component"
+        cp -a "$LOCAL_SOURCE_DIR/$component/." "/usr/local/share/davpanel/$component/" || die 1 "Cannot copy $component."
+    done
+    for component in cpanel-import cyberpanel-import; do
+        mkdir -p "/usr/local/share/davpanel/integrations/$component"
+        cp -a "$LOCAL_SOURCE_DIR/integrations/$component/." "/usr/local/share/davpanel/integrations/$component/" || die 1 "Cannot copy $component."
+    done
+    find /usr/local/davcli -type f -name '*.sh' -exec chmod +x {} +
+    sed -i "s|^ExecStart=.*|ExecStart=/usr/local/davadmin/$admin_binary|" "${ETC_DIR}davadmin/service/davadmin.service"
     command -v restorecon &>/dev/null && restorecon -R "$ETC_DIR" >/dev/null 2>&1 || true
-    rm -rf /tmp/main.tar.gz "$tmp_extract"
-    [[ -f "$CONFIG_FILE" ]] || die 1 "Config file ${CONFIG_FILE} is missing after downloading configuration from Github."
+    [[ -f "$CONFIG_FILE" ]] || die 1 "Local configuration is incomplete."
+}
 
-    # davadmin
-    local admin_binary="davadmin-amd64"
-    [[ "$architecture" == "aarch64" ]] && admin_binary="davadmin-arm64"
-    echo "Downloading davadmin to /usr/local/davadmin/$admin_binary"
-    mkdir -p /usr/local/davadmin/
-    curl -sSL "https://github.com/kangpcode/davadmin/releases/download/${PANEL_VERSION%%-beta}/$admin_binary" -o "/usr/local/davadmin/$admin_binary"
-    [[ -f "/usr/local/davadmin/$admin_binary" ]] || die 1 "Failed to download DavAdmin binary ${admin_binary} from Github."
-    chmod +x "/usr/local/davadmin/$admin_binary"
-    sed -i "s|^ExecStart=.*|ExecStart=/usr/local/davadmin/${admin_binary}|" "/etc/davpanel/davadmin/service/davadmin.service"
-
-    # davcli
-    echo "Downloading davcli commands to /usr/local/davcli"
-    mkdir -p /usr/local/davcli/
-    curl -sSL https://github.com/kangpcode/davcli/archive/refs/heads/podman.tar.gz -o /tmp/scripts.tar.gz && tar -xzf /tmp/scripts.tar.gz -C "/usr/local/davcli" --strip-components=1 && find /usr/local/davcli -type f -name '*.sh' -exec chmod +x {} +
+prepare_local_images() {
+    echo "Building local DavPanel, Caddy/Coraza and FTP images..."
+    local context arch="amd64"
+    [[ "$architecture" == "aarch64" ]] && arch="arm64"
+    context=$(mktemp -d) || die 1 "Cannot create panel image context."
+    mkdir -p "$context/bin" "$context/davcli"
+    cp /usr/local/share/davpanel/davpanel "$context/bin/davpanel"
+    cp /usr/local/davcli/davcli "$context/davcli/davcli"
+    cp "$LOCAL_SOURCE_DIR/davpanel/Dockerfile.release" "$context/Dockerfile"
+    podman build --platform "linux/$arch" -t "ghcr.io/kangpcode/davpanel:$PANEL_VERSION" "$context" || die 1 "DavPanel image build failed."
+    rm -rf "$context"
+    podman build --platform "linux/$arch" -t ghcr.io/kangpcode/davpanel-caddy-coraza:latest "$LOCAL_SOURCE_DIR/caddy" || die 1 "Caddy/Coraza image build failed."
+    podman build --platform "linux/$arch" -t ghcr.io/kangpcode/davpanel-ftp:latest "$LOCAL_SOURCE_DIR/vsftpd" || die 1 "FTP image build failed."
 }
 
 download_config() {
@@ -1109,7 +1120,8 @@ hetzner_fix() {
 clean_cache() { run $PACKAGE_MANAGER clean all 2>/dev/null || true; }
 
 start_system_containers() {
-    podman pull ghcr.io/kangpcode/davpanel:$PANEL_VERSION >/dev/null 2>&1 &
+    podman image exists "ghcr.io/kangpcode/davpanel:$PANEL_VERSION" || die 1 "The local panel image is missing."
+    podman-compose -f /root/docker-compose.yml up -d davpanel || die 1 "DavPanel containers failed to start."
 }
 
 run_housekeeping_parallel() {
@@ -1244,6 +1256,7 @@ STEPS=(
     hetzner_fix
     download_files
     download_config
+    prepare_local_images
     prefetch_shared_images
     setup_davcli
     install_davadmin
@@ -1265,38 +1278,64 @@ run_installation() {
     setup_scroll_area
     local total=${#STEPS[@]} current=0
     for step in "${STEPS[@]}"; do
-        s=$(date +%s); $step; e=$(date +%s)
+        s=$(date +%s)
+        "$step" || die 1 "Installation step failed: $step"
+        e=$(date +%s)
         echo "[TIMING] $step: $((e-s))s" >> "$LOG_FILE"
         (( current++ )); draw_progress_bar $(( current * 100 / total ))
     done
     destroy_scroll_area
 }
 
-# Main
-(
-flock -n 200 || { echo "Another install is already running."; exit 1; }
-detect_os_and_package_manager
-parse_args "$@"
-[[ -r /root && -w /root ]] || { echo "No read/write access to /root."; exit 1; }
-get_server_ipv4
-set_panel_version
-print_header
-check_requirements
-detect_installed_panels
-echo -e "Starting DavPanel installation process..."
-start=$(date +%s)
+installer_main() {
+    local preflight=false source_version
+    for arg in "$@"; do
+        case "$arg" in
+            --source-dir=*) LOCAL_SOURCE_DIR="${arg#*=}" ;;
+            --preflight) preflight=true ;;
+            --help|-h) show_help; return 0 ;;
+        esac
+    done
+    LOCAL_SOURCE_DIR=$(cd -- "$LOCAL_SOURCE_DIR" && pwd) || return 1
+    command -v python3 >/dev/null || { echo "Python 3 is required for source verification." >&2; return 1; }
+    python3 "$LOCAL_SOURCE_DIR/scripts/preflight.py" --root "$LOCAL_SOURCE_DIR" --require-artifacts || return 1
+    [[ "$preflight" == true ]] && return 0
+    [[ "$(id -u)" == 0 ]] || { echo "Run the installer as root; --preflight needs no root." >&2; return 1; }
+    source_version=$(tr -d '[:space:]' < "$LOCAL_SOURCE_DIR/davpanel/version")
+    for arg in "$@"; do
+        [[ "$arg" == --version=* && "${arg#*=}" != "$source_version" ]] && {
+            echo "Requested version differs from the local source ($source_version). Build that release first." >&2
+            return 1
+        }
+    done
+    exec > >(tee -a "$LOG_FILE") 2>&1
+    echo "" > /root/davpanel_restart_needed
+    (
+        flock -n 200 || { echo "Another install is already running."; exit 1; }
+        detect_os_and_package_manager
+        parse_args "$@"
+        [[ -r /root && -w /root ]] || { echo "No read/write access to /root."; exit 1; }
+        get_server_ipv4
+        PANEL_VERSION="$source_version"
+        print_header
+        check_requirements
+        detect_installed_panels
+        echo -e "Starting DavPanel installation process..."
+        start=$(date +%s)
+        setup_progress_bar
+        _build_pkg_cache
+        run_installation
+        duration=$(($(date +%s) - start))
+        minutes=$((duration / 60))
+        seconds=$((duration % 60))
+        support_message
+        create_admin_account
+        extra_step_for_podman
+        clean_notifications
+        run_post_install
+    ) 200>/root/davpanel_install.lock
+}
 
-setup_progress_bar
-_build_pkg_cache
-run_installation
-duration=$(($(date +%s) - start))
-minutes=$((duration / 60))
-seconds=$((duration % 60))
-support_message
-create_admin_account
-extra_step_for_podman
-clean_notifications
-run_post_install
-) 200>/root/davpanel_install.lock
-
-rm -f /root/davpanel_install.lock
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    installer_main "$@"
+fi

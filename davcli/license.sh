@@ -30,7 +30,7 @@
 
 # Configuration
 readonly CONFIG_FILE_PATH='/etc/davpanel/davpanel/conf/davpanel.config'
-readonly WHMCS_URL="https://api.davpanel.com/enterprise/index.php"
+readonly WHMCS_URL="${DAVPANEL_LICENSE_API:-https://api.davpanel.com/enterprise/index.php}"
 readonly COMPOSE_FILE="/root/docker-compose.yml"
 readonly SERVICE="davpanel"
 
@@ -162,7 +162,7 @@ manage_compose_volumes() {
 
     VOLUMES=(
     "/root/.ssh/:/root/.ssh/:ro"
-    "/usr/local/mail/openmail/:/usr/local/mail/openmail/"
+    "/usr/local/mail/davmail/:/usr/local/mail/davmail/"
     "/etc/davpanel/davpanel/conf/knowledge_base_articles.json:/etc/davpanel/davpanel/conf/knowledge_base_articles.json:ro"
     )
 

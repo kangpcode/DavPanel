@@ -202,7 +202,7 @@ get_domain_for_webmail() {
 
 
 
-#cd /usr/local/mail/openmail || { 
+#cd /usr/local/mail/davmail || { 
 #    echo "Error: Mailserver is not installed!" >&2
 #    exit 1
 #}

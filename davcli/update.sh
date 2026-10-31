@@ -146,7 +146,7 @@ IMAGE_NAME=$(podman-compose -f "$COMPOSE_FILE" config 2>/dev/null | awk '
 ')
 
 if [ -z "$IMAGE_NAME" ]; then
-    IMAGE_NAME="davpanel/davpanel"  # fallback
+    IMAGE_NAME="ghcr.io/kangpcode/davpanel"  # fallback
 fi
 
 
@@ -204,16 +204,22 @@ get_local_version() {
 get_remote_version() {
     local beta="${1:-false}"
     local tags
-    tags=$(curl -s "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags" | jq -r '.results[].name' 2>/dev/null)
+    if [[ "$IMAGE_NAME" == ghcr.io/* ]]; then
+        local repository="${IMAGE_NAME#ghcr.io/}" token
+        token=$(curl -fsSG --data-urlencode "scope=repository:$repository:pull" --data-urlencode 'service=ghcr.io' https://ghcr.io/token | jq -er '.token') || return 1
+        tags=$(curl -fsS -H "Authorization: Bearer $token" "https://ghcr.io/v2/$repository/tags/list" | jq -er '.tags[]') || return 1
+    else
+        tags=$(curl -fsS "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags" | jq -er '.results[].name') || return 1
+    fi
 
     if [[ -z "$tags" ]]; then
         return 1
     fi
 
     if [[ "$beta" == "true" ]]; then
-        echo "$tags" | grep -- '-beta$' | sed 's/-beta$//' | sort -V | tail -n 1
+        echo "$tags" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-beta$' | sed 's/-beta$//' | sort -V | tail -n 1
     else
-        echo "$tags" | grep -v '^latest$' | grep -v -- '-beta$' | sort -V | tail -n 1
+        echo "$tags" | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1
     fi
 }
 
@@ -421,7 +427,7 @@ check_reboot_required() {
 purge_previous_images() {
     log_info "Cleaning up old Podman images"
     local all_images
-    all_images=$(podman images --format "{{.Repository}} {{.ID}}" | grep "^docker.io/$IMAGE_NAME" | awk '{print $2}')
+    all_images=$(podman images --format "{{.Repository}} {{.ID}}" | awk -v image="$IMAGE_NAME" '$1 == image || $1 == "docker.io/" image {print $2}')
     local used_images
     used_images=$(podman ps --format "{{.Image}}" | xargs -n1 podman inspect --format '{{.Id}}' 2>/dev/null | sort | uniq)
     for img in $all_images; do
@@ -1055,7 +1061,7 @@ verify_davpanel_running() {
 # the DavAdmin binary is swapped in a background unit, waits up to 2 minutes for it and checks the admin service came back
 verify_davadmin_running() {
     local unit="davadmin-selfupdate-$$.service" i
-    [[ -d /usr/local/admin ]] || return 0
+    [[ -d /usr/local/davadmin ]] || return 0
     [[ "$NO_RESTART" == "true" ]] && return 0
     for (( i=0; i<60; i++ )); do
         systemctl is-active --quiet "$unit" || break
@@ -1094,8 +1100,8 @@ update_davpanel() {
 update_davadmin() {
     # shellcheck disable=SC2015
     [[ "$1" == "--no-log" ]] && echo "Updating DavAdmin" || log "Updating DavAdmin"
-    if [[ -d /usr/local/admin ]]; then
-        cd /usr/local/admin || return
+    if [[ -d /usr/local/davadmin ]]; then
+        cd /usr/local/davadmin || return
 
         [[ -f "/usr/local/davadmin/templates/emails/reports.html" ]] && cp /usr/local/davadmin/templates/emails/reports.html /tmp/report.html.backup
 

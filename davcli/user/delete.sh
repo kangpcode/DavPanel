@@ -209,7 +209,7 @@ delete_emails() {
     mapfile -t user_domains < <(printf '%s\n' "${user_domains[@]}" | sort -u)
 
     # regex aliases (default email address / catch-all)
-    regex_aliases_file="/usr/local/mail/openmail/docker-data/dms/config/postfix-regex.cf"
+    regex_aliases_file="/usr/local/mail/davmail/docker-data/dms/config/postfix-regex.cf"
     if [ -f "$regex_aliases_file" ] && [ "${#user_domains[@]}" -gt 0 ]; then
         tmp_file="$(mktemp)"
         changed=0

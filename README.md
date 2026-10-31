@@ -2,13 +2,12 @@
 
 > **DavPanel** is a rebranded fork of [OpenPanel](https://github.com/stefanpejcic/OpenPanel), maintained by **Dhafa Nazula Permadi ([kangpcode](https://github.com/kangpcode))**. Upstream code and notices remain the property of their original authors; see [NOTICE.md](NOTICE.md) and [LICENSE](LICENSE).
 
-> **Checkout status (2026-10-31): incomplete for deployment.** All 16 external
-> component directories declared in `.gitmodules` are empty and have no pinned Git
-> submodule entries. The local Go panel builds and passes its tests, but this does
-> not validate DavAdmin, DavCLI or a full installation. Run
-> `python3 scripts/audit_sources.py` to inspect the source inventory (exit code 1
-> means incomplete). The supplied `openpanel-main/` is a separate TypeScript/Bun
-> analytics product, not the hosting panel's upstream source. See [REBRANDING.md](REBRANDING.md).
+> **Local source status (2026-10-31):** all 16 external components are now
+> included as vendored source with commit provenance and SHA-256 checksums in
+> `components.lock.json`. The supplied `openpanel-main/` is the hosting panel's
+> reference snapshot. Build and validate an installation package with
+> [INSTALL.md](INSTALL.md). A production deployment on a clean server is a
+> separate validation step; external billing and mobile builds need their own environments.
 
 **DavPanel** is a web hosting control panel built around containers. Every user gets a fully isolated environment: dedicated web server, dedicated database, private network, and scoped file storage - delivering VPS-grade security on shared hardware.
 
@@ -122,6 +121,18 @@ DavPanel is a truly [OS-agnostic](https://www.techtarget.com/whatis/definition/a
 [^2]: Average installation time for [the install script](https://davpanel.com/) on a VPS with the following specifications: 2 CPU cores and 2 GB of RAM.
 
 ## Installation
+
+Build this fork from its local sources; use [INSTALL.md](INSTALL.md) for the complete procedure.
+
+```bash
+python3 scripts/audit_sources.py
+bash scripts/build-release.sh --arch=amd64
+bash PODMAN_INSTALL.sh --preflight
+```
+
+Run the installer as root only on the clean target hosting server. Public domain
+install commands below depend on infrastructure that is not published by this checkout.
+
 
 Install on any supported VPS or dedicated server with a single command:
 ```bash

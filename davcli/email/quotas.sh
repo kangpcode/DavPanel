@@ -88,7 +88,7 @@ for FOLDER_NAME in "${FOLDERS[@]}"; do
     #sed -i "/@$DOMAIN/ {
     #    s/:[0-9]\+:[0-9]\+:/:$USER_ID:$USER_ID:/
     #    s#/var/mail/\([^/]*\)/\([^/]*\)#/home/$USERNAME/docker-data/volumes/${USERNAME}_mail_data/_data/\1/\2#
-    #}" /usr/local/mail/openmail/docker-data/dms/dovecot/userdb
+    #}" /usr/local/mail/davmail/docker-data/dms/dovecot/userdb
 
     #sed -i \"/@\$DOMAIN/ s/:[0-9]\+:[0-9]\+:/:\$USER_ID:\$USER_ID:/\" /etc/dovecot/userdb
     # same owner email-setup gives new mailboxes

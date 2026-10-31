@@ -20,7 +20,7 @@ var (
 	GeneralAdminOnlyFiles = map[string]bool{"custom.css": true}
 
 	GeneralConfigDir   = "/etc/davpanel/davadmin/config"
-	GeneralOverrideDir = "/usr/local/admin"
+	GeneralOverrideDir = "/usr/local/davadmin"
 )
 
 // GeneralStatic bundles the top-level "/{filename}" handler. No auth

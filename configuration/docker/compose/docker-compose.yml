@@ -65,6 +65,9 @@ services:
   # DavPanel UI
   davpanel:
     image: ghcr.io/kangpcode/davpanel:${VERSION}
+    environment:
+      DAVPANEL_LICENSE_API: ${DAVPANEL_LICENSE_API:-}
+      DAVPANEL_PHP_VERSIONS_API: ${DAVPANEL_PHP_VERSIONS_API:-}
     container_name: davpanel
     hostname: davpanel
     depends_on:

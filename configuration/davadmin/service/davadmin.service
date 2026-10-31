@@ -4,8 +4,9 @@ After=network.target
 
 [Service]
 User=root
+EnvironmentFile=-/etc/davpanel/environment
 WorkingDirectory=/usr/local/davadmin/
-ExecStart=/usr/local/davadmin/venv/bin/gunicorn -c /etc/davpanel/davadmin/service/service.config.py app:app
+ExecStart=/usr/local/davadmin/davadmin-amd64
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=always
 TimeoutStopSec=30

@@ -1,4 +1,14 @@
-FROM --platform=linux/$TARGETARCH alpine:3.22
+FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS builder
+
+ARG TARGETOS=linux
+ARG TARGETARCH
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -buildvcs=false -o /out/davpanel ./cmd/davpanel
+
+FROM alpine:3.22
 
 ARG TARGETARCH
 
@@ -40,8 +50,8 @@ RUN apk add --no-cache \
 COPY davcli /usr/local/bin/davcli
 RUN chmod +x /usr/local/bin/davcli
 
-# Platform-specific binaries
-COPY encoded-${TARGETARCH}/ /
+# Build the binary from this checkout.
+COPY --from=builder /out/davpanel /davpanel
 
 # Podman socket
 ENV CONTAINER_HOST=unix:///run/podman/podman.sock

@@ -473,7 +473,7 @@ func parseEmailListRow(entry string) EmailListRow {
 	return EmailListRow{Address: address, QuotaDisplay: quota, PercentVal: percentVal, CappedVal: cappedVal, BarColor: barColor, NearQuota: percentVal > 80}
 }
 
-const dmsConfigDir = "/usr/local/mail/openmail/docker-data/dms/config"
+const dmsConfigDir = "/usr/local/mail/davmail/docker-data/dms/config"
 
 // readRestrictedAddresses returns the addresses listed in a postfix access file (lines like "user@domain REJECT")
 func readRestrictedAddresses(path string) map[string]bool {

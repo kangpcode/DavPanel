@@ -1610,7 +1610,7 @@ section_dns() {
 
         # same rules as the Email Deliverability page
         spf_s="missing"; [[ -n "$spf" ]] && { [[ "$spf" == *"ip4:$ip"* ]] && spf_s="ok" || spf_s="wrong_ip"; }
-        expected=$(grep -o '"[^"]*"' "/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys/$d/mail.txt" 2>/dev/null | tr -d '"\n')
+        expected=$(grep -o '"[^"]*"' "/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys/$d/mail.txt" 2>/dev/null | tr -d '"\n')
         dkim_s="missing"; [[ -n "$dkim" ]] && { [[ -n "$expected" && "${dkim// /}" == "${expected// /}" ]] && dkim_s="ok" || dkim_s="mismatch"; }
         dmarc_s="missing"; [[ -n "$dmarc" ]] && dmarc_s="ok"
 

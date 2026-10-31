@@ -138,8 +138,8 @@ notify_destination() {
     domains=$(grep -c . <<< "$domain_list")
     sites=$(mariadb --defaults-extra-file="$config_file" -D "$mysql_database" -N -s -e "SELECT COUNT(*) FROM sites s JOIN domains d ON s.domain_id=d.domain_id JOIN users u ON d.user_id=u.id WHERE u.username='$USERNAME';" 2>/dev/null)
     mails=0
-    if [[ -n "$domain_list" && -f /usr/local/mail/openmail/docker-data/dms/config/postfix-accounts.cf ]]; then
-        mails=$(grep -cE "@($(sed 's/\./\\./g' <<< "$domain_list" | paste -sd'|'))\|" /usr/local/mail/openmail/docker-data/dms/config/postfix-accounts.cf)
+    if [[ -n "$domain_list" && -f /usr/local/mail/davmail/docker-data/dms/config/postfix-accounts.cf ]]; then
+        mails=$(grep -cE "@($(sed 's/\./\\./g' <<< "$domain_list" | paste -sd'|'))\|" /usr/local/mail/davmail/docker-data/dms/config/postfix-accounts.cf)
     fi
     ftps=$(grep -c '|' "/etc/davpanel/ftp/users/$CONTEXT/users.list" 2>/dev/null)
     containers=$(cut -d: -f2 /tmp/docker_containers_names_${USERNAME}.txt 2>/dev/null | xargs | wc -w)
@@ -812,16 +812,16 @@ EOF
 		fi
  	fi
 
-	DKIM_DIR="/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys/$domain"
+	DKIM_DIR="/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys/$domain"
 	if [[ -d "$DKIM_DIR" ]]; then
-	    "${SSH_CMD[@]}" "mkdir -p /usr/local/mail/openmail/docker-data/dms/config/opendkim/keys/"
-	    "${RSYNC_CMD[@]}" "$DKIM_DIR" "${REMOTE_USER}@${REMOTE_HOST}:/usr/local/mail/openmail/docker-data/dms/config/opendkim/keys/"
+	    "${SSH_CMD[@]}" "mkdir -p /usr/local/mail/davmail/docker-data/dms/config/opendkim/keys/"
+	    "${RSYNC_CMD[@]}" "$DKIM_DIR" "${REMOTE_USER}@${REMOTE_HOST}:/usr/local/mail/davmail/docker-data/dms/config/opendkim/keys/"
 	    # keys alone aren't used until the domain is listed in the opendkim tables
 	    for table in KeyTable SigningTable TrustedHosts; do
-	        local_table="/usr/local/mail/openmail/docker-data/dms/config/opendkim/$table"
+	        local_table="/usr/local/mail/davmail/docker-data/dms/config/opendkim/$table"
 	        [[ -f "$local_table" ]] || continue
 	        awk -v d="$domain" '{k=$1} k=="*@"d || k==d || k=="*."d || (length(k)>length(d) && substr(k, length(k)-length(d)-11)=="._domainkey."d)' "$local_table" | while IFS= read -r line; do
-	            "${SSH_CMD[@]}" "touch /usr/local/mail/openmail/docker-data/dms/config/opendkim/$table; grep -qxF '$line' /usr/local/mail/openmail/docker-data/dms/config/opendkim/$table || echo '$line' >> /usr/local/mail/openmail/docker-data/dms/config/opendkim/$table" < /dev/null
+	            "${SSH_CMD[@]}" "touch /usr/local/mail/davmail/docker-data/dms/config/opendkim/$table; grep -qxF '$line' /usr/local/mail/davmail/docker-data/dms/config/opendkim/$table || echo '$line' >> /usr/local/mail/davmail/docker-data/dms/config/opendkim/$table" < /dev/null
 	        done
 	    done
 	fi
@@ -873,7 +873,7 @@ restart_services_on_target() {
 
 	if [[ $COMPOSE_START_MAIL -eq 1 ]]; then
             log "Reloading mailserver and webmail on ${REMOTE_HOST} server ..."
-            "${SSH_CMD[@]}" "cd /usr/local/mail/openmail && podman-compose up -d mailserver roundcube >/dev/null 2>&1"
+            "${SSH_CMD[@]}" "cd /usr/local/mail/davmail && podman-compose up -d mailserver roundcube >/dev/null 2>&1"
 	fi
 
 	# todo: clamav
@@ -1031,8 +1031,8 @@ restore_ftp_for_user # recreate ftp sub-accounts in remote container
 if [ -n "$key_value" ]; then
     log "Syncing mail data ..."
 
-    DMS_CONFIG="/usr/local/mail/openmail/docker-data/dms/config"
-    POSTFWD_SRC="/usr/local/mail/openmail/postfwd/postfwd.cf"
+    DMS_CONFIG="/usr/local/mail/davmail/docker-data/dms/config"
+    POSTFWD_SRC="/usr/local/mail/davmail/postfwd/postfwd.cf"
 
     # Resolve domain list for grep patterns
     ALL_DOMAINS_FOR_MAIL=$(davcli domains-user "$USERNAME" --docroot --php_version 2>/dev/null)
@@ -1079,7 +1079,7 @@ if [ -n "$key_value" ]; then
         fi
 
         # merge into the destination files instead of overwriting them, other accounts already live there
-        "${SSH_CMD[@]}" "mkdir -p $DMS_CONFIG /usr/local/mail/openmail/postfwd/ /tmp/mail_import_${USERNAME}/"
+        "${SSH_CMD[@]}" "mkdir -p $DMS_CONFIG /usr/local/mail/davmail/postfwd/ /tmp/mail_import_${USERNAME}/"
         "${RSYNC_CMD[@]}" "$TMP_MAIL_DIR/" "${REMOTE_USER}@${REMOTE_HOST}:/tmp/mail_import_${USERNAME}/"
         "${SSH_CMD[@]}" bash -s <<EOF
 cd /tmp/mail_import_${USERNAME} || exit 0
@@ -1096,10 +1096,10 @@ for cf in postfix-accounts.cf postfix-virtual.cf dovecot-quotas.cf postfix-recei
     echo "Merged \$cf: \$added line(s) added"
 done
 if [[ -s postfwd.cf ]]; then
-    touch /usr/local/mail/openmail/postfwd/postfwd.cf
+    touch /usr/local/mail/davmail/postfwd/postfwd.cf
     while IFS= read -r id_line; do
         IFS= read -r action_line
-        grep -qxF "\$id_line" /usr/local/mail/openmail/postfwd/postfwd.cf || printf '%s\n%s\n' "\$id_line" "\$action_line" >> /usr/local/mail/openmail/postfwd/postfwd.cf
+        grep -qxF "\$id_line" /usr/local/mail/davmail/postfwd/postfwd.cf || printf '%s\n%s\n' "\$id_line" "\$action_line" >> /usr/local/mail/davmail/postfwd/postfwd.cf
     done < postfwd.cf
     echo "Merged postfwd.cf"
 fi

@@ -16,8 +16,8 @@ import (
 // defaultAliasesFile is the postfix-regex.cf file used for domain default addresses.
 //
 // https://docker-mailserver.github.io/docker-mailserver/v10.4/config/user-management/aliases/#configuring-regexp-aliases
-// TODO: /usr/local/mail/openmail/docker-data/dms/config/postfix-regex.cf is readonly in docker compose!
-const defaultAliasesFile = "/usr/local/mail/openmail/docker-data/dms/config/postfix-regex.cf"
+// TODO: /usr/local/mail/davmail/docker-data/dms/config/postfix-regex.cf is readonly in docker compose!
+const defaultAliasesFile = "/usr/local/mail/davmail/docker-data/dms/config/postfix-regex.cf"
 
 // checkCurrentDefaultAliasForDomain looks up the current default (catch-all) alias for domain.
 func checkCurrentDefaultAliasForDomain(domain string) string {

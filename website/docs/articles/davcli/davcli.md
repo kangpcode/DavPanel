@@ -448,3 +448,8 @@ Usage: davcli locale <CODE>
 ------------------------
 ```
 </details>
+
+DavPanel's CLI wrapper and commands are bundled with the local source release.
+The fork developer is Dhafa Nazula Permadi (kangpcode). Locale installers and
+mail deployment inputs come from the installed release rather than remote shell
+scripts. See `INSTALL.md` in the repository for release build and preflight checks.

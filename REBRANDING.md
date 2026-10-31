@@ -4,54 +4,57 @@ Report date: 2026-10-30 (follow-up: 2026-10-31)
 Scope: full source-level fork of OpenPanel → **DavPanel**, OpenAdmin → **DavAdmin**, OpenCLI → **DavCLI**
 Maintainer: **Dhafa Nazula Permadi** (`kangpcode`) <kangpcode@users.noreply.github.com>
 
-## Source reconciliation — 2026-10-31
+## Current source and installation audit — 2026-10-31
 
-This audit supersedes earlier claims that only infrastructure remains or that
-`git submodule update` can restore the missing components in this checkout.
+The `openpanel-main/` supplied for this task is the **Go hosting panel**, with
+`openpanel/go.mod`, `openadmin/`, `opencli/` and a matching `.gitmodules`. The
+previous analytics-product identification was incorrect for the current input.
+The reference is retained untouched and is excluded from releases and Git staging.
+Every source file from `openpanel-main/openpanel/` has a corresponding path in
+`davpanel/` after the directory/CLI rename.
 
-- The user-supplied `openpanel-main/` contains the OpenPanel **analytics** product:
-  Bun/TypeScript, a TanStack dashboard, Elysia API, PostgreSQL, ClickHouse, Redis
-  and Redpanda. Its README identifies it as an alternative to Mixpanel. It is
-  distinct from the Go hosting panel in `davpanel/` and does not provide the
-  missing hosting OpenAdmin/OpenCLI source.
-- `.gitmodules` declares 16 components, including `davadmin/`, `davcli/` and
-  `configuration/`. All 16 directories are empty. `git ls-files --stage` has
-  **zero mode-160000 entries** for them, so these are currently declarations,
-  not fetchable, pinned Git submodules. An empty `git submodule status` is not
-  a successful completeness check.
-- A direct `git ls-remote` for `kangpcode/davadmin` returned “Repository not
-  found”. Noninteractive checks of all 16 configured remotes failed asking for
-  credentials. These results mean the source is unavailable with current access;
-  they do not distinguish private repositories from nonexistent repositories.
-- `davpanel/Dockerfile` requires `encoded-${TARGETARCH}/`, absent from this
-  checkout. A successful `go build ./...` does not supply that image build input.
-- The installer downloads configuration archives, CLI commands and a DavAdmin
-  release from the configured remotes. No full installation can be certified
-  from the source currently available here.
+All 16 component repositories were retrieved from their public upstreams and
+vendored into this repository. They include DavAdmin, CLI, system configuration,
+tests, translations, mail, FTP, mobile and all eight billing/migration/provider
+integrations. `components.lock.json` records each URL, branch, exact upstream
+commit and a digest of the rebranded tree. `.gitmodules` was removed because these
+are now tracked source directories, not unresolved submodule declarations.
+Each component has a `FORK.md`; original component licenses and legal notices
+are preserved. Fork developer identity is Dhafa Nazula Permadi (kangpcode).
+The current DavAdmin source includes its own GPL license files; the older main
+snapshot's description of admin licensing is historical, not its current license.
 
-Added `scripts/audit_sources.py`, a read-only, network-free inventory check with
-text and `--json` output. It exits 1 for missing source or missing gitlink pins,
-and explicitly distinguishes source completeness from runtime validation.
-Fixture verification covered empty directories, populated but unregistered
-components, registered components, analytics detection and JSON output.
+Implementation changes:
 
-Validation repeated during this audit:
+- Complete DavAdmin Go source, imports, templates, cookies and runtime paths.
+- Existing DavPanel shield and developer credit in the admin UI; source notices
+  retain original authorship. Mobile branding and package identity use DavPanel;
+  the upstream Expo project association was removed.
+- Systemd service runs the compiled admin binary instead of the absent Python
+  Gunicorn environment. Runtime override directory uses `/usr/local/davadmin`.
+- The panel Dockerfile builds from source instead of requiring missing `encoded-*`
+  binaries. A release Dockerfile accepts the verified static panel binary.
+- Installer uses local config, CLI, translations, mail helpers and importers;
+  builds its own panel/Caddy/FTP images; no unpublished fork component releases
+  are required for the local installation path.
+- Read-only installer `--preflight` checks source integrity, binary architecture,
+  executable bits and binary checksums before system mutation. `--help` is also
+  available without root and does not create `/root` files or logs.
+- Locale installation uses included catalog files; mail deployment uses local
+  source; backup import uses installed scripts. Remote updater recognizes GHCR.
+- Admin and CLI honor `DAVPANEL_LICENSE_API`; optional admin PHP metadata honors
+  `DAVPANEL_PHP_VERSIONS_API` and degrades gracefully if unavailable. Existing
+  validation and Enterprise feature decisions are retained.
+- `scripts/build-release.sh` produces Linux binaries and a tarball containing
+  installation inputs plus corresponding sources and component notices.
 
-- `go test ./...`: passed with local socket access outside the sandbox. The first
-  sandboxed run failed only in tests that open local listeners.
-- `go build ./...`: passed.
-- Installer `bash -n`, website config/sidebar `node --check`, and
-  `git diff --check`: passed.
-- Website dependencies, container image builds, DavAdmin/CLI integration and
-  deployment were not run or verified.
+See [INSTALL.md](INSTALL.md) for build/install commands. Source completeness does
+not certify a production deployment, external billing provider, mobile signing,
+remote updater publication, API ownership or a complete security audit.
 
-Implementation direction is awaiting clarification because the requested primary
-source and the existing hosting product are different applications. Do not bulk
-merge their code, licenses, database schemas or runtime identifiers. To complete
-the hosting fork, obtain the actual hosting component sources, preserve their
-licenses, rebrand and test each, then register reviewed commit pins and perform
-an installation on a disposable supported server. To fork the supplied analytics
-product instead, scope and validate that application separately.
+The older sections below are retained as historical audit notes. Their empty
+submodule, absent binary-build-input and infrastructure-only status claims are
+superseded by this section.
 
 ## Follow-up audit — 2026-10-31
 

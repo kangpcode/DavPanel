@@ -1,7 +1,7 @@
 {
   "name": "davadmin-mobile",
   "version": "1.0.0",
-  "author": "DavPanel, LLC",
+  "author": "Dhafa Nazula Permadi (kangpcode)",
   "main": "index.ts",
   "dependencies": {
     "crypto-js": "^4.2.0",
