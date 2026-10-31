@@ -96,8 +96,15 @@ podman restart davpanel
 davcli user-add "$PANEL_USERNAME" "$PANEL_PASSWORD" "$PANEL_EMAIL" 'Developer plus'
 BASE_URL=$(davcli user-login testinguser | sed -E 's#(https?://[^/]+).*#\1#')
 
-# CHANGE A RECORD ON CLOUDFLARE TO THIS SERVER (its ip restricted!)
-IP=$(curl -s -4 https://ip.davpanel.com) && curl -s -o /dev/null -w "" -X PUT "https://api.cloudflare.com/client/v4/zones/576d997a15f8e381f18b8b39363b4023/dns_records/1a13b4f40e8751e8d848b4a49ba460ed" -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json" --data "{\"type\":\"A\",\"name\":\"*.tests.davpanel.org\",\"content\":\"$IP\",\"ttl\":120,\"proxied\":true}" >/dev/null 2>&1
+# Cloudflare credentials come from the test runner environment.
+if [[ -n "${CLOUDFLARE_API_TOKEN:-}" && -n "${CLOUDFLARE_ZONE_ID:-}" && -n "${CLOUDFLARE_RECORD_ID:-}" ]]; then
+    IP=$(curl -fsS -4 https://api.ipify.org)
+    curl -fsS -X PUT "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/dns_records/${CLOUDFLARE_RECORD_ID}" \
+        -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json" \
+        --data "{\"type\":\"A\",\"name\":\"*.tests.davpanel.org\",\"content\":\"$IP\",\"ttl\":120,\"proxied\":true}" >/dev/null
+else
+    echo 'Cloudflare DNS setup skipped; configure test credentials to run browser tests.'
+fi
 
 # TEST ACC FOR ADMIN TESTS
 davcli admin new stefan stefan
