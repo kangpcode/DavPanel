@@ -1,0 +1,6 @@
+[client]
+user = panel
+database = panel
+password = NewPassword
+host = davpanel_mysql
+skip-ssl

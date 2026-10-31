@@ -1,0 +1,20 @@
+{
+    "DavAdmin Access Log": "/var/log/davpanel/admin/access.log",
+    "DavAdmin Error Log": "/var/log/davpanel/admin/error.log",
+    "DavAdmin API Log": "/var/log/davpanel/admin/api.log",
+    "DavAdmin Login Log": "/var/log/davpanel/admin/login.log",
+    "DavAdmin Notifications": "/var/log/davpanel/admin/notifications.log",
+    "DavAdmin Crons Log": "/var/log/davpanel/admin/cron.log",
+    "DavAdmin Backups Log": "/var/log/davpanel/admin/docker-backup.log",
+    "DavPanel Access Log": "/var/log/davpanel/user/access.log",
+    "DavPanel Error Log": "davpanel",
+    "DavCLI Logs": "/var/log/davpanel/admin/davcli.log",
+    "MailServer Log": "davadmin_mailserver",
+    "Caddy Logs": "caddy",
+    "MySQL Logs": "davpanel_mysql",
+    "FTP Logs": "davadmin_ftp",
+    "CSF Deny Log": "/etc/csf/csf.deny",
+    "AuthLog": "/var/log/auth.log",
+    "DPKG Log": "/var/log/dpkg.log",
+    "Syslog": "/var/log/syslog"
+}

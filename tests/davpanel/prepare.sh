@@ -1,0 +1,108 @@
+#!/bin/bash
+
+# defaults
+LICENSE_KEY="enterprise-2a5da40ecd2f60" # ip restricted!
+PANEL_USERNAME="testinguser"
+PANEL_PASSWORD="testingpassword"
+PANEL_EMAIL="test@test.com"
+
+# AUTOSTART SERVICES ON USER-ADD
+FILE=/etc/davpanel/docker/compose/1.0/autostart.services
+ENV=/etc/davpanel/docker/compose/1.0/.env
+PHPV=$(grep -E '^DEFAULT_PHP_VERSION=' "$ENV" | cut -d= -f2- | tr -d '\r"'"'")
+PHP_SVC="php-fpm-${PHPV}"
+
+sed -i '/^varnish$/d' "$FILE"
+grep -qxF "$PHP_SVC"  "$FILE" || echo "$PHP_SVC"  >> "$FILE"
+grep -qxF 'cron'      "$FILE" || echo 'cron'      >> "$FILE"
+grep -qxF 'memcached' "$FILE" || echo 'memcached' >> "$FILE"
+
+echo "Services that will auto-start for user:"
+cat "$FILE"
+echo
+
+# INCREASE LIMITS SO TESTS DONT GET BLOCKED
+davcli config update login_ratelimit 100
+davcli plan-edit id=2 name="Developer plus" description="A professional plan" emails=500 max_email_quota=2G ftp=100 domains=40 websites=40 disk=50 inodes=1000000 databases=40 cpu=4 ram=6 bandwidth=500 max_hourly_email=6000
+# ENABLE ALL FEATURES
+for f in basic.txt default.txt; do
+  # DOCKER:
+  # wget -qO- https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davadmin/config/features.json | jq -r '.[].name' > "/etc/davpanel/davpanel/features/$f"
+  #
+  # PODMAN:
+  wget -qO- https://raw.githubusercontent.com/kangpcode/davpanel-configuration/refs/heads/main/davadmin/config/features.json | jq -r '.[].name' > "/etc/davpanel/davpanel/features/$f"
+done
+
+# ENABLE ALL MODULES
+sed -i "s/^enabled_modules=.*/enabled_modules=$(paste -sd, /etc/davpanel/davpanel/features/default.txt)/" /etc/davpanel/davpanel/conf/davpanel.config
+
+# ALLOW PASSWORD RESET
+davcli config update password_reset yes
+
+
+# ENABLE USER PANEL
+if podman container exists davpanel; then
+  podman start davpanel >/dev/null 2>&1 || cd /root && podman-compose up -d --force-recreate davpanel
+else
+  cd /root && podman-compose up -d davpanel
+fi
+
+# ENABLE PHPMYADMIN
+if podman container exists phpmyadmin; then
+  podman start phpmyadmin >/dev/null 2>&1 || cd /root && podman-compose up -d --force-recreate phpmyadmin
+else
+  cd /root && podman-compose up -d phpmyadmin
+fi
+
+# ADD LICENSE KEY
+davcli license $LICENSE_KEY
+
+# ENABLE EMAILS
+davcli email-server install
+
+# INSTALL ALL LOCALES
+davcli locale $(curl -s "https://api.github.com/repos/kangpcode/davpanel-translations/contents" | jq -r '.[] | select(.type=="dir") | .name' | tr '\n' ' ')
+
+# DNS
+davcli config update ns1 ns1.davpanel.org
+davcli config update ns2 ns2.davpanel.org
+
+if podman container exists davpanel_dns; then
+  podman start davpanel_dns >/dev/null 2>&1 || cd /root && podman-compose up -d --force-recreate bind9
+else
+  cd /root && podman-compose up -d bind9
+fi
+
+# ENABLE FTP
+if podman container exists davadmin_ftp; then
+  podman start davadmin_ftp >/dev/null 2>&1 || cd /root && podman-compose up -d --force-recreate davadmin_ftp
+else
+  cd /root && podman-compose up -d davadmin_ftp
+fi
+
+# ENABLE MALWARE SCANNER
+if podman container exists clamav; then
+  podman start clamav >/dev/null 2>&1 || cd /root && podman-compose up -d --force-recreate clamav
+else
+  cd /root && podman-compose up -d clamav
+fi
+
+csf -r
+
+# RESTART USER-PANEL TO APPLY ALL CHANGES!
+podman restart davpanel
+
+# CREATE USER FOR TESTS
+davcli user-add "$PANEL_USERNAME" "$PANEL_PASSWORD" "$PANEL_EMAIL" 'Developer plus'
+BASE_URL=$(davcli user-login testinguser | sed -E 's#(https?://[^/]+).*#\1#')
+
+# CHANGE A RECORD ON CLOUDFLARE TO THIS SERVER (its ip restricted!)
+IP=$(curl -s -4 https://ip.davpanel.com) && curl -s -o /dev/null -w "" -X PUT "https://api.cloudflare.com/client/v4/zones/576d997a15f8e381f18b8b39363b4023/dns_records/1a13b4f40e8751e8d848b4a49ba460ed" -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type: application/json" --data "{\"type\":\"A\",\"name\":\"*.tests.davpanel.org\",\"content\":\"$IP\",\"ttl\":120,\"proxied\":true}" >/dev/null 2>&1
+
+# TEST ACC FOR ADMIN TESTS
+davcli admin new stefan stefan
+
+# PRINT INFO for /root/playwright-test/davpanel/.env
+echo "BASE_URL=$BASE_URL"
+echo "PANEL_USERNAME=$PANEL_USERNAME"
+echo "PANEL_PASSWORD=$PANEL_PASSWORD"

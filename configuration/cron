@@ -1,0 +1,47 @@
+# /etc/cron.d/davpanel: crontab entries for the DavPanel server
+#
+#
+# This file is used by DavPanel to schedule cronjobs
+#
+# It should NOT be edited manually,
+# instead edit from DavAdmin > Advanced > System CronJobs
+#
+# To add crons, use the crontab as root user.
+#
+# Important Note!  This cronjob will NOT be executed if you are
+# running systemd as your init system.  If you are running systemd,
+# the cronjob.timer function takes precedence over this cronjob.  For
+# more details, see the systemd.timer manpage.
+
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# STATISTICS
+0 * * * * root /usr/local/bin/davcli docker-collect_stats --all && echo "$(date) Resource usage data updated" >> /var/log/davpanel/admin/cron.log
+*/5 * * * * root /usr/local/bin/davcli user-quota && echo "$(date) Collected disk and inodes usage for all users" >> /var/log/davpanel/admin/cron.log
+0 */12 * * * root /usr/local/bin/davcli email-usage --all && echo "$(date) Refreshed email quota usage for all users" >> /var/log/davpanel/admin/cron.log
+15 6 * * * root /usr/local/bin/davcli domains-ssl --notify && echo "$(date) Checked SSL certificates that expire soon or fail to renew" >> /var/log/davpanel/admin/cron.log
+*/30 * * * * root /usr/local/bin/davcli email-ratelimit --notify && echo "$(date) Checked email ratelimit for all users" >> /var/log/davpanel/admin/cron.log
+30 2 * * * root /usr/local/bin/davcli domains-stats && echo "$(date) Domain statistics collected" >> /var/log/davpanel/admin/cron.log
+0 4 * * * root /usr/local/bin/davcli websites-pagespeed --all && echo "$(date) Google PageSpeed data collected for all domains" >> /var/log/davpanel/admin/cron.log
+0 5 */2 * * root /usr/local/bin/davcli websites-vulnerability --all && echo "$(date) WordPress websites scanned for known vulnerabilities" >> /var/log/davpanel/admin/cron.log
+15 6 * * * root /usr/local/bin/davcli user-daily_summary --all && echo "$(date) Saved daily summaries and emailed them to users who turned them on" >> /var/log/davpanel/admin/cron.log
+30 7 * * * root /usr/local/bin/davcli user-error_report --all && echo "$(date) Emailed daily error reports to users who turned them on" >> /var/log/davpanel/admin/cron.log
+0 */4 * * * root /usr/local/bin/davcli files-calculate_resellers_storage && echo "$(date) Calculated storage usage for all reseller accounts" >> /var/log/davpanel/admin/cron.log
+
+# MAINTENANCE
+15 0 * * * root /usr/local/bin/davcli update && echo "$(date) System update executed" >> /var/log/davpanel/admin/cron.log
+0 */8 * * * root /usr/local/bin/davcli ftp-users && echo "$(date) FTP users file recreated" >> /var/log/davpanel/admin/cron.log
+45 1 * * * root /usr/local/bin/davcli email-server pflogsumm && echo "$(date) Generated email summary report for DavAdmin > Emails > Summary Reports" >> /var/log/davpanel/admin/cron.log
+45 4 * * * root /usr/local/bin/davcli files-purge_trash && echo "$(date) Executed purging Trash folder for all users" >> /var/log/davpanel/admin/cron.log
+0 0 1 * * root /usr/local/bin/davcli waf update && echo "$(date) Executed OWASP CRS update - view logs with: davcli waf update log" >> /var/log/davpanel/admin/cron.log
+0 1 * * 0 root /usr/local/bin/davcli backup && echo "$(date) Executed system backup - view logs from: DavAdmin > Backups > System > Runs" >> /var/log/davpanel/admin/cron.log
+0 0 * * 0 root /usr/local/bin/davcli files-malware_scan --all && echo "$(date) Executed ClamAV scan for all users" >> /var/log/davpanel/admin/cron.log
+55 5 1 * * root /usr/local/bin/davcli update --wp && echo "$(date) Updated wp-cli.phar from github" >> /var/log/davpanel/admin/cron.log
+0 0 * * 0 root /usr/local/bin/davcli domains-cloudflare && echo "$(date) Updated Cloudflare IP ranges from https://www.cloudflare.com/ips-v4" >> /var/log/davpanel/admin/cron.log
+59 23 31 2 * root /usr/local/bin/davcli docker-backup && echo "$(date) Executed scheduled admin-configured backups for users" >> /var/log/davpanel/admin/cron.log
+
+# MONITORING
+*/5 * * * * root /usr/local/bin/davcli sentinel && echo "$(date) Notifications script executed" >> /var/log/davpanel/admin/cron.log
+45 11 * * * root /usr/local/bin/davcli sentinel --report && echo "$(date) Daily Usage Report generated" >> /var/log/davpanel/admin/cron.log
+@reboot root /usr/local/bin/davcli sentinel --startup && echo "$(date) Notifications script executed at startup" >> /var/log/davpanel/admin/cron.log

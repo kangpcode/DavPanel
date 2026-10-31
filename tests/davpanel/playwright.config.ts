@@ -1,0 +1,78 @@
+import { defineConfig } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+const BASE_URL = process.env.BASE_URL;
+
+// workers inherit this from the main process, so random names survive a worker restart after a failed test
+process.env.TEST_RUN_ID ||= Math.random().toString(36).slice(2, 8);
+
+if (!BASE_URL) {
+  throw new Error('BASE_URL must be set in .env');
+}
+
+const SESSION_MODERN = '.auth/session-modern.json';
+
+// since DavPanel#1253 an account runs one install at a time, a second one fails with "another installation is already in progress"
+const INSTALLER_SPECS = /[\\/](drupal|joomla|matomo|mediawiki|moodle|nextcloud|opencart|prestashop|wordpress|website_builder|java|n8n|nodejs|python|ruby)\.spec\.ts$/;
+
+// Spec files are independent of each other and run in parallel (--workers=N), tests inside a file stay in order.
+// tests/serial/ holds specs that change something account-wide (stop all containers, block the runner's IP,
+// restart the webserver or MySQL, end every session, switch the UI language, enable 2FA...), which would break
+// whatever runs next to them. They run one at a time as the setup's teardown, so after the parallel tests,
+// even when some of those failed.
+export default defineConfig({
+  testDir: '.',
+
+  use: {
+    baseURL: BASE_URL,
+    ignoreHTTPSErrors: true,
+    acceptDownloads: true,
+  },
+
+  // menuStyle pins the menu_style cookie at login (auth.setup.ts), isModern() reads it
+  projects: [
+    // modern menu (menu_style=modern), the default
+    {
+      name: 'setup',
+      testMatch: /auth\.setup\.ts/,
+      teardown: 'serial',
+      metadata: { menuStyle: 'modern' },
+    },
+    {
+      name: 'tests',
+      testDir: './tests',
+      testMatch: /.*\.spec\.ts/,
+      testIgnore: [/[\\/]serial[\\/]/, INSTALLER_SPECS],
+      dependencies: ['setup'],
+      metadata: { menuStyle: 'modern' },
+      use: {
+        storageState: SESSION_MODERN,
+      },
+    },
+    // installers one at a time, next to the parallel tests
+    {
+      name: 'installers',
+      testDir: './tests',
+      testMatch: INSTALLER_SPECS,
+      dependencies: ['setup'],
+      workers: 1,
+      metadata: { menuStyle: 'modern' },
+      use: {
+        storageState: SESSION_MODERN,
+      },
+    },
+    {
+      name: 'serial',
+      testDir: './tests/serial',
+      testMatch: /.*\.spec\.ts/,
+      workers: 1,
+      metadata: { menuStyle: 'modern' },
+      use: {
+        storageState: SESSION_MODERN,
+      },
+    },
+  ],
+});

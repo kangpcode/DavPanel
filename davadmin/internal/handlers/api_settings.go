@@ -1,0 +1,134 @@
+// This file implements the /settings/api* HTML admin pages: the toggle
+// page for turning the JSON REST API on/off, its request-log viewer, and
+// the plain-text /settings/api/endpoints listing used by the "View
+// Examples" button on that page.
+package handlers
+
+import (
+	"net/http"
+	"os"
+	"os/exec"
+	"strings"
+
+	"github.com/gorilla/csrf"
+
+	"github.com/kangpcode/davadmin/internal/apidocs"
+	"github.com/kangpcode/davadmin/internal/auth"
+	"github.com/kangpcode/davadmin/internal/config"
+	"github.com/kangpcode/davadmin/internal/webtemplates"
+)
+
+// APISettings bundles the /settings/api* handlers.
+type APISettings struct {
+	Sessions  *auth.Manager
+	SecretKey string
+}
+
+// APILogPath is where API requests/responses get logged.
+var APILogPath = "/var/log/davpanel/admin/api.log"
+
+// ServeAPIEndpointsList handles GET /settings/api/endpoints: the plain-text
+// endpoint catalogue built from the embedded api_endpoints.json, with the
+// curl examples pointed at the scheme/host the request actually came in on.
+func (a *APISettings) ServeAPIEndpointsList(w http.ResponseWriter, r *http.Request) {
+	scheme := r.Header.Get("X-Forwarded-Proto")
+	if scheme == "" {
+		if r.TLS != nil {
+			scheme = "https"
+		} else {
+			scheme = "http"
+		}
+	}
+	host := r.Header.Get("X-Forwarded-Host")
+	if host == "" {
+		host = r.Host
+	}
+
+	w.Header().Set("Content-Type", "text/plain")
+	text, err := apidocs.Text(scheme + "://" + host)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Unable to build the endpoints list: " + err.Error()))
+		return
+	}
+	w.Write([]byte(text))
+}
+
+type apiSettingsPageData struct {
+	webtemplates.Chrome
+	CSRFToken        string
+	Flashes          []auth.Flash
+	BasicAuthEnabled string
+	APIStatus        string
+	Token            string
+}
+
+// ServeAPISettings handles GET/POST /settings/api and /settings/api/.
+func (a *APISettings) ServeAPISettings(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		r.ParseForm()
+		action := strings.ToLower(r.PostFormValue("action"))
+		if action != "on" && action != "off" {
+			writeJSONError(w, http.StatusBadRequest, "Invalid action.")
+			return
+		}
+
+		out, err := exec.Command("davcli", "config", "update", "api", action).CombinedOutput()
+		if err != nil {
+			cmdRepr := "['davcli', 'config', 'update', 'api', '" + action + "']"
+			auth.AddFlash(w, r, a.Sessions, "Error executing davcli: '"+cmdRepr+"': "+string(out), "error")
+		} else if strings.Contains(string(out), "Updated api to") {
+			notifySentinel("admin_api", "DavAdmin API is "+action, "API access for the administrator-level panel is now: "+action+".")
+
+			// No service restart/reload needed: apiFeatureEnabled() (and
+			// every other davpanel.config read in this codebase) loads
+			// fresh on every request rather than caching at process
+			// startup, so the new value takes effect on the very next
+			// request. Restarting the admin service here used to kill the
+			// connection handling this very POST mid-response, since it's
+			// the same process -- see the incident this comment replaced.
+			http.Redirect(w, r, "/settings/api", http.StatusSeeOther)
+			return
+		} else {
+			auth.AddFlash(w, r, a.Sessions, "API could not be updated.", "warning")
+		}
+	}
+
+	if r.URL.Query().Get("view") == "api_log" {
+		content, err := os.ReadFile(APILogPath)
+		w.Header().Set("Content-Type", "text/plain")
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte("Unable to read the api log file: " + err.Error()))
+			return
+		}
+		w.Write(content)
+		return
+	}
+
+	cfg := config.Load(config.DavpanelConfigPath)
+	basicAuthEnabled := "off"
+	if cfg.Get("PANEL", "basic_auth", "no") == "yes" {
+		basicAuthEnabled = "on"
+	}
+	apiStatus := cfg.Get("PANEL", "api", "on")
+
+	// Pre-authorize the embedded Swagger UI with a freshly minted token for
+	// the logged-in admin, so "Try it out" works immediately against this
+	// same origin without a separate POST /api/ login step.
+	var token string
+	if basicAuthEnabled == "off" && apiStatus == "on" {
+		if u := auth.CurrentUser(r); u != nil {
+			token, _ = createAPIToken(u.Username, a.SecretKey)
+		}
+	}
+
+	webtemplates.Render(w, "settings_api.html", apiSettingsPageData{
+		Chrome:           buildChrome(r, "API"),
+		CSRFToken:        csrf.Token(r),
+		Flashes:          auth.PopFlashes(w, r, a.Sessions),
+		BasicAuthEnabled: basicAuthEnabled,
+		APIStatus:        apiStatus,
+		Token:            token,
+	})
+}

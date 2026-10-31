@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "maintainer": "Dhafa Nazula Permadi (kangpcode)",
+  "primary_source": "openpanel-main",
+  "components": [
+    {
+      "path": "integrations/virtualizor",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-virtualizor",
+      "upstream_branch": "main",
+      "upstream_commit": "34bc8a2decfd90d0d6244cc587a04e2d407759b1",
+      "fork_url": "https://github.com/kangpcode/davpanel-virtualizor",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "davadmin",
+      "upstream_url": "https://github.com/stefanpejcic/openadmin",
+      "upstream_branch": "main",
+      "upstream_commit": "27529b74722b42f5d61ba78cd40ad0ded811f65e",
+      "fork_url": "https://github.com/kangpcode/davadmin",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "integrations/whmcs",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-whmcs-module",
+      "upstream_branch": "main",
+      "upstream_commit": "6b24d89bab114af5782a8f2022c39429ae19f15e",
+      "fork_url": "https://github.com/kangpcode/davpanel-whmcs-module",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "configuration",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-configuration",
+      "upstream_branch": "main",
+      "upstream_commit": "80287619ed47ff5935ec5a1371b4b06036015911",
+      "fork_url": "https://github.com/kangpcode/davpanel-configuration",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "integrations/cpanel-import",
+      "upstream_url": "https://github.com/stefanpejcic/cPanel-to-OpenPanel",
+      "upstream_branch": "podman",
+      "upstream_commit": "191775dad8efdc29efe44d3b2de1da587ddd9896",
+      "fork_url": "https://github.com/kangpcode/cPanel-to-DavPanel",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "tests",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-tests",
+      "upstream_branch": "main",
+      "upstream_commit": "f5814893e70a4eebdf3d458057b792c95fe1a03a",
+      "fork_url": "https://github.com/kangpcode/davpanel-tests",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "integrations/fossbilling",
+      "upstream_url": "https://github.com/stefanpejcic/FOSSBilling-OpenPanel",
+      "upstream_branch": "main",
+      "upstream_commit": "4f6ef4bc31c0e93e921cfa1b99ffe958a1600847",
+      "fork_url": "https://github.com/kangpcode/FOSSBilling-DavPanel",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "integrations/paymenter.org",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-paymenter.org",
+      "upstream_branch": "main",
+      "upstream_commit": "4f6e2ea90dc93ecd9903638a145297f015de53a4",
+      "fork_url": "https://github.com/kangpcode/davpanel-paymenter.org",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "translations",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-translations",
+      "upstream_branch": "main",
+      "upstream_commit": "e43fb0bfa27dbbcbff2877a23758585a96b70221",
+      "fork_url": "https://github.com/kangpcode/davpanel-translations",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "integrations/cyberpanel-import",
+      "upstream_url": "https://github.com/stefanpejcic/CyberPanel-to-OpenPanel",
+      "upstream_branch": "podman",
+      "upstream_commit": "86aeb8007e3a74451d148467b6042c0a19845afd",
+      "fork_url": "https://github.com/kangpcode/CyberPanel-to-DavPanel",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "davcli",
+      "upstream_url": "https://github.com/stefanpejcic/opencli",
+      "upstream_branch": "podman",
+      "upstream_commit": "f67cd910c57e13bd25bf564313ff0a71c049846e",
+      "fork_url": "https://github.com/kangpcode/davcli",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "mailserver",
+      "upstream_url": "https://github.com/stefanpejcic/OpenMail",
+      "upstream_branch": "main",
+      "upstream_commit": "1c9ca188d3358c4bd6ebc7918dedce59311f0211",
+      "fork_url": "https://github.com/kangpcode/DavMail",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "vsftpd",
+      "upstream_url": "https://github.com/stefanpejcic/OpenPanel-FTP",
+      "upstream_branch": "main",
+      "upstream_commit": "4abe6209701a12374fb7a33e33de177e218f819d",
+      "fork_url": "https://github.com/kangpcode/DavPanel-FTP",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "integrations/clientexec",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-clientexec",
+      "upstream_branch": "main",
+      "upstream_commit": "e38defd28d513ebc858dcc97848940c349553586",
+      "fork_url": "https://github.com/kangpcode/davpanel-clientexec",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "integrations/wisecp",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-wisecp-module",
+      "upstream_branch": "main",
+      "upstream_commit": "81baa296eef7e00f695cc37611889dbd4c337a5f",
+      "fork_url": "https://github.com/kangpcode/davpanel-wisecp-module",
+      "storage": "vendored",
+      "tree_sha256": null
+    },
+    {
+      "path": "mobile",
+      "upstream_url": "https://github.com/stefanpejcic/openpanel-mobile-app",
+      "upstream_branch": "main",
+      "upstream_commit": "ab1668b5ebc44e4ac2866a8b058a64b3ace0215d",
+      "fork_url": "https://github.com/kangpcode/davpanel-mobile-app",
+      "storage": "vendored",
+      "tree_sha256": null
+    }
+  ]
+}

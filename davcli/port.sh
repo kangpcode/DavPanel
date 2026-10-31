@@ -1,0 +1,156 @@
+#!/bin/bash
+################################################################################
+# Script Name: port.sh
+# Description: View and change port for accessing davpanel.
+# Usage: davcli port [set <port> | default] [--no-restart]
+# Author: Stefan Pejcic
+# Created: 17.02.2025
+# Last Modified: 26.10.2026
+# Company: OpenPanel, LLC.
+# Copyright (c) openpanel.com
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+################################################################################
+
+# shellcheck disable=SC1091
+source /usr/local/davcli/lib/redis.sh
+# shellcheck disable=SC1091
+. /usr/local/davcli/lib/podman.sh
+ENV_FILE="/root/.env"
+COMPOSE_DIR="/root"
+REDIRECTS_FILE="/etc/davpanel/caddy/redirects.conf"
+PROXY_FILE="/etc/davpanel/nginx/vhosts/davpanel_proxy.conf"
+
+
+
+get_current_port() {
+  # used to also require /.dockerenv, but DavAdmin always runs natively on the host now, so the file's presence alone is the signal
+  if [ -f /etc/davpanel/no_port ]; then
+      current_port=443
+  fi
+  if [ -z "$current_port" ]; then
+    current_port="$(grep -oP '(?<=^PORT=").*(?=")' $ENV_FILE | head -n 1)"
+  fi
+  echo "$current_port"
+}
+
+
+
+usage() {
+
+  echo "Usage:"
+  echo ""
+  echo "davcli port                        - displays current port  "
+  echo "davcli port set 2090               - set 2090 as port for user panel"
+  echo "davcli port default                - set 2083 as port for user panel"
+  echo ""
+  echo "Add --no-restart to skip restarting services after the change."
+}
+
+
+
+success_msg() {
+  echo "$new_port is now set for accessing the DavPanel interface."             
+}
+
+# for podman compose
+update_env() {
+  sed -i "s/^PORT=\"[^\"]*\"/PORT=\"$new_port\"/" "$ENV_FILE"
+}
+
+# for redirects!
+do_reload() {
+  if [[ "$NO_RESTART" != true ]]; then
+    # restart caddy and davpanel
+    cd $COMPOSE_DIR || exit
+    caddy_reload
+    nohup bash -c "podman-compose down davpanel && podman-compose up -d davpanel" > /dev/null 2>&1 &
+
+    # open port on csf
+    local csf_conf="/etc/csf/csf.conf"
+    [ -f "$csf_conf" ] || return 0
+    port_opened=$(grep "TCP_IN = .*${new_port}" "$csf_conf")
+    if [ -z "$port_opened" ]; then
+        sed -i "s/TCP_IN = \"\(.*\)\"/TCP_IN = \"\1,${new_port}\"/" "$csf_conf"
+        nohup csf -r > /dev/null 2>&1 < /dev/null &
+    fi
+   fi
+}
+
+
+update_redirects() {
+  sed -i "/redir @davpanel/s/:[0-9]\+/:$new_port/g" $REDIRECTS_FILE
+}
+
+update_proxy_file() {
+  sed -i "/# davpanel/,/# davadmin/ s/:[0-9]\+/:$new_port/g" "$PROXY_FILE" 
+}
+
+
+
+update_port() {
+  current_port=$(get_current_port)
+  if [ "$current_port" != "$new_port" ]; then
+    update_env
+    update_redirects
+    update_proxy_file
+    redis_drop_key davpanel_cache_app.get_davpanel_port
+    # flock guards the in-place edit -- sentinel.sh and other davcli scripts also rewrite /root/docker-compose.yml, and an unlocked concurrent sed -i could interleave writes and corrupt it
+    if [ "$new_port" == '443' ]; then
+        flock /tmp/davcli.root_compose.lock sed -i "s#\${PORT}:2083/tcp#2083:2083/tcp#g" /root/docker-compose.yml
+    else
+        flock /tmp/davcli.root_compose.lock sed -i "s#2083:2083/tcp#\${PORT}:2083/tcp#g" /root/docker-compose.yml
+    fi
+    do_reload
+    success_msg
+  else
+    echo "Port ${new_port} is already set for accessing the user panel."
+    exit 0
+  fi
+}
+
+
+
+
+NO_RESTART=false
+for arg in "$@"; do
+  [[ "$arg" == "--no-restart" ]] && NO_RESTART=true
+done
+
+if [ -z "$1" ]; then
+    get_current_port
+
+elif [[ "$1" == 'set' && -n "$2" ]]; then
+    if [[ "$2" =~ ^[0-9]+$ ]] && [ "$2" -ge 443 ]; then
+        new_port=$2
+        update_port "$new_port"
+    else
+        echo "Invalid port format. Please provide a valid port like '2083'."
+        usage
+        exit 1
+    fi
+elif [[ "$1" == 'default' ]]; then
+        new_port="2083"
+        update_port $new_port
+else
+    usage
+    exit 1
+fi
+
+

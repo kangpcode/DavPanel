@@ -1,0 +1,909 @@
+#!/bin/bash
+################################################################################
+# Script Name: admin.sh
+# Description: Manage DavAdmin service and Administrators.
+# Usage: davcli admin <command> [options]
+# Author: Stefan Pejcic
+# Created: 01.11.2023
+# Last Modified: 30.10.2026
+# Company: OpenPanel, LLC.
+# Copyright (c) openpanel.com
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+################################################################################
+
+# shellcheck disable=SC1091
+source /usr/local/davcli/lib/requirement.sh
+# shellcheck disable=SC1091
+. /usr/local/davcli/lib/podman.sh
+require_command jq
+
+service_name="admin"
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+RESET='\033[0m'
+
+# CONFIGURATION FILES AND LOGS
+CONFIG_FILE_PATH='/etc/davpanel/davpanel/conf/davpanel.config'
+admin_logs_file="/var/log/davpanel/admin/error.log"
+admin_access_log="/var/log/davpanel/admin/access.log"
+admin_api_log="/var/log/davpanel/admin/api.log"
+admin_login_log="/var/log/davpanel/admin/login.log"
+admin_failed_login_log="/var/log/davpanel/admin/failed_login.log"
+notifications_file="/etc/davpanel/davadmin/config/notifications.ini"
+admin_crons_log="/var/log/davpanel/admin/cron.log"
+db_file_path="/etc/davpanel/davadmin/users.db"
+ENTERPRISE="/usr/local/davcli/lib/enterprise.sh"
+
+# escape single quotes so sqlite doesn't choke on the string literal
+sqlite_escape() {
+    local s="$1"
+    printf '%s' "${s//\'/\'\'}"
+}
+
+
+
+# ---------------------- davcli admin help ---------------------- #
+usage() {
+    echo "Usage: davcli admin <command> [options]"
+    echo ""
+    echo "Commands:"
+    echo "  on                                            Enable and start the DavAdmin service."
+    echo "  off                                           Stop and disable the DavAdmin service."
+    echo "  port [new_port]                               Display or update DavAdmin port."
+    echo "  log                                           Display the last 25 lines of the DavAdmin error log."
+    echo "  logs                                          Display live logs for all DavAdminn services."
+    echo "  list                                          List all current admin users."
+    echo "  new <user> <pass> [--reseller|--super] [--plan=<name>] Add a new user, optionally as a reseller (on a reseller plan) or super admin."
+    echo "  password <user> <pass>                        Reset the password for the specified admin user."
+    echo "  update <user> --plan=<name> --allowed_plans=[] --max_accounts=<int> --max_disk_blocks=1000000 --logo_url=<url> Assign a reseller plan, limits, and branding for reseller."
+	echo "  rename <old> <new>                            Change the admin username."
+    echo "  suspend <user>                                Suspend admin user."
+    echo "  unsuspend <user>                              Unsuspend admin user."
+    echo "  notifications <command> <param> [value]       Control notification preferences."
+    echo ""
+    echo "  Notifications Commands:"
+    echo "    check                                       Check and write notifications."
+    echo "    get <param>                                 Get the value of the specified notification parameter."
+    echo "    update <param> <value>                      Update the specified notification parameter with the new value."
+    echo ""
+    echo "Examples:"
+    echo "  davcli admin on"
+    echo "  davcli admin off"
+    echo "  davcli admin port"
+    echo "  davcli admin port 8443"
+    echo "  davcli admin log"
+    echo "  davcli admin logs"
+    echo "  davcli admin list"
+    echo "  davcli admin new stefan SuperStrong1"
+    echo "  davcli admin new stefan SuperStrong1 --reseller"
+    echo "  davcli admin new stefan SuperStrong1 --reseller --plan=reseller_basic"
+    echo "  davcli admin update stefan --plan=reseller_pro"
+    echo "  davcli admin new stefan SuperStrong1 --super"
+    echo "  davcli admin password stefan SuperStrong2"
+    echo "  davcli admin rename stefan pejcic"
+    echo "  davcli admin suspend pejcic"
+    echo "  davcli admin unsuspend pejcic"
+    echo "  davcli admin notifications check"
+    echo "  davcli admin notifications get reboot"
+    echo "  davcli admin notifications update reboot yes"
+    echo "  davcli admin notifications update load 10"
+    echo "  davcli admin notifications update cpu 90"
+    echo "  davcli admin notifications update ram 95"
+    echo "  davcli admin notifications update du 99"
+    echo "  davcli admin notifications update swap 95"
+    echo "  davcli admin notifications update webhook_url https://discord.com/api/webhooks/XXXX/YYYYYYY"
+    echo "  davcli admin notifications update webhook_url \"https://discord.com/api/webhooks/XXXX/YYYYYYY https://hooks.slack.com/services/XXX\""
+    exit 1
+}
+
+
+
+# ---------------------- davcli admin notifications help ---------------------- #
+usage_for_notifications() {
+    echo "Usage: davcli admin notifications <get|update> <what> <value>"
+    echo ""
+    echo " Commands:"
+    echo "   get <param>                                 Get the value of the specified notification parameter."
+    echo "   update <param> <value>                      Update the specified notification parameter with the new value."
+    echo ""
+    echo "Examples:"
+    echo "  davcli admin notifications get reboot        - if 'yes' you will receive notification when server is restarted."
+    echo "  davcli admin notifications get login         - if 'yes' you will receive notification for new logins to DavAdmin."
+    echo "  davcli admin notifications update update yes - receive notification when new DavPanel update is available."
+    echo "  davcli admin notifications update cpu 90     - receive notification when server CPU usage is over 90%."
+    echo "  davcli admin notifications update du 95      - receive notification when server disk usage is over 95%."
+	echo "  davcli admin notifications update webhook_url https://discord.com/api/webhooks/XXXX/YYYYYYY"
+    echo ""
+    echo "List of all available options: https://davpanel.com/docs/articles/davcli/admin"
+    exit 1  
+}
+
+
+# ---------------------- START HELPER FUNCTIONS ---------------------- #
+
+get_admin_url() {
+    caddyfile="/etc/davpanel/caddy/Caddyfile"
+
+    # 1. check for domain
+    domain_block=$(awk '/# START HOSTNAME DOMAIN #/{flag=1; next} /# END HOSTNAME DOMAIN #/{flag=0} flag {print}' "$caddyfile")
+    domain=$(echo "$domain_block" | sed '/^\s*$/d' | grep -v '^\s*#' | head -n1)
+    # shellcheck disable=SC2001 # sed handles the leading-whitespace-then-brace pattern more clearly than parameter expansion here
+    domain=$(echo "$domain" | sed 's/[[:space:]]*{//' | xargs)
+    domain="${domain#http://}"
+    domain="${domain#https://}"
+
+    if [[ -f "/root/disable_2087_port" ]]; then
+        admin_port="443"
+    else
+        admin_port=$(awk '/# START HOSTNAME DOMAIN #/{flag=1; next} /# END HOSTNAME DOMAIN #/{flag=0} flag' "$caddyfile" | grep -oP 'localhost:\K[0-9]+' | head -n 1)
+    fi
+
+    if [ -n "$domain" ] && [ "$domain" != "example.net" ]; then
+        # 1a. check ssl for domain
+        local cert_path_on_hosts="/etc/davpanel/caddy/ssl/acme-v02.api.letsencrypt.org-directory/${domain}/${domain}.crt"
+        local key_path_on_hosts="/etc/davpanel/caddy/ssl/acme-v02.api.letsencrypt.org-directory/${domain}/${domain}.key"
+        local fallback_cert_path="/etc/davpanel/caddy/ssl/custom/${domain}/${domain}.crt"
+        local fallback_key_path="/etc/davpanel/caddy/ssl/custom/${domain}/${domain}.key"
+
+        if { [ -f "$cert_path_on_hosts" ] && [ -f "$key_path_on_hosts" ]; } || { [ -f "$fallback_cert_path" ] && [ -f "$fallback_key_path" ]; }; then
+            admin_url="https://${domain}:${admin_port}/"
+        else
+            admin_url="http://${domain}:${admin_port}/"
+        fi
+    else
+	    # 2. check IP set in file
+	    ip_block=$(awk '/# START HOSTNAME IP #/{flag=1; next} /# END HOSTNAME IP #/{flag=0} flag {print}' "$caddyfile")
+	    hostname_ip=$(echo "$ip_block" | sed '/^\s*$/d' | grep -v '^\s*#' | head -n1)
+	    hostname_ip=$(echo "$hostname_ip" | sed 's/[[:space:]]*{//' | xargs)
+	
+	    if [ -n "$hostname_ip" ]; then
+	        #2a. check Let's Encrypt shortlived
+	        local ip_cert_path="/etc/davpanel/caddy/ssl/acme-v02.api.letsencrypt.org-directory/${hostname_ip}/${hostname_ip}.crt"
+	        local ip_key_path="/etc/davpanel/caddy/ssl/acme-v02.api.letsencrypt.org-directory/${hostname_ip}/${hostname_ip}.key"
+	
+	        if [ -f "$ip_cert_path" ] && [ -f "$ip_key_path" ]; then
+	            admin_url="https://${hostname_ip}:${admin_port}/"
+	        else
+	            admin_url="http://${hostname_ip}:${admin_port}/"
+	        fi
+	    else
+		    # 3. public ip, non-ssl
+		    local ip
+		    ip=$(get_public_ip)
+		    admin_url="http://${ip}:${admin_port}/"
+		fi
+	fi
+
+    echo "$admin_url"    
+}
+
+get_public_ip() {
+	ip=$(curl --silent --max-time 1 -4 "https://ip.davpanel.com" || curl --silent --max-time 1 -4 "https://ifconfig.me/ip")	
+    if [ -z "$ip" ] || ! [[ "$ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        ip=$(hostname -I | awk '{print $1}')
+    fi
+    echo "$ip"
+}
+
+delete_existing_users() {
+    local username="$1"
+    local user_exists is_admin escaped_username
+    escaped_username=$(sqlite_escape "$username")
+    user_exists=$(sqlite3 "$db_file_path" "SELECT COUNT(*) FROM user WHERE username='$escaped_username';")
+    is_admin=$(sqlite3 "$db_file_path" "SELECT COUNT(*) FROM user WHERE username='$escaped_username' AND role='admin';")
+
+    if [ "$user_exists" -gt 0 ]; then
+        if [ "$is_admin" -gt 0 ]; then
+            echo -e "${RED}Error${RESET}: Cannot delete user '$username' with 'admin' role."
+        else
+        
+            local reseller_limits_file="/etc/davpanel/davadmin/resellers/$username.json"
+			rm "$reseller_limits_file"  > /dev/null 2>&1
+
+            local reseller_features="/etc/davpanel/features/$username"
+			# todo: also delete plans assigned only to this user
+			rm -rf "$reseller_features"  > /dev/null 2>&1
+		
+            sqlite3 "$db_file_path" "DELETE FROM user WHERE username='$escaped_username';"
+            rm -f "/var/log/davpanel/admin/activity/${username}.log"
+            echo "User '$username' deleted successfully."
+			nohup davcli sentinel --action=admin_delete --title="Administrator deleted" --message="Administrator account '$username' has been deleted." >/dev/null 2>&1 &
+			disown
+        fi
+    else
+        echo -e "${RED}Error${RESET}: User '$username' does not exist."
+    fi
+}
+
+get_config() {
+    param_name="$1"
+    param_value=$(grep "^$param_name=" "$notifications_file" | cut -d= -f2-)
+    
+    if [ -n "$param_value" ]; then
+        echo "$param_value"
+    elif grep -q "^$param_name=" "$notifications_file"; then
+        echo "Parameter $param_name has no value."
+    else
+        echo "Parameter $param_name does not exist. Docs: https://davpanel.com/docs/articles/davcli/admin"
+    fi
+}
+
+update_config() {
+    param_name="$1"
+    new_value="$2"
+
+    if grep -q "^$param_name=" "$notifications_file"; then
+		# escape sed specials so & or | in a webhook URL don't mangle the value
+		local escaped_value
+		escaped_value=$(printf '%s' "$new_value" | sed -e 's/[\\&|]/\\&/g')
+		sed -i "s|^$param_name=.*|$param_name=$escaped_value|" "$notifications_file"
+        echo "Updated $param_name to $new_value"
+        
+    else
+        echo "Parameter $param_name not found in the configuration file. Docs: https://davpanel.com/docs/articles/davcli/admin"
+    fi
+}
+
+
+# only letters and numbers allowed, added this check in 0.2.8
+validate_password_and_username() {
+    local input="$1"
+    local field_name="$2"
+
+    # https://github.com/stefanpejcic/OpenPanel/issues/442
+    if [[ "$input" =~ ^\$\$ ]]; then
+        echo "ERROR: $field_name cannot start with '\$\$' as it may cause unintended behavior."
+	echo "       docs: https://davpanel.com/docs/articles/accounts/forbidden-usernames/#davadmin"
+        exit 1
+    fi
+
+
+    if [[ "$input" =~ ^[a-zA-Z0-9_]{5,30}$ ]]; then
+        :
+    else
+        echo "ERROR: $field_name is invalid. It must contain only letters and numbers, and be between 5 and 30 characters."
+        echo "       docs: https://davpanel.com/docs/articles/accounts/forbidden-usernames/#davadmin"
+        exit 1
+    fi
+    
+    # todo: reject common passwords using a wordlist like https://weakpass.com/wordlist
+}
+
+# same rule as DavAdmin, so a password set from the UI or API also works here
+validate_password() {
+    local input="$1"
+
+    if [[ "$input" =~ ^\$\$ ]]; then
+        echo "ERROR: Password cannot start with '\$\$' as it may cause unintended behavior."
+        echo "       docs: https://davpanel.com/docs/articles/davcli/admin/#create-new-admin"
+        exit 1
+    fi
+
+    if [[ ! "$input" =~ ^[^[:space:]]{6,30}$ ]]; then
+        echo "ERROR: Password is invalid. It must be between 6 and 30 characters and can't contain spaces."
+        echo "       docs: https://davpanel.com/docs/articles/davcli/admin/#create-new-admin"
+        exit 1
+    fi
+}
+
+
+ensure_totp_columns() {
+    if [ ! -f "$db_file_path" ]; then
+        return
+    fi
+    local has_secret has_enabled
+    has_secret=$(sqlite3 "$db_file_path" "PRAGMA table_info(user);" 2>/dev/null | awk -F'|' '{print $2}' | grep -x "totp_secret")
+    has_enabled=$(sqlite3 "$db_file_path" "PRAGMA table_info(user);" 2>/dev/null | awk -F'|' '{print $2}' | grep -x "totp_enabled")
+
+    if [ -z "$has_secret" ]; then
+        sqlite3 "$db_file_path" "ALTER TABLE user ADD COLUMN totp_secret TEXT;" 2>/dev/null
+    fi
+    if [ -z "$has_enabled" ]; then
+        sqlite3 "$db_file_path" "ALTER TABLE user ADD COLUMN totp_enabled BOOLEAN DEFAULT 0 NOT NULL;" 2>/dev/null
+    fi
+}
+
+
+check_edition() {
+	key_value=$(grep "^key=" $CONFIG_FILE_PATH | cut -d'=' -f2-)
+
+	if [ -z "$key_value" ]; then
+	    echo -e "${RED}Error${RESET}: The DavPanel Community Edition does not support Reseller users. To create multiple Administrator and Reseller accounts, please upgrade to the Enterprise Edition."
+	    # shellcheck disable=SC1090 # $ENTERPRISE is a fixed path assigned once at top of file, but not statically resolvable by shellcheck
+	    source "$ENTERPRISE"
+	    echo "$ENTERPRISE_LINK"
+	    exit 1
+	fi
+}
+
+
+# ---------------------- END HELPER FUNCTIONS ---------------------- #
+
+# ---------------------- davcli admin ---------------------- #
+detect_service_status() {
+    if systemctl is-active --quiet $service_name; then
+        admin_url=$(get_admin_url)
+        echo -e "${GREEN}●${RESET} DavAdmin is running and is available on: $admin_url"
+    else
+		if [[ -f /root/davadmin_is_disabled ]]; then
+			echo -e "${RED}×${RESET} DavAdmin is disabled. To enable it run 'davcli admin on' "
+		else
+			echo -e "${RED}×${RESET} DavAdmin is not running. To enable it run 'davcli admin on' "
+		fi
+	fi
+}
+
+
+# ---------------------- davcli admin new ---------------------- #
+add_new_user() {
+    local username="$1"
+    local password="$2"
+    local flag="$3"
+    local reseller_plan="$4"
+	local password_hash
+	password_hash=$(openssl passwd -6 -salt "$(openssl rand -hex 8)" -stdin <<< "$password")
+
+	# ---------------------- check total user count and license
+    total_users=$(sqlite3 "$db_file_path" "SELECT COUNT(*) FROM user;")
+    key_value=$(grep "^key=" $CONFIG_FILE_PATH | cut -d'=' -f2-)
+    if [ -z "$key_value" ] && [ "$total_users" -ge 1 ]; then
+        echo -e "${RED}Error${RESET}: The DavPanel Community Edition supports only a single Admin user. To enable multiple Administrator and Reseller accounts, please upgrade to the Enterprise Edition."
+	    # shellcheck disable=SC1090 # $ENTERPRISE is a fixed path assigned once at top of file, but not statically resolvable by shellcheck
+	    source "$ENTERPRISE"
+	    echo "$ENTERPRISE_LINK"
+        exit 1
+    fi
+
+	# ---------------------- check if username already exists
+    local user_exists
+    user_exists=$(sqlite3 "$db_file_path" "SELECT COUNT(*) FROM user WHERE username='$(sqlite_escape "$username")';")
+    if [ "$user_exists" -gt 0 ]; then
+        echo -e "${RED}Error${RESET}: Username '$username' already exists."
+		exit 1
+	fi
+
+	# ---------------------- determine role
+	if [ "$flag" == "--reseller" ]; then
+		role="reseller"
+		# todo: call check_edition here too
+	elif [ "$flag" == "--super" ]; then
+		# cluster_<name> accounts are made by a multi-server master to log its admins in, they don't count
+		admin_check_sql="SELECT COUNT(*) FROM user WHERE role = 'admin' AND username NOT LIKE 'cluster\_%' ESCAPE '\\';"
+		admin_count=$(sqlite3 "$db_file_path" "$admin_check_sql")
+		if [ "$admin_count" -eq 0 ]; then
+			role="admin"
+		else
+			echo "Super Admin user already exists. Cannot create another super admin."
+			exit 1
+		fi
+	else
+		role="user"
+	fi
+
+	# ---------------------- create user	
+	insert_user_sql="INSERT INTO user (username, password_hash, role) VALUES ('$(sqlite_escape "$username")', '$(sqlite_escape "$password_hash")', '$role');"
+	create_table_sql="CREATE TABLE IF NOT EXISTS user (id INTEGER PRIMARY KEY, username TEXT UNIQUE NOT NULL, password_hash TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'user', is_active BOOLEAN DEFAULT 1 NOT NULL, totp_secret TEXT, totp_enabled BOOLEAN DEFAULT 0 NOT NULL);"
+	if ! output=$(sqlite3 "$db_file_path" "$create_table_sql" "$insert_user_sql" 2>&1); then
+		echo "User not created: $output"
+		# TODO: on debug only! echo "Failed SQL Command: $insert_user_sql"
+	else
+	# ---------------------- success msg
+		if [ "$flag" == "--reseller" ]; then
+			source /usr/local/davcli/lib/reseller.sh
+			rm -f "${RESELLERS_DIR}/${username}.json"
+			reseller_limits_file "$username" >/dev/null
+			echo "Reseller user '$username' created."
+			if [ -n "$reseller_plan" ]; then
+				update_reseller_account "$username" --plan="$reseller_plan"
+			fi
+			nohup davcli sentinel --action=reseller_create --title="Reseller created" --message="Reseller administrator account '$username' has been created." >/dev/null 2>&1 &
+			disown
+		elif [ "$flag" == "--super" ]; then
+			echo "Super Administrator '$username' created."
+		else
+			echo "Admin User '$username' created."
+			nohup davcli sentinel --action=admin_create --title="Administrator created" --message="Administrator account '$username' has been created." >/dev/null 2>&1 &
+			disown
+		fi
+	fi
+}
+
+
+# ---------------------- davcli admin update ---------------------- #
+update_reseller_account() {
+    local username=""
+    local allowed_plans=""
+    local max_accounts=""
+    local max_disk_blocks=""
+    local logo_url=""
+    local logo_url_set=0
+    local reseller_plan=""
+
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --plan=*) reseller_plan="${1#*=}" ;;
+            --allowed_plans=*) allowed_plans="${1#*=}" ;;
+            --max_accounts=*) max_accounts="${1#*=}" ;;
+            --max_disk_blocks=*) max_disk_blocks="${1#*=}" ;;
+            --logo_url=*) logo_url="${1#*=}"; logo_url_set=1 ;;
+            *)
+                if [[ -z "$username" ]]; then
+                    username="$1"
+                fi
+                ;;
+        esac
+        shift
+    done
+
+    source /usr/local/davcli/lib/reseller.sh
+
+    if [[ "$logo_url_set" -eq 1 ]] && ! reseller_logo_url_valid "$logo_url"; then
+        echo "Error: Invalid --logo_url, use a plain http:// or https:// URL without quotes, spaces, \$, \` or \\." >&2
+        return 1
+    fi
+
+    if [[ -z "$username" ]] || ! sqlite3 "$db_file_path" "SELECT 1 FROM user WHERE username='$(sqlite_escape "$username")' AND role='reseller';" | grep -q 1; then
+        echo "Error: Reseller '$username' does not exist." >&2
+        return 1
+    fi
+
+    local reseller_file
+    reseller_file="$(reseller_limits_file "$username")"
+
+    if [[ -n "$allowed_plans" ]]; then
+        allowed_plans="$(reseller_plans_json "$allowed_plans")"
+    fi
+
+    local plan_file=""
+    if [[ -n "$reseller_plan" ]]; then
+        if ! plan_file="$(reseller_plan_file "$reseller_plan")"; then
+            echo "Error: Reseller plan '$reseller_plan' not found." >&2
+            return 1
+        fi
+        # explicit flags win over the plan's values
+        [[ -n "$max_accounts" ]] || max_accounts="$(jq -r '.max_accounts // 0' "$plan_file")"
+        [[ -n "$max_disk_blocks" ]] || max_disk_blocks="$(jq -r '.max_disk_blocks // 0' "$plan_file")"
+        [[ -n "$allowed_plans" ]] || allowed_plans="$(jq -c '(.allowed_plans // []) | map(tonumber? // empty)' "$plan_file")"
+
+        # refuse a downgrade below what the reseller already uses
+        source /usr/local/davcli/db.sh
+        local current_accounts current_disk
+        current_accounts=$(mariadb --defaults-extra-file="$config_file" -D "$mysql_database" -N -B -e "SELECT COUNT(*) FROM users WHERE owner='$(mysql_escape "$username")';" 2>/dev/null)
+        current_disk=$(jq -r '(.current_disk_blocks // 0) | tonumber? // 0' "$reseller_file")
+        if [[ "$max_accounts" =~ ^[0-9]+$ ]] && (( max_accounts > 0 && ${current_accounts:-0} > max_accounts )); then
+            echo "Error: Reseller '$username' has ${current_accounts} accounts, plan '$reseller_plan' allows only ${max_accounts}. Remove accounts first." >&2
+            return 1
+        fi
+        if [[ "$max_disk_blocks" =~ ^[0-9]+$ ]] && (( max_disk_blocks > 0 && ${current_disk%.*} > max_disk_blocks )); then
+            echo "Error: Reseller '$username' uses ${current_disk} disk blocks, plan '$reseller_plan' allows only ${max_disk_blocks}. Free up disk space first." >&2
+            return 1
+        fi
+    fi
+
+    # only touch fields whose flag was actually passed, so e.g. --logo_url alone doesn't wipe the rest
+    local jq_filter="."
+    local jq_args=()
+    if [[ -n "$max_accounts" ]]; then
+        jq_filter+=' | .max_accounts = $max_accounts'
+        jq_args+=(--argjson max_accounts "$max_accounts")
+    fi
+    if [[ -n "$max_disk_blocks" ]]; then
+        jq_filter+=' | .max_disk_blocks = $max_disk_blocks'
+        jq_args+=(--argjson max_disk_blocks "$max_disk_blocks")
+    fi
+    if [[ -n "$allowed_plans" ]]; then
+        jq_filter+=' | .allowed_plans = ($plans_json | fromjson)'
+        jq_args+=(--arg plans_json "$allowed_plans")
+    fi
+    if [[ -n "$reseller_plan" ]]; then
+        jq_filter+=' | .reseller_plan = $reseller_plan'
+        jq_args+=(--arg reseller_plan "$reseller_plan")
+    fi
+    if [[ "$logo_url_set" -eq 1 ]]; then
+        jq_filter+=' | .logo_url = $logo_url'
+        jq_args+=(--arg logo_url "$logo_url")
+    fi
+
+    if ! jq "${jq_args[@]}" "$jq_filter" "$reseller_file" > "$reseller_file.tmp"; then
+        rm -f "$reseller_file.tmp"
+        echo "Error: failed to update reseller '$username' (invalid value?)."
+        exit 1
+    fi
+    mv "$reseller_file.tmp" "$reseller_file"
+
+    echo "Reseller $username updated successfully."
+
+    if [[ "$logo_url_set" -eq 1 ]]; then
+        sync_reseller_logo_to_owned_users "$username" "$logo_url"
+    fi
+}
+
+# ------------- davcli admin update --logo_url= fan-out ------------- #
+# pushes RESELLER_LOGO_URL into each owned user's .env since their containers can't reach the resellers dir directly
+sync_reseller_logo_to_owned_users() {
+    local reseller="$1"
+    local logo_url="$2"
+    source /usr/local/davcli/db.sh
+    local escaped_reseller
+    escaped_reseller=$(mysql_escape "$reseller")
+
+    local contexts
+    contexts="$(mariadb --defaults-extra-file="$config_file" -D "$mysql_database" -N -B -e "SELECT server FROM users WHERE owner='$escaped_reseller';" 2>/dev/null)"
+
+    local context env_file
+    while IFS= read -r context; do
+        [[ -z "$context" ]] && continue
+        env_file="/home/${context}/.env"
+        [[ -f "$env_file" ]] || continue
+        reseller_env_set_logo "$env_file" "$logo_url" || echo "Warning: could not set the logo URL in $env_file" >&2
+    done <<< "$contexts"
+}
+
+
+# ---------------------- davcli admin rename ---------------------- #
+update_username() {
+    local old_username="$1"
+    local new_username="$2"
+    local escaped_old_username escaped_new_username
+    escaped_old_username=$(sqlite_escape "$old_username")
+    escaped_new_username=$(sqlite_escape "$new_username")
+    local user_exists user_role new_user_exists
+    user_exists=$(sqlite3 "$db_file_path" "SELECT COUNT(*) FROM user WHERE username='$escaped_old_username';")
+    user_role=$(sqlite3 "$db_file_path" "SELECT role FROM user WHERE username='$escaped_old_username';")
+    new_user_exists=$(sqlite3 "$db_file_path" "SELECT COUNT(*) FROM user WHERE username='$escaped_new_username';")
+
+    if [ "$user_exists" -gt 0 ]; then
+        if [ "$new_user_exists" -gt 0 ]; then
+            echo -e "${RED}Error${RESET}: Username '$new_username' already taken."
+        else
+            sqlite3 $db_file_path "UPDATE user SET username='$escaped_new_username' WHERE username='$escaped_old_username';"
+            echo "User '$old_username' renamed to '$new_username'."
+            sed -i "s/\b$old_username\b/$new_username/g" /var/log/davpanel/admin/login.log > /dev/null 2>&1
+            [ -f "/var/log/davpanel/admin/activity/${old_username}.log" ] && mv "/var/log/davpanel/admin/activity/${old_username}.log" "/var/log/davpanel/admin/activity/${new_username}.log"
+
+            if [ "$user_role" = "reseller" ]; then
+                mv /etc/davpanel/features/"$old_username" /etc/davpanel/features/"$new_username" > /dev/null 2>&1
+                mv /etc/davpanel/davadmin/resellers/"$old_username".json /etc/davpanel/davadmin/resellers/"$new_username".json > /dev/null 2>&1
+                source /usr/local/davcli/db.sh
+                local mysql_escaped_old_username mysql_escaped_new_username
+                mysql_escaped_old_username=$(mysql_escape "$old_username")
+                mysql_escaped_new_username=$(mysql_escape "$new_username")
+                mariadb --defaults-extra-file="$config_file" -D "$mysql_database" -e "UPDATE users SET owner='$mysql_escaped_new_username' WHERE owner='$mysql_escaped_old_username';" > /dev/null 2>&1
+
+	            nohup davcli sentinel --action=reseller_rename --title="Reseller renamed" --message="Reseller account '$old_username' has been renamed to '$new_username'." >/dev/null 2>&1 &
+	            disown
+			else
+	            nohup davcli sentinel --action=admin_rename --title="Administrator renamed" --message="Administrator account '$old_username' has been renamed to '$new_username'." >/dev/null 2>&1 &
+	            disown
+            fi
+
+
+        fi
+    else
+        echo -e "${RED}Error${RESET}: User '$old_username' not found."
+    fi
+}
+
+# ---------------------- davcli admin password ---------------------- #
+update_password() {
+    local username="$1"
+    local escaped_username
+    escaped_username=$(sqlite_escape "$username")
+    local user_exists
+    user_exists=$(sqlite3 "$db_file_path" "SELECT COUNT(*) FROM user WHERE username='$escaped_username';")
+	local password_hash
+	password_hash=$(openssl passwd -6 -salt "$(openssl rand -hex 8)" -stdin <<< "$new_password")
+
+    if [ "$user_exists" -gt 0 ]; then
+        sqlite3 $db_file_path "UPDATE user SET password_hash='$(sqlite_escape "$password_hash")' WHERE username='$escaped_username';"
+		nohup davcli sentinel --action=admin_password --title="Administrator password changed" --message="Administrator account '$username' has password changed." >/dev/null 2>&1 &
+		disown
+        echo "Password for user '$username' changed."
+        echo ""
+        printf "=%.0s"  $(seq 1 63)
+        echo ""
+        detect_service_status
+        echo ""
+        echo "- username: $username"
+        echo "- password: $new_password"
+        echo ""
+        printf "=%.0s"  $(seq 1 63)
+        echo ""
+    else
+        echo -e "${RED}Error${RESET}: User '$username' not found."
+    fi
+}
+
+
+# ---------------------- davcli admin list ---------------------- #
+list_current_users() {
+	users=$(sqlite3 "$db_file_path" "SELECT username, role, is_active FROM user;")
+	echo "$users"
+}
+
+
+# ---------------------- davcli admin suspend/unsuspend ---------------------- #
+manage_user() {
+    local action="$1"  # suspend | unsuspend
+    local username="$2"
+    local escaped_username
+    escaped_username=$(sqlite_escape "$username")
+
+    if ! sqlite3 "$db_file_path" "SELECT 1 FROM user WHERE username='$escaped_username';" | grep -q 1; then
+        echo -e "${RED}Error${RESET}: User '$username' does not exist."
+        return 1
+    fi
+
+    if [ "$action" = "suspend" ]; then
+        if sqlite3 "$db_file_path" "SELECT 1 FROM user WHERE username='$escaped_username' AND role='admin';" | grep -q 1; then
+            echo -e "${RED}Error${RESET}: Cannot suspend user '$username' with 'admin' role."
+            return 1
+        fi
+        local is_active=0 label="suspended"     sentinel_action="admin_suspend"
+        local cli_action="user-suspend"         sentinel_title="Administrator suspended"
+    else
+        local is_active=1 label="unsuspended"   sentinel_action="admin_unsuspend"
+        local cli_action="user-unsuspend"       sentinel_title="Administrator unsuspended"
+    fi
+
+    sqlite3 "$db_file_path" "UPDATE user SET is_active='$is_active' WHERE username='$escaped_username';"
+    echo "User '$username' $label successfully."
+
+    nohup davcli sentinel --action="$sentinel_action" --title="$sentinel_title" --message="Administrator account '$username' has been $label." >/dev/null 2>&1 &
+    disown
+
+	source /usr/local/davcli/db.sh
+    local mysql_escaped_username
+    mysql_escaped_username=$(mysql_escape "$username")
+    local query="SELECT username FROM users WHERE owner='$mysql_escaped_username';"
+    if usernames=$(mariadb --defaults-extra-file="$config_file" -D "$mysql_database" -se "$query"); then
+        while IFS= read -r user; do
+            [[ -n "$user" ]] && davcli "$cli_action" "$user"
+        done <<< "$usernames"
+    fi
+}
+
+# ---------------------- davcli admin logs ---------------------- #
+multitail_admin_logs(){
+        require_command multitail
+
+        required_files=(
+            "$admin_logs_file"
+            "$admin_access_log"
+            "$admin_login_log"
+            "$admin_failed_login_log"
+            "$admin_crons_log"
+        )
+        
+        key_value=$(grep "^key=" $CONFIG_FILE_PATH | cut -d'=' -f2-)
+        if [ -z "$key_value" ]; then
+            required_files+=("$admin_api_log")
+        fi
+                
+        for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+                touch "$file"
+            fi
+        done
+        
+        if [ -n "$key_value" ]; then
+            multitail "$admin_logs_file" "$admin_access_log" "$admin_login_log" "$admin_failed_login_log" "$admin_crons_log"
+        else
+            multitail "$admin_logs_file" "$admin_access_log" "$admin_api_log" "$admin_login_log" "$admin_failed_login_log" "$admin_crons_log"
+        fi    
+}
+
+
+# https://github.com/stefanpejcic/OpenPanel/issues/993
+# TODO: remove after 1.8+
+ensure_totp_columns
+
+
+# ---------------------- MAIN ---------------------- #
+case "$1" in
+    "on")
+        echo "Enabling the DavAdmin..."
+		rm /root/davadmin_is_disabled > /dev/null 2>&1
+        systemctl enable --now $service_name > /dev/null 2>&1
+        detect_service_status
+		nohup davcli sentinel --action=admin_status --title="DavAdmin enabled" --message="Administrator-level panel has been enabled." >/dev/null 2>&1 &
+		disown
+        ;;
+    "log")
+		echo "Restarting DavAdmin service:"
+        systemctl enable --now $service_name > /dev/null 2>&1
+        echo "tail -f 25 $admin_logs_file"
+        echo ""
+        systemctl restart admin
+        tail -25 $admin_logs_file
+        echo ""
+        ;;
+    "logs")
+        multitail_admin_logs
+        ;;
+    "off")
+        echo "Disabling the DavAdmin..."
+		nohup davcli sentinel --action=admin_status --title="DavAdmin disabled" --message="Administrator-level panel has been disabled." >/dev/null 2>&1 &
+        systemctl disable --now $service_name > /dev/null 2>&1
+		touch /root/davadmin_is_disabled
+        detect_service_status
+		disown
+        ;;
+    "help")
+        usage
+        ;;
+    "password")
+        user_flag="$2"
+        new_password="$3"
+        if [ -f "$db_file_path" ]; then
+            if [ "$new_password" ]; then
+                validate_password "$new_password"
+                update_password "$user_flag"
+            fi
+        else
+            echo "Error: File $db_file_path does not exist, password not changed for user."
+        fi
+                
+        ;;
+    "rename")
+        old_username="$2"
+        new_username="$3"
+        validate_password_and_username "$new_username" "New Username"
+        update_username "$old_username" "$new_username"
+        ;;
+    "list")
+        list_current_users
+        ;;
+	"update")
+	    shift 1
+	    update_reseller_account "$@" || exit 1
+	    ;;
+	"suspend"|"unsuspend")
+	    username="$2"
+	    manage_user "${1}" "$username"
+	    ;;  
+	"port")
+        new_port="$2"
+		optional_flag="$3"
+        if [ -n "$new_port" ]; then
+		    if ! [[ "$new_port" =~ ^[0-9]+$ ]] || [ "$new_port" -le 443 ]; then
+		        echo "Error: DavAdmin port number must be greater than 443."
+		        exit 1
+		    fi
+
+			if [[ "$new_port" == "443" ]]; then
+				echo "Removing port for DavAdmin"
+			else
+            	echo "Changing port to: $new_port"
+				sed_in_place "/etc/davpanel/caddy/Caddyfile" \
+				  -e "/# START HOSTNAME DOMAIN #/,/# END HOSTNAME DOMAIN #/ s/\(reverse_proxy localhost:\)[0-9]\+/\1$new_port/" \
+				  -e "/# START HOSTNAME IP #/,/# END HOSTNAME IP #/ s/\(reverse_proxy localhost:\)[0-9]\+/\1$new_port/"				
+				if [[ -f "/root/disable_2087_port" ]]; then
+					rm -rf /root/disable_2087_port
+				fi
+			fi
+			sed -i "/redir @davadmin/s/:[0-9]\+/:$new_port/g" "/etc/davpanel/caddy/redirects.conf"
+			sed -i "/redir @davadmin/s/:[0-9]\+/:$new_port/g" "/etc/davpanel/caddy/redirects.conf"
+			sed -i "/# davadmin/,/# roundcube/ s/:[0-9]\+/:$new_port/g" "/etc/davpanel/nginx/vhosts/davpanel_proxy.conf"
+			if [[ "$optional_flag" != '--no-restart' ]]; then
+			    csf_conf="/etc/csf/csf.conf"
+				echo "Opening port on firewall.."			
+			    port_opened=$(grep "TCP_IN = .*${new_port}" "$csf_conf")
+			    if [ -z "$port_opened" ]; then
+			        sed -i "s/TCP_IN = \"\(.*\)\"/TCP_IN = \"\1,${new_port}\"/" "$csf_conf"
+			        nohup csf -r > /dev/null 2>&1 < /dev/null &
+			    fi
+	            echo "Restarting DavAdmin.."
+				systemctl restart admin
+				echo "Reloading Caddy.."
+				caddy_reload
+			else
+				if [[ "$new_port" == "443" ]]; then
+					echo "Restart DavAdmin service and Caddy container to apply new port."
+				else
+	            	echo "Make sure to open the new port on Firewall and restart DavAdmin service to apply new port."
+				fi
+			fi
+			nohup davcli sentinel --action=admin_port --title="DavAdmin port changed" --message="Port for administrator-level panel has been changed to '$new_port'." >/dev/null 2>&1 &
+			disown
+			echo "Done"
+        else
+			if [[ -f "/root/disable_2087_port" ]]; then
+				admin_port="443"
+			else
+		    	admin_port=$(awk '/# START HOSTNAME DOMAIN #/{flag=1; next} /# END HOSTNAME DOMAIN #/{flag=0} flag' "/etc/davpanel/caddy/Caddyfile" | grep -oP 'localhost:\K[0-9]+' | head -n 1)
+		    fi
+			echo "$admin_port"
+        fi
+        ;;  	
+    "new")
+        new_username="$2"
+        new_password="$3"
+        reseller="$4"
+        new_reseller_plan=""
+        [[ "$5" == --plan=* ]] && new_reseller_plan="${5#*=}"
+		
+        if [ -z "$new_username" ] || [ -z "$new_password" ]; then
+            echo "ERROR: Invalid 'davcli admin new' command - please provide username and password."
+            usage
+        fi
+
+		if [ "$reseller" = "--reseller" ]; then
+			check_edition
+			if [ -n "$new_reseller_plan" ]; then
+				source /usr/local/davcli/lib/reseller.sh
+				if ! reseller_plan_file "$new_reseller_plan" >/dev/null; then
+					echo -e "${RED}Error${RESET}: Reseller plan '$new_reseller_plan' not found." >&2
+					exit 1
+				fi
+			fi
+		fi
+		
+        validate_password_and_username "$new_username" "Username"
+        validate_password "$new_password"
+        add_new_user "$new_username" "$new_password" "$reseller" "$new_reseller_plan"
+        ;;
+    "notifications")
+        command="$2"
+        param_name="$3"
+        if [ "$command" != "check" ]; then
+            if [ -z "$command" ] || [ -z "$param_name" ]; then
+                usage_for_notifications
+            fi
+        fi
+
+        case "$command" in
+            check)
+                bash  /usr/local/davcli/sentinel.sh
+                exit 0
+                ;;
+            get)
+                get_config "$param_name"
+                ;;
+            update)
+                if [ "$#" -ne 4 ]; then
+                    echo "ERROR: Usage: davcli admin notifications update <parameter_name> <new_value>"
+                    exit 1
+                fi
+                new_value="$4"
+                update_config "$param_name" "$new_value"
+                ;;
+            *)
+                echo "ERROR: Invalid command."
+                usage
+                ;;
+        esac
+        ;;
+
+    "delete")
+        username="$2"
+        delete_existing_users "$username"
+        ;;
+    *)
+    if [ -z "$1" ]; then
+        detect_service_status
+    else
+        echo "ERROR: Unknown command: '$1'"
+        usage
+    fi
+        ;;
+esac
+
+exit 0

@@ -1,0 +1,15 @@
+[Unit]
+Description=DavAdmin
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/usr/local/davadmin/
+ExecStart=/usr/local/davadmin/venv/bin/gunicorn -c /etc/davpanel/davadmin/service/service.config.py app:app
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=always
+TimeoutStopSec=30
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

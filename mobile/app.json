@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "DavPanel",
+    "slug": "davadmin-mobile",
+    "version": "1.1.1",
+    "description": "Manage your DavPanel accounts and DavAdmin servers on the go.",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.davpanel.davadmin",
+      "usesCleartextTraffic": true,
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store",
+      "./plugins/withReleaseSigning.js"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "abcb9248-940c-4253-9cdd-450a54d3eadb"
+      }
+    },
+    "owner": "stefanpejcic"
+  }
+}

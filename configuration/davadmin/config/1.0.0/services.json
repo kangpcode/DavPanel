@@ -1,0 +1,74 @@
+[
+    {
+        "name": "DavAdmin",
+        "type": "system",
+        "on_dashboard": false,
+        "real_name": "admin"
+    },
+    {
+        "name": "Docker",
+        "type": "system",
+        "on_dashboard": true,
+        "real_name": "docker"
+    },
+    {
+        "name": "DavPanel",
+        "type": "docker",
+        "on_dashboard": true,
+        "real_name": "davpanel"
+    },
+    {
+        "name": "Web Server",
+        "type": "docker",
+        "on_dashboard": true,
+        "real_name": "caddy"
+    },
+    {
+        "name": "Dovecot & Postfix",
+        "type": "docker",
+        "on_dashboard": true,
+        "real_name": "davadmin_mailserver"
+    },
+    {
+        "name": "Roundcube",
+        "type": "docker",
+        "on_dashboard": false,
+        "real_name": "davadmin_roundcube"
+    },
+    {
+        "name": "Database",
+        "type": "docker",
+        "on_dashboard": true,
+        "real_name": "davpanel_mysql"
+    },
+    {
+        "name": "FTP",
+        "type": "docker",
+        "on_dashboard": false,
+        "real_name": "davadmin_ftp"
+    },
+    {
+        "name": "DNS",
+        "type": "docker",
+        "on_dashboard": true,
+        "real_name": "davpanel_dns"
+    },
+    {
+        "name": "Malware Scanner",
+        "type": "docker",
+        "on_dashboard": false,
+        "real_name": "clamav"
+    },
+    {
+        "name": "SSL",
+        "type": "docker",
+        "on_dashboard": false,
+        "real_name": "certbot"
+    },
+    {
+        "name": "Sentinel Firewall",
+        "type": "system",
+        "on_dashboard": true,
+        "real_name": "csf"
+    }
+]

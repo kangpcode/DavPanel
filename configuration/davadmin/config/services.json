@@ -1,0 +1,67 @@
+[
+    {
+        "name": "DavAdmin UI",
+        "type": "system",
+        "real_name": "admin"
+    },
+    {
+        "name": "Podman",
+        "type": "system",
+        "real_name": "podman"
+    },
+    {
+        "name": "DavPanel UI",
+        "type": "docker",
+        "real_name": "davpanel"
+    },
+    {
+        "name": "Web Server",
+        "type": "docker",
+        "real_name": "caddy"
+    },
+    {
+        "name": "MySQL (Database)",
+        "type": "docker",
+        "real_name": "davpanel_mysql"
+    },
+    {
+        "name": "vsftpd (FTP server)",
+        "type": "docker",
+        "real_name": "davadmin_ftp"
+    },
+    {
+        "name": "BIND9 (DNS server)",
+        "type": "docker",
+        "real_name": "davpanel_dns"
+    },
+    {
+        "name": "ClamAV Scanner",
+        "type": "docker",
+        "real_name": "clamav"
+    },
+    {
+        "name": "SSH",
+        "type": "system",
+        "real_name": "ssh"
+    },
+    {
+        "name": "Cron",
+        "type": "system",
+        "real_name": "cron"
+    },
+    {
+        "name": "Sentinel Firewall (CSF)",
+        "type": "system",
+        "real_name": "csf"
+    },
+    {
+        "name": "Login Failure Daemon (LFD)",
+        "type": "system",
+        "real_name": "lfd"
+    },
+    {
+        "name": "phpMyAdmin",
+        "type": "docker",
+        "real_name": "phpmyadmin"
+    }
+]

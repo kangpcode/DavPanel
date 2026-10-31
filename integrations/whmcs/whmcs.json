@@ -1,0 +1,22 @@
+{
+  "schema": "1.0",
+  "type": "whmcs-servers",
+  "name": "DavPanel",
+  "license": "proprietary",
+  "category": "provisioning",
+  "description": {
+    "name": "DavPanel",
+    "tagline": "Next Generation Hosting Panel.",
+    "long": ""
+  },
+  "support": {
+    "homepage": "https://davpanel.com/",
+    "docs_url": "https://davpanel.com/docs/articles/dev-experience/davadmin-api/"
+  },
+  "authors": [
+    {
+      "name": "DAVPANEL",
+      "homepage": "https:\/\/davpanel.com\/"
+    }
+  ]
+}
