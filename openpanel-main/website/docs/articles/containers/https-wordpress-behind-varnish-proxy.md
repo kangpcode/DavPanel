@@ -1,0 +1,16 @@
+---
+sidebar_label: "Using Varnish with WordPress"
+---
+
+# How to Fix HTTPS and Redirect Loops for WordPress Behind Varnish
+
+Varnish does not support SSL, so you need to terminate TLS before passing requests to it, then after receiving http from Varnish, use again https.
+
+For WordPress, adding the following code in wp-config.php is enough:
+
+```
+define('FORCE_SSL_ADMIN', true); if ($_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') $_SERVER['HTTPS']='on';
+```
+
+
+> **EDIT**: From version 1.5.7 this is automatically added for new WP installations.

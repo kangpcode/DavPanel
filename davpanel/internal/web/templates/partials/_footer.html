@@ -20,6 +20,12 @@
             <div data-side="top" data-align="start" role="menu" aria-orientation="vertical" data-state="open" dir="ltr" class="relative z-50 overflow-hidden rounded border p-1 shadow-xl shadow-black/[2.5%] min-w-48 bg-white dark:bg-[#090E1A] text-gray-900 dark:text-gray-50 border-gray-200 dark:border-gray-800 will-change-[transform,opacity] data-[state=closed]:animate-hide data-[side=bottom]:animate-slideDownAndFade data-[side=left]:animate-slideLeftAndFade data-[side=right]:animate-slideRightAndFade data-[side=top]:animate-slideUpAndFade" tabindex="-1" data-orientation="vertical">
                 <!-- Content inside Popup -->
                 <div class="px-2 py-2 text-xs font-medium tracking-wide text-gray-500 dark:text-gray-500">DavPanel {{.PanelVersion}}</div>
+                {{if not .IsEnterprise}}
+                <div class="px-2 pb-2 text-xs text-gray-500 dark:text-gray-400">
+                    <a href="https://github.com/kangpcode" target="_blank" rel="noopener noreferrer">kangpcode (Dhafa Nazula Permadi)</a><br>
+                    Fork of <a href="https://github.com/stefanpejcic/OpenPanel" target="_blank" rel="noopener noreferrer">OpenPanel</a>
+                </div>
+                {{end}}
                 <div role="separator" aria-orientation="horizontal" class="-mx-1 my-1 h-px border-t border-gray-200 dark:border-gray-800"></div>
 
                 <!-- Theme Switcher -->

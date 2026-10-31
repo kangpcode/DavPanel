@@ -5,7 +5,6 @@ import React from "react";
 import { BlogFooter } from "@site/src/refine-theme/blog-footer";
 import { CommonHeader } from "@site/src/refine-theme/common-header";
 import { CommonLayout } from "@site/src/refine-theme/common-layout";
-import { HeaderDiscordIcon } from "@site/src/refine-theme/icons/header-discord";
 import { FooterGithubIcon } from "@site/src/refine-theme/icons/footer-github";
 import { MailIcon } from "@site/src/refine-theme/icons/mail";
 import { team } from "../../assets/team";
@@ -65,64 +64,25 @@ const ServerIcon = () => (
 );
 
 const stats = [
-    { value: "100%", label: "Self-funded & independent" },
-    { value: "€14.95", label: "Fixed pricing, from day one" },
-    { value: "$0", label: "Per-user or per-site fees" },
-    { value: "Free", label: "Forever free edition" },
+    { value: "DavPanel", label: "User control panel" },
+    { value: "DavAdmin", label: "Server administration" },
+    { value: "DavCLI", label: "Command-line tools" },
+    { value: "kangpcode", label: "Developer & maintainer" },
 ];
 
 const timeline = [
     {
-        year: "2023",
-        achievements: [
-            {
-                title: "Beta edition",
-                description:
-                    "Started as a bootstrapped side project to fix the hosting panels we were stuck using ourselves.",
-            },
-        ],
-    },
-    {
-        year: "2024",
-        achievements: [
-            {
-                title: "DavPanel 0.3",
-                description:
-                    "First public beta release: Docker-native from day one, not bolted on later.",
-            },
-            {
-                title: "davpanel.com",
-                description:
-                    "Acquired davpanel.com and moved over from davpanel.com, giving the project a proper permanent home.",
-            },
-        ],
-    },
-    {
-        year: "2025",
-        achievements: [
-            {
-                title: "DavPanel 1.0",
-                description:
-                    "Launched DavPanel Enterprise, with premium features and priority support for hosting providers.",
-            },
-        ],
-    },
-    {
         year: "2026",
         achievements: [
             {
-                title: "DavPanel LLC",
+                title: "DavPanel fork",
                 description:
-                    "Formalized the company, incorporating DavPanel as an LLC.",
+                    "Dhafa Nazula Permadi (kangpcode) maintains this rebranded fork of OpenPanel, with DavPanel, DavAdmin and DavCLI identities.",
             },
             {
-                title: "100,000+ installations",
-                description: "Crossed 100,000 active installations worldwide.",
-            },
-            {
-                title: "DavPanel 2.0",
+                title: "Upstream attribution",
                 description:
-                    "Rewrote the core to run on Podman, replacing Docker as the container engine, for rootless isolation by default.",
+                    "The original OpenPanel work remains credited to Stefan Pejcic and contributors. Upstream license terms continue to apply.",
             },
         ],
     },
@@ -131,21 +91,21 @@ const timeline = [
 const story = [
     {
         icon: <WizardsIcon />,
-        title: "The idea",
+        title: "The project",
         description:
-            'DavPanel was born out of frustration with the premium hosting panels we relied on at UNLIMITED.RS to run shared hosting and managed VPS for our own clients. Prices kept climbing every year, but the flexibility never did. During one particularly rough migration, a colleague joked, "Even we could build something better." The comment stuck - and sent our co-founder and CEO, Dhafa Nazula Permadi, down the path of actually doing it.',
+            "DavPanel is a rebranded fork of OpenPanel, developed and maintained by Dhafa Nazula Permadi under the kangpcode identity.",
     },
     {
         icon: <FlagIcon />,
-        title: "Early days",
+        title: "The upstream foundation",
         description:
-            "Work started in 2023 on a basic LAMP-stack panel, built to comfortably run 10 to 500 users on a single server. The first instinct was to isolate every website in its own Docker container - until a single WordPress install alone needed three containers, one per service, and the overhead stopped making sense. We pivoted to one container per user instead, trading a bit of flexibility for a far more stable, predictable environment. Later, we pivoted again - to one container per user service - giving every user real isolation between their web, database, and mail without repeating the overhead that sank the per-website approach.",
+            "OpenPanel was created by Stefan Pejcic and contributors. DavPanel builds on that codebase and preserves its copyright notices and license terms.",
     },
     {
         icon: <ContainerIcon />,
-        title: "The 2.0 rewrite",
+        title: "The components",
         description:
-            "DavPanel ran on Docker from that first pivot all the way through 1.x. For 2.0, we rewrote the container layer on Podman - dropping the Docker daemon in favor of rootless, daemonless containers, with no functionality lost along the way.",
+            "DavPanel provides the user panel, DavAdmin is the server administration interface, and DavCLI provides command-line tooling. Separate component sources and release artifacts are required for a complete installation.",
     },
 ];
 
@@ -222,7 +182,7 @@ const cardShell = clsx(
 const About: React.FC = () => {
     return (
         <CommonLayout
-            description="DavPanel is built by hosting operators, for hosting operators - Podman-native isolation, built-in security, and no per-seat pricing."
+            description="DavPanel is a fork of OpenPanel, developed and maintained by Dhafa Nazula Permadi (kangpcode)."
             image="/img/og/about.png"
         >
             <Head>
@@ -261,13 +221,8 @@ const About: React.FC = () => {
                                 "dark:text-gray-0 text-gray-900",
                             )}
                         >
-                            Built by{" "}
-                            <span className={gradientAccentA}>hosting operators</span>{" "}
-                            who got tired of{" "}
-                            <span className={gradientAccentB}>
-                                paying more for less
-                            </span>
-                            .
+                            <span className={gradientAccentA}>DavPanel</span>{" "}
+                            by <span className={gradientAccentB}>kangpcode</span>
                         </h1>
                         <p
                             className={clsx(
@@ -277,10 +232,9 @@ const About: React.FC = () => {
                                 "dark:text-gray-400 text-gray-600",
                             )}
                         >
-                            DavPanel is a Podman-native control panel built by hosting
-                            operators, for hosting operators - real user isolation,
-                            security built in, and pricing that doesn&apos;t punish you
-                            for growing.
+                            A container hosting control panel fork maintained by
+                            Dhafa Nazula Permadi, based on OpenPanel by Stefan Pejcic
+                            and contributors.
                         </p>
                         <div
                             className={clsx(
@@ -313,7 +267,7 @@ const About: React.FC = () => {
                                 Star on GitHub
                             </Link>
                             <Link
-                                to="https://discord.com/invite/7bNY8fANqF"
+                                to="https://github.com/kangpcode/DavPanel/discussions"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={clsx(
@@ -331,8 +285,8 @@ const About: React.FC = () => {
                                     "text-base font-semibold",
                                 )}
                             >
-                                <HeaderDiscordIcon width={20} height={20} />
-                                Join Discord
+                                <FooterGithubIcon width={20} height={20} />
+                                Join discussions
                             </Link>
                         </div>
                     </div>
@@ -395,8 +349,7 @@ const About: React.FC = () => {
                                     "dark:text-gray-400 text-gray-600",
                                 )}
                             >
-                                From a bootstrapped side project to 100,000+ active
-                                installations - the short version.
+                                The fork identity and its upstream foundation.
                             </p>
                         </div>
 
@@ -636,8 +589,9 @@ const About: React.FC = () => {
                                     "dark:text-gray-400 text-gray-600",
                                 )}
                             >
-                                Containers had changed everything about infrastructure -
-                                but hosting control panels were still stuck in the past.
+                                DavPanel builds on the OpenPanel codebase. Read the{" "}
+                                <Link to="https://github.com/stefanpejcic/OpenPanel">upstream project</Link>{" "}
+                                and <Link to="/LICENSE">license terms</Link>.
                             </p>
                         </div>
 
@@ -754,7 +708,7 @@ const About: React.FC = () => {
                                     "dark:text-gray-0 text-gray-900",
                                 )}
                             >
-                                Independent by choice.
+                                Maintained as a fork.
                             </h2>
                             <p
                                 className={clsx(
@@ -763,19 +717,9 @@ const About: React.FC = () => {
                                     "dark:text-gray-400 text-gray-600",
                                 )}
                             >
-                                Over the years we turned down offers from competitors and
-                                venture capitalists. Every one came with conditions that
-                                would&apos;ve compromised the product, so we stayed
-                                self-funded instead. One promise we stand by:{" "}
-                                <span
-                                    className={clsx(
-                                        "font-semibold",
-                                        "dark:text-gray-0 text-gray-900",
-                                    )}
-                                >
-                                    we will never charge per user or per website
-                                </span>
-                                .
+                                DavPanel is maintained by kangpcode. Original copyrights
+                                and license terms remain with their respective owners.
+                                See the <Link to="/LICENSE">license</Link> before deployment.
                             </p>
                             <div
                                 className={clsx(
@@ -842,7 +786,7 @@ const About: React.FC = () => {
                                     "dark:text-gray-400 text-gray-600",
                                 )}
                             >
-                                A small, independent team building DavPanel full-time.
+                                DavPanel is developed and maintained by Dhafa Nazula Permadi (kangpcode).
                             </p>
                         </div>
 
@@ -855,12 +799,12 @@ const About: React.FC = () => {
                                 "gap-4",
                             )}
                         >
-                            {team.map(({ name, avatar, role1, role2, linkedin }) => {
+                            {team.map(({ name, avatar, role1, role2, profileUrl }) => {
                                 const isLocalImage = avatar.startsWith("/");
                                 return (
                                     <Link
                                         key={name}
-                                        to={linkedin}
+                                        to={profileUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={clsx(
@@ -983,7 +927,7 @@ const About: React.FC = () => {
                                 )}
                             >
                                 <Link
-                                    to="https://discord.com/invite/7bNY8fANqF"
+                                    to="https://github.com/kangpcode/DavPanel/discussions"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={clsx(
@@ -1001,8 +945,8 @@ const About: React.FC = () => {
                                         "text-base font-semibold",
                                     )}
                                 >
-                                    <HeaderDiscordIcon width={20} height={20} />
-                                    Join Discord
+                                    <FooterGithubIcon width={20} height={20} />
+                                    Join discussions
                                 </Link>
                                 <Link
                                     to="https://github.com/kangpcode/DavPanel"

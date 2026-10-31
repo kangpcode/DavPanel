@@ -41,7 +41,7 @@ func (a *App) checkLicenseStartup(ctx context.Context) bool {
 	}
 
 	dynamicIP := sysinfo.FetchPublicIP(ctx, a.Cache)
-	log.Printf("BOOTSTRAP - validating license key: %s", a.LicenseKey)
+	log.Print("BOOTSTRAP - validating license key")
 
 	form := url.Values{"licensekey": {a.LicenseKey}, "ip": {dynamicIP}}
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost,

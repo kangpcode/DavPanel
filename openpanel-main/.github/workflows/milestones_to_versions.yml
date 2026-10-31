@@ -1,0 +1,40 @@
+name: Update Changelog from Milestones
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # every day at 2am UTC
+  workflow_dispatch:
+
+jobs:
+  update-changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install PyGithub
+
+      - name: Generate changelog intro.md from milestones
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python .github/scripts/update_changelog.py
+
+      - name: Commit and push updated intro.md
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add website/docs/changelog/intro.md
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "chore: update changelog intro.md from milestones"
+          git push

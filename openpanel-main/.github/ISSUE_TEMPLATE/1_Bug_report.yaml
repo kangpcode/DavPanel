@@ -1,0 +1,50 @@
+name: 🕵️‍♂️ OpenAdmin (Administrator interface) Bug Report
+description: Report bugs with the OpenAdmin UI (running on port :2087)
+labels: Bug
+
+body:
+    - type: input
+      id: affected-versions
+      attributes:
+          label: OpenPanel version(s) affected
+          placeholder: x.y.z
+      validations:
+          required: true
+    - type: dropdown
+      id: os
+      attributes:
+           label: What OS are you using?
+           description: Choose the OS where OpenPanel is installed
+           options:
+           - Ubuntu
+           - Debian
+           - CentOS
+           - AlmaLinux
+           - RockyLinux
+      validations:
+          required: true
+    - type: dropdown
+      id: demo
+      attributes:
+           label: Are you able to reproduce the problem on the demo site https://demo.openpanel.com:2083/ ?
+           description: Demo site runs latest OpenAdmin version. Please try to reproduce any bugs there before reporting them.
+           options:
+           - 'No'
+           - 'Yes'
+      validations:
+          required: true
+    - type: textarea
+      id: description
+      attributes:
+          label: Description
+          description: A clear and concise description of the problem
+    - type: textarea
+      id: how-to-reproduce
+      attributes:
+          label: How to reproduce
+          description: |
+            ⚠️  This is the most important part of the report ⚠️
+            Without a way to easily reproduce your issue, there is little chance we will be able to help you and work on a fix.
+            Please, take the time to show us some code and/or screenshot that is needed for others to reproduce the problem easily.
+      validations:
+          required: true

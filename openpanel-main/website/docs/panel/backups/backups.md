@@ -1,0 +1,532 @@
+---
+sidebar_position: 1
+---
+
+# Backups
+
+In OpenPanel, backups are configurable directly **by the panel users**, unlike other panels where backups are managed by the admin.
+
+This empowers users to define their own backup schedules, choose exactly what to back up, and select from a wide range of supported destinations.
+As a result, administrators have fewer tasks to manage, and users gain greater control and flexibility.
+
+![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/openpanel-screenshots/files/backups-page.png#gh-light-mode-only)
+![Backups page with the three setup steps: connect a destination, configure settings, and set limits](/img/openpanel-screenshots/files/backups-page_dark.png#gh-dark-mode-only)
+
+:::note Attribution
+User backups are powered by [offen/docker-volume-backup](https://github.com/offen/docker-volume-backup). Large parts of the configuration reference on this page (destinations, encryption, rotation, schedule, compression, names, exclude and notifications) are adapted from its [documentation](https://offen.github.io/docker-volume-backup/reference/), Copyright © offen.software and contributors, licensed under the [Mozilla Public License 2.0](https://github.com/offen/docker-volume-backup/blob/main/LICENSE). See [Credits & License](#credits--license) below.
+:::
+
+:::info Admin Configured mode
+If your administrator runs backups centrally for all users (**Admin Configured** mode, see [User Backups](/docs/admin/backups/user/)), the **Destinations** and **Settings** pages below aren't available to you - the destination and its credentials are managed by the administrator. You can still browse and restore your own backups, and the **Backups** page takes you straight to [Restore & Download](#restore--download).
+:::
+
+## Destinations
+
+OpenPanel supports the following destinations:
+
+- [**S3 storage**](#s3) - AWS S3, Filebase, MinIO, etc.
+- [**WebDAV**](#webdav) - Remote backups using WebDAV.
+- [**SSH**](#azure) - Remote backups via SSH to another server.
+- [**Azure**](#azure) - Remote backups to Azure Blob Storage.
+- [**Dropbox**](#dropbox) - Remote backups to Dropbox cloud storage.
+
+User can select destination from **Backups > Destination** page.
+
+![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/openpanel-screenshots/files/backups_destination-page.png#gh-light-mode-only)
+![Backup destination picker with S3-compatible, WebDAV, SSH, Azure and Dropbox options](/img/openpanel-screenshots/files/backups_destination-page_dark.png#gh-dark-mode-only)
+
+Once backup is selected, it's options are available on **Backups > Configuration tab**.
+
+### SSH/SFTP
+
+| Setting | Description |
+|----------|----------|
+| **SSH_HOST_NAME**    | The FQDN of the remote SSH server, example: `server.local`  |
+| **SSH_PORT**    | The port of the remote SSH server  |
+| **SSH_REMOTE_PATH**    | The Directory to place the backups to on the SSH server. Example: `/home/user/backups`  |
+| **SSH_USER**    | The username for the SSH server. Example: `user`  |
+| **SSH_PASSWORD**    | The password for the SSH server. Example: `password`  |
+| **SSH_IDENTITY_FILE**    | The private key path inside `/var/www/html/` for SSH server. Non-RSA keys (e.g. ed25519) will also work.  |
+| **SSH_IDENTITY_PASSPHRASE**    | The passphrase for the identity file if applicable. Example: `pass`  |
+
+
+### S3
+
+| Setting | Description |
+|----------|----------|
+| **AWS_S3_BUCKET_NAME**    | The name of the remote bucket that should be used for storing backups. If this is not set, no remote backups will be stored. Example: `backup-bucket` |
+| **AWS_S3_PATH**    | If you want to store the backup in a non-root location on your bucket  you can provide a path. The path must not contain a leading slash. Example: `my/backup/location`  |
+| **AWS_ACCESS_KEY_ID** **AWS_SECRET_ACCESS_KEY**   | Define credentials for authenticating against the backup storage and a bucket name. Although all of these keys are `AWS`-prefixed, the setup can be used with any S3 compatible storage. |
+| **AWS_IAM_ROLE_ENDPOINT**    | Instead of providing static credentials, you can also use IAM instance profiles or similar to provide authentication. Some possible configuration options on AWS: `- EC2: http://169.254.169.254` `- ECS: http://169.254.170.2` |
+| **AWS_ENDPOINT**    | This is the FQDN of your storage server, e.g. `storage.example.com`. If you need to set a specific (non-https) protocol, you will need to use the `AWS_ENDPOINT_PROTO` option. The default value points to the standard AWS S3 endpoint. Example: `s3.amazonaws.com`  |
+| **AWS_ENDPOINT_PROTO**    | The protocol to be used when communicating with your S3 storage server. Defaults to "https". You can set this to "http" when communicating with a different seld-hosted s3 storage. |
+| **AWS_ENDPOINT_INSECURE**    | Setting this variable to `true` will disable verification of SSL certificates for `AWS_ENDPOINT`. You shouldn't use this unless you use self-signed certificates for your remote storage backend. This can only be used when `AWS_ENDPOINT_PROTO` is set to `https`.  |
+| **AWS_ENDPOINT_CA_CERT**    | If you wish to use self signed certificates your S3 server, you can pass the location of a PEM encoded CA certificate and it will be used for validating your certificates. Alternatively, pass a PEM encoded string containing the certificate. Example: `/var/www/html/cert.pem` |
+| **AWS_STORAGE_CLASS**    | Setting a value for this key will change the S3 storage class header. Default behavior is to use the standard class when no value is given. Example: `GLACIER` |
+| **AWS_PART_SIZE**    | Setting this variable will change the S3 default part size for the copy step. This value is useful when you want to upload large files. Note: While using Scaleway as S3 provider, be aware that the parts counter is set to 1.000. While Minio uses a hard coded value to 10.000. As a workaround, try to set a higher value. Defaults to `16` (MB) if unset (from minio), you can set this value according to your needs. The unit is in MB and an integer. |
+
+
+### WebDAV
+
+| Setting | Description |
+|----------|----------|
+| **WEBDAV_URL**    | The URL of the remote WebDAV server. Example: `https://webdav.example.com` |
+| **WEBDAV_PATH**    | The Directory to place the backups to on the WebDAV server. If the path is not present on the server it will be created. Example: `/my/directory/` |
+| **WEBDAV_USERNAME**    | The username for the WebDAV server Example: `user` |
+| **WEBDAV_PASSWORD**    | The password for the WebDAV server. Example: `password` |
+| **WEBDAV_URL_INSECURE**    |  Setting this variable to "true" will disable verification of SSL certificates for WEBDAV_URL. You shouldn't use this unless you use self-signed certificates for your remote storage backend. |
+
+### Azure
+
+| Setting | Description |
+|----------|----------|
+| **AZURE_STORAGE_ACCOUNT_NAME**    | The credential's account name when using Azure Blob Storage. This has to be set when using Azure Blob Storage.  Example: `account-name` |
+| **AZURE_STORAGE_PRIMARY_ACCOUNT_KEY**    | The credential's primary account key when using Azure Blob Storage. If this is not given, the command tries to fall back to using a connection string (if given) or a managed identity (if neither is set). |
+| **AZURE_STORAGE_CONNECTION_STRING**    | A connection string for accessing Azure Blob Storage. If this is not given, the command tries to fall back to using a primary account key (if given) or a managed identity (if neither is set). |
+| **AZURE_STORAGE_CONTAINER_NAME**    | The container name when using Azure Blob Storage.  Example: `container-name` |
+| **AZURE_STORAGE_ENDPOINT**    | The service endpoint when using Azure Blob Storage. This is a template that can be passed the account name.  Example: `https://{{ .AccountName }}.blob.core.windows.net/` |
+| **AZURE_STORAGE_ACCESS_TIER**    | The access tier when using Azure Blob Storage. Possible values are [listed here](https://github.com/Azure/azure-sdk-for-go/blob/sdk/storage/azblob/v1.3.2/sdk/storage/azblob/internal/generated/zz_constants.go#L14-L30) Example: `Cold` |
+
+
+### Dropbox
+
+| Setting | Description |
+|----------|----------|
+| **DROPBOX_REMOTE_PATH**    | Absolute remote path in your Dropbox where the backups shall be stored. Note: Use your app's subpath in Dropbox, if it doesn't have global access.  Example: `/my/directory` |
+| **DROPBOX_APP_KEY**  **DROPBOX_APP_SECRET**   | App key and app secret from your app created at [https://www.dropbox.com/developers/apps](https://www.dropbox.com/developers/apps) |
+| **DROPBOX_CONCURRENCY_LEVEL**    | Number of concurrent chunked uploads for Dropbox. Values above 6 usually result in no enhancements. |
+| **DROPBOX_REFRESH_TOKEN**    |  Refresh token to request new short-lived tokens (OAuth2) |
+
+
+Set up Dropbox storage backend:
+
+1. Create a new Dropbox App in the [App Console](https://www.dropbox.com/developers/apps)
+2. Open your new Dropbox App and copy the `DROPBOX_APP_KEY` and `DROPBOX_APP_SECRET`
+3. Click on `Permissions` in your app and make sure, that the following permissions are cranted (or more):
+   - `files.metadata.write`
+   - `files.metadata.read`
+   - `files.content.write`
+   - `files.content.read`
+4. Replace APPKEY in `https://www.dropbox.com/oauth2/authorize?client_id=APPKEY&token_access_type=offline&response_type=code `with the app key from step 2
+5. Visit the URL and confirm the access of your app. This gives you an `auth code` -> save it somewhere!
+6. Replace AUTHCODE, APPKEY, APPSECRET accordingly and perform the request from your terminal:
+   ```
+   curl https://api.dropbox.com/oauth2/token \
+   -d code=AUTHCODE \
+   -d grant_type=authorization_code \
+   -d client_id=APPKEY \
+   -d client_secret=APPSECRET
+   ```
+7. Execute the request. You will get a JSON formatted reply. Use the value of the `refresh_token` for the last setting `DROPBOX_REFRESH_TOKEN`
+8. You should now have `DROPBOX_APP_KEY`, `DROPBOX_APP_SECRET` and `DROPBOX_REFRESH_TOKEN` set. These don’t expire.
+
+:::info
+*Note*: Using the “Generated access token” in the app console is not supported, as it is only very short lived and therefore not suitable for an automatic backup solution. The refresh token handles this automatically - the setup procedure above is only needed once.
+:::
+
+:::danger
+Important: If you chose `App folder` access during the creation of your Dropbox app in step 1 above, `DROPBOX_REMOTE_PATH` will be a relative path under the App folder! (For example, DROPBOX_REMOTE_PATH=/somedir means the backup file will be uploaded to /Apps/myapp/somedir) On the other hand if you chose Full Dropbox access, the value for `DROPBOX_REMOTE_PATH` will represent an absolute path inside your Dropbox storage area. (Still considering the same example above, the backup file will be uploaded to /somedir in your Dropbox root)
+:::
+
+
+## Encryption
+
+Backup encryption is by default disabled and needs to be enabled by the Administrator first.
+
+All of the encryption options are mutually exclusive. Provide a single option for the encryption scheme of your choice.
+
+
+| Setting | Description |
+|----------|----------|
+| **GPG_PASSPHRASE**    | Backups can be encrypted symmetrically using gpg in case a passphrase is given. |
+| **GPG_PUBLIC_KEY_RING**    |  Backups can be encrypted asymmetrically using gpg in case publickeys are given. You can use pipe syntax to pass a multiline value. |
+| **AGE_PASSPHRASE**    | Backups can be encrypted symmetrically using age in case a passphrase is given. |
+| **AGE_PUBLIC_KEYS**    | Backups can be encrypted asymmetrically using age in case publickeys are given. Multiple keys need to be provided as a comma separated list. Right now, this supports `age` and `ssh` keys. |
+
+## Rotation
+
+:::danger
+**IMPORTANT, PLEASE READ THIS BEFORE USING THIS FEATURE**:
+The mechanism used for pruning old backups is not very sophisticated and applies its rules to **all files in the target directory** by default, which means that if you are storing your backups next to other files, these might become subject to deletion too. When using this option make sure the backup files are stored in a directory used exclusively for such files, or to configure `BACKUP_PRUNING_PREFIX` to limit removal to certain files.
+:::
+
+| Setting | Description |
+|----------|----------|
+| **BACKUP_RETENTION_DAYS**    | Pass zero or a positive integer value to enable automatic rotation of old backups. The value declares the number of days for which a backup is kept. Default: `-1` |
+| **BACKUP_PRUNING_LEEWAY**    | In case the duration a backup takes fluctuates noticeably in your setup you can adjust this setting to make sure there are no race conditions between the backup sit on the edge of the time window. Set this value to a duration finishing and the rotation not deleting backups that that is expected to be bigger than the maximum difference of backups. Valid values have a suffix of (s)econds, (m)inutes or (h)ours. By default, one minute is used. |
+| **BACKUP_PRUNING_PREFIX**    | In case your target bucket or directory contains other files than the ones managed by this container, you can limit the scope of rotation by setting a prefix value. This would usually be the non-parametrized part of your BACKUP_FILENAME. E.g. if BACKUP_FILENAME is `db-backup-%Y-%m-%dT%H-%M-%S.tar.gz`, you can set BACKUP_PRUNING_PREFIX to `db-backup-` and make sure unrelated files are not affected by the rotation mechanism. |
+
+## Source
+
+By default, everything will be backed up. In case you need to backup only a specific data, set `BACKUP_SOURCES`. On the **Backups > Configuration** page this is presented as a dropdown with the following options:
+
+| Setting | `BACKUP_SOURCES` | Description |
+|----------|----------|----------|
+| **Everything**    | `/backup` |  Backups content of all docker volumes: website files, mysql/mariadb databases, postgre databases, vhosts files, cron jobs. |
+| **Website Files**    | `/backup/html` |  Backups only website files inside `/var/www/html/` directory. |
+| **Emails**    | `/backup/01-mail` |  Backups only email files inside `/var/mail/` directory. |
+| **VirtualHosts**    | `/backup/01-vhosts` |  Backups only Apache/Nginx VirtualHosts for domains. |
+| **MySQL Databases**    | `/backup/01-mysql` |  Backups only MySQL/MariaDB databases. |
+| **PostgreSQL Databases**    | `/backup/01-postgres` |  Backups only PostgreSQL databases. |
+| **Cron Jobs**    | `/backup/crons.ini` |  Backups only the `crons.ini` file. |
+
+Before 2.0.16 the emails, VirtualHosts and database values were `/backup/mail`, `/backup/vhosts`, `/backup/mysql` and `/backup/postgres`, the update changes them in `backup.env` automatically.
+
+Databases are not copied from their live data directories. Right before the archive is created, every MySQL/MariaDB database is dumped with `mysqldump`/`mariadb-dump` (`--single-transaction --routines --triggers --events`) and every PostgreSQL database with `pg_dump`, into `backup/01-mysql/<database>.sql` and `backup/01-postgres/<database>.sql`. Everything except the website files is stored before `backup/html/` in the archive (`backup/01-mail/`, `backup/01-vhosts/`, `crons.ini`, `dns/`, `emails/`), so restoring a database, domains, emails or cron jobs stops reading the archive early instead of going through the website files. Archives made before 2.0.16 have the dumps, mail and vhosts after the website files, under `backup/mysql/`, `backup/postgres/`, `backup/mail/` and `backup/vhosts/`, and are still restored. If any database fails to dump, the whole backup run fails so it doesn't go unnoticed. The names of the dumped databases are also written to a small `backup/00-meta/` folder that is always the first thing in the archive, so the panel can index a backup without downloading it.
+
+Emails and DNS zones are backed up too. Each domain's mailboxes are mounted into the backup at `backup/emails/<domain>/` (the older `backup/01-mail/` folder, `backup/mail/` in archives made before 2.0.16, only holds links to them) and each domain's DNS zone at `backup/dns/<domain>.zone`. The `backup/00-meta/` folder also lists the website files, mailboxes, domains and DNS zones in the backup, so single items can be restored without downloading the whole archive.
+
+
+## Schedule
+
+Backups can be run on fixed scheduled that are defined as a cron expression.
+`BACKUP_CRON_EXPRESSION` is used to schedule the backup job, a cron expression represents a set of times, using 5 or 6 space-separated fields.
+
+| Field name   | Mandatory? | Allowed values  | Allowed special characters |
+| ----------   | ---------- | --------------  | -------------------------- |
+| Seconds      | No         | 0-59            | `* / , -` |
+| Minutes      | Yes        | 0-59            | `* / , -` |
+| Hours        | Yes        | 0-23            | `* / , -` |
+| Day of month | Yes        | 1-31            | `* / , - ?` |
+| Month        | Yes        | 1-12 or JAN-DEC | `* / , -` |
+| Day of week  | Yes        | 0-6 or SUN-SAT  | `* / , - ?` |
+
+
+Month and Day-of-week field values are case insensitive. "SUN", "Sun", and "sun" are equally accepted. Refer to sites like [crontab.guru](https://crontab.guru) for help.
+
+If no value is set, `@daily` will be used, which runs every day at midnight.
+
+## Compression
+
+
+| Setting | Description |
+|----------|----------|
+| `BACKUP_COMPRESSION`    |  The compression algorithm used in conjunction with tar. Valid options are: "gz" (Gzip), "zst" (Zstd) or "none" (tar only).  Default is "gz". Note that the selection affects the file extension. |
+| `GZIP_PARALLELISM`    | Parallelism level for "gz" (Gzip) compression. Defines how many blocks of data are concurrently processed. Higher values result in faster compression. No effect on decompression. Default = `1`. Setting this to 0 will use all available threads. |
+
+## Names
+
+Options here are available byt disabled by default and need to be manually enabled by the Administrator first.
+
+| Setting | Description |
+|----------|----------|
+| `BACKUP_FILENAME`    |  The desired name of the backup file including the extension. Format verbs will be replaced as in `strftime`. Omitting all verbs will result in the same filename for every backup run, which means previous versions will be overwritten on subsequent runs. Extension can be defined literally or via `{{ .Extension }}` template,  in which case it will become either "tar.gz", "tar.zst" or ".tar" (depending on your `BACKUP_COMPRESSION` setting). The default `backup-%Y-%m-%dT%H-%M-%S.{{ .Extension }}` results in filenames like: `backup-2021-08-29T04-00-00.tar.gz`. |
+
+
+## Exclude
+
+`BACKUP_EXCLUDE_REGEXP` - When a value is given, all files in `BACKUP_SOURCES` whose full path matches the regular expression will be excluded from the archive. Regular Expressions can be used as from [the Go standard library](https://pkg.go.dev/regexp). Example: `\.log$`.
+
+The default is `\.(log|tar\.gz)$`, which skips log files and `.tar.gz` archives, such as the full account backups that `opencli user-backup` stores in `_backups/`.
+
+## Notifications
+
+Notifications (email, Slack, etc.) can be sent out when a backup run finishes.
+
+### NOTIFICATION_URLS
+
+Configuration is provided as a comma-separated list of URLs as consumed by [shoutrrr](https://containrrr.dev/shoutrrr/v0.8/services/overview/)
+
+| Service      | URL format                                                                                           |
+|--------------|------------------------------------------------------------------------------------------------------|
+| [Bark](#bark)         | `bark://devicekey@host`                                                                              |
+| [Discord](#discord)      | `discord://token@id`                                                                                 |
+| [Email](#email)        | `smtp://username:password@host:port/?from=fromAddress&to=recipient1[,recipient2,...]`               |
+| Gotify       | `gotify://gotify-host/token`                                                                         |
+| Google Chat  | `googlechat://chat.googleapis.com/v1/spaces/FOO/messages?key=bar&token=baz`                         |
+| IFTTT        | `ifttt://key/?events=event1[,event2,...]&value1=value1&value2=value2&value3=value3`                  |
+| Join         | `join://shoutrrr:api-key@join/?devices=device1[,device2,...][&icon=icon][&title=title]`              |
+| Mattermost   | `mattermost://[username@]mattermost-host/token[/channel]`                                            |
+| Matrix       | `matrix://username:password@host:port/[?rooms=!roomID1[,roomAlias2]]`                                |
+| Ntfy         | `ntfy://username:password@ntfy.sh/topic`                                                             |
+| OpsGenie     | `opsgenie://host/token?responders=responder1[,responder2]`                                           |
+| Pushbullet   | `pushbullet://api-token[/device/#channel/email]`                                                    |
+| Pushover     | `pushover://shoutrrr:apiToken@userKey/?devices=device1[,device2,...]`                                |
+| Rocketchat   | `rocketchat://[username@]rocketchat-host/token[/channel|@recipient]`                                 |
+| Slack        | `slack://[botname@]token-a/token-b/token-c`                                                          |
+| Teams        | `teams://group@tenant/altId/groupOwner?host=organization.webhook.office.com`                         |
+| Telegram     | `telegram://token@telegram?chats=@channel-1[,chat-id-1,...]`                                         |
+| Zulip Chat   | `zulip://bot-mail:bot-key@zulip-domain/?stream=name-or-id&topic=name`                                |
+
+#### Email
+
+URL Format:
+
+```
+smtp://username:password@host:port/?from=fromAddress&to=recipient1[,recipient2,...]
+```
+
+URL Fields:
+
+- **Username** – SMTP server username  
+  **Default:** _empty_  
+  **URL part:** `smtp://username:password@host:port/`
+
+- **Password** – SMTP server password or hash (for OAuth2)  
+  **Default:** _empty_  
+  **URL part:** `smtp://username:password@host:port/`
+
+- **Host** – SMTP server hostname or IP address (**Required**)  
+  **URL part:** `smtp://username:password@host:port/`
+
+- **Port** – SMTP server port  
+  **Common values:** 25, 465, 587, 2525  
+  **Default:** `25`  
+  **URL part:** `smtp://username:password@host:port/`
+
+Query/Param Props:
+
+Props can be supplied via the `params` argument or directly in the URL using `?key=value&key=value`.
+
+- **FromAddress** – Email address the mail is sent from (**Required**)  
+  **Aliases:** `from`
+
+- **ToAddresses** – Comma-separated list of recipient emails (**Required**)  
+  **Aliases:** `to`
+
+- **Auth** – SMTP authentication method  
+  **Default:** `Unknown`  
+  **Possible values:** `None`, `Plain`, `CRAMMD5`, `Unknown`, `OAuth2`
+
+- **ClientHost** – Hostname sent to the SMTP server during the HELO phase  
+  **Default:** `localhost`  
+  Set to `"auto"` to use OS hostname
+
+- **Encryption** – Encryption method  
+  **Default:** `Auto`  
+  **Possible values:** `None`, `ExplicitTLS`, `ImplicitTLS`, `Auto`
+
+- **FromName** – Name of the sender  
+  **Default:** _empty_
+
+- **Subject** – Subject line of the email  
+  **Default:** `Shoutrrr Notification`  
+  **Aliases:** `title`
+
+- **UseHTML** – Whether the message is in HTML format  
+  **Default:** ❌ No
+
+- **UseStartTLS** – Whether to use StartTLS encryption  
+  **Default:** ✔ Yes  
+  **Aliases:** `starttls`
+  
+
+#### Bark
+
+URL Fields:
+
+- **DeviceKey** – The key for each device (**Required**)  
+  **URL part:** `bark://:devicekey@host/path`
+
+- **Host** – Server hostname and port (**Required**)  
+  **URL part:** `bark://:devicekey@host/path`
+
+- **Path** – Server path  
+  **Default:** `/`  
+  **URL part:** `bark://:devicekey@host/path`
+
+Query/Param Props:
+
+Props can be either supplied using the `params` argument, or through the URL using  `?key=value&key=value` etc.
+
+- **Badge** – The number displayed next to App icon  
+  **Default:** `0`
+
+- **Category** – Reserved field, no use yet  
+  **Default:** _empty_
+
+- **Copy** – The value to be copied  
+  **Default:** _empty_
+
+- **Group** – The group of the notification  
+  **Default:** _empty_
+
+- **Icon** – A URL to the icon, available only on iOS 15 or later  
+  **Default:** _empty_
+
+- **Scheme** – Server protocol, `http` or `https`  
+  **Default:** `https`
+
+- **Sound** – Value from [Bark Sounds](https://github.com/Finb/Bark/tree/master/Sounds)  
+  **Default:** _empty_
+
+- **Title** – Notification title, optionally set by the sender  
+  **Default:** _empty_
+
+- **URL** – URL that will open when notification is clicked  
+  **Default:** _empty_
+
+#### Discord
+
+URL Format:
+
+```
+discord://token@webhookid
+```
+
+URL Fields:
+
+- **Token** – (**Required**)  
+  **URL part:** `discord://token@webhookid/`
+
+- **WebhookID** – (**Required**)  
+  **URL part:** `discord://token@webhookid/`
+
+Query/Param Props:
+
+Props can be either supplied using the `params` argument, or through the URL using  `?key=value&key=value` etc.
+
+- **Avatar** – Override the webhook default avatar with specified URL  
+  **Default:** _empty_  
+  **Aliases:** `avatarurl`
+
+- **Color** – The color of the left border for plain messages  
+  **Default:** `0x50D9ff`
+
+- **ColorDebug** – The color of the left border for debug messages  
+  **Default:** `0x7b00ab`
+
+- **ColorError** – The color of the left border for error messages  
+  **Default:** `0xd60510`
+
+- **ColorInfo** – The color of the left border for info messages  
+  **Default:** `0x2488ff`
+
+- **ColorWarn** – The color of the left border for warning messages  
+  **Default:** `0xffc441`
+
+- **JSON** – Whether to send the whole message as the JSON payload instead of using it as the `content` field  
+  **Default:** ❌ No
+
+- **SplitLines** – Whether to send each line as a separate embedded item  
+  **Default:** ✔ Yes
+
+- **Title**  
+  **Default:** _empty_
+
+- **Username** – Override the webhook default username  
+  **Default:** _empty_
+
+Creating a Webhook in Discord:
+
+1. Open your channel settings by clicking the gear icon next to the channel name.
+   ![screenshot 1](/img/docs-content/FmYrJfhZ-sc-1.png)
+2. In the left menu, click **Integrations**.  
+   ![screenshot 2](/img/docs-content/NtJGM8vF-sc-2.png)
+3. On the right, click **Create Webhook**.  
+   ![screenshot 3](/img/docs-content/7Djx1x6y-sc-3.png)
+4. Set the name, channel, and icon to your preference, then click **Copy Webhook URL**.  
+   ![screenshot 4](/img/docs-content/2rvC2PbL-sc-4.png)
+5. Press **Save Changes**.
+   ![screenshot 5](/img/docs-content/wqG9GzQL-sc-5.png)
+6 Format the service URL:
+   ```
+   https://discord.com/api/webhooks/693853386302554172/W3dE2OZz4C13_4z_uHfDOoC7BqTW288s-z1ykqI0iJnY_HjRqMGO8Sc7YDqvf_KVKjhJ
+                                    └────────────────┘ └──────────────────────────────────────────────────────────────────┘
+                                        webhook id                                    token
+   
+   discord://W3dE2OZz4C13_4z_uHfDOoC7BqTW288s-z1ykqI0iJnY_HjRqMGO8Sc7YDqvf_KVKjhJ@693853386302554172
+             └──────────────────────────────────────────────────────────────────┘ └────────────────┘
+                                             token                                    webhook id
+   ```
+
+
+
+### NOTIFICATION_LEVEL
+
+By default, notifications would only be sent out when a backup run fails. To receive notifications for every run, set `NOTIFICATION_LEVEL` to `info` instead of the default `error`.
+
+
+## Triggering a Backup
+
+You can manually trigger a backup at any time, regardless of the scheduled settings.
+To do this, ensure the Docker feature is enabled. Then:
+
+1. Navigate to **Containers > Terminal**.
+2. Select the **Backup** container.
+3. In the terminal, type the following command and press Enter:
+
+```bash
+backup
+```
+
+## Restore & Download
+
+The **Restore & Download** page (`/backups/list`) lets you browse the backup files that already exist on your configured destination, restore them back onto your account, or download them to your computer. It works with every destination: SSH/SFTP, S3, WebDAV, Azure Blob Storage and Dropbox.
+
+![Restore & Download overview with backup totals, a tile per type of data and the restore queue and logs](/img/openpanel-screenshots/files/backups_list-list.png#gh-light-mode-only)
+![Restore & Download overview with backup totals, a tile per type of data and the restore queue and logs](/img/openpanel-screenshots/files/backups_list-list_dark.png#gh-dark-mode-only)
+
+Click **Reindex Destination** to connect to the remote destination and list the available backup archives. Reindexing runs in the background and the page updates automatically once it finishes. Only the `backup/00-meta/` folder at the start of each archive is read, and archives that were already indexed are not read again. Older archives without that folder are still listed in full (on SSH/SFTP with `tar -tzf` on the remote server, on other destinations by reading the whole archive).
+
+The page opens with an overview: the number of backups, the latest backup, their total size and the last restore, followed by a tile for each type of data you can restore. Click a tile to see its backups, newest first, each with the date it was taken (shown in your browser's time zone) and its size. The tabs at the top switch between types, **Overview** goes back to the tiles, and the **Search** box above each list filters it.
+
+:::info Backups made before 2.0.16
+Older backups don't list their emails and domains, so the **Emails** and **Domains** tabs don't show them: restore those from the **Everything** tab. **Choose files** is also unavailable for them (the button is greyed out with *This backup was made before single items could be restored.*), but you can still restore all website files from them.
+:::
+
+### Everything, Website Files and Cron Jobs
+
+![Everything tab listing backups with their contents and size, one selected with the Download and Restore buttons](/img/openpanel-screenshots/files/backups_list-everything.png#gh-light-mode-only)
+![Everything tab listing backups with their contents and size, one selected with the Download and Restore buttons](/img/openpanel-screenshots/files/backups_list-everything_dark.png#gh-dark-mode-only)
+
+These tabs list whole backups. Select one and the bar at the bottom shows **Download** and **Restore**.
+
+- **Everything** – every backup, with a **Contents** column showing what is in it (website files, databases, emails, domains and cron jobs, with how many of each). Restores everything in it: website files, databases, emails, domains with their DNS zones and cron jobs.
+- **Website Files** and **Cron Jobs** – the backups that contain that part. Restores only that part of the selected backup; restoring cron jobs also restarts the cron container.
+
+### Choosing single files
+
+![Choose files dialog browsing a website files backup with a folder ticked for restore](/img/openpanel-screenshots/files/backups_list-files.png#gh-light-mode-only)
+![Choose files dialog browsing a website files backup with a folder ticked for restore](/img/openpanel-screenshots/files/backups_list-files_dark.png#gh-dark-mode-only)
+
+On **Website Files**, select a backup and click **Choose files** to browse it folder by folder. Tick single files or whole folders and click **Restore selected**, or click the download icon next to a file to download just that file. Only the part of the archive up to the last picked item is read from the destination.
+
+### Databases, Emails and Domains
+
+![Domains tab with two domains selected, each tagged with VirtualHost, PHP version and DNS zone and a dropdown to pick the backup](/img/openpanel-screenshots/files/backups_list-domains.png#gh-light-mode-only)
+![Domains tab with two domains selected, each tagged with VirtualHost, PHP version and DNS zone and a dropdown to pick the backup](/img/openpanel-screenshots/files/backups_list-domains_dark.png#gh-dark-mode-only)
+
+These tabs list every database, email account and domain found in your backups, once each, with the size (and message count for email accounts) and how many backups contain it. The newest backup is used unless you pick another one from the dropdown, and you can select several to restore them together.
+
+- Restoring a domain brings back its webserver configuration (**+ VirtualHost**), the PHP version it uses (**+ PHP version**, that PHP is started and set for the domain) and, when the backup has it, its DNS zone (**+ DNS zone**), then restarts your webserver and reloads the zone with a new serial number.
+- A domain you deleted from your account is marked **Will be added** and is added back first.
+- Suspended domains are marked **Suspended** and can't be restored until they are unsuspended.
+- Email accounts can only be restored for domains on your account. An email account whose domain is gone is marked **Restore the domain first**.
+
+### Restoring
+
+![Restore Summary dialog listing the selected databases and the Restore Selected Items button](/img/openpanel-screenshots/files/backups_list-summary.png#gh-light-mode-only)
+![Restore Summary dialog listing the selected databases and the Restore Selected Items button](/img/openpanel-screenshots/files/backups_list-summary_dark.png#gh-dark-mode-only)
+
+Select a backup (or databases, email accounts, domains or files) and click **Restore**. The **Restore Summary** lists the items that will be restored; click **Restore Selected Items** to add them to the queue. Restores run in the background, one at a time per account, so you can close the page while they run. Each database is dropped, recreated and its dump is piped into the `mysql`/`mariadb` or `psql` client inside your database container.
+
+:::danger
+Restoring overwrites existing data and cannot be undone.
+:::
+
+### Queue and logs
+
+![Logs tab with the latest restores, the backup each came from, how long it took and whether it worked](/img/openpanel-screenshots/files/backups_list-logs.png#gh-light-mode-only)
+![Logs tab with the latest restores, the backup each came from, how long it took and whether it worked](/img/openpanel-screenshots/files/backups_list-logs_dark.png#gh-dark-mode-only)
+
+Under **Restore activity** on the overview (or the tabs at the top), **Queue** shows what is waiting or being restored and **Logs** shows your latest 100 restores: what was restored, from which backup, when it finished, how long it took and whether it worked, with the result or the error. The summary at the top shows when the last restore finished, or how many are in the queue. A restore that was running when the panel restarted is logged as failed, the ones still waiting in the queue continue.
+
+### Downloading
+
+Select a backup and click **Download** to stream the archive from the destination straight to your browser. On **Databases**, **Emails** and **Domains**, **Download** gives you only what you selected: a single database as its `.sql` dump, anything else as a `.tar.gz` with just those items (one per backup you picked from).
+
+## Troubleshooting
+
+Error *error copying archive: ssh.(*sshStorage).Copy: error creating file: file does not exist* indicates that the configured directory does not exist on destination:
+
+```
+time=2025-07-22T11:21:05.117Z level=ERROR msg="Fatal error running command: file does not exist" error="main.(*command).runAsCommand: error running script: main.runScript.func4: error running script: main.(*script).copyArchive: error copying archive: ssh.(*sshStorage).Copy: error creating file: file does not exist"
+```
+
+## Credits & License
+
+The backup functionality in OpenPanel uses [offen/docker-volume-backup](https://github.com/offen/docker-volume-backup) by [offen.software](https://www.offen.software/). Thank you to its authors and contributors.
+
+- Setting descriptions in the [Destinations](#destinations), [Encryption](#encryption), [Rotation](#rotation), [Source](#source), [Schedule](#schedule), [Compression](#compression), [Names](#names), [Exclude](#exclude) and [Notifications](#notifications) sections are adapted from the [docker-volume-backup configuration reference](https://offen.github.io/docker-volume-backup/reference/) and [how-to guides](https://offen.github.io/docker-volume-backup/how-tos/), Copyright © offen.software and contributors. That content is licensed under the [Mozilla Public License 2.0](https://www.mozilla.org/en-US/MPL/2.0/), and the source is available at [github.com/offen/docker-volume-backup](https://github.com/offen/docker-volume-backup).
+- Notification service URL formats and options are adapted from the [shoutrrr documentation](https://containrrr.dev/shoutrrr/), Copyright © containrrr contributors, licensed under the [MIT License](https://github.com/containrrr/shoutrrr/blob/main/LICENSE).

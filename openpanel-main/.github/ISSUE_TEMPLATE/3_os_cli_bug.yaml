@@ -1,0 +1,34 @@
+name: 👨‍💻 OpenCLI (terminal commands) and OS related problems Report
+description: OS related, API and command line errors
+labels: Bug
+
+body:
+    - type: dropdown
+      id: os
+      attributes:
+           label: What OS are you using?
+           description: Choose the OS where OpenPanel is installed
+           options:
+           - Ubuntu
+           - Debian
+           - CentOS
+           - AlmaLinux
+           - RockyLinux
+      validations:
+          required: true
+    - type: textarea
+      id: description
+      attributes:
+          label: Description
+          description: A clear and concise description of the problem
+    - type: textarea
+      id: how-to-reproduce
+      attributes:
+          label: How to reproduce
+          description: |
+            ⚠️  This is the most important part of the report ⚠️
+            
+            Without a way to easily reproduce your issue, there is little chance we will be able to help you and work on a fix.
+            Please, take the time to show us some code and/or screenshot that is needed for others to reproduce the problem easily.
+      validations:
+          required: true

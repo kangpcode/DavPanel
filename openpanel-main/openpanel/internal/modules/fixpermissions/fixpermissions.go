@@ -1,0 +1,83 @@
+// Package fixpermissions runs `opencli files-fix_permissions` over a user-chosen directory under /var/www/html/.
+package fixpermissions
+
+import (
+	"context"
+	"net/http"
+	"os/exec"
+	"path/filepath"
+	"strings"
+
+	appctx "gist.github.com/stefanpejcic/openpanel/internal/app"
+	"gist.github.com/stefanpejcic/openpanel/internal/auth"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/flash"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/logger"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/reqip"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/session"
+)
+
+// Register wires the fix-permissions route onto mux, gated behind the "fix_permissions" feature flag
+func Register(mux *http.ServeMux, a *appctx.App) {
+	requireLogin := func(h http.HandlerFunc) http.Handler {
+		return auth.RequireLogin(a, "fix_permissions")(h)
+	}
+	mux.Handle("/fix-permissions", requireLogin(func(w http.ResponseWriter, r *http.Request) {
+		handleFixPermissions(a, w, r)
+	}))
+}
+
+func handleFixPermissions(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, _ := auth.UserID(r)
+	injected, err := a.InjectData(ctx, userID)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	username, _ := injected["current_username"].(string)
+
+	if r.Method == http.MethodPost {
+		_ = r.ParseForm()
+		baseDirectory := "/var/www/html"
+		raw := strings.TrimSpace(r.Form.Get("directory"))
+
+		args := []string{"files-fix_permissions", username}
+
+		if raw != "" && raw != "/" {
+			fixDirectory := filepath.Clean(raw)
+			if !isRelativeTo(fixDirectory, baseDirectory) {
+				http.Error(w, "Invalid fix_directory", http.StatusBadRequest)
+				return
+			}
+			relativePath := strings.TrimPrefix(strings.TrimPrefix(fixDirectory, baseDirectory), "/")
+			if relativePath != "" && relativePath != "." {
+				// script does its own /var/www/html -> volume translation, so pass the relative path, not a resolved one
+				args = append(args, relativePath)
+			}
+		}
+
+		// leaving the page used to kill the fix halfway, and a failed one used to show as "Permissions are fixed!"
+		if runErr := exec.CommandContext(context.WithoutCancel(ctx), "opencli", args...).Run(); runErr != nil {
+			http.Error(w, "Fixing permissions failed.", http.StatusInternalServerError)
+			return
+		}
+
+		// the API logged its runs but the page didn't
+		_ = logger.RecordUserAction(a.Config, username, "fixed permissions", reqip.ClientIP(r))
+		sess, _ := a.Sessions.Get(r, session.CookieName)
+		flash.Add(sess, "success", "Success.")
+		_ = a.Sessions.Save(r, w, sess)
+	}
+
+	renderFixPermissionsPage(a, w, r)
+}
+
+// isRelativeTo reports whether path equals base or is nested under it.
+func isRelativeTo(path, base string) bool {
+	rel, err := filepath.Rel(base, path)
+	if err != nil {
+		return false
+	}
+	// only a real step up counts, a folder named ..old is inside base
+	return rel == "." || (rel != ".." && !strings.HasPrefix(rel, ".."+string(filepath.Separator)))
+}

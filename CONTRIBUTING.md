@@ -12,7 +12,7 @@ You don’t need to be a developer to make a meaningful impact. Here are some gr
 * **[Report UI bugs](https://github.com/kangpcode/DavPanel/issues/new/choose)** directly using the **"Report a Bug"** link at the bottom of the page in DavPanel or DavAdmin UI
 * **Test integrations** like [cPanel](https://github.com/kangpcode/cPanel-to-DavPanel) account import, [WHMCS](https://github.com/kangpcode/davpanel-whmcs-module), [FOSSBilling](https://github.com/kangpcode/FOSSBilling-DavPanel), [paymenter.org](https://github.com/kangpcode/davpanel-paymenter.org) and more
 
-> DavPanel is a community fork of [DavPanel](https://github.com/stefanpejcic/OpenPanel). Upstream still maintains its own tracker; please send DavPanel-specific reports to the DavPanel repository above. Security issues go through [SECURITY.md](SECURITY.md), never a public issue.
+> DavPanel is a community fork of [OpenPanel](https://github.com/stefanpejcic/OpenPanel). Upstream still maintains its own tracker; please send DavPanel-specific reports to the DavPanel repository above. Security issues go through [SECURITY.md](SECURITY.md), never a public issue.
 
 💡 **As a thank you, active contributors can apply for a free lifetime Enterprise license** — our way of saying thank you for supporting DavPanel's growth!
 

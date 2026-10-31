@@ -1,8 +1,105 @@
 # DavPanel rebranding audit
 
-Report date: 2026-10-30
+Report date: 2026-10-30 (follow-up: 2026-10-31)
 Scope: full source-level fork of OpenPanel → **DavPanel**, OpenAdmin → **DavAdmin**, OpenCLI → **DavCLI**
 Maintainer: **Dhafa Nazula Permadi** (`kangpcode`) <kangpcode@users.noreply.github.com>
+
+## Source reconciliation — 2026-10-31
+
+This audit supersedes earlier claims that only infrastructure remains or that
+`git submodule update` can restore the missing components in this checkout.
+
+- The user-supplied `openpanel-main/` contains the OpenPanel **analytics** product:
+  Bun/TypeScript, a TanStack dashboard, Elysia API, PostgreSQL, ClickHouse, Redis
+  and Redpanda. Its README identifies it as an alternative to Mixpanel. It is
+  distinct from the Go hosting panel in `davpanel/` and does not provide the
+  missing hosting OpenAdmin/OpenCLI source.
+- `.gitmodules` declares 16 components, including `davadmin/`, `davcli/` and
+  `configuration/`. All 16 directories are empty. `git ls-files --stage` has
+  **zero mode-160000 entries** for them, so these are currently declarations,
+  not fetchable, pinned Git submodules. An empty `git submodule status` is not
+  a successful completeness check.
+- A direct `git ls-remote` for `kangpcode/davadmin` returned “Repository not
+  found”. Noninteractive checks of all 16 configured remotes failed asking for
+  credentials. These results mean the source is unavailable with current access;
+  they do not distinguish private repositories from nonexistent repositories.
+- `davpanel/Dockerfile` requires `encoded-${TARGETARCH}/`, absent from this
+  checkout. A successful `go build ./...` does not supply that image build input.
+- The installer downloads configuration archives, CLI commands and a DavAdmin
+  release from the configured remotes. No full installation can be certified
+  from the source currently available here.
+
+Added `scripts/audit_sources.py`, a read-only, network-free inventory check with
+text and `--json` output. It exits 1 for missing source or missing gitlink pins,
+and explicitly distinguishes source completeness from runtime validation.
+Fixture verification covered empty directories, populated but unregistered
+components, registered components, analytics detection and JSON output.
+
+Validation repeated during this audit:
+
+- `go test ./...`: passed with local socket access outside the sandbox. The first
+  sandboxed run failed only in tests that open local listeners.
+- `go build ./...`: passed.
+- Installer `bash -n`, website config/sidebar `node --check`, and
+  `git diff --check`: passed.
+- Website dependencies, container image builds, DavAdmin/CLI integration and
+  deployment were not run or verified.
+
+Implementation direction is awaiting clarification because the requested primary
+source and the existing hosting product are different applications. Do not bulk
+merge their code, licenses, database schemas or runtime identifiers. To complete
+the hosting fork, obtain the actual hosting component sources, preserve their
+licenses, rebrand and test each, then register reviewed commit pins and perform
+an installation on a disposable supported server. To fork the supplied analytics
+product instead, scope and validate that application separately.
+
+## Follow-up audit — 2026-10-31
+
+This section supersedes conflicting completion claims in the original report below.
+The workspace already contained extensive, uncommitted rebranding changes at the
+start of this follow-up. Those changes were retained.
+
+Changes completed in this follow-up:
+
+- About page now identifies Dhafa Nazula Permadi (`kangpcode`) as developer and
+  maintainer. Removed the upstream founder's portrait/LinkedIn from that identity;
+  initials are shown until a maintainer portrait is supplied.
+- Replaced inherited company, funding, installation-count and founding-history
+  claims on About with the fork's actual identity and visible upstream attribution.
+- README developer list identifies the fork maintainer; original contributors
+  remain credited in the upstream section and NOTICE.md.
+- Community login and sidebar menu show maintainer credit and an upstream link.
+  Existing Enterprise branding conditions are respected.
+- Website footer identifies the project as a fork without claiming an open-source
+  license inconsistent with the repository's license description.
+- License startup logging no longer writes the full license key to server logs.
+
+Verification in this environment:
+
+- `go test ./...`: passed outside the sandbox (HTTP tests need local sockets).
+- `go build ./...`: passed.
+- Go web/account rendering tests: rerun after template changes.
+- Docusaurus config/sidebar `node --check` and installer `bash -n`: passed.
+- Website production build and browser preview: not run; dependencies are absent.
+
+Outstanding source and deployment gaps:
+
+- `davadmin/`, `davcli/`, `configuration/` and other submodules are empty here.
+  Their UI, binaries and service definitions cannot be audited or rebranded from
+  this checkout. Renaming their URLs does not provide their source or releases.
+- Domains, GitHub repositories and container images in this fork are configuration
+  targets, not verified deployed infrastructure. The README installation command
+  is not evidence of a working DavPanel release. This follow-up made no network
+  availability checks and installed nothing on the host.
+- Enterprise/license, billing and support URLs need operator review before release;
+  textual rebranding does not establish those services. In particular, confirm
+  ownership of the configured license endpoint before submitting real keys.
+- Existing license gating accepts certain key prefixes in `LicenseCheckPasses`;
+  this behavior predates this follow-up and was not changed. This report does not
+  certify licensing enforcement or constitute a complete security audit.
+- Other inherited marketing pages and historical screenshots still require review
+  against services actually offered by the fork.
+
 
 ---
 

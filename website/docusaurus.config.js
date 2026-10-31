@@ -342,7 +342,7 @@ const siteConfig = {
     customFields: {
         /** Footer Fields */
         footerDescription:
-            '<strong style="font-weight:700;">DavPanel</strong> is an open-source container hosting control panel maintained by Dhafa Nazula Permadi (kangpcode).',
+            '<strong style="font-weight:700;">DavPanel</strong> is a fork of <a href="https://github.com/stefanpejcic/OpenPanel">OpenPanel</a>, developed and maintained by Dhafa Nazula Permadi (kangpcode).',
         contactTitle: "Contact",
         contactDescription: [
             "DavPanel",

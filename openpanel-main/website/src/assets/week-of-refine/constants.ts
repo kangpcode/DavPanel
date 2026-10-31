@@ -1,0 +1,55 @@
+import { CardProps } from "@site/src/pages/week-of-refine";
+import { StrapiWithText, SupabaseWithText } from "../integration-icons";
+
+export const weekOfRefineCards: CardProps[] = [
+    {
+        title: "FOSSBilling",
+        dateRange: "February 7, 2024",
+        description:
+            "FOSSBilling module for OpenPanel.",
+        logo: StrapiWithText,
+        bgLinearGradient:
+            "bg-week-of-refine-strapi-card-light dark:bg-week-of-refine-strapi-card",
+        link: "/fossbilling-module",
+    },
+    {
+        title: "WHMCS",
+        dateRange: "December 14, 2023",
+        description:
+            "WHMCS module for OpenPanel.",
+        logo: SupabaseWithText,
+        bgLinearGradient:
+            "bg-week-of-refine-supabase-card-light dark:bg-week-of-refine-supabase-card",
+        link: "/whmcs-module",
+    },
+    {
+        title: "Blesta",
+        dateRange: "February 14, 2023",
+        description:
+            "Blesta module for OpenPanel.",
+        logo: StrapiWithText,
+        bgLinearGradient:
+            "bg-week-of-refine-strapi-card-light dark:bg-week-of-refine-strapi-card",
+        link: "/blesta-module",
+    },
+    {
+        title: "ClientExec",
+        dateRange: "September 14, 2026",
+        description:
+            "ClientExec module for OpenPanel.",
+        logo: SupabaseWithText,
+        bgLinearGradient:
+            "bg-week-of-refine-supabase-card-light dark:bg-week-of-refine-supabase-card",
+        link: "/clientexec-module",
+    },
+    {
+        title: "WISECP",
+        dateRange: "September 14, 2026",
+        description:
+            "WISECP module for OpenPanel.",
+        logo: SupabaseWithText,
+        bgLinearGradient:
+            "bg-week-of-refine-supabase-card-light dark:bg-week-of-refine-supabase-card",
+        link: "/wisecp-module",
+    },
+];

@@ -1,0 +1,162 @@
+// Package diskusage is a `find -maxdepth 1 -type d -exec du -sh` per-directory disk usage browser.
+package diskusage
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os/exec"
+	"path/filepath"
+	"sort"
+	"strconv"
+	"strings"
+	"time"
+
+	appctx "gist.github.com/stefanpejcic/openpanel/internal/app"
+	"gist.github.com/stefanpejcic/openpanel/internal/auth"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/cache"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/tenantfs"
+)
+
+const cacheTTL = 5 * time.Second
+
+func writeJSON(w http.ResponseWriter, v any) {
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(v)
+}
+
+// Register wires the disk-usage route onto mux, gated behind the "disk_usage" feature flag
+func Register(mux *http.ServeMux, a *appctx.App) {
+	requireLogin := func(h http.HandlerFunc) http.Handler {
+		return auth.RequireLogin(a, "disk_usage")(h)
+	}
+	// "{directory...}" already covers the bare "/disk-usage/" case too (directory resolves to "" for that exact path)
+	mux.Handle("GET /disk-usage/{directory...}", requireLogin(func(w http.ResponseWriter, r *http.Request) {
+		handleDiskUsage(a, w, r)
+	}))
+}
+
+// isFolder reports whether the resolved folder exists, running on a missing one used to come back as an empty list
+func isFolder(p string) bool {
+	info, err := tenantfs.Stat(p)
+	return err == nil && info.IsDir()
+}
+
+// resolveUnderHome resolves directory (a user-supplied relative or absolute-looking path) under /home/<context>/, rejecting any escape. Unlike filemanager's secure_user_path, the volume root here is the raw account home directory, not the docroot volume - deliberately simpler since this browser only needs to stay within the home dir.
+func resolveUnderHome(userContext, directory string) (string, error) {
+	volume := "/home/" + userContext + "/"
+	target := filepath.Join(volume, strings.TrimPrefix(directory, "/"))
+	target = target + "/" // keep the prefix comparison below insensitive to a missing trailing slash
+	cleanVolume := filepath.Clean(volume)
+	cleanTarget := filepath.Clean(target)
+	if cleanTarget != cleanVolume && !strings.HasPrefix(cleanTarget, cleanVolume+string(filepath.Separator)) {
+		return "", fmt.Errorf("invalid directory")
+	}
+	return cleanTarget, nil
+}
+
+func handleDiskUsage(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, _ := auth.UserID(r)
+	injected, err := a.InjectData(ctx, userID)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	userContext, _ := injected["context"].(string)
+
+	directory := r.PathValue("directory")
+	if directory == "" {
+		directory = "/"
+	}
+
+	actualFolder, resolveErr := resolveUnderHome(userContext, directory)
+	if resolveErr != nil {
+		http.Error(w, "Invalid directory", http.StatusForbidden)
+		return
+	}
+	if !isFolder(actualFolder) {
+		http.Error(w, "Directory not found", http.StatusNotFound)
+		return
+	}
+
+	output := diskUsageOutput(ctx, a, userContext, actualFolder)
+
+	if r.URL.Query().Get("json") != "" {
+		writeJSON(w, map[string]any{"total_du_output": output})
+		return
+	}
+
+	renderDiskUsagePage(a, w, r, output)
+}
+
+// parseHumanSize converts a `du -sh` size like "4.0K", "132M" or "0" into a byte count, for sorting only - not for display
+func parseHumanSize(s string) float64 {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return 0
+	}
+	unit := s[len(s)-1]
+	multiplier := 1.0
+	numPart := s
+	switch unit {
+	case 'K', 'k':
+		multiplier = 1 << 10
+		numPart = s[:len(s)-1]
+	case 'M', 'm':
+		multiplier = 1 << 20
+		numPart = s[:len(s)-1]
+	case 'G', 'g':
+		multiplier = 1 << 30
+		numPart = s[:len(s)-1]
+	case 'T', 't':
+		multiplier = 1 << 40
+		numPart = s[:len(s)-1]
+	case 'P', 'p':
+		multiplier = 1 << 50
+		numPart = s[:len(s)-1]
+	}
+	n, err := strconv.ParseFloat(numPart, 64)
+	if err != nil {
+		return 0
+	}
+	return n * multiplier
+}
+
+// sortDuOutputBySize sorts `du -sh` output lines by parsed size, largest first, so both the table and the chart built from it lead with the biggest space users - mirroring inodesOutput's count-descending sort
+func sortDuOutputBySize(out string) string {
+	lines := strings.Split(out, "\n")
+	var kept []string
+	for _, line := range lines {
+		if strings.TrimSpace(line) != "" {
+			kept = append(kept, line)
+		}
+	}
+	firstField := func(line string) string {
+		fields := strings.Fields(line)
+		if len(fields) == 0 {
+			return ""
+		}
+		return fields[0]
+	}
+	sort.SliceStable(kept, func(i, j int) bool {
+		return parseHumanSize(firstField(kept[i])) > parseHumanSize(firstField(kept[j]))
+	})
+	return strings.Join(kept, "\n")
+}
+
+// diskUsageOutput runs `find . -maxdepth 1 -type d ! -name . -exec du -sh {} \;` under actualFolder, cached 5s
+func diskUsageOutput(ctx context.Context, a *appctx.App, userContext, actualFolder string) string {
+	out, _ := cache.Memoize(ctx, a.Cache, "disk_usage:"+userContext+":"+actualFolder, cacheTTL, func() (string, error) {
+		out, err := tenantfs.OutputIn(ctx, "/home/"+userContext, actualFolder, "find", ".", "-maxdepth", "1", "-type", "d", "!", "-name", ".", "-exec", "du", "-sh", "{}", ";")
+		if err != nil {
+			if _, ok := err.(*exec.ExitError); !ok {
+				return "", nil //nolint:nilerr // command failure -> empty output, not an error response
+			}
+			// find/du exit non-zero on permission-denied for individual subdirectories but still write the rest of their output to stdout, so keep using it instead of discarding everything
+		}
+		return sortDuOutputBySize(strings.ReplaceAll(string(out), "./", "")), nil
+	})
+	return out
+}

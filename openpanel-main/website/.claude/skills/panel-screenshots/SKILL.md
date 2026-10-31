@@ -1,0 +1,131 @@
+---
+name: panel-screenshots
+description: Generate or update OpenPanel and OpenAdmin UI screenshots for the docs/panel/ and docs/admin/ pages with Playwright against the demo panel, then place them in the markdown. Use when asked to add, replace or fix screenshots on a docs/panel page, or to screenshot a section, button, dialog or tab of the OpenPanel user panel.
+---
+
+# OpenPanel docs screenshots
+
+Screenshots for `docs/panel/**` are generated, never hand-made. Everything lives in
+`scripts/panel-screenshots/`:
+
+- `shots.mjs` – one entry per docs page: URL, `prepare()` steps, and a crop per shot.
+- `shoot.mjs` – runs the shots: `node shoot.mjs <page-key> [...]` (no key = all, ~15 min).
+- `helpers.mjs` – `rename`, `maskIPs`, `fillVisible`, `selectFirst`, `click`, `tab`,
+  `markCard`, `markSection`, `hideOnboarding`, `hideNotices`, ...
+- `login.mjs` – saves the session to `.auth/state.json` (gitignored).
+- `PLAN.md` – page → route → shots map and conventions.
+
+**Admin panel (docs/admin/)**: add `--admin` to every command (`node login.mjs --admin`,
+`node shoot.mjs --admin <key>`). It uses `admin-shots.mjs`, the demo at
+`https://demo.openpanel.com:2087` (user `administrator`, prefilled), the session file
+`.auth/admin_state.json`, output `static/img/openadmin-screenshots/`, and the source in
+`../openadmin/internal/webtemplates/`. Admin pages often keep tabs in Alpine `activeTab`
+that open from the URL hash (`/users/<name>#edit`).
+
+Output goes to `static/img/openpanel-screenshots/<section>/<page>-<shot>.png` and is
+referenced as `/img/openpanel-screenshots/...`. Do not touch `/img/panel/v2/*`, the
+versioned 1.X docs still use it.
+
+## Login: try the demo first, ask only if it fails
+
+1. `cd scripts/panel-screenshots && npm i` if `node_modules` is missing.
+2. Run `node login.mjs` (or `--admin`). It uses the credentials prefilled on
+   `https://demo.openpanel.com:2083/login` (user `testinguser`) or `:2087` (user `administrator`).
+3. Only if that fails, ask the user. Say exactly what failed and offer:
+   - disable the Cloudflare Turnstile on the demo login (login.mjs then works headless), or
+   - solve the captcha in the browser window login.mjs opens, or
+   - give a different URL (`PANEL_URL=https://host:2083` or `ADMIN_URL=https://host:2087`) and credentials,
+     passed as `PANEL_USER`/`PANEL_PASS` or `ADMIN_USER`/`ADMIN_PASS`. Each host gets its own session file.
+   - Pages the demo can't show (services off, Super Admin only, writes needed) go on a second server the
+     user provides; mark those manifest entries and replace that server's IPs, hostnames and names too.
+4. The session expires during long runs. When shots fail with "session expired",
+   rerun `node login.mjs` and then only the failed page keys.
+
+The demo is in demo mode: only GET requests work, and `shoot.mjs` also aborts every
+non-GET request. Nothing can be installed, created or deleted, so shoot the state just
+before the submit (the Delete → Confirm countdown, a filled form, an open drawer).
+Some demo services are off (MongoDB, Web Terminal) – report those pages as skipped.
+Cloudflare returns 403 for some query strings (e.g. `wp-config.php`), so pick a search
+term that gets through.
+
+## What the user wants
+
+- Docs pages may wrap sections in `<Tabs>`/`<TabItem>` (OpenAdmin / OpenCLI / API): images
+  go in the OpenAdmin tab, keeping its indentation.
+- One screenshot per docs section that describes something on screen, placed under
+  that section's heading or after its first paragraph – never between a sentence
+  ending in `:` and its list/table, and never inside a numbered list.
+- Crop to what the section is about: a single card, section, dialog, drawer, menu or
+  button (with a little padding, no slivers of neighbouring elements). Full window only
+  when the docs talk about navigation or the whole page state.
+- Buttons from a page get their own small crop (e.g. Scan, Refresh Data, Themes/Plugins).
+- Readable fake data: `rename()` demo names (`wp.tests.openpanel.org` → `blog.example.com`,
+  random DB names → `wp_blog`), `maskIPs()` for addresses, never show tokens or passwords.
+  Fake output (e.g. a cron run) must match what the real command would print.
+- Every screenshot has a light and a dark version, 1100px wide at 2x (a shot can set
+  `viewportWidth`/`viewportHeight`). Shoot light as usual, then the same keys with `--dark`
+  (saved with a `_dark` suffix). In the markdown each image appears twice:
+  `![alt](/img/.../x.png#gh-light-mode-only)` and `![alt](/img/.../x_dark.png#gh-dark-mode-only)`;
+  `src/css/custom.css` hides the one that doesn't match the theme and adds the border.
+  Shots that are dark on purpose (the dark-mode pages) use a single `#screenshot` image.
+- Alt text describes what the image shows, not the file name.
+- Fix doc text that doesn't match the UI when you see it (button names, missing
+  options), and say so in the reply. Use `:::info` blocks, not "NOTE:" lines.
+- After each page is done: `git add` the doc, the images and the script changes.
+  Never commit. Don't stage `static/llms*.txt` (the dev server regenerates them).
+
+## Workflow per page
+
+1. Read the doc page and list its sections.
+2. Find the route and element ids in `../openpanel/internal/web/templates/` and
+   `../openpanel/static/js/` (dialogs are often Alpine `x-data` or `fmdrawer` drawers –
+   opening them from JS via `Alpine.$data(el)` or `element.click()` is fine).
+3. Probe the live page for selectors/layout before writing the entry.
+4. Add the entry to `shots.mjs`, run `node shoot.mjs <key>`, and look at every image.
+5. Place images with the placement rules above, keeping existing text.
+6. Keep the dev server running (`yarn dev:docs`, see the run-website skill) and check
+   the page in a browser: all images load, notes render.
+7. `git add`, then tell the user what was added per section and anything skipped.
+
+## Blog posts: screenshots and the featured image
+
+Blog posts (`blog/YYYY-MM-DD-<name>.md`) use the same tools, with different rules:
+
+- Images go in `static/img/blog/<topic>_<what>.png` and are referenced as `/img/blog/...`.
+  One light image each, no `_dark` pair.
+- Show the real thing. A test server the user gives you (`PANEL_URL`, `PANEL_USER`,
+  `PANEL_PASS`) can take writes, so set up the state the post needs (save a setting, create
+  test data) instead of faking it, and tell the user what you changed on that server.
+- Command output: `node panel-terminal.mjs <service> <commands.sh> <out.png> [--width 1500]`
+  types the commands into the service's web terminal (sidebar collapsed), waits for each
+  prompt, prints the output and crops from the tabs bar down to the last line. Check the
+  printed output and make the post's text and examples match it.
+- For a crop of a regular page, a short throwaway Playwright script or a `shots.mjs` entry
+  with `PANEL_URL` set both work. Delete throwaway scripts when you're done.
+
+### Featured image
+
+Every post needs a 1500x800 cover in the style of the existing ones (navy background,
+OpenPanel logo, big uppercase title, a screenshot in a slanted panel on the right).
+Generate it, never hand-make it:
+
+```bash
+node blog-cover.mjs --title "SLOW QUERY|ANALYSIS" --shot <screenshot.png> \
+  --out ../../static/img/blog/<topic>_cover.png [--scale 0.5] [--x 0] [--y 330]
+```
+
+- `--title`: 2–3 short lines split by `|`, about 10 characters each, e.g. `NEW MODERN|STYLE`.
+  Longer lines are shrunk to fit but look worse.
+- `--shot`: a screenshot from the post, or a dedicated one (`panel-terminal.mjs ... --full`).
+  The panel shows 585x700px of it at `--scale`, starting at `--x`/`--y` in screenshot
+  pixels. Use `--scale 0.5` for 2x screenshots. Scale and offset are clamped so the panel is
+  always filled, so crop the source to the part worth showing (e.g. cut off the page footer
+  below the terminal), otherwise the clamp shifts it back into view.
+- The left ~160px of the panel are hidden behind the slant at the top, so put the
+  interesting part right of that.
+- Set `image: https://openpanel.com/img/blog/<topic>_cover.png` in the front matter. It
+  won't load locally until the site is deployed, the other posts work the same way.
+- Look at the cover before using it.
+
+Assets live in `scripts/panel-screenshots/blog-cover/`: League Spartan (OFL, the title
+font) and the white OpenPanel logo cut out of an existing cover.

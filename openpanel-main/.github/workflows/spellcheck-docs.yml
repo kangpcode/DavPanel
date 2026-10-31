@@ -1,0 +1,52 @@
+name: Spell Check
+
+on:
+  pull_request:
+    paths:
+      - 'website/docs/**/*.md'
+      - 'website/docs/**/*.mdx'
+
+  workflow_dispatch:
+    inputs:
+      directory:
+        description: 'Directory to check'
+        required: false
+        default: 'website/docs'
+
+  schedule:
+    - cron: '0 0 * * 0'  # Every Sunday at 00:00 UTC
+
+jobs:
+  spell-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    - name: Install cspell
+      run: npm install -g cspell
+
+    - name: Run cspell
+      run: |
+        if [ -n "${{ github.event.inputs.directory }}" ]; then
+          cspell "${{ github.event.inputs.directory }}/**/*.md" "${{ github.event.inputs.directory }}/**/*.mdx" > report.txt || true
+        else
+          cspell "website/docs/**/*.md" "website/docs/**/*.mdx" > report.txt || true
+        fi
+
+    - name: Upload Spell Check Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: spell-check-report
+        path: report.txt
+        if-no-files-found: warn
+
+    - name: Fail Workflow on Errors
+      if: failure()
+      run: exit 1

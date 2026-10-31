@@ -2,6 +2,14 @@
 
 > **DavPanel** is a rebranded fork of [OpenPanel](https://github.com/stefanpejcic/OpenPanel), maintained by **Dhafa Nazula Permadi ([kangpcode](https://github.com/kangpcode))**. Upstream code and notices remain the property of their original authors; see [NOTICE.md](NOTICE.md) and [LICENSE](LICENSE).
 
+> **Checkout status (2026-10-31): incomplete for deployment.** All 16 external
+> component directories declared in `.gitmodules` are empty and have no pinned Git
+> submodule entries. The local Go panel builds and passes its tests, but this does
+> not validate DavAdmin, DavCLI or a full installation. Run
+> `python3 scripts/audit_sources.py` to inspect the source inventory (exit code 1
+> means incomplete). The supplied `openpanel-main/` is a separate TypeScript/Bun
+> analytics product, not the hosting panel's upstream source. See [REBRANDING.md](REBRANDING.md).
+
 **DavPanel** is a web hosting control panel built around containers. Every user gets a fully isolated environment: dedicated web server, dedicated database, private network, and scoped file storage - delivering VPS-grade security on shared hardware.
 
 ![davpanel screenshot](website/static/img/landing/davpanel-illustration-dark.svg)
@@ -131,7 +139,7 @@ For full installation options and configuration flags: [https://davpanel.com/ins
 - [DavCLI - Terminal commands](https://davpanel.com/docs/articles/davcli/)
 
 
-## Team
+## Developer
 
 <table id='team'>
 <tr>
@@ -140,25 +148,6 @@ For full installation options and configuration flags: [https://davpanel.com/ins
 <img src='https://github.com/kangpcode.png' width='140px;'>
 </a>
 <h4 align='center'><a href='https://github.com/kangpcode'>Dhafa Nazula Permadi</a></h4>
-</td>
-<td id='radovanjecmenica'>
-<a href='https://github.com/radovanjecmenica'>
-<img src='https://github.com/radovanjecmenica.png' width='140px;'>
-</a>
-<h4 align='center'><a href='https://jecmenica.rs'>Radovan Ječmenica</a></h4>
-</td>
-<td id='petar'>
-<a href='https://github.com/p3t4rc'>
-<img src='https://github.com/p3t4rc.png' width='140px;'>
-</a>
-<h4 align='center'>Petar Ćurić</h4>
-</td>
-</td>
-<td id='lazar'>
-<a href='https://github.com/lazarunl'>
-<img src='https://github.com/lazarunl.png' width='140px;'>
-</a>
-<h4 align='center'>Lazar K.</h4>
 </td>
 </tr>
 </table>

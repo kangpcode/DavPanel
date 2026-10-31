@@ -1,0 +1,159 @@
+package mysql
+
+import (
+	"compress/gzip"
+	"context"
+	"io"
+	"net/http"
+	"path/filepath"
+	"regexp"
+	"strings"
+
+	appctx "gist.github.com/stefanpejcic/openpanel/internal/app"
+	"gist.github.com/stefanpejcic/openpanel/internal/auth"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/logger"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/podmanmanager"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/reqip"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/tenantfs"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/webserver"
+	"gist.github.com/stefanpejcic/openpanel/internal/modules/docker"
+	"gist.github.com/stefanpejcic/openpanel/internal/web"
+)
+
+var mysqlImportSecureFilenameRE = regexp.MustCompile(`[^A-Za-z0-9_.-]`)
+
+// secureFilename strips directory components and unsafe characters from a user-supplied upload filename before it's used as a path segment
+func secureFilename(name string) string {
+	name = filepath.Base(strings.ReplaceAll(name, "\\", "/"))
+	name = mysqlImportSecureFilenameRE.ReplaceAllString(name, "_")
+	name = strings.Trim(name, "._")
+	return name
+}
+
+var importDBNameRE = regexp.MustCompile(`^[a-zA-Z0-9_]+$`)
+
+// handleMySQLImportDB imports an uploaded .sql/.sql.gz dump into a database - urlDBName carries the optional /mysql/import/{dbname} URL segment
+func handleMySQLImportDB(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	_, currentUsername, userContext, err := auth.Injected(a, r)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	mysqlVersion := webserver.GetEnvFileValue(userContext, "MYSQL_TYPE")
+	urlDBName := r.PathValue("dbname")
+
+	if !docker.IsServiceRunning(ctx, userContext, mysqlVersion) {
+		web.Flash(a, w, r, "warning", web.Tr(a, r, "%(mysql_version)s container is not running. Please allow a few moments for the initialization..", "mysql_version", mysqlVersion))
+		docker.StartComposeServiceIfNotRunning(ctx, userContext, "sql")
+	}
+
+	if r.Method == http.MethodPost {
+		maxBytes := int64(web.AtoiDefault(mysqlImportMaxSizeGB, 1))*1024*1024*1024 + (1 << 20)
+		_ = r.ParseMultipartForm(maxBytes)
+
+		file, fileHeader, fileErr := r.FormFile("db_file")
+		dbName := r.FormValue("database_name")
+
+		if fileErr == nil && dbName != "" {
+			defer file.Close()
+
+			filename := secureFilename(fileHeader.Filename)
+			if !strings.HasSuffix(filename, ".sql") && !strings.HasSuffix(filename, ".sql.gz") {
+				http.Error(w, "Bad Request", http.StatusBadRequest)
+				return
+			}
+			if !importDBNameRE.MatchString(dbName) {
+				http.Error(w, "Bad Request", http.StatusBadRequest)
+				return
+			}
+
+			maxImportBytes := int64(web.AtoiDefault(mysqlImportMaxSizeGB, 1)) * 1024 * 1024 * 1024
+			if fileHeader.Size > maxImportBytes {
+				web.Flash(a, w, r, "error", web.Tr(a, r, "Uploaded file exceeds %(mysql_import_max_size_gb)s GB limit.", "mysql_import_max_size_gb", mysqlImportMaxSizeGB))
+				renderImportPage(a, w, r, mysqlVersion, "", http.StatusRequestEntityTooLarge)
+				return
+			}
+
+			targetDir := "/home/" + userContext + "/docker-data/volumes/" + userContext + "_mysql_dumps/_data/"
+			tempFilePath := filepath.Join(targetDir, filename)
+
+			imported, errDetail := importDatabaseDump(ctx, userContext, mysqlVersion, dbName, targetDir, tempFilePath, file)
+			if _, statErr := tenantfs.Stat(tempFilePath); statErr == nil {
+				_ = tenantfs.Remove(tempFilePath)
+			}
+
+			if imported {
+				ipAddress := reqip.ClientIP(r)
+				_ = logger.RecordUserAction(a.Config, currentUsername, "imported "+fileHeader.Filename+" into MySQL database "+dbName, ipAddress)
+				web.Flash(a, w, r, "success", web.Tr(a, r, "Successfully imported from %(filename)s file to database: %(db_name)s", "filename", fileHeader.Filename, "db_name", dbName))
+				renderImportPage(a, w, r, mysqlVersion, "", http.StatusOK)
+				return
+			}
+			web.Flash(a, w, r, "error", web.Tr(a, r, "Import into '%(db_name)s' failed: %(err_detail)s", "db_name", dbName, "err_detail", errDetail))
+			// falls through to the shared bottom render below, using the URL's dbname (not the form's dbName) - the failure page should reflect what page the admin was already on
+		} else {
+			web.Flash(a, w, r, "error", "No database file uploaded!")
+			renderImportPage(a, w, r, mysqlVersion, urlDBName, http.StatusOK)
+			return
+		}
+	}
+
+	if r.URL.Query().Get("output") == "json" {
+		web.WriteJSON(w, http.StatusOK, map[string]string{"message": "Import feature is enabled for MySQL/MariaDB."})
+		return
+	}
+	renderImportPage(a, w, r, mysqlVersion, urlDBName, http.StatusOK)
+}
+
+// importDatabaseDump saves the uploaded dump, chowns it to the account's UID, then streams it into the target database via `podman exec -i <mysql> <mysql> <dbname>` (mysql/mariadb CLI reads a plain .sql dump on stdin), returns (ok, stderr-detail-on-failure)
+func importDatabaseDump(ctx context.Context, userContext, mysqlVersion, dbName, targetDir, tempFilePath string, uploaded io.Reader) (bool, string) {
+	if mkErr := tenantfs.MkdirAll(targetDir, 0o755); mkErr != nil {
+		return false, mkErr.Error()
+	}
+
+	out, createErr := tenantfs.Create(tempFilePath)
+	if createErr != nil {
+		return false, createErr.Error()
+	}
+	_, copyErr := io.Copy(out, uploaded)
+	_ = out.Close()
+	if copyErr != nil {
+		return false, copyErr.Error()
+	}
+
+	if uid, uidErr := podmanmanager.GetUID(userContext); uidErr == nil {
+		_ = tenantfs.ChownR(targetDir, uid, uid)
+	}
+
+	inFile, openErr := tenantfs.Open(tempFilePath)
+	if openErr != nil {
+		return false, openErr.Error()
+	}
+	defer inFile.Close()
+
+	var dump io.Reader = inFile
+	if strings.HasSuffix(tempFilePath, ".gz") {
+		zr, gzErr := gzip.NewReader(inFile)
+		if gzErr != nil {
+			return false, "not a valid .gz file: " + gzErr.Error()
+		}
+		defer zr.Close()
+		dump = zr
+	}
+
+	importArgv := podmanmanager.PodmanArgv(userContext, "exec", "-i", mysqlVersion, mysqlVersion, dbName)
+	cmd := podmanmanager.Command(ctx, userContext, importArgv)
+	cmd.Stdin = dump
+	var stderr strings.Builder
+	cmd.Stderr = &stderr
+
+	if runErr := cmd.Run(); runErr != nil {
+		detail := strings.TrimSpace(stderr.String())
+		if detail == "" {
+			detail = "Unknown error"
+		}
+		return false, detail
+	}
+	return true, ""
+}

@@ -1,0 +1,72 @@
+package inodes
+
+import (
+	"net/http"
+	"strconv"
+	"strings"
+
+	appctx "gist.github.com/stefanpejcic/openpanel/internal/app"
+	"gist.github.com/stefanpejcic/openpanel/internal/auth"
+	"gist.github.com/stefanpejcic/openpanel/internal/core/apiregistry"
+	"gist.github.com/stefanpejcic/openpanel/internal/web"
+)
+
+// RegisterAPI wires the inodes API route onto mux.
+func RegisterAPI(mux *http.ServeMux, a *appctx.App) {
+	h := func(w http.ResponseWriter, r *http.Request) { apiHandleInodes(a, w, r) }
+	// the documented path without a trailing slash used to get a redirect to the {directory...} route
+	apiregistry.Handle(mux, a, "inodes", "GET /api/inodes", h)
+	apiregistry.Handle(mux, a, "inodes", "GET /api/inodes/{directory...}", h)
+}
+
+type inodesEntry struct {
+	Folder     string `json:"folder"`
+	InodeCount int    `json:"inode_count"`
+}
+
+// apiHandleInodes returns the inode count for each subdirectory of the requested directory, one level deep, as JSON
+func apiHandleInodes(a *appctx.App, w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	userID, _ := auth.UserID(r)
+	injected, err := a.InjectData(ctx, userID)
+	if err != nil {
+		http.Error(w, "internal error", http.StatusInternalServerError)
+		return
+	}
+	userContext, _ := injected["context"].(string)
+
+	directory := r.PathValue("directory")
+	if directory == "" {
+		directory = "/"
+	}
+
+	actualFolder, resolveErr := resolveUnderHome(userContext, directory)
+	if resolveErr != nil {
+		web.WriteJSON(w, http.StatusBadRequest, map[string]string{"error": "Path traversal detected"})
+		return
+	}
+	if !isFolder(actualFolder) {
+		web.WriteJSON(w, http.StatusNotFound, map[string]string{"error": "Directory not found"})
+		return
+	}
+
+	output := inodesOutput(ctx, a, userContext, actualFolder)
+
+	var entries []inodesEntry
+	for _, line := range strings.Split(output, "\n") {
+		if line == "" {
+			continue
+		}
+		rawCount, folder, ok := strings.Cut(line, " ")
+		if !ok || folder == "" {
+			continue
+		}
+		count, _ := strconv.Atoi(rawCount)
+		entries = append(entries, inodesEntry{Folder: folder, InodeCount: count})
+	}
+	if entries == nil {
+		entries = []inodesEntry{}
+	}
+
+	writeJSON(w, map[string]any{"directory": directory, "entries": entries})
+}

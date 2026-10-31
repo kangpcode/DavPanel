@@ -1,0 +1,100 @@
+name: Update Panel Version Daily
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # daily at 01:00 UTC
+  workflow_dispatch:
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch latest Docker Hub tag version
+        id: fetch_version
+        shell: bash
+        run: |
+          # Fetch tags, get names, filter by semver N.N.N, sort descending, pick biggest
+          TAGS_JSON=$(curl -s "https://hub.docker.com/v2/repositories/openpanel/openpanel/tags?page_size=100")
+          VERSIONS=$(echo "$TAGS_JSON" | jq -r '.results[].name' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -Vr)
+          PANEL_VERSION=$(echo "$VERSIONS" | head -n1)
+
+          if [[ -z "$PANEL_VERSION" ]]; then
+            echo "No valid version found."
+            exit 1
+          fi
+
+          echo "Latest version detected: $PANEL_VERSION"
+          echo "version=$PANEL_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update website/docusaurus.config.js with new version
+        shell: bash
+        run: |
+          PANEL_VERSION="${{ steps.fetch_version.outputs.version }}"
+          sed -i "/versions: {/ , /}/s/label: \".*\"/label: \"$PANEL_VERSION\"/" website/docusaurus.config.js
+
+      - name: Update website/src/refine-theme/landing-hero-github-stars.tsx with new version
+        shell: bash
+        run: |
+          PANEL_VERSION="${{ steps.fetch_version.outputs.version }}"
+          sed -i -E "s/(const \[version, setVersion\] = useState\(')[^']*(')/\1$PANEL_VERSION\2/" website/src/refine-theme/landing-hero-github-stars.tsx
+          sed -i -E "s/(const latestVersion = filteredTags.length > 0 \? filteredTags\[0\] : ')[^']*(';  \/\/ new verzija tag)/\1$PANEL_VERSION\2/" website/src/refine-theme/landing-hero-github-stars.tsx
+
+      - name: Update fallback PANEL_VERSION in PODMAN_INSTALL.sh
+        shell: bash
+        run: |
+          PANEL_VERSION="${{ steps.fetch_version.outputs.version }}"
+          sed -i -E 's/(readonly DEFAULT_PANEL_VERSION=")[^"]+(")/\1'"$PANEL_VERSION"'\2/' PODMAN_INSTALL.sh
+
+      - name: Update in README.md
+        shell: bash
+        run: |
+          PANEL_VERSION="${{ steps.fetch_version.outputs.version }}"
+          sed -i -E "s#^Latest OpenPanel version is:.*#Latest OpenPanel version is: **${PANEL_VERSION}** - [View Changelog](https://openpanel.com/docs/changelog/${PANEL_VERSION}/)#" README.md
+
+      - name: Commit and push changes if any
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add website/docusaurus.config.js website/src/refine-theme/landing-hero-github-stars.tsx
+
+          # Only commit if changes present
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update panel version to ${{ steps.fetch_version.outputs.version }}"
+            git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Checkout openpanel-configuration repo
+        uses: actions/checkout@v4
+        with:
+          repository: stefanpejcic/openpanel-configuration
+          token: ${{ secrets.TOKEN }}
+          path: openpanel-configuration
+
+      - name: Update VERSION in openpanel-configuration
+        shell: bash
+        run: |
+          cd openpanel-configuration
+          PANEL_VERSION="${{ steps.fetch_version.outputs.version }}"
+          
+          echo "Updating VERSION to $PANEL_VERSION in docker/compose/.env"
+          sed -i -E 's/^(VERSION=)".*"/\1"'"$PANEL_VERSION"'"/' docker/compose/.env
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add docker/compose/.env
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update OpenPanel VERSION to $PANEL_VERSION"
+            git push origin main
+          else
+            echo "No changes to commit in openpanel-configuration repo."
+          fi
+

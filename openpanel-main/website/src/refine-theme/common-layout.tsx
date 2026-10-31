@@ -1,0 +1,35 @@
+import React from "react";
+import ErrorBoundary from "@docusaurus/ErrorBoundary";
+import { PageMetadata } from "@docusaurus/theme-common";
+import ErrorPageContent from "@theme/ErrorPageContent";
+import LayoutProvider from "@theme/Layout/Provider";
+import SkipToContent from "@theme/SkipToContent";
+import { LivePreviewProvider } from "../components/live-preview-context";
+import clsx from "clsx";
+import { VideoModal15K } from "../components/video-modal-15k";
+
+export const CommonLayout = (props: any) => {
+    const { children, title, description, image } = props;
+
+    return (
+        <LayoutProvider>
+            <PageMetadata title={title} description={description} image={image} />
+            <SkipToContent />
+            <div
+                className={clsx(
+                    "main-wrapper",
+                    "min-h-[100dvh]",
+                    "flex flex-col",
+                    "dark:bg-gray-900 bg-gray-0",
+                )}
+            >
+                <ErrorBoundary
+                    fallback={(params) => <ErrorPageContent {...params} />}
+                >
+                    <LivePreviewProvider>{children}</LivePreviewProvider>
+                </ErrorBoundary>
+                <VideoModal15K />
+            </div>
+        </LayoutProvider>
+    );
+};
