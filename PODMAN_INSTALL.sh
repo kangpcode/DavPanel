@@ -6,7 +6,7 @@
 # Supported OS:            Ubuntu, Debian, AlmaLinux, RockyLinux, CentOS, Oracle Linux
 # Supported Architecture:  x86_64(AMD64), AArch64(ARM64)
 #
-# Usage:                   bash <(curl -sSL https://davpanel.com/)
+# Usage:                   sudo bash install.sh [options]
 # Author:                  Dhafa Nazula Permadi <kangpcode@users.noreply.github.com>
 # Created:                 11.07.2023
 # Last Modified:           15.10.2026
@@ -47,7 +47,7 @@ readonly DEFAULT_PANEL_VERSION="2.0.19"
 readonly CONTAINER_ENGINE="podman"
 readonly SHARED_STORE="/var/lib/containers/shared-storage"
 readonly ETC_DIR="/etc/davpanel/"
-readonly LOG_FILE="davpanel_install.log"
+readonly LOG_FILE="${DAVPANEL_INSTALL_LOG:-/var/log/davpanel/install.log}"
 readonly SERVICES_DIR="/etc/systemd/system/"
 readonly CONFIG_FILE="${ETC_DIR}davpanel/conf/davpanel.config"
 
@@ -130,6 +130,7 @@ parse_args() {
     while [[ $# -gt 0 ]]; do
         case $1 in
             --source-dir=*)    LOCAL_SOURCE_DIR="${1#*=}" ;;
+            --preflight)       ;;
             --key=*)           SET_PREMIUM=true;         license_key="${1#*=}" ;;
             --domain=*)        SET_HOSTNAME_NOW=true;    new_hostname="${1#*=}" ;;
             --panel-domain=*)  SET_HOSTNAME_NOW=true;    separate_panel_domain="${1#*=}" ;;
@@ -138,8 +139,8 @@ parse_args() {
             --post_install=*)  post_install_path="${1#*=}" ;;
             --version=*)       CUSTOM_VERSION=true;      PANEL_VERSION="${1#*=}" ;;
             --swap=*)          SETUP_SWAP_ANYWAY=true;   SWAP_FILE="${1#*=}" ;;
-            --admin-port=*)    ADMIN_PORT=$(validate_port "admin-port" "${1#*=}") ;;
-            --user-port=*)     USER_PORT=$(validate_port "user-port"  "${1#*=}") ;;
+            --admin-port=*)    ADMIN_PORT=$(validate_port "admin-port" "${1#*=}") || return 1 ;;
+            --user-port=*)     USER_PORT=$(validate_port "user-port"  "${1#*=}") || return 1 ;;
             --skip-requirements) SKIP_REQUIREMENTS=true ;;
             --skip-panel-check)  SKIP_PANEL_CHECK=true ;;
             --skip-apt-update)   SKIP_APT_UPDATE=true ;;
@@ -154,6 +155,22 @@ parse_args() {
         esac
         shift
     done
+    [[ "$ADMIN_PORT" != "$USER_PORT" ]] || { echo 'Admin and user ports must differ.' >&2; return 1; }
+    if [[ "$SET_ADMIN_USERNAME" == true && ! "$custom_username" =~ ^[A-Za-z0-9_]{5,30}$ ]]; then
+        echo 'Administrator username must contain 5–30 letters, numbers or underscores.' >&2
+        return 1
+    fi
+    local hostname_arg
+    for hostname_arg in "$new_hostname" "$separate_panel_domain"; do
+        [[ -z "$hostname_arg" ]] && continue
+        if [[ ! "$hostname_arg" =~ ^[A-Za-z0-9][A-Za-z0-9.-]{0,252}$ || "$hostname_arg" == *..* ]]; then
+            echo 'Invalid panel domain or hostname.' >&2
+            return 1
+        fi
+    done
+}
+
+configure_rocky() {
     if [[ "$OS_ID" == "rocky" ]]; then
         if [[ "$SKIP_FIREWALL" != true ]]; then
             die 1 "ERROR: Rocky Linux 10 does not support installing iptables, which is required by CSF. You can rerun the installation with the '--skip-firewall' flag to skip CSF installation."
@@ -806,11 +823,12 @@ setup_firewall() {
     echo "Installing Sentinel Firewall..."
 
     mkdir -p /usr/local/davadmin/modules/security/
-    wget --timeout=3 --tries=3 --inet4-only -O /usr/local/davadmin/modules/security/csf.pl https://raw.githubusercontent.com/kangpcode/davadmin/refs/heads/main/modules/security/csf.pl  >/dev/null 2>&1
+    install -m 755 "$LOCAL_SOURCE_DIR/davadmin/modules/security/csf.pl" /usr/local/davadmin/modules/security/csf.pl || die 1 'Local firewall integration is missing.'
 
     wget --timeout=3 --tries=3 --inet4-only https://raw.githubusercontent.com/sentinelfirewall/sentinel/main/csf.tgz >/dev/null 2>&1
-    tar -xzf csf.tgz; rm csf.tgz
-    ( cd csf && sh install.sh >/dev/null 2>&1 )
+    tar -xzf csf.tgz || die 1 'Sentinel Firewall archive download or extraction failed.'
+    rm csf.tgz
+    ( cd csf && sh install.sh >/dev/null 2>&1 ) || die 1 'Sentinel Firewall installation failed.'
     rm -rf csf
 
     if [[ "$PACKAGE_MANAGER" == "dnf" ]]; then
@@ -890,6 +908,10 @@ configure_caddy_extras() {
 }
 
 set_hostname() {
+    if [[ "$SET_HOSTNAME_NOW" == false && "$USE_SELFSIGNED" == true ]]; then
+        SET_HOSTNAME_NOW=true
+        new_hostname="$SERVER_IPV4_ADDRESS"
+    fi
     if [ "$SET_HOSTNAME_NOW" == false ]; then
         local local_ips
         local_ips=$(ip -4 addr show scope global | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
@@ -926,9 +948,13 @@ EOF
             if grep -q "# START HOSTNAME IP #" "${ETC_DIR}caddy/Caddyfile"; then
                 sed -i "/# START HOSTNAME IP #/,/# END HOSTNAME IP #/ s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$new_hostname/" "${ETC_DIR}caddy/Caddyfile"
             else
-                local admin_port
-                admin_port=$(/usr/local/bin/davcli admin port)
-                local ip_block="# START HOSTNAME IP #\n${new_hostname} {\n  tls {\n    issuer acme {\n      profile shortlived\n    }\n  }\n  reverse_proxy localhost:${admin_port}\n}\n# END HOSTNAME IP #\n"
+                local admin_port tls_config
+                admin_port="$ADMIN_PORT"
+                tls_config="tls {\n    issuer acme {\n      profile shortlived\n    }\n  }"
+                if [[ "$USE_SELFSIGNED" == true ]]; then
+                    tls_config="tls ${ETC_DIR}caddy/ssl/custom/${new_hostname}/${new_hostname}.crt ${ETC_DIR}caddy/ssl/custom/${new_hostname}/${new_hostname}.key"
+                fi
+                local ip_block="# START HOSTNAME IP #\n${new_hostname} {\n  ${tls_config}\n  reverse_proxy localhost:${admin_port}\n}\n# END HOSTNAME IP #\n"
                 sed -i "s|# START HOSTNAME DOMAIN #|${ip_block}# START HOSTNAME DOMAIN #|" "${ETC_DIR}caddy/Caddyfile"
             fi
         else
@@ -952,6 +978,7 @@ generate_ssl() {
         mkdir -p "$ssl_dir"
         openssl genrsa -out "$ssl_dir/$hostname.key" 2048
         openssl req -new -x509 -key "$ssl_dir/$hostname.key" -out "$ssl_dir/$hostname.crt" -days 365 -subj "/CN=$hostname"
+        chmod 600 "$ssl_dir/$hostname.key"
         run systemctl restart admin
         echo "Self-signed certificate created. Remove $ssl_dir to allow Let's Encrypt later."
         return
@@ -975,8 +1002,12 @@ configure_waf() {
 }
 
 setup_redis() { 
-    install -d -m 777 /tmp/redis
-    echo "d /tmp/redis 0777 root root -" > /etc/tmpfiles.d/davpanel-redis.conf
+    local identity redis_uid redis_gid
+    identity=$(podman run --rm --entrypoint /bin/sh docker.io/library/redis:8.6.2-alpine -c 'printf "%s:%s" "$(id -u redis)" "$(id -g redis)"') || return 1
+    [[ "$identity" =~ ^[0-9]+:[0-9]+$ ]] || return 1
+    redis_uid="${identity%:*}"; redis_gid="${identity#*:}"
+    install -d -m 700 -o "$redis_uid" -g "$redis_gid" /tmp/redis
+    echo "d /tmp/redis 0700 $redis_uid $redis_gid -" > /etc/tmpfiles.d/davpanel-redis.conf
 }
 
 enable_disk_quotas() {
@@ -1123,11 +1154,21 @@ clean_cache() { run $PACKAGE_MANAGER clean all 2>/dev/null || true; }
 
 start_system_containers() {
     podman image exists "ghcr.io/kangpcode/davpanel:$PANEL_VERSION" || die 1 "The local panel image is missing."
-    podman-compose -f /root/docker-compose.yml up -d davpanel || die 1 "DavPanel containers failed to start."
-    local attempt
+    local -a services=(davpanel davpanel_redis caddy davadmin_ftp phpmyadmin)
+    [[ "$SKIP_DNS_SERVER" == true ]] || services+=(bind9)
+    podman-compose -f /root/docker-compose.yml up -d "${services[@]}" || die 1 "DavPanel containers failed to start."
+    systemctl is-active --quiet admin || die 1 'DavAdmin service is not active.'
+    local container attempt
     for attempt in {1..30}; do
         if podman exec davpanel curl -kfsS --max-time 3 https://127.0.0.1:2083/healthz 2>/dev/null | grep -qx ok \
             || podman exec davpanel curl -fsS --max-time 3 http://127.0.0.1:2083/healthz 2>/dev/null | grep -qx ok; then
+            for container in davpanel_mysql davpanel_redis caddy davadmin_ftp phpmyadmin; do
+                [[ "$(podman inspect --format '{{.State.Running}}' "$container")" == true ]] || die 1 "Required container is not running: $container"
+            done
+            if [[ "$SKIP_DNS_SERVER" != true ]]; then
+                [[ "$(podman inspect --format '{{.State.Running}}' davpanel_dns)" == true ]] || die 1 'DNS container is not running.'
+            fi
+            podman exec davpanel_redis redis-cli -s /tmp/redis/redis.sock PING | grep -qx PONG || die 1 'Redis socket health check failed.'
             ok "DavPanel health check passed."
             return 0
         fi
@@ -1205,7 +1246,6 @@ extra_step_for_podman() {
 }
 
 display_logins() {
-    exec > /dev/tty 2>&1
     echo ""
     printf "${GREEN}DavPanel %s %s installed successfully ${RESET}in %dm %ds\n" "$LICENSE" "$PANEL_VERSION" "$minutes" "$seconds"
     line
@@ -1213,7 +1253,6 @@ display_logins() {
     echo -e "  Username: ${GREEN}${new_username}${RESET}"
     echo -e "  Password: ${GREEN}${new_password}${RESET}"
     line
-    exec > >(tee -a "$LOG_FILE") 2>&1
 }
 
 run_post_install() {
@@ -1296,8 +1335,12 @@ installer_main() {
     LOCAL_SOURCE_DIR=$(cd -- "$LOCAL_SOURCE_DIR" && pwd) || return 1
     command -v python3 >/dev/null || { echo "Python 3 is required for source verification." >&2; return 1; }
     python3 "$LOCAL_SOURCE_DIR/scripts/preflight.py" --root "$LOCAL_SOURCE_DIR" --require-artifacts || return 1
+    parse_args "$@" || return 1
     [[ "$preflight" == true ]] && return 0
     [[ "$(id -u)" == 0 ]] || { echo "Run the installer as root; --preflight needs no root." >&2; return 1; }
+    detect_os_and_package_manager
+    check_requirements
+    detect_installed_panels
     source_version=$(tr -d '[:space:]' < "$LOCAL_SOURCE_DIR/davpanel/version")
     for arg in "$@"; do
         [[ "$arg" == --version=* && "${arg#*=}" != "$source_version" ]] && {
@@ -1305,18 +1348,18 @@ installer_main() {
             return 1
         }
     done
+    [[ "$LOG_FILE" == /* ]] || { echo 'Installation log path must be absolute.' >&2; return 1; }
+    (umask 077; mkdir -p "$(dirname -- "$LOG_FILE")"; touch "$LOG_FILE") || return 1
+    chmod 600 "$LOG_FILE"
     exec > >(tee -a "$LOG_FILE") 2>&1
-    echo "" > /root/davpanel_restart_needed
     (
         flock -n 200 || { echo "Another install is already running."; exit 1; }
-        detect_os_and_package_manager
-        parse_args "$@"
         [[ -r /root && -w /root ]] || { echo "No read/write access to /root."; exit 1; }
+        echo "" > /root/davpanel_restart_needed
+        configure_rocky
         get_server_ipv4
         PANEL_VERSION="$source_version"
         print_header
-        check_requirements
-        detect_installed_panels
         echo -e "Starting DavPanel installation process..."
         start=$(date +%s)
         _build_pkg_cache

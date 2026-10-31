@@ -6,11 +6,14 @@
 package license
 
 import (
+	"crypto/sha256"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"sync"
@@ -32,7 +35,7 @@ var (
 	APIURL = licenseAPIURL()
 
 	// CacheFilePath is where the last successful check result is cached.
-	CacheFilePath = "/tmp/.davpanel_license_cache.json"
+	CacheFilePath = "/var/cache/davpanel/license.json"
 )
 
 // backoffSchedule is the escalating recheck cadence while the remote check
@@ -131,7 +134,7 @@ func (c *Checker) checkStartup() bool {
 	status := c.remoteCheck()
 
 	if status == "Active" {
-		writeCache()
+		c.writeCache()
 		c.mu.Lock()
 		c.hasFailure = false
 		c.mu.Unlock()
@@ -145,8 +148,10 @@ func (c *Checker) checkStartup() bool {
 	}
 	c.mu.Unlock()
 
-	if age, ok := readCacheAge(); ok && age < GracePeriod {
-		return true
+	if status == "Unavailable" {
+		if age, ok := c.readCacheAge(); ok && age < GracePeriod {
+			return true
+		}
 	}
 	return false
 }
@@ -169,9 +174,15 @@ func (c *Checker) remoteCheck() string {
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "Invalid"
+		return "Unavailable"
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode >= 500 || resp.StatusCode == http.StatusTooManyRequests {
+		return "Unavailable"
+	}
+	if resp.StatusCode != http.StatusOK {
+		return "Invalid"
+	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -187,28 +198,48 @@ func (c *Checker) remoteCheck() string {
 }
 
 type cacheFile struct {
-	CheckedAt float64 `json:"checked_at"`
+	CheckedAt   float64 `json:"checked_at"`
+	Fingerprint string  `json:"fingerprint"`
 }
 
-func writeCache() {
-	data, err := json.Marshal(cacheFile{CheckedAt: float64(time.Now().Unix())})
+func (c *Checker) cacheFingerprint() string {
+	return fmt.Sprintf("%x", sha256.Sum256([]byte(c.Key+"\x00"+c.PublicIP)))
+}
+
+func (c *Checker) writeCache() {
+	data, err := json.Marshal(cacheFile{CheckedAt: float64(time.Now().Unix()), Fingerprint: c.cacheFingerprint()})
 	if err != nil {
 		return
 	}
-	os.WriteFile(CacheFilePath, data, 0644)
+	if err := os.MkdirAll(filepath.Dir(CacheFilePath), 0o700); err != nil {
+		return
+	}
+	file, err := os.CreateTemp(filepath.Dir(CacheFilePath), ".license-*")
+	if err != nil {
+		return
+	}
+	defer os.Remove(file.Name())
+	if _, err := file.Write(data); err != nil {
+		file.Close()
+		return
+	}
+	if err := file.Close(); err != nil {
+		return
+	}
+	os.Rename(file.Name(), CacheFilePath)
 }
 
-func readCacheAge() (time.Duration, bool) {
+func (c *Checker) readCacheAge() (time.Duration, bool) {
 	data, err := os.ReadFile(CacheFilePath)
 	if err != nil {
 		return 0, false
 	}
-	var c cacheFile
-	if err := json.Unmarshal(data, &c); err != nil {
+	var cached cacheFile
+	if err := json.Unmarshal(data, &cached); err != nil || cached.Fingerprint != c.cacheFingerprint() {
 		return 0, false
 	}
-	checkedAt := time.Unix(int64(c.CheckedAt), 0)
-	return time.Since(checkedAt), true
+	age := time.Since(time.Unix(int64(cached.CheckedAt), 0))
+	return age, age >= 0
 }
 
 // RequireEnterprise wraps a handler so it 403s unless the license is a

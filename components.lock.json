@@ -20,7 +20,7 @@
       "upstream_commit": "27529b74722b42f5d61ba78cd40ad0ded811f65e",
       "fork_url": "https://github.com/kangpcode/davadmin",
       "storage": "vendored",
-      "tree_sha256": "21162d264f73f7c0c182e2febeb34df10df7df14369d207661d66f85f53f4cfe",
+      "tree_sha256": "8ce003b1cc27e90573e34ef3e21377ab759a2574ac8f98ef681f79b9e9db9e42",
       "file_count": 808
     },
     {
@@ -110,7 +110,7 @@
       "upstream_commit": "f67cd910c57e13bd25bf564313ff0a71c049846e",
       "fork_url": "https://github.com/kangpcode/davcli",
       "storage": "vendored",
-      "tree_sha256": "90b8ea9b4923ccd407d48a3c1977c926737d81d87883845d75972e8d0f032a54",
+      "tree_sha256": "1f8392d6a87aa2e7110100af204b78d108b5c16a2364d8aa2bdd3efb662126c9",
       "file_count": 126
     },
     {
@@ -160,7 +160,7 @@
       "upstream_commit": "ab1668b5ebc44e4ac2866a8b058a64b3ace0215d",
       "fork_url": "https://github.com/kangpcode/davpanel-mobile-app",
       "storage": "vendored",
-      "tree_sha256": "38b5e8a760bb35d0492ff379de2747e9bba854b9f023f34acf948370e16a1530",
+      "tree_sha256": "5f8f62cd22bd95381d6280d03ea2f03cab2a360e26ffbf0faf4eba981e2a1387",
       "file_count": 24
     }
   ]

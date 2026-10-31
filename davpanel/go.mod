@@ -2,6 +2,8 @@ module github.com/kangpcode/davpanel
 
 go 1.26.0
 
+toolchain go1.27.3
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.8.0
 	github.com/GehirnInc/crypt v0.0.0-20230320061759-8cc1b52080c5

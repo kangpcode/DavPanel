@@ -7,6 +7,9 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
+
+	"github.com/pquerna/otp/totp"
 
 	"github.com/kangpcode/davadmin/internal/auth"
 )
@@ -108,5 +111,86 @@ func TestSSOLoginUnknownTokenReturns401(t *testing.T) {
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusUnauthorized {
 		t.Fatalf("expected 401, got %d", resp.StatusCode)
+	}
+}
+
+func TestAPILoginRequiresTOTPBeforeIssuingBrowserSession(t *testing.T) {
+	a, srv, client := newAPILoginTestServer(t)
+	const secret = "JBSWY3DPEHPK3PXP"
+	if err := a.DB.SetTOTP("alice", secret, true); err != nil {
+		t.Fatal(err)
+	}
+	for _, code := range []string{"", "not-a-code"} {
+		payload, _ := json.Marshal(map[string]string{"username": "alice", "password": "correct-password", "totp_code": code})
+		resp, err := client.Post(srv.URL+"/api/login", "application/json", strings.NewReader(string(payload)))
+		if err != nil {
+			t.Fatal(err)
+		}
+		var body struct {
+			Required bool   `json:"twofa_required"`
+			Token    string `json:"token"`
+		}
+		json.NewDecoder(resp.Body).Decode(&body)
+		resp.Body.Close()
+		if resp.StatusCode != http.StatusUnauthorized || !body.Required || body.Token != "" {
+			t.Fatalf("missing/invalid TOTP issued credentials: status=%d body=%+v", resp.StatusCode, body)
+		}
+	}
+	code, err := totp.GenerateCode(secret, time.Now())
+	if err != nil {
+		t.Fatal(err)
+	}
+	payload, _ := json.Marshal(map[string]string{"username": "alice", "password": "correct-password", "totp_code": code})
+	resp, err := client.Post(srv.URL+"/api/login", "application/json", strings.NewReader(string(payload)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	var body struct {
+		Token string `json:"token"`
+	}
+	json.NewDecoder(resp.Body).Decode(&body)
+	if resp.StatusCode != http.StatusOK || body.Token == "" {
+		t.Fatalf("valid TOTP rejected: status=%d", resp.StatusCode)
+	}
+	redeem, err := client.Get(srv.URL + "/login/sso/" + body.Token)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer redeem.Body.Close()
+	if redeem.StatusCode != http.StatusSeeOther {
+		t.Fatalf("verified SSO rejected: %d", redeem.StatusCode)
+	}
+}
+
+func TestSSOTokenCannotBypassNewlyEnabledTOTP(t *testing.T) {
+	a, srv, client := newAPILoginTestServer(t)
+	resp, err := client.Post(srv.URL+"/api/login", "application/json", strings.NewReader(`{"username":"alice","password":"correct-password"}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resp.Body.Close()
+	var body struct {
+		Token string `json:"token"`
+	}
+	json.NewDecoder(resp.Body).Decode(&body)
+	if body.Token == "" {
+		t.Fatal("expected a token before enabling TOTP")
+	}
+	if err := a.DB.SetTOTP("alice", "JBSWY3DPEHPK3PXP", true); err != nil {
+		t.Fatal(err)
+	}
+	redeem, err := client.Get(srv.URL + "/login/sso/" + body.Token)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer redeem.Body.Close()
+	if redeem.StatusCode != http.StatusUnauthorized {
+		t.Fatalf("stale SSO bypassed TOTP: %d", redeem.StatusCode)
+	}
+	for _, cookie := range redeem.Cookies() {
+		if cookie.Name == auth.SessionCookieName {
+			t.Fatal("stale SSO issued a session cookie")
+		}
 	}
 }

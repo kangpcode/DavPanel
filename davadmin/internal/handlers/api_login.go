@@ -13,8 +13,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
+
+	"github.com/pquerna/otp"
+	"github.com/pquerna/otp/totp"
 
 	"github.com/kangpcode/davadmin/internal/admindb"
 	"github.com/kangpcode/davadmin/internal/auth"
@@ -25,8 +29,9 @@ import (
 const ssoTokenTTL = 2 * time.Minute
 
 type ssoTokenEntry struct {
-	username string
-	expires  time.Time
+	username   string
+	expires    time.Time
+	totpSecret string
 }
 
 // APILogin bundles POST /api/login and GET /login/sso/{token}, which share
@@ -48,10 +53,7 @@ func newSSOToken() (string, error) {
 	return hex.EncodeToString(b), nil
 }
 
-// HandleAPILogin handles POST /api/login. Same credential check as POST
-// /api/ (no TOTP check -- password auth is enough for API access here too,
-// same as the JWT login), but issues a single-use token good for a real
-// session at GET /login/sso/{token} instead of a JWT.
+// Browser SSO requires the same second factor as an interactive login.
 func (a *APILogin) HandleAPILogin(w http.ResponseWriter, r *http.Request) {
 	if !a.Limiter.Allow(clientIP(r)) {
 		writeJSONError(w, http.StatusTooManyRequests, "Too many login attempts. Please try again later.")
@@ -61,6 +63,7 @@ func (a *APILogin) HandleAPILogin(w http.ResponseWriter, r *http.Request) {
 	var body struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
+		TOTPCode string `json:"totp_code"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
 		writeJSONError(w, http.StatusBadRequest, "Invalid JSON body")
@@ -76,6 +79,15 @@ func (a *APILogin) HandleAPILogin(w http.ResponseWriter, r *http.Request) {
 		writeJSONError(w, http.StatusForbidden, "User is not active")
 		return
 	}
+	if user.TOTPEnabled {
+		valid, _ := totp.ValidateCustom(strings.TrimSpace(body.TOTPCode), user.TOTPSecret.String, time.Now(), totp.ValidateOpts{
+			Period: 30, Skew: 1, Digits: otp.DigitsSix, Algorithm: otp.AlgorithmSHA1,
+		})
+		if !valid {
+			writeJSONStatus(w, http.StatusUnauthorized, map[string]interface{}{"error": "A valid authentication code is required", "twofa_required": true})
+			return
+		}
+	}
 
 	token, err := newSSOToken()
 	if err != nil {
@@ -87,7 +99,11 @@ func (a *APILogin) HandleAPILogin(w http.ResponseWriter, r *http.Request) {
 	if a.tokens == nil {
 		a.tokens = make(map[string]ssoTokenEntry)
 	}
-	a.tokens[token] = ssoTokenEntry{username: user.Username, expires: time.Now().Add(ssoTokenTTL)}
+	entry := ssoTokenEntry{username: user.Username, expires: time.Now().Add(ssoTokenTTL)}
+	if user.TOTPEnabled {
+		entry.totpSecret = user.TOTPSecret.String
+	}
+	a.tokens[token] = entry
 	a.mu.Unlock()
 
 	writeJSON(w, map[string]interface{}{
@@ -116,6 +132,10 @@ func (a *APILogin) HandleSSOLogin(w http.ResponseWriter, r *http.Request) {
 	user, err := a.DB.UserByUsername(entry.username)
 	if err != nil || !user.IsActive {
 		http.Error(w, "This login link is invalid or has expired.", http.StatusUnauthorized)
+		return
+	}
+	if user.TOTPEnabled && (entry.totpSecret == "" || entry.totpSecret != user.TOTPSecret.String) {
+		http.Error(w, "Authentication settings changed. Please sign in again.", http.StatusUnauthorized)
 		return
 	}
 

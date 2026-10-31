@@ -1,6 +1,7 @@
 package license
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -75,7 +76,7 @@ func TestCheckerFallsBackToFreshCacheOnRemoteFailure(t *testing.T) {
 	withScratchCache(t)
 
 	// seed a cache file as if a successful check happened moments ago
-	writeCache()
+	(&Checker{Key: "enterprise-test-key", PublicIP: "203.0.113.1"}).writeCache()
 
 	withMockAPI(t, func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -91,7 +92,7 @@ func TestCheckerFailsClosedOnStaleCache(t *testing.T) {
 	withScratchCache(t)
 
 	// seed a cache file with a timestamp well outside the 24h grace period
-	stale := cacheFile{CheckedAt: float64(time.Now().Add(-48 * time.Hour).Unix())}
+	stale := cacheFile{CheckedAt: float64(time.Now().Add(-48 * time.Hour).Unix()), Fingerprint: (&Checker{Key: "enterprise-test-key", PublicIP: "203.0.113.1"}).cacheFingerprint()}
 	writeStaleCache(t, stale)
 
 	withMockAPI(t, func(w http.ResponseWriter, r *http.Request) {
@@ -180,5 +181,30 @@ func writeStaleCache(t *testing.T, c cacheFile) {
 		t.Fatal(err)
 	}
 	defer f.Close()
-	fmt.Fprintf(f, `{"checked_at": %f}`, c.CheckedAt)
+	json.NewEncoder(f).Encode(c)
+}
+
+func TestCacheCannotValidateAnotherKeyOrIP(t *testing.T) {
+	withScratchCache(t)
+	seed := &Checker{Key: "enterprise-test-key", PublicIP: "203.0.113.1"}
+	seed.writeCache()
+	withMockAPI(t, func(w http.ResponseWriter, r *http.Request) { w.WriteHeader(http.StatusServiceUnavailable) })
+	for _, identity := range [][2]string{{"enterprise-forged", seed.PublicIP}, {seed.Key, "203.0.113.2"}} {
+		if NewChecker(identity[0], identity[1]).Valid() {
+			t.Fatalf("cache accepted another identity: %v", identity)
+		}
+	}
+	info, err := os.Stat(CacheFilePath)
+	if err != nil || info.Mode().Perm() != 0o600 {
+		t.Fatalf("cache should be private: info=%v err=%v", info, err)
+	}
+}
+
+func TestExplicitExpiryOverridesFreshCache(t *testing.T) {
+	withScratchCache(t)
+	(&Checker{Key: "enterprise-test-key", PublicIP: "203.0.113.1"}).writeCache()
+	withMockAPI(t, func(w http.ResponseWriter, r *http.Request) { fmt.Fprint(w, "<status>Expired</status>") })
+	if NewChecker("enterprise-test-key", "203.0.113.1").Valid() {
+		t.Fatal("an expired key was accepted through the grace cache")
+	}
 }

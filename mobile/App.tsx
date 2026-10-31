@@ -184,7 +184,7 @@ async function testDavPanelConnection(baseUrl: string, username: string, passwor
   const loginBody = await loginRes.json().catch(() => ({}));
   if (!loginRes.ok) {
     if (loginBody?.twofa_required) {
-      throw new Error("This account has 2FA enabled, which isn't supported here yet. Disable 2FA to add it for now.");
+      return;
     }
     throw new Error(loginBody?.error || `Login failed (HTTP ${loginRes.status})`);
   }
@@ -331,6 +331,10 @@ export default function App() {
         body: JSON.stringify({ username: server.username, password }),
       });
       const body = await res.json().catch(() => ({}));
+      if (res.status === 401 && body?.twofa_required) {
+        setScreen({ name: 'webview', server, url: `${server.baseUrl}/login` });
+        return;
+      }
       if (res.status === 401 || res.status === 403) {
         // A genuine credential/account problem -- surface it instead of silently falling back.
         throw new Error(body?.error || `Login failed (HTTP ${res.status})`);

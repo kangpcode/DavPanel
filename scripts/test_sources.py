@@ -115,6 +115,29 @@ configure_imunifyav || exit 1
                                 capture_output=True, text=True, cwd=self.root)
         self.assertEqual(result.returncode, 0, result.stderr)
 
+    def test_installer_rejects_invalid_options_before_system_changes(self):
+        installer = Path(__file__).resolve().parents[1] / "PODMAN_INSTALL.sh"
+        for option in ("--admin-port=bad", "--user-port=0", "--username=a'bcd", "--domain=host/invalid"):
+            script = 'source "$1"; parse_args "$2"'
+            result = subprocess.run(["bash", "-c", script, "bash", str(installer), option], capture_output=True, text=True, cwd=self.root)
+            self.assertNotEqual(result.returncode, 0, option)
+        self.assertEqual(list(self.root.glob("*.log")), [])
+
+    def test_selfsigned_ip_configuration_uses_local_certificate(self):
+        installer = Path(__file__).resolve().parents[1] / "PODMAN_INSTALL.sh"
+        script = '''source "$1"
+SERVER_IPV4_ADDRESS=203.0.113.5
+USE_SELFSIGNED=true
+SET_HOSTNAME_NOW=false
+grep() { return 1; }
+sed() { printf '%s\\n' "$*"; }
+set_hostname
+'''
+        result = subprocess.run(["bash", "-c", script, "bash", str(installer)], capture_output=True, text=True, cwd=self.root)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("tls /etc/davpanel/caddy/ssl/custom/203.0.113.5/203.0.113.5.crt", result.stdout)
+        self.assertNotIn("issuer acme", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import platform
+import re
 from pathlib import Path
 
 from audit_sources import inspect_sources, tree_digest
@@ -36,6 +37,10 @@ def check_artifacts(root, architecture):
             digest, _ = tree_digest(root / component)
             if digest != build["source_sha256"].get(component):
                 errors.append(f"{component}: release binary predates the current source; rebuild the release.")
+            toolchain = build.get("toolchain", {}).get(component, "")
+            version = re.fullmatch(r"go(\d+)\.(\d+)\.(\d+)", toolchain)
+            if not version or tuple(map(int, version.groups())) < (1, 27, 3):
+                errors.append(f"{component}: release must be built with a stable Go 1.27.3 or newer toolchain.")
         if build.get("architecture") != architecture:
             errors.append("Release build provenance has the wrong architecture.")
     if not checksum_file.is_file():

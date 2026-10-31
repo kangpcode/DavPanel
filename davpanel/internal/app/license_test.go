@@ -29,9 +29,12 @@ func TestLicenseCheckPasses(t *testing.T) {
 		want         bool
 	}{
 		{"no license key configured", "", false, true},
-		{"enterprise key always passes", "enterprise-abc", false, true},
-		{"noc key always passes", "noc-abc", false, true},
-		{"lifetime key always passes", "lifetime-abc", false, true},
+		{"unverified enterprise key", "enterprise-abc", false, false},
+		{"unverified noc key", "noc-abc", false, false},
+		{"unverified lifetime key", "lifetime-abc", false, false},
+		{"verified enterprise key", "enterprise-abc", true, true},
+		{"verified noc key", "noc-abc", true, true},
+		{"verified lifetime key", "lifetime-abc", true, true},
 		{"regular key, valid", "abc123", true, true},
 		{"regular key, invalid", "abc123", false, false},
 	}

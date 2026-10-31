@@ -5,6 +5,7 @@ ARG CADDY_VERSION=2.11.7
 FROM --platform=$BUILDPLATFORM docker.io/library/caddy:${CADDY_VERSION}-builder AS builder
 ARG TARGETOS
 ARG TARGETARCH
+ENV GOTOOLCHAIN=go1.27.3
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH xcaddy build \
     --with github.com/corazawaf/coraza-caddy/v2@v2.6.2 \
     --with github.com/mholt/caddy-ratelimit@v0.1.1-0.20260612195517-5625512f24f6

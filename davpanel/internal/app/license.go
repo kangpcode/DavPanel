@@ -68,19 +68,14 @@ func (a *App) checkLicenseStartup(ctx context.Context) bool {
 	}
 
 	data := parseLicenseResponse(string(body))
-	if data["status"] == "Active" {
+	valid := resp.StatusCode == http.StatusOK && data["status"] == "Active"
+	if valid {
 		log.Print("BOOTSTRAP - license key is 'Active'")
 	}
-	return data["status"] == "Active"
+	return valid
 }
 
-// LicenseCheckPasses reports whether the current license allows access - no key or an enterprise/noc/lifetime key always passes, anything else falls back to the startup-computed LicenseValid
+// Community needs no key; every configured key must have passed validation.
 func (a *App) LicenseCheckPasses() bool {
-	if a.LicenseKey == "" {
-		return true
-	}
-	if strings.HasPrefix(a.LicenseKey, "enterprise") || strings.HasPrefix(a.LicenseKey, "noc") || strings.HasPrefix(a.LicenseKey, "lifetime") {
-		return true
-	}
-	return a.LicenseValid
+	return a.LicenseKey == "" || a.LicenseValid
 }

@@ -632,7 +632,12 @@ restart_dead_user_containers() {
 }
 
 perform_startup_actions() {
-  mkdir -p /tmp/redis ; chmod 777 /tmp/redis    # for redis
+  if [[ -f /etc/tmpfiles.d/davpanel-redis.conf ]]; then
+    systemd-tmpfiles --create /etc/tmpfiles.d/davpanel-redis.conf
+  else
+    mkdir -p /tmp/redis
+    chmod 700 /tmp/redis
+  fi
   mkdir -p /tmp/ssh_cm ; chmod 700 /tmp/ssh_cm  # for ssh connections to slave servers
   IP=$(hostname -I | awk '{print $1}')
   sed -i -E 's#^( *- *")([0-9.]+:)?(53:53/(tcp|udp)")#\1'"$IP"':\3#' /root/docker-compose.yml
