@@ -42,7 +42,7 @@ Connect from another computer and run the installer as root:
 ```bash
 ssh your-user@192.168.1.50
 sudo -i
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 When the installation finishes, open `https://192.168.1.50:2087` from your local network and log in with the printed credentials.

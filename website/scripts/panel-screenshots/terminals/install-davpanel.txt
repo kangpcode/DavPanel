@@ -1,4 +1,4 @@
-[p]root@server:~#[/] bash <(curl -sSL https://davpanel.com)
+[p]root@server:~#[/] curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 --------------------------------------------------------------------------------------------------------
   ____               ____                   _ 
  |  _ \  __ ___   _|  _ \ __ _ _ __   ___| |

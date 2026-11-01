@@ -15,7 +15,7 @@ The new server should have a clean environment with **only DavPanel installed**-
 Install DavPanel by running:
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Wait for the installation to complete, then proceed to the source server.

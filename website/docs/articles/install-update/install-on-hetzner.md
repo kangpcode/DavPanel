@@ -53,7 +53,7 @@ Replace `your-server-ip` with the IPv4 address shown in the Cloud Console.
 ## Step 3: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer takes about 5 minutes. To set a domain, admin username, or other options up front, use the [install command generator](/install).

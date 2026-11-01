@@ -47,7 +47,7 @@ ssh root@yourDropletIpAddress
 
 Once logged in, run the installer script:
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 ![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-generic.png#screenshot)

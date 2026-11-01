@@ -57,7 +57,7 @@ sudo -i
 ## Step 3: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Installation takes about 5 minutes. For optional flags (domain, admin username, ports), use the [install command generator](/install).

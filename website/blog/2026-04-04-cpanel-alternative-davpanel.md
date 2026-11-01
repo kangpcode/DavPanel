@@ -169,7 +169,7 @@ DavPanel was built specifically to address this gap. The Docker-per-user archite
 Also, the Community Edition is free to install:
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 If you want to test the full feature set including: cPanel backup import and WHMCS provisioning - the Enterprise Edition is available with no per-account fees and no long-term commitment required.

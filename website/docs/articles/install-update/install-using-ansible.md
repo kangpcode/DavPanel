@@ -18,7 +18,7 @@ Use the following **Ansible playbook** to install DavPanel on one or more target
   tasks:
     - name: Download and run DavPanel installer
       shell: |
-        curl -sSL https://davpanel.org | bash -s -- {{ davpanel_install_flags }}
+        curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh {{ davpanel_install_flags }}
       args:
         executable: /bin/bash
 ```

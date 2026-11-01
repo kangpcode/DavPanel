@@ -74,7 +74,7 @@ Reconnect, switch to root, and run the installer:
 
 ```bash
 sudo -i
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer detects the ARM64 CPU automatically and downloads the ARM builds of DavPanel. On a Pi the installation takes longer than on a VPS - usually 10-20 minutes, depending on the storage speed.

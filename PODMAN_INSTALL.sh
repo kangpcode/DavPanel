@@ -136,7 +136,7 @@ parse_args() {
             --panel-domain=*)  SET_HOSTNAME_NOW=true;    separate_panel_domain="${1#*=}" ;;
             --username=*)      SET_ADMIN_USERNAME=true;  custom_username="${1#*=}" ;;
             --password=*)      SET_ADMIN_PASSWORD=true;  custom_password="${1#*=}" ;;
-            --post_install=*)  post_install_path="${1#*=}" ;;
+            --post_install=*|--post-install=*) post_install_path="${1#*=}" ;;
             --version=*)       CUSTOM_VERSION=true;      PANEL_VERSION="${1#*=}" ;;
             --swap=*)          SETUP_SWAP_ANYWAY=true;   SWAP_FILE="${1#*=}" ;;
             --admin-port=*)    ADMIN_PORT=$(validate_port "admin-port" "${1#*=}") || return 1 ;;

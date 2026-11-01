@@ -102,7 +102,7 @@ Only do this right before installing DavPanel. Until CSF is installed, the only 
 ## Step 5: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer detects the ARM64 (AArch64) CPU automatically. Installation takes about 5 minutes; when it finishes, it prints the **DavAdmin URL**, **username** and **password**.

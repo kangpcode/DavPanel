@@ -60,7 +60,7 @@ ssh -i your_private_key.pem ubuntu@yourElasticIpAddress
 Once logged in, run the installer script:
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 ---

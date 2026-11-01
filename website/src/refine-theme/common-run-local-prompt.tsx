@@ -14,7 +14,7 @@ export const CommonRunLocalPrompt = ({ path }: Props) => {
             title="Install command"
             icon={<TerminalIcon />}
         >
-            {`bash <(curl -sSL https://davpanel.com) ${path}`}
+            {`curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh ${path}`}
         </CodeBlock>
     );
 };

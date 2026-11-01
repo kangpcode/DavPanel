@@ -28,7 +28,7 @@ That's a good starting point. If the server regularly uses a lot of swap, add RA
 To choose the size yourself when installing, use the `--swap` flag (1-10 GB):
 
 ```bash
-bash <(curl -sSL https://davpanel.org) --swap=4
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh --swap=4
 ```
 
 ---

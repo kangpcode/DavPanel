@@ -10,5 +10,5 @@ packages:
   - gnupg
 
 runcmd:
-  - curl -fsSL https://davpanel.org/ | bash
+  - curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```

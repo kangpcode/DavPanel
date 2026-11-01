@@ -48,7 +48,7 @@ Provider guides: [Hetzner](/docs/articles/install-update/install-on-hetzner/) ·
 ## Step 3: Install DavPanel and Activate Enterprise
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Then [upgrade to Enterprise and activate the license](/docs/articles/license/upgrade_to_davpanel_enterprise_and-activate_license/) - the free Community edition is for personal use and limited to 3 accounts. You can [try Enterprise free for 30 days](/trial).

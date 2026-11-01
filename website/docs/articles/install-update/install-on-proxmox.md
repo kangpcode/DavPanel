@@ -78,7 +78,7 @@ Connect via SSH, switch to root, and run the installer:
 ```bash
 ssh your-user@vm-ip
 sudo -i
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Installation takes about 5 minutes. When it finishes, it prints the **DavAdmin URL**, **username** and **password**. Open `https://vm-ip:2087` and log in.

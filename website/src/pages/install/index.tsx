@@ -44,7 +44,7 @@ const Install: React.FC = () => {
     };
     
     const generateInstallCommand = () => {
-        let command = "bash <(curl -sSL https://davpanel.com)";
+        let command = "curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh";
         for (const [option, config] of Object.entries(installOptions)) {
             if (typeof config.value === "boolean") {
                 if (config.value) {
