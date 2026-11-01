@@ -134,7 +134,7 @@ const faq = [
     },
     {
         question: "What operating systems does DavPanel Community support?",
-        answer: "DavPanel Community currently supports Ubuntu 24.04. The Enterprise edition adds support for Debian, AlmaLinux, Rocky Linux, and CentOS.",
+        answer: "Both editions have Linux installer paths for Ubuntu, Debian, AlmaLinux, Rocky Linux, Oracle Linux and CentOS Stream. Fedora and openEuler are experimental. Complete VM installation remains unverified; check the OS matrix and version restrictions before deployment.",
     },
     {
         question: "Can I migrate from cPanel or Plesk to DavPanel?",
