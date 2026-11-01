@@ -30,4 +30,4 @@ jobs:
       - run: python3 scripts/audit_sources.py
       - run: python3 -m unittest discover -s scripts -p 'test_*.py'
       - run: python3 scripts/preflight.py
-      - run: bash -n install.sh PODMAN_INSTALL.sh scripts/build-release.sh davcli/davcli
+      - run: bash -n bootstrap.sh install.sh PODMAN_INSTALL.sh scripts/build-release.sh davcli/davcli

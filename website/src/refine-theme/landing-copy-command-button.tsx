@@ -7,7 +7,7 @@ import {
 } from "./changing-text-element";
 import { LandingCopySuccessIcon } from "./icons/landing-copy-success";
 
-const installText = "curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh";
+const installText = "bash <(curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh)";
 const copiedText = "copied to clipboard!";
 
 export const LandingCopyCommandButton = ({

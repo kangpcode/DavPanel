@@ -359,6 +359,7 @@ install_packages() {
     case "$PACKAGE_MANAGER" in
         apt-get)
             local kernel_pkg="linux-image-amd64"
+            [[ "$architecture" == "aarch64" ]] && kernel_pkg="linux-image-arm64"
             [[ "$OS_ID" == "ubuntu" ]] && kernel_pkg="linux-generic"
             [[ -f /etc/needrestart/needrestart.conf ]] && run sed -i "s/#\$nrconf{restart} = 'i';/\$nrconf{restart} = 'a';/g" /etc/needrestart/needrestart.conf
             run $PACKAGE_MANAGER -qq install -y apt-transport-https ca-certificates
@@ -371,13 +372,13 @@ install_packages() {
                 run ln -sf /opt/podman-compose/bin/podman-compose /usr/local/bin/podman-compose
                 run hash -r
             fi
-            packages=(curl openssl git logrotate cron tar dbus-user-session systemd dbus systemd-container systemd-oomd quota uidmap iptables podman crun netavark aardvark-dns slirp4netns passt fuse-overlayfs "$kernel_pkg" default-mysql-client sqlite3)
+            packages=(curl wget openssl git logrotate cron tar dbus-user-session systemd dbus systemd-container systemd-oomd quota uidmap iptables podman crun netavark aardvark-dns slirp4netns passt fuse-overlayfs "$kernel_pkg" default-mysql-client sqlite3)
             # on 12, apt's 1.0.3 next to the venv one got used by the rest of the install (setup_davcli puts /usr/bin first in PATH), so everything after it saw those containers as changed and recreated them
             [[ "$OS_VERSION_ID" == "12" && -x /opt/podman-compose/bin/podman-compose ]] || packages+=(podman-compose)
             ;;
         yum)
             run yum install -y dnf-plugins-core yum-utils epel-release
-            packages=(curl openssl git logrotate cronie tar dbus-user-session systemd dbus systemd-container quota uidmap iptables podman podman-compose crun netavark aardvark-dns slirp4netns passt fuse-overlayfs mariadb sqlite3)
+            packages=(curl wget openssl git logrotate cronie tar dbus-user-session systemd dbus systemd-container quota uidmap iptables podman podman-compose crun netavark aardvark-dns slirp4netns passt fuse-overlayfs mariadb sqlite3)
             ;;
         dnf)
             if [[ "$OS_ID" == "openeuler" ]]; then

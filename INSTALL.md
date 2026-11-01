@@ -4,7 +4,32 @@ Developer and maintainer: **Dhafa Nazula Permadi (kangpcode)**.
 
 ## One-command installation
 
-Copy the standalone release installer to a clean target VPS and run:
+On a clean target VPS, run this one command as root or an account with sudo:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh)
+```
+
+The bootstrap detects Linux amd64/arm64, installs missing bootstrap dependencies,
+downloads the matching standalone release and verifies its SHA-256 checksum.
+When no complete GitHub Release is published (including GitHub's 404 response),
+it automatically downloads the complete source with Git, audits all component
+digests, prepares the Go version pinned in the source modules, builds the release
+and starts installation. A downloaded Go toolchain is verified against go.dev's
+SHA-256 metadata and kept in the temporary build directory. Existing compatible
+Go installations are reused. No manual dependency installation, cloning or build
+step is required. Internet access is required throughout installation.
+
+Source builds take longer and need additional resources: allow at least 4 GB RAM
+and 20 GB free disk space. `--from-source` forces that path; `--version=2.0.19`
+selects the corresponding release or `v2.0.19` source tag. `DAVPANEL_SOURCE_REF`
+selects a different source branch/tag (default: `main`).
+
+For public TLS, append `--domain=panel.example.com`. Without it, IP access uses
+a self-signed certificate. The full installer sets up DavPanel, DavAdmin, DavCLI,
+Podman, web/PHP/database containers, DNS, FTP, firewall and system services.
+
+For a local/offline payload, copy the standalone release installer to the VPS:
 
 ```bash
 sudo bash davpanel-2.0.19-linux-amd64.run
@@ -33,16 +58,19 @@ single command is `sudo bash install.sh`. A checkout without binaries needs Go
 and builds them automatically; the standalone `.run` avoids that requirement.
 The full installation log is `/var/log/davpanel/install.log`, readable only by root.
 
-These local artifacts have not been uploaded. After publishing the new source
-and release, install online with:
+The bootstrap URL itself must be public on the selected GitHub branch. A 404
+for `raw.githubusercontent.com/.../bootstrap.sh` means the source has not been
+published or is inaccessible; publish the updated source before sharing the
+online command. To download the script to a file before running it instead:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && sudo bash /tmp/davpanel-bootstrap.sh
 ```
 
-The bootstrap fetches the latest stable GitHub release for the host CPU and
-checks its installer checksum. It fails if no complete release is available.
-The release workflow builds,
+Online `--preflight`/`--dry-run` requires a complete published standalone release;
+it never installs packages, downloads Go or builds source. A failed release or
+Go checksum stops installation, rather than falling back to unverified inputs.
+Temporary downloads are removed on success or failure. The release workflow builds,
 audits and attaches amd64/arm64 installers. Run it manually with `publish` enabled
 to create a draft, upload both architectures and checksums, then publish the
 complete release. With `publish` disabled it produces downloadable CI artifacts.

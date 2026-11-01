@@ -26,7 +26,7 @@ jobs:
         run: |
           python3 scripts/audit_sources.py
           python3 -m unittest discover -s scripts -p 'test_*.py'
-          bash -n install.sh PODMAN_INSTALL.sh scripts/build-release.sh
+          bash -n bootstrap.sh install.sh PODMAN_INSTALL.sh scripts/build-release.sh
       - name: Test and audit Go modules
         run: |
           for component in davpanel davadmin; do

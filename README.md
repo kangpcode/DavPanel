@@ -13,21 +13,45 @@ Current validation results and outstanding release gates are recorded in [AUDIT.
 
 ## Install and develop
 
-From a built release on a clean Linux server:
+Install only on a clean, dedicated Linux server. The installer needs root access,
+at least 1 GB RAM and 5 GB free disk space. It installs system packages and
+configures services, networking and the firewall. See [PLATFORMS.md](PLATFORMS.md)
+for supported distributions and [INSTALL.md](INSTALL.md) for the full procedure.
+
+Run this single command on the target server (as root, or from an account with sudo):
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh)
+```
+
+The installer detects amd64 or arm64 and installs its dependencies automatically.
+It uses the latest standalone release and verifies its SHA-256 checksum. If no
+complete release is published, it downloads this repository, verifies the component
+sources, prepares a verified Go toolchain and builds the complete installer on the
+server. Source builds take longer; use at least 4 GB RAM and 20 GB free disk space.
+No manual Git clone, Go installation or separate build command is needed.
+
+To configure public TLS, append `--domain=panel.example.com` and use a domain whose
+DNS points to the server. Without that option, the installer configures a
+self-signed certificate for IP access:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh) --domain=panel.example.com
+```
+
+The online command requires `bootstrap.sh` and the complete source to be public
+on GitHub. A 404 for the bootstrap URL means the file/branch has not been published
+or the repository is inaccessible; a missing GitHub Release is handled automatically.
+Use `--from-source` to request a source build, or `--version=2.0.19` to select a
+release/source tag. To install a local release, copy its `.run` file to the server:
 
 ```bash
 sudo bash davpanel-2.0.19-linux-amd64.run
 ```
 
-After publishing the new source and release assets to GitHub, the online command is:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && sudo bash /tmp/davpanel-bootstrap.sh
-```
-
-The bootstrap selects amd64/arm64 and verifies the installer checksum. This online
-command requires published release assets; the current local work is not a public
-release. See [INSTALL.md](INSTALL.md) for payload verification and options.
+Run `bash davpanel-2.0.19-linux-amd64.run --preflight` first for a read-only
+verification. See [INSTALL.md](INSTALL.md) for arm64, source-checkout installs,
+release building, and installer options.
 
 Open the repository in GitHub Codespaces or a Dev Container for development;
 run `bash scripts/dev.sh check` and `bash scripts/dev.sh test`. See
@@ -149,20 +173,9 @@ DavPanel is a truly [OS-agnostic](https://www.techtarget.com/whatis/definition/a
 
 [^2]: Average installation time for [the install script](https://davpanel.com/) on a VPS with the following specifications: 2 CPU cores and 2 GB of RAM.
 
-## Installation
+## Build and install from source
 
-On a clean VPS, copy the standalone release and install with one command:
-
-```bash
-sudo bash davpanel-2.0.19-linux-amd64.run
-```
-
-The `.run` contains the binaries and verified component sources. Use `--preflight`
-for a read-only check, or `--domain=panel.example.com` with working DNS for public
-TLS. Without a domain, the installer uses a self-signed certificate for IP access.
-See [INSTALL.md](INSTALL.md) for ARM64, source builds and current publication status.
-
-Build this fork from its local sources; use [INSTALL.md](INSTALL.md) for the complete procedure.
+Build and validate a release from the checked-out source tree:
 
 ```bash
 python3 scripts/audit_sources.py
@@ -170,17 +183,9 @@ bash scripts/build-release.sh --arch=amd64
 bash PODMAN_INSTALL.sh --preflight
 ```
 
-Run the installer as root only on the clean target hosting server. Hosted domains
-and remote release services are separate infrastructure targets.
-
-
-After building a release, validate it and run the local installer on the clean target server:
-```bash
-bash PODMAN_INSTALL.sh --preflight
-sudo bash PODMAN_INSTALL.sh --selfsigned
-```
-
-For full installation options and configuration flags: [https://davpanel.com/install](https://davpanel.com/install)
+Use [INSTALL.md](INSTALL.md) for source checkout requirements, standalone package
+validation, and the complete list of installation flags. The [install command
+generator](https://davpanel.com/install) builds the online command with options.
 
 
 ## Documentation
