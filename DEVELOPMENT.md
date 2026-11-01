@@ -7,6 +7,14 @@ use VS Code's **Reopen in Container** on Linux, Windows or macOS. The checked-in
 dev container installs Go 1.27.3, Node 24, Python and a separate Docker daemon.
 Its startup command checks source integrity and installer regression tests.
 
+If your Codespace was opened from another repository and `scripts/dev.sh` is
+missing, clone the complete DavPanel source and enter its directory first:
+
+```bash
+git clone --depth=1 https://github.com/kangpcode/DavPanel.git DavPanel
+cd DavPanel
+```
+
 ```bash
 bash scripts/dev.sh check
 bash scripts/dev.sh test

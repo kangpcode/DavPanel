@@ -136,10 +136,15 @@ main() {
     [[ "$(uname -s)" == Linux ]] || { echo 'Use a full Linux VM for hosting; see PLATFORMS.md.' >&2; return 1; }
     case "$(uname -m)" in x86_64|amd64) arch=amd64 ;; aarch64|arm64) arch=arm64 ;; *) echo 'Unsupported CPU.' >&2; return 1 ;; esac
     if [[ "$read_only" == false ]] && bootstrap_in_container; then
-        cat >&2 <<'EOF'
+        local build_ref="${version:+v$version}"
+        build_ref="${build_ref:-$source_ref}"
+        cat >&2 <<EOF
 DavPanel hosting installation requires a clean Linux VM/VPS. Codespaces and other containers are build environments.
 No dependencies, source or installers were downloaded or installed by this script.
-To build from a complete DavPanel checkout, run: bash scripts/dev.sh build
+To build in Codespaces, first obtain the complete source checkout (the bootstrap does not create it here):
+  git clone --depth=1 --single-branch --branch="$build_ref" "https://github.com/$repository.git" DavPanel
+  cd DavPanel
+  bash scripts/dev.sh build
 Copy the resulting dist/davpanel-<version>-linux-<arch>.run to the Linux VM/VPS and install it there.
 --repair and --skip-requirements do not provide the required host services.
 EOF

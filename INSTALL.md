@@ -15,8 +15,17 @@ over SSH from Codespaces. The bootstrap rejects Codespaces and other containers
 before installing dependencies, downloading source or compiling binaries.
 `--repair` cannot supply the host services required for hosting installation.
 
-To build in Codespaces, run `bash scripts/dev.sh build` from a complete DavPanel
-checkout. The installer stays in `dist/`; copy its `.run` and `.run.sha256` files
+To build in a Codespace opened from another repository, obtain the complete
+DavPanel checkout first:
+
+```bash
+git clone --depth=1 https://github.com/kangpcode/DavPanel.git DavPanel
+cd DavPanel
+bash scripts/dev.sh build
+```
+
+The bootstrap does not create a source checkout in the current directory.
+The installer stays in `dist/`; copy its `.run` and `.run.sha256` files
 to the target VM/VPS, verify the checksum, then install it there as shown below.
 See [DEVELOPMENT.md](DEVELOPMENT.md) for the development environment.
 
