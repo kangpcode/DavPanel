@@ -10,6 +10,16 @@ On a clean target VPS, run this one command as root or an account with sudo:
 bash <(curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh)
 ```
 
+Run this command on the target Linux VM/VPS, including when you connect to it
+over SSH from Codespaces. The bootstrap rejects Codespaces and other containers
+before installing dependencies, downloading source or compiling binaries.
+`--repair` cannot supply the host services required for hosting installation.
+
+To build in Codespaces, run `bash scripts/dev.sh build` from a complete DavPanel
+checkout. The installer stays in `dist/`; copy its `.run` and `.run.sha256` files
+to the target VM/VPS, verify the checksum, then install it there as shown below.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for the development environment.
+
 The bootstrap detects Linux amd64/arm64, installs missing bootstrap dependencies,
 downloads the matching standalone release and verifies its SHA-256 checksum.
 When no complete GitHub Release is published (including GitHub's 404 response),

@@ -32,6 +32,7 @@ class BootstrapTests(unittest.TestCase):
                                 FIXTURE=str(self.root), BOOTSTRAP=str(ROOT / "bootstrap.sh"))
         self.environment.pop("DAVPANEL_REPOSITORY", None)
         self.environment.pop("DAVPANEL_SOURCE_REF", None)
+        self.environment.pop("CODESPACES", None)
         self.executable("curl", '''#!/usr/bin/python3
 import hashlib, json, os, shutil, sys
 from pathlib import Path
@@ -94,7 +95,10 @@ shutil.copytree(root / "source-fixture", sys.argv[-1])
 
     def run_bootstrap(self, *arguments, process_substitution=False, **environment):
         command = (["bash", "-c", 'bash <(cat "$BOOTSTRAP") "$@"', "fixture"]
-                   if process_substitution else ["bash", str(ROOT / "bootstrap.sh")])
+                   if process_substitution else ["bash", "-c", '''source "$BOOTSTRAP"
+bootstrap_in_container() { [[ "${FIXTURE_CONTAINER:-false}" == true ]]; }
+main "$@"
+''', "fixture"])
         result = subprocess.run([*command, *arguments], env=dict(self.environment, **environment),
                                 text=True, capture_output=True, timeout=20)
         self.assertEqual(list(self.root.glob("davpanel-download.*")), [], result.stderr)
@@ -127,6 +131,32 @@ shutil.copytree(root / "source-fixture", sys.argv[-1])
         self.assertIn("INSTALLED <--preflight>", result.stdout)
         self.assertTrue(any("davpanel-2.0.19-linux-arm64.run" in arg
                             for command in self.commands() for arg in command))
+
+    def test_container_installation_stops_before_downloads_or_builds(self):
+        for arguments in ((), ("--from-source",), ("--repair",), ("--skip-requirements",)):
+            with self.subTest(arguments=arguments):
+                result = self.run_bootstrap(*arguments, FIXTURE_CONTAINER="true")
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("clean Linux VM/VPS", result.stderr)
+                self.assertIn("bash scripts/dev.sh build", result.stderr)
+                self.assertEqual(self.commands(), [])
+                self.assertNotIn("BUILD VERIFIED", result.stdout)
+                self.assertNotIn("INSTALLED", result.stdout)
+                self.assertNotIn("UNEXPECTED PACKAGE INSTALL", result.stderr)
+
+    def test_codespaces_container_is_detected_by_the_entrypoint(self):
+        result = self.run_bootstrap(process_substitution=True, CODESPACES="true")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("clean Linux VM/VPS", result.stderr)
+        self.assertEqual(self.commands(), [])
+
+    def test_read_only_verification_is_available_in_containers(self):
+        for option in ("--preflight", "--dry-run"):
+            with self.subTest(option=option):
+                result = self.run_bootstrap(option, FIXTURE_CONTAINER="true")
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn(f"INSTALLED <{option}>", result.stdout)
+                self.assertFalse(any(command[0] == "git" for command in self.commands()))
 
     def test_no_release_automatically_builds_and_installs_source(self):
         result = self.run_bootstrap("--domain=panel.example.com", RELEASE_STATUS="404")

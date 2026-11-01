@@ -17,7 +17,23 @@ Other options are passed to the full installer. Missing dependencies are install
 automatically; non-root accounts need sudo. If no standalone release is published,
 the installer downloads the source and a verified Go toolchain, then builds it.
 Install only on a clean, dedicated Linux server with internet access.
+Codespaces and other containers can build releases with bash scripts/dev.sh build
+from a complete source checkout; install the resulting .run on a Linux VM/VPS.
 EOF
+}
+
+bootstrap_in_container() {
+    local entry
+    [[ "${CODESPACES:-}" == true || -f /.dockerenv || -f /run/.containerenv ]] && return 0
+    if command -v systemd-detect-virt >/dev/null && systemd-detect-virt --container --quiet; then
+        return 0
+    fi
+    if [[ -r /proc/1/environ ]]; then
+        while IFS= read -r -d '' entry; do
+            [[ "$entry" == container=* ]] && return 0
+        done 2>/dev/null < /proc/1/environ
+    fi
+    return 1
 }
 
 bootstrap_download() {
@@ -119,6 +135,16 @@ main() {
     [[ "$source_ref" =~ ^[A-Za-z0-9][A-Za-z0-9._/-]*$ ]] || { echo 'Invalid source ref.' >&2; return 1; }
     [[ "$(uname -s)" == Linux ]] || { echo 'Use a full Linux VM for hosting; see PLATFORMS.md.' >&2; return 1; }
     case "$(uname -m)" in x86_64|amd64) arch=amd64 ;; aarch64|arm64) arch=arm64 ;; *) echo 'Unsupported CPU.' >&2; return 1 ;; esac
+    if [[ "$read_only" == false ]] && bootstrap_in_container; then
+        cat >&2 <<'EOF'
+DavPanel hosting installation requires a clean Linux VM/VPS. Codespaces and other containers are build environments.
+No dependencies, source or installers were downloaded or installed by this script.
+To build from a complete DavPanel checkout, run: bash scripts/dev.sh build
+Copy the resulting dist/davpanel-<version>-linux-<arch>.run to the Linux VM/VPS and install it there.
+--repair and --skip-requirements do not provide the required host services.
+EOF
+        return 1
+    fi
     if [[ "$read_only" == false && "$EUID" != 0 ]]; then
         command -v sudo >/dev/null || { echo 'Run this command as root, or install sudo.' >&2; return 1; }
         root_command=(sudo)
