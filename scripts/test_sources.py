@@ -44,6 +44,39 @@ class SourceAuditTests(unittest.TestCase):
         source.chmod(0o755)
         self.assertFalse(inspect_sources(self.root)["source_inventory_complete"])
 
+    def test_ignored_source_cannot_be_recorded_in_the_inventory(self):
+        subprocess.run(["git", "init", "--quiet", str(self.root)], check=True, capture_output=True)
+        ignore = self.root / "davadmin/.gitignore"
+        ignore.write_text(".github/\n")
+        source = self.root / "davadmin/.github/workflows/test.yml"
+        source.parent.mkdir(parents=True)
+        source.write_text("name: Test\n")
+        manifest = self.root / "components.lock.json"
+        original = manifest.read_bytes()
+
+        report = inspect_sources(self.root)
+        self.assertFalse(report["source_inventory_complete"])
+        self.assertIn(
+            "davadmin/.github/workflows/test.yml: source file is ignored by Git and will be absent from fresh checkouts.",
+            report["issues"],
+        )
+        with self.assertRaisesRegex(ValueError, "ignored by Git"):
+            inspect_sources(self.root, refresh=True)
+        self.assertEqual(manifest.read_bytes(), original)
+
+        ignore.write_text("")
+        inspect_sources(self.root, refresh=True)
+        self.assertTrue(inspect_sources(self.root)["source_inventory_complete"])
+
+    def test_ignored_generated_files_do_not_block_a_git_inventory(self):
+        subprocess.run(["git", "init", "--quiet", str(self.root)], check=True, capture_output=True)
+        (self.root / ".gitignore").write_text("node_modules/\n__pycache__/\n")
+        for relative in ("davadmin/node_modules/example.js", "configuration/__pycache__/example.pyc"):
+            generated = self.root / relative
+            generated.parent.mkdir(parents=True)
+            generated.write_text("generated\n")
+        self.assertTrue(inspect_sources(self.root)["source_inventory_complete"])
+
     def test_empty_component_and_missing_manifest_entry_fail(self):
         (self.root / "davadmin/source.txt").unlink()
         self.assertFalse(inspect_sources(self.root)["source_inventory_complete"])

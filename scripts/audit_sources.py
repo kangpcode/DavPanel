@@ -5,6 +5,7 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 from pathlib import Path
 
 
@@ -44,6 +45,14 @@ def inspect_sources(root, refresh=False):
     issues, components = [], []
     if manifest.get("schema_version") != 1:
         raise ValueError("Unsupported component manifest schema.")
+    if (root / ".git").exists():
+        ignored = subprocess.run(
+            ["git", "ls-files", "--others", "--ignored", "--exclude-standard", "-z", "--", *sorted(REQUIRED)],
+            cwd=root, capture_output=True, text=True, check=True,
+        )
+        for relative in ignored.stdout.split("\0"):
+            if relative and not any(part in IGNORED for part in Path(relative).parts):
+                issues.append(f"{relative}: source file is ignored by Git and will be absent from fresh checkouts.")
     seen = set()
     for component in manifest["components"]:
         relative = component["path"]
@@ -102,7 +111,7 @@ def main():
     args = parser.parse_args()
     try:
         report = inspect_sources(args.root.resolve(), args.refresh_lock)
-    except (OSError, ValueError, KeyError, TypeError) as error:
+    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
         parser.exit(2, f"Source audit failed: {error}\n")
     if args.json:
         print(json.dumps(report, indent=2))

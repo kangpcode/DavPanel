@@ -19,6 +19,11 @@ The last command serves the documentation on forwarded port 3000. The build
 command creates real Linux installation artifacts; `dist/` is ignored by Git.
 No hosting credentials, generated binaries or tenant data should be committed.
 
+After reviewing intentional vendored source changes, regenerate the inventory
+with `python3 scripts/audit_sources.py --refresh-lock` and commit it together
+with every changed or added component file. The audit rejects source files that
+Git ignores because those files would be missing from a fresh checkout.
+
 Codespaces runs inside a Linux container. It is a development/build environment,
 with no guarantee of host systemd, quota delegation, public DNS/SMTP or the
 rootless tenant boundaries required by a hosting installation. The production

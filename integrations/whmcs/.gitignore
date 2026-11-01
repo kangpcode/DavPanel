@@ -1,1 +1,1 @@
-screenshots/
+# Keep vendored screenshots in Git so fresh checkouts match the source inventory.
