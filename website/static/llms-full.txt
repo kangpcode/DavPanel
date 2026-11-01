@@ -10,19 +10,35 @@ Minimum Requirements:
 
 - A blank full virtual machine or bare metal server
 - Minimum of 1GB RAM and 20GB storage (4GB RAM and 50GB is recommended)
-- AMD64(x86_64) or ARM(AArch64) architecture
+- AMD64 (x86_64) or ARM64 (AArch64) release build; native ARM64 hosting remains unverified
 - IPv4 address
 
 Not sure how big the server should be? See [System Requirements & Sizing](/docs/articles/install-update/system-requirements/) or use the [resource calculator](/calculator).
 
-Supported operating systems:
-- **Ubuntu 22, 24, 26** (24.04 is recommended)
-- **Debian 10, 11, 12, 13**
-- **AlmaLinux 9.5 and 10** (9.5 is recommended for ARM CPU, 10 has a known issue [#744](https://github.com/stefanpejcic/OpenPanel/issues/744))
-- **RockyLinux 9.6, 10**
-- **CentOS 9.5**
+### Supported OS versions
 
-On AlmaLinux 10 and RockyLinux 10, you must switch from `nftables` to `iptables`. See [#1472](https://github.com/docker/for-linux/issues/1472) and [#745](https://github.com/stefanpejcic/OpenPanel/issues/745#issuecomment-3451272947).
+Updated: 2026-11-01. Both editions use the same OS installer paths.
+
+| Distribution | Release targets | Installer status |
+| --- | --- | --- |
+| Ubuntu Server | 22.04, 24.04, 26.04 LTS | APT path implemented |
+| Debian | 12, 13 | APT path implemented |
+| AlmaLinux | 9.x, 10.x | DNF path implemented; use the latest minor release |
+| Rocky Linux | 9.x, 10.x | DNF path implemented; currently requires `--skip-firewall` and a separately configured firewall |
+| Oracle Linux | 10.x | DNF/EPEL 10 path; Oracle Linux 9 needs a separate EPEL path and is not a current installation target |
+| CentOS Stream | 9, 10 | RPM path implemented |
+| Fedora / openEuler | Maintained releases | Experimental installer branches |
+
+**Complete clean-server installation remains unverified for this fork on every
+OS/version listed above.** Source checks, release builds and container smoke tests
+do not establish that account provisioning, quotas, networking and backups work
+on a target server. The [repository platform matrix](https://github.com/kangpcode/DavPanel/blob/main/PLATFORMS.md)
+records restrictions, release references and acceptance checks.
+
+Debian 10/11 and CentOS Linux 7/8 are not targets for new installations. Native
+Windows/macOS hosting and hosting inside Codespaces, Docker, Podman, LXC or
+OpenVZ containers are unsupported. Use Codespaces for development and release
+builds, then install on a clean Linux VM/VPS or bare metal server.
 
 :::info
 If you are using external firewall, the following ports should be opened: 
@@ -38,7 +54,8 @@ If you are using external firewall, the following ports should be opened:
 
 DavPanel can be installed on both VPS and bare-metal servers. 
 
-The installation process takes about 5 minutes. To install davpanel follow these steps: 
+Installation time depends on the server and network; a source build also compiles
+both Go binaries. To install DavPanel follow these steps:
 
 <Tabs>
   <TabItem value="davpanel-install-on-dedicated" label="Install script" default>
@@ -48,7 +65,7 @@ The installation process takes about 5 minutes. To install davpanel follow these
 - as a user with sudo privileges and type "sudo -i"
 2. Copy and paste davpanel installation command into the terminal
 ```shell
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installation script supports [optional flags](/install) that can be used to configure davpanel, skip certain installation steps or simply display debugging information.
@@ -8132,7 +8149,7 @@ export const faq = [
   },
   {
     question: "How do I install DavPanel?",
-    answer: "Log in to a fresh Linux server as root and run a single command: bash <(curl -sSL https://davpanel.org). The installer sets up everything automatically.",
+    answer: "Log in to a fresh Linux server as root and run a single command: curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh. The installer sets up everything automatically.",
     link: { href: "/docs/articles/install-update/install/", label: "Installation guide" },
   },
   {
@@ -30380,7 +30397,7 @@ Provider guides: [Hetzner](/docs/articles/install-update/install-on-hetzner/) ·
 ## Step 3: Install DavPanel and Activate Enterprise
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Then [upgrade to Enterprise and activate the license](/docs/articles/license/upgrade_to_davpanel_enterprise_and-activate_license/) - the free Community edition is for personal use and limited to 3 accounts. You can [try Enterprise free for 30 days](/trial).
@@ -30829,7 +30846,7 @@ sudo -i
 Once logged in, run the installer script:
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 ![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-generic.png#screenshot)
@@ -30879,7 +30896,7 @@ Contabo servers come with a lot of RAM and disk for the price, which makes them 
 When ordering a new server:
 
 1. Pick a **region** close to your visitors.
-2. Under **Image**, choose **Ubuntu 24.04** (recommended). Debian, AlmaLinux and Rocky Linux also work.
+2. Under **Image**, choose **Ubuntu 24.04** (recommended). See the [OS matrix](/docs/admin/intro/#supported-os-versions) for other image targets and verification status.
 3. Set a strong **root password** and, if you have one, add your **SSH key**.
 
 If you already have a Contabo server with another OS or panel on it, reinstall it first - DavPanel requires a clean server:
@@ -30909,7 +30926,7 @@ ssh root@your-server-ip
 ## Step 3: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installation takes about 5 minutes. For optional flags (domain, admin username, ports, swap size), use the [install command generator](/install).
@@ -31015,7 +31032,7 @@ ssh root@yourDropletIpAddress
 
 Once logged in, run the installer script:
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 ![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-generic.png#screenshot)
@@ -31113,7 +31130,7 @@ sudo -i
 Once connected, run the installer script:
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer runs without any prompts and takes about 5 minutes. When it finishes, it prints the **DavAdmin URL**, **username** and **password**.
@@ -31169,7 +31186,7 @@ Hetzner is a popular choice for DavPanel: servers are inexpensive, have fast NVM
 1. Log in to the **Hetzner Cloud Console** and open (or create) a project.
 2. Click **Add Server**.
 3. Choose a **location** close to your visitors.
-4. Select the **image**: **Ubuntu 24.04** (recommended). Debian 12/13, AlmaLinux and Rocky Linux also work.
+4. Select the **image**: **Ubuntu 24.04** (recommended). See the [OS matrix](/docs/admin/intro/#supported-os-versions) for other image targets, restrictions and pending installation checks.
 5. Choose a **type**:
    - **x86 (Intel/AMD)** or **Arm64 (Ampere)** - DavPanel runs on both.
    - At least **2 GB RAM**; **4 GB RAM or more** is recommended for production. Use the [resource calculator](/calculator) to size the server for the number of websites you plan to host.
@@ -31198,7 +31215,7 @@ Replace `your-server-ip` with the IPv4 address shown in the Cloud Console.
 ## Step 3: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer takes about 5 minutes. To set a domain, admin username, or other options up front, use the [install command generator](/install).
@@ -31325,7 +31342,7 @@ Connect from another computer and run the installer as root:
 ```bash
 ssh your-user@192.168.1.50
 sudo -i
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 When the installation finishes, open `https://192.168.1.50:2087` from your local network and log in with the printed credentials.
@@ -31428,7 +31445,7 @@ This guide shows how to install **DavPanel** on a [Linode](https://www.linode.co
 ## Step 1: Create a Linode
 
 1. Log in to the **Cloud Manager** and click **Create** → **Linode**.
-2. Under **Choose a Distribution**, select **Ubuntu 24.04 LTS** (recommended). Debian, AlmaLinux and Rocky Linux also work.
+2. Under **Choose a Distribution**, select **Ubuntu 24.04 LTS** (recommended). See the [OS matrix](/docs/admin/intro/#supported-os-versions) for other image targets and verification status.
 3. Choose a **Region** close to your visitors.
 4. Choose a **Linode Plan**:
    - **Shared CPU** plans are fine for most hosting servers.
@@ -31457,7 +31474,7 @@ The IPv4 address is shown on the Linode's summary page.
 ## Step 3: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Installation takes about 5 minutes. For optional flags (domain, admin username, ports), use the [install command generator](/install).
@@ -31577,7 +31594,7 @@ sudo -i
 Once logged in, run the installer script:
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer runs without any prompts and takes about 5 minutes. When it finishes, it prints the **DavAdmin URL**, **username** and **password**.
@@ -31630,7 +31647,7 @@ This guide covers creating the instance, opening the right ports (Oracle blocks 
 ## Step 1: Create the Instance
 
 1. In the Oracle Cloud Console, go to **Compute** → **Instances** → **Create instance**.
-2. **Image**: click **Change image** and select **Canonical Ubuntu 24.04** (recommended) or **Oracle Linux 9**.
+2. **Image**: click **Change image** and select **Canonical Ubuntu 24.04**. Review the [OS matrix](/docs/admin/intro/#supported-os-versions) before selecting another image; the current Oracle Linux installer uses EPEL 10 and does not target Oracle Linux 9.
 3. **Shape**: click **Change shape** → **Ampere** → **VM.Standard.A1.Flex**.
    - Set **OCPUs** and **memory** - the Always Free limit is 4 OCPUs and 24 GB RAM in total. For a single DavPanel server, use all of it (4 OCPU / 24 GB), or at least 2 OCPU / 12 GB.
 4. **Networking**: keep **Assign a public IPv4 address** enabled.
@@ -31711,7 +31728,7 @@ Only do this right before installing DavPanel. Until CSF is installed, the only 
 ## Step 5: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer detects the ARM64 (AArch64) CPU automatically. Installation takes about 5 minutes; when it finishes, it prints the **DavAdmin URL**, **username** and **password**.
@@ -31783,7 +31800,7 @@ DavPanel needs a clean server with no other control panel or web server installe
 1. Log in to the [OVHcloud Control Panel](https://www.ovh.com/manager/).
 2. Open **Bare Metal Cloud** and select your **VPS** or **dedicated server**.
 3. Click **Reinstall my VPS** (or **Install** for dedicated servers).
-4. Choose **Ubuntu 24.04** (recommended). Debian 12/13, AlmaLinux and Rocky Linux also work.
+4. Choose **Ubuntu 24.04** (recommended). See the [OS matrix](/docs/admin/intro/#supported-os-versions) for other image targets, restrictions and pending installation checks.
    - Pick the plain **Distribution only** image, not one with a panel or application preinstalled.
 5. Add your SSH key and confirm.
 
@@ -31816,7 +31833,7 @@ sudo -i
 ## Step 3: Run the DavPanel Installer
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Installation takes about 5 minutes. For optional flags (domain, admin username, ports), use the [install command generator](/install).
@@ -31902,7 +31919,7 @@ DavPanel runs each user's services in their own rootless containers and relies o
 1. Download the **Ubuntu Server 24.04 LTS** ISO from [ubuntu.com](https://ubuntu.com/download/server).
 2. In the Proxmox web UI, select your storage (e.g. **local**) → **ISO Images** → **Upload**, or use **Download from URL** and paste the ISO link.
 
-Debian 12/13, AlmaLinux and Rocky Linux ISOs also work.
+Other OS images have installer paths listed in the [OS matrix](/docs/admin/intro/#supported-os-versions). Complete VM installation remains unverified; review the version restrictions before choosing an image.
 
 ---
 
@@ -31953,7 +31970,7 @@ Connect via SSH, switch to root, and run the installer:
 ```bash
 ssh your-user@vm-ip
 sudo -i
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Installation takes about 5 minutes. When it finishes, it prints the **DavAdmin URL**, **username** and **password**. Open `https://vm-ip:2087` and log in.
@@ -32081,7 +32098,7 @@ Reconnect, switch to root, and run the installer:
 
 ```bash
 sudo -i
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer detects the ARM64 CPU automatically and downloads the ARM builds of DavPanel. On a Pi the installation takes longer than on a VPS - usually 10-20 minutes, depending on the storage speed.
@@ -32176,7 +32193,7 @@ ssh root@yourInstanceIp
 Run the installation script:
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 The installer runs without any prompts and takes about 5 minutes. When it finishes, it prints the **DavAdmin URL**, **username** and **password**.
@@ -32227,7 +32244,7 @@ Use the following **Ansible playbook** to install DavPanel on one or more target
   tasks:
     - name: Download and run DavPanel installer
       shell: |
-        curl -sSL https://davpanel.org | bash -s -- {{ davpanel_install_flags }}
+        curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh {{ davpanel_install_flags }}
       args:
         executable: /bin/bash
 ```
@@ -32256,7 +32273,7 @@ packages:
   - gnupg
 
 runcmd:
-  - curl -fsSL https://davpanel.org/ | bash
+  - curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 ---
@@ -32274,12 +32291,25 @@ To install DavPanel on your server:
 - as a user with sudo privileges and type "sudo -i"
 2. Copy and paste davpanel installation command into the terminal
 ```shell
-bash <(curl -sSL https://davpanel.org)
+bash <(curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh)
 ```
 
 The installation script supports [optional flags](/install) that can be used to configure davpanel, skip certain installation steps or simply display debugging information.
 
-If you encountered any errors while running the installation script, please copy & paste the installation log file to [GitHub Discussions](https://github.com/stefanpejcic/OpenPanel/discussions).
+The installer downloads and verifies the matching amd64/arm64 release and installs
+the required dependencies. If no complete release is published yet, it downloads
+the complete source, verifies its components, prepares Go automatically and builds
+the installer. Allow at least 4 GB RAM and 20 GB free disk space for source builds.
+You can force a source build with `--from-source`. Add `--domain=panel.example.com`
+for public TLS; the default is a self-signed certificate for IP access.
+
+If the bootstrap URL itself returns 404, check that the repository is public and
+`bootstrap.sh` exists on its `main` branch. This is different from a missing release,
+which the installer handles automatically. The installation log is
+`/var/log/davpanel/install.log` and the final output includes the panel URLs and
+generated administrator credentials.
+
+If you encountered any errors while running the installation script, share the relevant log excerpt after removing credentials in [GitHub Discussions](https://github.com/kangpcode/DavPanel/discussions).
 
 ![DavPanel installer output in a terminal: the DavPanel banner with version, OS, IP and Podman engine, each installation step marked OK, and the DavAdmin URL with the generated username and password at the end](/img/davpanel-screenshots/install/installer-output-generic.png#screenshot)
 
@@ -32362,9 +32392,22 @@ For an exact estimate for your setup, use the **[DavPanel Resource Calculator](/
 | **Network** | Public IPv4 address | |
 | **Virtualization** | Full VM (KVM, VMware, Hyper-V, Xen HVM) or bare metal | |
 
-**Supported operating systems:** Ubuntu 22.04, 24.04 and 26.04, Debian 10-13, AlmaLinux 9.5 and 10, Rocky Linux 9.6 and 10, CentOS 9.5. Ubuntu 24.04 is recommended. See the [full list and known issues](/docs/admin/intro/#requirements).
+**OS installer paths:** Ubuntu Server 22.04/24.04/26.04 LTS, Debian 12/13,
+AlmaLinux 9/10, Rocky Linux 9/10, Oracle Linux 10 and CentOS Stream 9/10.
+Fedora and openEuler remain experimental. Rocky Linux currently requires
+`--skip-firewall` and a separately configured firewall. No complete clean-server
+installation has been verified for this fork on these OS versions. See the
+[OS matrix and restrictions](/docs/admin/intro/#supported-os-versions).
 
-**Not supported:** Windows, macOS, shared hosting accounts, and container-based VPS (OpenVZ, LXC, Docker). The server must be a **clean** install with no other control panel or web server.
+**Not supported for hosting:** native Windows/macOS, shared hosting accounts,
+Codespaces/dev containers, and container-based VPS (OpenVZ, LXC, Docker, Podman).
+Debian 10/11 and CentOS Linux 7/8 are not targets for new installations. The
+server must be a **clean** install with no other control panel or web server.
+
+Source builds need at least **4 GB RAM and 20 GB free disk space**. Codespaces
+can build releases from a complete source checkout; install the resulting `.run`
+on the target Linux VM/VPS. ARM64 release builds are available; native ARM64
+hosting installation remains unverified.
 
 ---
 
@@ -34181,7 +34224,7 @@ That's a good starting point. If the server regularly uses a lot of swap, add RA
 To choose the size yourself when installing, use the `--swap` flag (1-10 GB):
 
 ```bash
-bash <(curl -sSL https://davpanel.org) --swap=4
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh --swap=4
 ```
 
 ---
@@ -35296,7 +35339,7 @@ The new server should have a clean environment with **only DavPanel installed**-
 Install DavPanel by running:
 
 ```bash
-bash <(curl -sSL https://davpanel.org)
+curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh -o /tmp/davpanel-bootstrap.sh && bash /tmp/davpanel-bootstrap.sh
 ```
 
 Wait for the installation to complete, then proceed to the source server.
