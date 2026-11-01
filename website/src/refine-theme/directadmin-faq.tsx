@@ -152,11 +152,11 @@ const faq = [
     },
     {
         question: "What operating systems does DavPanel Enterprise support?",
-        answer: "DavPanel Enterprise supports Ubuntu, Debian, AlmaLinux, Rocky Linux, and CentOS.",
+        answer: "Both editions have Linux installer paths for Ubuntu, Debian, AlmaLinux, Rocky Linux, Oracle Linux and CentOS Stream. Fedora and openEuler are experimental. Complete VM installation remains unverified; check the OS matrix and version restrictions before deployment.",
     },
     {
         question: "Does DavPanel run on ARM (AArch64) servers?",
-        answer: "Yes, DavPanel Enterprise runs on both standard x86_64 servers and ARM (AArch64) CPUs.",
+        answer: "Release builds target x86_64 (amd64) and AArch64 (arm64). Native ARM64 hosting installation remains unverified.",
     },
     {
         question: "Does DavPanel Enterprise integrate with billing software?",

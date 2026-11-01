@@ -516,7 +516,7 @@ const tableData = [
             {
                 description: "Supported OS",
                 directadmin: <TableText><a href="https://docs.directadmin.com/getting-started/installation/system-requirements.html" target="_blank">AlmaLinux, Rocky, CentOS Stream, Debian, Ubuntu</a></TableText>,
-                davpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
+                davpanel: <TableText><a href="/docs/admin/intro/#supported-os-versions">Ubuntu, Debian, AlmaLinux, Rocky Linux, Oracle Linux, CentOS Stream</a></TableText>,
                 valueType: {
                     directadmin: "text",
                     davpanel: "text",

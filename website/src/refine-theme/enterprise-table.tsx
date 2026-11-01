@@ -1907,8 +1907,8 @@ const tableData = [
             },
             {
                 description: "Supported OS",
-                community: <TableText><a href="/docs/admin/intro/#requirements">Ubuntu 24.04</a></TableText>,
-                enterprise: <TableText><a href="/docs/admin/intro/#requirements">Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
+                community: <TableText><a href="/docs/admin/intro/#supported-os-versions">Linux servers; see OS matrix</a></TableText>,
+                enterprise: <TableText><a href="/docs/admin/intro/#supported-os-versions">Linux servers; see OS matrix</a></TableText>,
                 valueType: {
                     community: "text",
                     enterprise: "text",

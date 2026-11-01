@@ -52,15 +52,16 @@ export const PleskIntroContent = ({ className }: { className?: string }) => {
                     CloudLinux for user isolation, and its ARM (AArch64)
                     support is partial, limited to Ubuntu 22.04. DavPanel
                     isolates every user and every service in its own Podman
-                    container by default, and runs natively on both x86_64
-                    and ARM servers.
+                    container by default. Release builds target x86_64 and
+                    ARM64; native ARM64 hosting remains unverified.
                 </p>
                 <p>
                     Plesk has no automatic import tool, so switching away
-                    means migrating accounts by hand. DavPanel runs on the
-                    same distributions Plesk supports - Ubuntu, AlmaLinux,
-                    and Debian - so you can rebuild your hosting environment
-                    without also having to change your OS.
+                    means migrating accounts by hand. DavPanel has installer
+                    paths for Ubuntu, Debian, AlmaLinux, Rocky Linux,
+                    Oracle Linux and CentOS Stream. Check the{" "}
+                    <a href="/docs/admin/intro/#supported-os-versions">OS matrix</a>{" "}
+                    before choosing your target server image.
                 </p>
             </div>
         </div>

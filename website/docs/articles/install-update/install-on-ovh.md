@@ -24,7 +24,7 @@ DavPanel needs a clean server with no other control panel or web server installe
 1. Log in to the [OVHcloud Control Panel](https://www.ovh.com/manager/).
 2. Open **Bare Metal Cloud** and select your **VPS** or **dedicated server**.
 3. Click **Reinstall my VPS** (or **Install** for dedicated servers).
-4. Choose **Ubuntu 24.04** (recommended). Debian 12/13, AlmaLinux and Rocky Linux also work.
+4. Choose **Ubuntu 24.04** (recommended). See the [OS matrix](/docs/admin/intro/#supported-os-versions) for other image targets, restrictions and pending installation checks.
    - Pick the plain **Distribution only** image, not one with a panel or application preinstalled.
 5. Add your SSH key and confirm.
 

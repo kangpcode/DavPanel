@@ -24,7 +24,7 @@ Contabo servers come with a lot of RAM and disk for the price, which makes them 
 When ordering a new server:
 
 1. Pick a **region** close to your visitors.
-2. Under **Image**, choose **Ubuntu 24.04** (recommended). Debian, AlmaLinux and Rocky Linux also work.
+2. Under **Image**, choose **Ubuntu 24.04** (recommended). See the [OS matrix](/docs/admin/intro/#supported-os-versions) for other image targets and verification status.
 3. Set a strong **root password** and, if you have one, add your **SSH key**.
 
 If you already have a Contabo server with another OS or panel on it, reinstall it first - DavPanel requires a clean server:

@@ -24,7 +24,7 @@ Hetzner is a popular choice for DavPanel: servers are inexpensive, have fast NVM
 1. Log in to the **Hetzner Cloud Console** and open (or create) a project.
 2. Click **Add Server**.
 3. Choose a **location** close to your visitors.
-4. Select the **image**: **Ubuntu 24.04** (recommended). Debian 12/13, AlmaLinux and Rocky Linux also work.
+4. Select the **image**: **Ubuntu 24.04** (recommended). See the [OS matrix](/docs/admin/intro/#supported-os-versions) for other image targets, restrictions and pending installation checks.
 5. Choose a **type**:
    - **x86 (Intel/AMD)** or **Arm64 (Ampere)** - DavPanel runs on both.
    - At least **2 GB RAM**; **4 GB RAM or more** is recommended for production. Use the [resource calculator](/calculator) to size the server for the number of websites you plan to host.

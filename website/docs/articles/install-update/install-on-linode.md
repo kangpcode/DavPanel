@@ -20,7 +20,7 @@ This guide shows how to install **DavPanel** on a [Linode](https://www.linode.co
 ## Step 1: Create a Linode
 
 1. Log in to the **Cloud Manager** and click **Create** → **Linode**.
-2. Under **Choose a Distribution**, select **Ubuntu 24.04 LTS** (recommended). Debian, AlmaLinux and Rocky Linux also work.
+2. Under **Choose a Distribution**, select **Ubuntu 24.04 LTS** (recommended). See the [OS matrix](/docs/admin/intro/#supported-os-versions) for other image targets and verification status.
 3. Choose a **Region** close to your visitors.
 4. Choose a **Linode Plan**:
    - **Shared CPU** plans are fine for most hosting servers.

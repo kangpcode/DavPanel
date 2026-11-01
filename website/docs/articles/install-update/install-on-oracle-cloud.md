@@ -21,7 +21,7 @@ This guide covers creating the instance, opening the right ports (Oracle blocks 
 ## Step 1: Create the Instance
 
 1. In the Oracle Cloud Console, go to **Compute** → **Instances** → **Create instance**.
-2. **Image**: click **Change image** and select **Canonical Ubuntu 24.04** (recommended) or **Oracle Linux 9**.
+2. **Image**: click **Change image** and select **Canonical Ubuntu 24.04**. Review the [OS matrix](/docs/admin/intro/#supported-os-versions) before selecting another image; the current Oracle Linux installer uses EPEL 10 and does not target Oracle Linux 9.
 3. **Shape**: click **Change shape** → **Ampere** → **VM.Standard.A1.Flex**.
    - Set **OCPUs** and **memory** - the Always Free limit is 4 OCPUs and 24 GB RAM in total. For a single DavPanel server, use all of it (4 OCPU / 24 GB), or at least 2 OCPU / 12 GB.
 4. **Networking**: keep **Assign a public IPv4 address** enabled.

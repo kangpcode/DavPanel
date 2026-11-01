@@ -524,7 +524,7 @@ const tableData = [
             {
                 description: "Supported OS",
                 cloudpanel: <TableText><a href="https://docs.cloudpanel.net/installation-guide/system-requirements/" target="_blank">AlmaLinux 8,9,10 Ubuntu 22 Cloudlinux 7,8,9 RockyLinux 8,9</a></TableText>,
-                davpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
+                davpanel: <TableText><a href="/docs/admin/intro/#supported-os-versions">Ubuntu, Debian, AlmaLinux, Rocky Linux, Oracle Linux, CentOS Stream</a></TableText>,
                 valueType: {
                     cloudpanel: "text",
                     davpanel: "text",

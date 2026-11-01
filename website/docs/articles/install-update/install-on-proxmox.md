@@ -27,7 +27,7 @@ DavPanel runs each user's services in their own rootless containers and relies o
 1. Download the **Ubuntu Server 24.04 LTS** ISO from [ubuntu.com](https://ubuntu.com/download/server).
 2. In the Proxmox web UI, select your storage (e.g. **local**) → **ISO Images** → **Upload**, or use **Download from URL** and paste the ISO link.
 
-Debian 12/13, AlmaLinux and Rocky Linux ISOs also work.
+Other OS images have installer paths listed in the [OS matrix](/docs/admin/intro/#supported-os-versions). Complete VM installation remains unverified; review the version restrictions before choosing an image.
 
 ---
 

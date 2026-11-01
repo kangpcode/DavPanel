@@ -516,7 +516,7 @@ const tableData = [
             {
                 description: "Supported OS",
                 cyberpanel: <TableText><a href="https://cyberpanel.net/KnowledgeBase/" target="_blank">Ubuntu, AlmaLinux, Rocky, CloudLinux, openEuler</a></TableText>,
-                davpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
+                davpanel: <TableText><a href="/docs/admin/intro/#supported-os-versions">Ubuntu, Debian, AlmaLinux, Rocky Linux, Oracle Linux, CentOS Stream</a></TableText>,
                 valueType: {
                     cyberpanel: "text",
                     davpanel: "text",

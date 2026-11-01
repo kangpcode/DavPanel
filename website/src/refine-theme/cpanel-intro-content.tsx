@@ -51,10 +51,11 @@ export const CpanelIntroContent = ({ className }: { className?: string }) => {
                     service (PHP, MySQL, and more) in its own Podman
                     container, rather than sharing services across accounts
                     the way cPanel does unless you pay extra for CloudLinux.
-                    DavPanel also runs natively on ARM (AArch64) servers,
-                    which cPanel/WHM does not support, and works across
-                    Ubuntu, Debian, AlmaLinux, Rocky Linux, and CentOS instead
-                    of a narrower set of RHEL-based distributions.
+                    DavPanel release builds target x86_64 and ARM64.
+                    Its Linux installer paths cover Ubuntu, Debian, AlmaLinux,
+                    Rocky Linux, Oracle Linux and CentOS Stream. Check the{" "}
+                    <a href="/docs/admin/intro/#supported-os-versions">OS matrix</a>{" "}
+                    for version restrictions and pending installation checks.
                 </p>
                 <p>
                     Switching from cPanel/WHM doesn't mean starting over: the

@@ -524,7 +524,7 @@ const tableData = [
             {
                 description: "Supported OS",
                 plesk: <TableText><a href="https://docs.plesk.com/release-notes/obsidian/system-requirements/" target="_blank">AlmaLinux, Ubuntu, CloudLinux, RHEL, Debian, Windows Server</a></TableText>,
-                davpanel: <TableText><a href="/docs/admin/intro/#requirements">OS-agnostic: Ubuntu, Debian, AlmaLinux, Rocky, CentOS</a></TableText>,
+                davpanel: <TableText><a href="/docs/admin/intro/#supported-os-versions">Ubuntu, Debian, AlmaLinux, Rocky Linux, Oracle Linux, CentOS Stream</a></TableText>,
                 valueType: {
                     plesk: "text",
                     davpanel: "text",
