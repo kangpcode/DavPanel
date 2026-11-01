@@ -3,7 +3,9 @@
 # DavPanel Installer ✌️
 # https://davpanel.com/install
 #
-# Supported OS:            Ubuntu, Debian, AlmaLinux, RockyLinux, CentOS, Oracle Linux
+# OS installer paths:     Ubuntu, Debian, AlmaLinux, Rocky Linux, CentOS Stream,
+#                         Oracle Linux; Fedora/openEuler experimental.
+# Version restrictions:   See PLATFORMS.md; clean-server validation is pending.
 # Supported Architecture:  x86_64(AMD64), AArch64(ARM64)
 #
 # Usage:                   sudo bash install.sh [options]

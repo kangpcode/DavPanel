@@ -22,9 +22,22 @@ For an exact estimate for your setup, use the **[DavPanel Resource Calculator](/
 | **Network** | Public IPv4 address | |
 | **Virtualization** | Full VM (KVM, VMware, Hyper-V, Xen HVM) or bare metal | |
 
-**Supported operating systems:** Ubuntu 22.04, 24.04 and 26.04, Debian 10-13, AlmaLinux 9.5 and 10, Rocky Linux 9.6 and 10, CentOS 9.5. Ubuntu 24.04 is recommended. See the [full list and known issues](/docs/admin/intro/#requirements).
+**OS installer paths:** Ubuntu Server 22.04/24.04/26.04 LTS, Debian 12/13,
+AlmaLinux 9/10, Rocky Linux 9/10, Oracle Linux 10 and CentOS Stream 9/10.
+Fedora and openEuler remain experimental. Rocky Linux currently requires
+`--skip-firewall` and a separately configured firewall. No complete clean-server
+installation has been verified for this fork on these OS versions. See the
+[OS matrix and restrictions](/docs/admin/intro/#supported-os-versions).
 
-**Not supported:** Windows, macOS, shared hosting accounts, and container-based VPS (OpenVZ, LXC, Docker). The server must be a **clean** install with no other control panel or web server.
+**Not supported for hosting:** native Windows/macOS, shared hosting accounts,
+Codespaces/dev containers, and container-based VPS (OpenVZ, LXC, Docker, Podman).
+Debian 10/11 and CentOS Linux 7/8 are not targets for new installations. The
+server must be a **clean** install with no other control panel or web server.
+
+Source builds need at least **4 GB RAM and 20 GB free disk space**. Codespaces
+can build releases from a complete source checkout; install the resulting `.run`
+on the target Linux VM/VPS. ARM64 release builds are available; native ARM64
+hosting installation remains unverified.
 
 ---
 

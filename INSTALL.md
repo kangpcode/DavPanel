@@ -6,6 +6,12 @@ Developer and maintainer: **Dhafa Nazula Permadi (kangpcode)**.
 
 On a clean target VPS, run this one command as root or an account with sudo:
 
+The documented OS targets are Ubuntu Server 22.04/24.04/26.04 LTS, Debian 12/13,
+AlmaLinux 9/10, Rocky Linux 9/10, Oracle Linux 10 and CentOS Stream 9/10.
+Fedora and openEuler remain experimental. Check [PLATFORMS.md](PLATFORMS.md) for
+version restrictions and verification status before choosing an image; Rocky
+Linux currently requires `--skip-firewall` and a separately configured firewall.
+
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/kangpcode/DavPanel/main/bootstrap.sh)
 ```

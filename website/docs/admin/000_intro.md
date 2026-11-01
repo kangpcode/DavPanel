@@ -12,19 +12,35 @@ Minimum Requirements:
 
 - A blank full virtual machine or bare metal server
 - Minimum of 1GB RAM and 20GB storage (4GB RAM and 50GB is recommended)
-- AMD64(x86_64) or ARM(AArch64) architecture
+- AMD64 (x86_64) or ARM64 (AArch64) release build; native ARM64 hosting remains unverified
 - IPv4 address
 
 Not sure how big the server should be? See [System Requirements & Sizing](/docs/articles/install-update/system-requirements/) or use the [resource calculator](/calculator).
 
-Supported operating systems:
-- **Ubuntu 22, 24, 26** (24.04 is recommended)
-- **Debian 10, 11, 12, 13**
-- **AlmaLinux 9.5 and 10** (9.5 is recommended for ARM CPU, 10 has a known issue [#744](https://github.com/stefanpejcic/OpenPanel/issues/744))
-- **RockyLinux 9.6, 10**
-- **CentOS 9.5**
+### Supported OS versions
 
-On AlmaLinux 10 and RockyLinux 10, you must switch from `nftables` to `iptables`. See [#1472](https://github.com/docker/for-linux/issues/1472) and [#745](https://github.com/stefanpejcic/OpenPanel/issues/745#issuecomment-3451272947).
+Updated: 2026-11-01. Both editions use the same OS installer paths.
+
+| Distribution | Release targets | Installer status |
+| --- | --- | --- |
+| Ubuntu Server | 22.04, 24.04, 26.04 LTS | APT path implemented |
+| Debian | 12, 13 | APT path implemented |
+| AlmaLinux | 9.x, 10.x | DNF path implemented; use the latest minor release |
+| Rocky Linux | 9.x, 10.x | DNF path implemented; currently requires `--skip-firewall` and a separately configured firewall |
+| Oracle Linux | 10.x | DNF/EPEL 10 path; Oracle Linux 9 needs a separate EPEL path and is not a current installation target |
+| CentOS Stream | 9, 10 | RPM path implemented |
+| Fedora / openEuler | Maintained releases | Experimental installer branches |
+
+**Complete clean-server installation remains unverified for this fork on every
+OS/version listed above.** Source checks, release builds and container smoke tests
+do not establish that account provisioning, quotas, networking and backups work
+on a target server. The [repository platform matrix](https://github.com/kangpcode/DavPanel/blob/main/PLATFORMS.md)
+records restrictions, release references and acceptance checks.
+
+Debian 10/11 and CentOS Linux 7/8 are not targets for new installations. Native
+Windows/macOS hosting and hosting inside Codespaces, Docker, Podman, LXC or
+OpenVZ containers are unsupported. Use Codespaces for development and release
+builds, then install on a clean Linux VM/VPS or bare metal server.
 
 :::info
 If you are using external firewall, the following ports should be opened: 
@@ -40,7 +56,8 @@ If you are using external firewall, the following ports should be opened:
 
 DavPanel can be installed on both VPS and bare-metal servers. 
 
-The installation process takes about 5 minutes. To install davpanel follow these steps: 
+Installation time depends on the server and network; a source build also compiles
+both Go binaries. To install DavPanel follow these steps:
 
 <Tabs>
   <TabItem value="davpanel-install-on-dedicated" label="Install script" default>

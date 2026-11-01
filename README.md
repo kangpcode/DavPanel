@@ -152,26 +152,30 @@ The result: VPS-level isolation on shared hosting infrastructure, without the VP
 
 ## Supported OS
 
-DavPanel is a truly [OS-agnostic](https://www.techtarget.com/whatis/definition/agnostic) control panel. Supported OS:
+DavPanel hosting requires a clean Linux VM/VPS or bare metal server with systemd,
+cgroups, rootless Podman and filesystem quotas. The current installer paths are:
 
-<!-- OS_TEST_RESULTS_START -->
-| Operating System | Version | Last Tested | Status | Average install time[^2] | Notes |
-|---|---|---|---|---|---|
-| Ubuntu | 24 | 2026-10-29 12:54 UTC | ❌ Fail | 2m35s | **recommended for AMD CPU** |
-| Ubuntu | 26 | 2026-10-30 11:25 UTC | ❌ Fail | 2m53s |  |
-| Debian | 12 | 2026-10-29 14:20 UTC | ❌ Fail | 1m25s |  |
-| Debian | 13 | 2026-10-29 14:24 UTC | ❌ Fail | 1m59s |  |
-| AlmaLinux | 9.7 | 2026-09-07 11:46 UTC | ✅ Pass | 1m42s | **recommended for ARM CPU** |
-| AlmaLinux | 10 | 2026-10-30 07:00 UTC | ❌ Fail | 14m45s |  |
-| OracleLinux | 10 | |  |  |  |
-| RockyLinux | 9.6 | | | |  |
-| RockyLinux | 10 | 2026-10-29 15:45 UTC | ❌ Fail |  |  |
-| CentOS | 9.5 | | | |  |
-| CentOS | 10 | 2026-10-30 10:03 UTC | ❌ Fail | 9m6s |  |
+| Distribution | Release targets | Installer status |
+| --- | --- | --- |
+| Ubuntu Server | 22.04, 24.04, 26.04 LTS | APT path implemented |
+| Debian | 12, 13 | APT path implemented |
+| AlmaLinux | 9.x, 10.x | DNF path implemented; use the latest minor release |
+| Rocky Linux | 9.x, 10.x | DNF path implemented; currently requires `--skip-firewall` and a separately configured firewall |
+| Oracle Linux | 10.x | DNF path uses EPEL 10; Oracle Linux 9 is not a current installation target |
+| CentOS Stream | 9, 10 | RPM path implemented |
+| Fedora / openEuler | Maintained releases | Experimental installer branches |
 
-<!-- OS_TEST_RESULTS_END -->
+These entries describe available installer paths. **A complete clean-server
+installation has not yet been verified for this fork on any OS/version.**
+The inherited upstream pass/fail results and installation times have been removed
+because they do not validate DavPanel. See [PLATFORMS.md](PLATFORMS.md) for release
+references, restrictions and the acceptance procedure.
 
-[^2]: Average installation time for [the install script](https://davpanel.com/) on a VPS with the following specifications: 2 CPU cores and 2 GB of RAM.
+Release builds target **amd64 (x86_64)** and **arm64 (AArch64)**; native arm64
+hosting remains unverified. Codespaces, dev containers and Docker are for
+development and release builds. Windows and macOS require a Linux VM for hosting;
+the native installer does not support them. Debian 10/11 and CentOS Linux 7/8 are
+not targets for new installations.
 
 ## Build and install from source
 

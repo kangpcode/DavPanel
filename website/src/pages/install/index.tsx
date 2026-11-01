@@ -82,6 +82,7 @@ const Install: React.FC = () => {
 
                 <div className="flex-1 flex flex-col pt-8 lg:pt-16 pb-32 max-w-[800px] w-full mx-auto px-2">
                     <h1>Installation</h1>
+                    <p>Use a clean Linux VM/VPS or bare metal server with systemd. Check the <a href="/docs/admin/intro/#supported-os-versions">OS versions, restrictions and validation status</a> before choosing your server image. Codespaces and other containers are for development and release builds.</p>
                     <p className="mb-0">Connect to your server as root via SSH and run the following command:</p>
 
                     <div className="mb-0">
