@@ -48,8 +48,10 @@ def inspect_sources(root, refresh=False):
     if (root / ".git").exists():
         ignored = subprocess.run(
             ["git", "ls-files", "--others", "--ignored", "--exclude-standard", "-z", "--", *sorted(REQUIRED)],
-            cwd=root, capture_output=True, text=True, check=True,
+            cwd=root, capture_output=True, text=True,
         )
+        if ignored.returncode:
+            raise ValueError("Cannot check Git-ignored source files: " + ignored.stderr.strip())
         for relative in ignored.stdout.split("\0"):
             if relative and not any(part in IGNORED for part in Path(relative).parts):
                 issues.append(f"{relative}: source file is ignored by Git and will be absent from fresh checkouts.")
@@ -111,7 +113,7 @@ def main():
     args = parser.parse_args()
     try:
         report = inspect_sources(args.root.resolve(), args.refresh_lock)
-    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
+    except (OSError, ValueError, KeyError, TypeError) as error:
         parser.exit(2, f"Source audit failed: {error}\n")
     if args.json:
         print(json.dumps(report, indent=2))
